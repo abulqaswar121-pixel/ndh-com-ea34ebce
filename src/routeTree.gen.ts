@@ -13,7 +13,9 @@ import { Route as SignupRouteImport } from './routes/signup'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as AgencyRouteImport } from './routes/agency'
 import { Route as AcademyRouteImport } from './routes/academy'
+import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AuthenticatedPortalClientRouteImport } from './routes/_authenticated/portal.client'
 
 const SignupRoute = SignupRouteImport.update({
   id: '/signup',
@@ -35,11 +37,21 @@ const AcademyRoute = AcademyRouteImport.update({
   path: '/academy',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
+  id: '/_authenticated',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedPortalClientRoute =
+  AuthenticatedPortalClientRouteImport.update({
+    id: '/portal/client',
+    path: '/portal/client',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -47,6 +59,7 @@ export interface FileRoutesByFullPath {
   '/agency': typeof AgencyRoute
   '/login': typeof LoginRoute
   '/signup': typeof SignupRoute
+  '/portal/client': typeof AuthenticatedPortalClientRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -54,25 +67,43 @@ export interface FileRoutesByTo {
   '/agency': typeof AgencyRoute
   '/login': typeof LoginRoute
   '/signup': typeof SignupRoute
+  '/portal/client': typeof AuthenticatedPortalClientRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/academy': typeof AcademyRoute
   '/agency': typeof AgencyRoute
   '/login': typeof LoginRoute
   '/signup': typeof SignupRoute
+  '/_authenticated/portal/client': typeof AuthenticatedPortalClientRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/academy' | '/agency' | '/login' | '/signup'
+  fullPaths:
+    | '/'
+    | '/academy'
+    | '/agency'
+    | '/login'
+    | '/signup'
+    | '/portal/client'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/academy' | '/agency' | '/login' | '/signup'
-  id: '__root__' | '/' | '/academy' | '/agency' | '/login' | '/signup'
+  to: '/' | '/academy' | '/agency' | '/login' | '/signup' | '/portal/client'
+  id:
+    | '__root__'
+    | '/'
+    | '/_authenticated'
+    | '/academy'
+    | '/agency'
+    | '/login'
+    | '/signup'
+    | '/_authenticated/portal/client'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AcademyRoute: typeof AcademyRoute
   AgencyRoute: typeof AgencyRoute
   LoginRoute: typeof LoginRoute
@@ -109,6 +140,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AcademyRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated': {
+      id: '/_authenticated'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AuthenticatedRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -116,11 +154,30 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated/portal/client': {
+      id: '/_authenticated/portal/client'
+      path: '/portal/client'
+      fullPath: '/portal/client'
+      preLoaderRoute: typeof AuthenticatedPortalClientRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
   }
 }
 
+interface AuthenticatedRouteRouteChildren {
+  AuthenticatedPortalClientRoute: typeof AuthenticatedPortalClientRoute
+}
+
+const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedPortalClientRoute: AuthenticatedPortalClientRoute,
+}
+
+const AuthenticatedRouteRouteWithChildren =
+  AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AcademyRoute: AcademyRoute,
   AgencyRoute: AgencyRoute,
   LoginRoute: LoginRoute,
