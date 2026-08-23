@@ -1,4 +1,0 @@
-import { createFileRoute, redirect } from "@tanstack/react-router";
-export const Route = createFileRoute("/instructor")({
-  beforeLoad: () => { throw redirect({ to: "/dashboard/instructor", search: { tab: undefined, course: undefined } }); },
-});
