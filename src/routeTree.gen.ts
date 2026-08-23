@@ -15,11 +15,11 @@ import { Route as AgencyRouteImport } from './routes/agency'
 import { Route as AcademyRouteImport } from './routes/academy'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as AuthenticatedPortalTalentRouteImport } from './routes/_authenticated/portal.talent'
-import { Route as AuthenticatedPortalStudentRouteImport } from './routes/_authenticated/portal.student'
-import { Route as AuthenticatedPortalPmRouteImport } from './routes/_authenticated/portal.pm'
-import { Route as AuthenticatedPortalClientRouteImport } from './routes/_authenticated/portal.client'
-import { Route as AuthenticatedPortalAdminRouteImport } from './routes/_authenticated/portal.admin'
+import { Route as AuthenticatedPortalTalentRouteImport } from './routes/_authenticated/portal/talent'
+import { Route as AuthenticatedPortalStudentRouteImport } from './routes/_authenticated/portal/student'
+import { Route as AuthenticatedPortalPmRouteImport } from './routes/_authenticated/portal/pm'
+import { Route as AuthenticatedPortalClientRouteImport } from './routes/_authenticated/portal/client'
+import { Route as AuthenticatedPortalAdminRouteImport } from './routes/_authenticated/portal/admin'
 
 const SignupRoute = SignupRouteImport.update({
   id: '/signup',
