@@ -11,7 +11,6 @@ import { useEffect, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
-import { CurrencyProvider } from "../lib/currency";
 import { AuthProvider } from "../lib/auth";
 import { Toaster } from "sonner";
 
@@ -80,61 +79,19 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Najeeb Digital Hub — Digital Bureau & Academy" },
-      { name: "description", content: "NDH is a premium digital services bureau and online academy delivering design, development, content, marketing and media for clients worldwide." },
+      { title: "Najeeb Digital Hub" },
       { name: "author", content: "Najeeb Digital Hub" },
-      { name: "theme-color", content: "#0A0E2A" },
-      { property: "og:title", content: "Najeeb Digital Hub (NDH)" },
-      { property: "og:description", content: "Where Digital Excellence Meets Opportunity." },
       { property: "og:type", content: "website" },
       { property: "og:site_name", content: "Najeeb Digital Hub" },
       { name: "twitter:card", content: "summary" },
     ],
     links: [
-      {
-        rel: "stylesheet",
-        href: appCss,
-      },
+      { rel: "stylesheet", href: appCss },
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
-      { rel: "preconnect", href: "https://images.pexels.com", crossOrigin: "anonymous" },
-      { rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" },
-      { rel: "manifest", href: "/manifest.webmanifest" },
-      { rel: "apple-touch-icon", href: "/__l5e/assets-v1/e2b8c427-3850-4864-8770-e1dd30edd19b/ndh-logo.png" },
-      { rel: "icon", type: "image/png", href: "/__l5e/assets-v1/e2b8c427-3850-4864-8770-e1dd30edd19b/ndh-logo.png" },
-    ],
-    scripts: [
       {
-        type: "application/ld+json",
-        children: JSON.stringify({
-          "@context": "https://schema.org",
-          "@type": "Organization",
-          name: "Najeeb Digital Hub",
-          alternateName: "NDH",
-          url: "https://ndh.com.ng",
-          logo: "https://ndh.com.ng/__l5e/assets-v1/e2b8c427-3850-4864-8770-e1dd30edd19b/ndh-logo.png",
-          sameAs: [
-            "https://www.facebook.com/share/1Be6HN8zjS/",
-            "https://www.instagram.com/njb_digital_hub",
-          ],
-          contactPoint: [{
-            "@type": "ContactPoint",
-            email: "support@ndh.com.ng",
-            telephone: "+234-902-993-2794",
-            contactType: "customer support",
-            areaServed: ["NG", "GB", "US", "CA", "AE"],
-            availableLanguage: ["en"],
-          }],
-        }),
-      },
-      {
-        type: "application/ld+json",
-        children: JSON.stringify({
-          "@context": "https://schema.org",
-          "@type": "WebSite",
-          name: "Najeeb Digital Hub",
-          url: "https://ndh.com.ng",
-        }),
+        rel: "stylesheet",
+        href: "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap",
       },
     ],
   }),
@@ -164,11 +121,9 @@ function RootComponent() {
   return (
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
-        <CurrencyProvider>
-          {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
-          <Outlet />
-          <Toaster position="top-right" richColors />
-        </CurrencyProvider>
+        {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
+        <Outlet />
+        <Toaster position="top-right" richColors />
       </AuthProvider>
     </QueryClientProvider>
   );
