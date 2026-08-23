@@ -1,30 +1,21 @@
 import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import type { Session, User } from "@supabase/supabase-js";
-import { applyPendingRole } from "@/lib/auth/pending-role.functions";
 
-export type AppRole =
-  | "client"
-  | "talent"
-  | "student"
-  | "instructor"
-  | "pm"
-  | "hod"
-  | "finance"
-  | "admin"
-  | "super_admin";
+/** The only five roles in the system. */
+export type AppRole = "client" | "student" | "talent" | "pm" | "admin";
 
+/** Where each role lands after sign-in. */
 export const ROLE_HOME: Record<AppRole, string> = {
-  client: "/dashboard/client",
-  talent: "/dashboard/talent",
-  student: "/dashboard/student",
-  instructor: "/dashboard/academy-director",
-  pm: "/dashboard/pm",
-  hod: "/dashboard/admin",
-  finance: "/dashboard/super-admin",
-  admin: "/dashboard/admin",
-  super_admin: "/dashboard/super-admin",
+  client: "/portal/client",
+  student: "/portal/student",
+  talent: "/portal/talent",
+  pm: "/portal/pm",
+  admin: "/portal/admin",
 };
+
+/** When a user holds more than one role, the first match here wins. */
+const ROLE_PRIORITY: AppRole[] = ["admin", "pm", "talent", "student", "client"];
 
 type AuthState = {
   session: Session | null;
@@ -42,26 +33,11 @@ const Ctx = createContext<AuthState>({
   signOut: async () => {},
 });
 
-const ROLE_PRIORITY: AppRole[] = [
-  "super_admin",
-  "admin",
-  "finance",
-  "hod",
-  "pm",
-  "instructor",
-  "talent",
-  "student",
-  "client",
-];
-
 async function fetchPrimaryRole(userId: string): Promise<AppRole | null> {
-  const { data, error } = await supabase
-    .from("user_roles")
-    .select("role")
-    .eq("user_id", userId);
+  const { data, error } = await supabase.from("user_roles").select("role").eq("user_id", userId);
   if (error || !data?.length) return null;
   const roles = data.map((r) => r.role as AppRole);
-  return ROLE_PRIORITY.find((r) => roles.includes(r)) ?? roles[0];
+  return ROLE_PRIORITY.find((r) => roles.includes(r)) ?? roles[0] ?? null;
 }
 
 export function AuthProvider({ children }: { children: ReactNode }) {
@@ -72,43 +48,22 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     const { data: sub } = supabase.auth.onAuthStateChange((_event, s) => {
       setSession(s);
-      if (s?.user) {
-        setTimeout(() => {
-          fetchPrimaryRole(s.user.id).then(async (r) => {
-            if (!r) {
-              // Apply signup-intent role (from Google OAuth on /signup)
-              try {
-                const pending = typeof window !== "undefined"
-                  ? window.sessionStorage.getItem("ndh_pending_role")
-                  : null;
-                if (pending === "client" || pending === "student") {
-                  await applyPendingRole({ data: { role: pending } });
-                  window.sessionStorage.removeItem("ndh_pending_role");
-                  const again = await fetchPrimaryRole(s.user.id);
-                  setRole(again ?? "client");
-                  return;
-                }
-                // Default any brand-new social user without a role to client
-                await applyPendingRole({ data: { role: "client" } });
-                const again = await fetchPrimaryRole(s.user.id);
-                setRole(again ?? "client");
-              } catch {
-                setRole(null);
-              }
-            } else {
-              setRole(r);
-            }
-          });
-        }, 0);
-      } else {
+      if (!s?.user) {
         setRole(null);
+        return;
       }
+      // Defer the DB read out of the auth callback.
+      setTimeout(() => {
+        void fetchPrimaryRole(s.user.id).then(setRole);
+      }, 0);
     });
-    supabase.auth.getSession().then(({ data }) => {
+
+    void supabase.auth.getSession().then(async ({ data }) => {
       setSession(data.session);
-      if (data.session?.user) fetchPrimaryRole(data.session.user.id).then(setRole);
+      if (data.session?.user) setRole(await fetchPrimaryRole(data.session.user.id));
       setLoading(false);
     });
+
     return () => sub.subscription.unsubscribe();
   }, []);
 
@@ -130,5 +85,5 @@ export function useAuth() {
 }
 
 export function roleHome(role: AppRole | null | undefined): string {
-  return role ? ROLE_HOME[role] : "/dashboard/client";
+  return role ? ROLE_HOME[role] : "/portal/client";
 }

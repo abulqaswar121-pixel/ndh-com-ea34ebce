@@ -1,131 +1,143 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
-import { AuthShell, GoogleButton, Divider } from "@/components/site/AuthShell";
-import { Button } from "@/components/ui/button";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import { Eye, EyeOff, Loader2 } from "lucide-react";
-import { supabase } from "@/integrations/supabase/client";
-import { useAuth, roleHome } from "@/lib/auth";
-import { useNavigate } from "@tanstack/react-router";
-import { lovable } from "@/integrations/lovable";
+import { Loader2 } from "lucide-react";
 import { toast } from "sonner";
-import { checkEmailProviders } from "@/lib/auth/account-linking.functions";
+import { supabase } from "@/integrations/supabase/client";
+import { lovable } from "@/integrations/lovable";
+import { useAuth, roleHome } from "@/lib/auth";
+import { Button } from "@/components/ui/button";
+import logo from "@/assets/ndh-logo-new.jpg";
 
 export const Route = createFileRoute("/signup")({
-  head: () => ({ meta: [
-    { title: "Create your NDH account" },
-    { name: "description", content: "Create a free NDH account as a client or academy student. Google sign-up supported." },
-    { property: "og:url", content: "/signup" },
-  ], links: [{ rel: "canonical", href: "/signup" }]}),
+  head: () => ({
+    meta: [
+      { title: "Create an account — Najeeb Digital Hub" },
+      { name: "description", content: "Create a Najeeb Digital Hub account." },
+      { property: "og:title", content: "Create an account — Najeeb Digital Hub" },
+      { property: "og:description", content: "Create a Najeeb Digital Hub account." },
+    ],
+  }),
   component: SignupPage,
 });
 
+/**
+ * The account type below is a HINT only. The database signup trigger accepts
+ * nothing but 'client' or 'student' and falls back to 'client' for anything
+ * else, so talent / pm / admin can never be obtained by signing up.
+ */
 function SignupPage() {
-  const [show, setShow] = useState(false);
-  const [role, setRole] = useState<"client" | "student">("client");
+  const { user, role: currentRole } = useAuth();
+  const navigate = useNavigate();
+  const [accountType, setAccountType] = useState<"client" | "student">("client");
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
-  const { user, role: currentRole } = useAuth();
-  const navigate = useNavigate();
-
-  // Optional ?next=/safe/path to send the user somewhere specific after signup
-  // (e.g. /academy/apply/<slug>). Same-origin paths only.
-  const nextPath = (() => {
-    if (typeof window === "undefined") return null;
-    const raw = new URLSearchParams(window.location.search).get("next");
-    if (!raw) return null;
-    return raw.startsWith("/") ? raw : null;
-  })();
 
   useEffect(() => {
-    if (user && currentRole) {
-      const dest = nextPath
-        || (currentRole === "student" ? "/academy" : roleHome(currentRole));
-      navigate({ to: dest });
-    }
-  }, [user, currentRole, navigate, nextPath]);
+    if (user && currentRole) void navigate({ to: roleHome(currentRole) });
+  }, [user, currentRole, navigate]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (password.length < 8) { toast.error("Password must be at least 8 characters"); return; }
+    if (password.length < 8) {
+      toast.error("Password must be at least 8 characters");
+      return;
+    }
     setLoading(true);
-    // Pre-flight: if this email already exists via Google only, tell the user clearly.
-    try {
-      const info = await checkEmailProviders({ data: { email } });
-      if (info.exists && info.providers.includes("google") && !info.providers.includes("email")) {
-        setLoading(false);
-        toast.error("This email is already registered with Google. Please sign in with Google — you can add a password afterwards in Settings.");
-        return;
-      }
-    } catch {/* non-fatal; continue */}
     const { error } = await supabase.auth.signUp({
       email,
       password,
       options: {
         emailRedirectTo: window.location.origin,
-        data: { full_name: fullName, role },
+        data: { full_name: fullName, role: accountType },
       },
     });
     setLoading(false);
-    if (error) { toast.error(error.message); return; }
-    toast.success("Account created — redirecting…");
+    if (error) toast.error(error.message);
   };
 
   const handleGoogle = async () => {
-    // Remember the intended role so we can assign it after the OAuth round-trip.
-    try { window.sessionStorage.setItem("ndh_pending_role", role); } catch {}
-    const result = await lovable.auth.signInWithOAuth("google", { redirect_uri: window.location.origin + "/signup" });
+    const result = await lovable.auth.signInWithOAuth("google", {
+      redirect_uri: window.location.origin + "/signup",
+    });
     if (result?.error) toast.error((result.error as Error).message ?? "Google sign-up failed");
   };
 
   return (
-    <AuthShell
-      title="Create your account"
-      subtitle="Free to sign up. No credit card required."
-      illustration=""
-      illustrationAlt=""
-      badge="Sign up"
-    >
-      <div className="mb-5 grid grid-cols-2 gap-2 rounded-xl border border-border bg-secondary/40 p-1">
-        {(["client", "student"] as const).map((r) => (
-          <button
-            key={r}
-            type="button"
-            onClick={() => setRole(r)}
-            className={`rounded-lg px-3 py-2 text-sm font-semibold capitalize transition ${role === r ? "bg-primary text-primary-foreground" : "text-muted-foreground"}`}
-          >
-            I'm a {r}
-          </button>
-        ))}
-      </div>
-      <button onClick={handleGoogle} className="w-full"><GoogleButton label="Sign up with Google" /></button>
-      <Divider />
-      <form onSubmit={handleSubmit} className="grid gap-4">
-        <div>
-          <label className="text-sm font-medium">Full name</label>
-          <input required value={fullName} onChange={(e) => setFullName(e.target.value)} className="mt-1 w-full rounded-lg border border-border bg-background px-3 py-2.5 text-sm transition focus:border-[oklch(0.65_0.19_252)] focus:outline-none focus:ring-2 focus:ring-[oklch(0.65_0.19_252)]/30" />
-        </div>
-        <div>
-          <label className="text-sm font-medium">Email</label>
-          <input type="email" required value={email} onChange={(e) => setEmail(e.target.value)} className="mt-1 w-full rounded-lg border border-border bg-background px-3 py-2.5 text-sm transition focus:border-[oklch(0.65_0.19_252)] focus:outline-none focus:ring-2 focus:ring-[oklch(0.65_0.19_252)]/30" />
-        </div>
-        <div>
-          <label className="text-sm font-medium">Password</label>
-          <div className="relative mt-1">
-            <input type={show ? "text" : "password"} required minLength={8} value={password} onChange={(e) => setPassword(e.target.value)} className="w-full rounded-lg border border-border bg-background px-3 py-2.5 pr-10 text-sm transition focus:border-[oklch(0.65_0.19_252)] focus:outline-none focus:ring-2 focus:ring-[oklch(0.65_0.19_252)]/30" />
-            <button type="button" onClick={() => setShow((v) => !v)} className="absolute inset-y-0 right-2 grid place-items-center text-muted-foreground">
-              {show ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+    <main className="grid min-h-screen place-items-center bg-background px-6 py-12">
+      <div className="w-full max-w-sm">
+        <img src={logo} alt="Najeeb Digital Hub" width={48} height={48} className="mb-6 h-12 w-12 rounded-full object-cover" />
+        <h1 className="font-semibold text-2xl tracking-tight text-foreground">Create your account</h1>
+
+        <div className="mt-6 grid grid-cols-2 gap-2 rounded-lg border border-border p-1">
+          {(["client", "student"] as const).map((t) => (
+            <button
+              key={t}
+              type="button"
+              onClick={() => setAccountType(t)}
+              className={`rounded-md px-3 py-2 text-sm font-medium capitalize transition ${
+                accountType === t ? "bg-primary text-primary-foreground" : "text-muted-foreground"
+              }`}
+            >
+              {t}
             </button>
-          </div>
+          ))}
         </div>
-        <Button type="submit" variant="brand" size="lg" disabled={loading}>
-          {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : "Create account"}
+
+        <Button type="button" variant="outline" className="mt-4 w-full" onClick={handleGoogle}>
+          Continue with Google
         </Button>
-        <p className="text-center text-sm text-muted-foreground">
-          Already have an account? <Link to="/login" className="font-semibold text-foreground">Sign in</Link>
+
+        <div className="my-5 flex items-center gap-3 text-xs text-muted-foreground">
+          <span className="h-px flex-1 bg-border" />
+          or
+          <span className="h-px flex-1 bg-border" />
+        </div>
+
+        <form onSubmit={handleSubmit} className="grid gap-4">
+          <div>
+            <label htmlFor="fullName" className="text-sm font-medium text-foreground">Full name</label>
+            <input
+              id="fullName"
+              required
+              value={fullName}
+              onChange={(e) => setFullName(e.target.value)}
+              className="mt-1 w-full rounded-md border border-input bg-background px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-ring"
+            />
+          </div>
+          <div>
+            <label htmlFor="email" className="text-sm font-medium text-foreground">Email</label>
+            <input
+              id="email"
+              type="email"
+              required
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="mt-1 w-full rounded-md border border-input bg-background px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-ring"
+            />
+          </div>
+          <div>
+            <label htmlFor="password" className="text-sm font-medium text-foreground">Password</label>
+            <input
+              id="password"
+              type="password"
+              required
+              minLength={8}
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="mt-1 w-full rounded-md border border-input bg-background px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-ring"
+            />
+          </div>
+          <Button type="submit" disabled={loading}>
+            {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : "Create account"}
+          </Button>
+        </form>
+
+        <p className="mt-6 text-center text-sm text-muted-foreground">
+          Already have an account? <Link to="/login" className="font-medium text-foreground">Sign in</Link>
         </p>
-      </form>
-    </AuthShell>
+      </div>
+    </main>
   );
 }
