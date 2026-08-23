@@ -15,9 +15,11 @@ import { Route as AgencyRouteImport } from './routes/agency'
 import { Route as AcademyRouteImport } from './routes/academy'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as AuthenticatedPortalTalentRouteImport } from './routes/_authenticated/portal.talent'
-import { Route as AuthenticatedPortalStudentRouteImport } from './routes/_authenticated/portal.student'
-import { Route as AuthenticatedPortalClientRouteImport } from './routes/_authenticated/portal.client'
+import { Route as AuthenticatedPortalTalentRouteImport } from './routes/_authenticated/portal/talent'
+import { Route as AuthenticatedPortalStudentRouteImport } from './routes/_authenticated/portal/student'
+import { Route as AuthenticatedPortalPmRouteImport } from './routes/_authenticated/portal/pm'
+import { Route as AuthenticatedPortalClientRouteImport } from './routes/_authenticated/portal/client'
+import { Route as AuthenticatedPortalAdminRouteImport } from './routes/_authenticated/portal/admin'
 
 const SignupRoute = SignupRouteImport.update({
   id: '/signup',
@@ -60,10 +62,21 @@ const AuthenticatedPortalStudentRoute =
     path: '/portal/student',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedPortalPmRoute = AuthenticatedPortalPmRouteImport.update({
+  id: '/portal/pm',
+  path: '/portal/pm',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const AuthenticatedPortalClientRoute =
   AuthenticatedPortalClientRouteImport.update({
     id: '/portal/client',
     path: '/portal/client',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedPortalAdminRoute =
+  AuthenticatedPortalAdminRouteImport.update({
+    id: '/portal/admin',
+    path: '/portal/admin',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
 
@@ -73,7 +86,9 @@ export interface FileRoutesByFullPath {
   '/agency': typeof AgencyRoute
   '/login': typeof LoginRoute
   '/signup': typeof SignupRoute
+  '/portal/admin': typeof AuthenticatedPortalAdminRoute
   '/portal/client': typeof AuthenticatedPortalClientRoute
+  '/portal/pm': typeof AuthenticatedPortalPmRoute
   '/portal/student': typeof AuthenticatedPortalStudentRoute
   '/portal/talent': typeof AuthenticatedPortalTalentRoute
 }
@@ -83,7 +98,9 @@ export interface FileRoutesByTo {
   '/agency': typeof AgencyRoute
   '/login': typeof LoginRoute
   '/signup': typeof SignupRoute
+  '/portal/admin': typeof AuthenticatedPortalAdminRoute
   '/portal/client': typeof AuthenticatedPortalClientRoute
+  '/portal/pm': typeof AuthenticatedPortalPmRoute
   '/portal/student': typeof AuthenticatedPortalStudentRoute
   '/portal/talent': typeof AuthenticatedPortalTalentRoute
 }
@@ -95,7 +112,9 @@ export interface FileRoutesById {
   '/agency': typeof AgencyRoute
   '/login': typeof LoginRoute
   '/signup': typeof SignupRoute
+  '/_authenticated/portal/admin': typeof AuthenticatedPortalAdminRoute
   '/_authenticated/portal/client': typeof AuthenticatedPortalClientRoute
+  '/_authenticated/portal/pm': typeof AuthenticatedPortalPmRoute
   '/_authenticated/portal/student': typeof AuthenticatedPortalStudentRoute
   '/_authenticated/portal/talent': typeof AuthenticatedPortalTalentRoute
 }
@@ -107,7 +126,9 @@ export interface FileRouteTypes {
     | '/agency'
     | '/login'
     | '/signup'
+    | '/portal/admin'
     | '/portal/client'
+    | '/portal/pm'
     | '/portal/student'
     | '/portal/talent'
   fileRoutesByTo: FileRoutesByTo
@@ -117,7 +138,9 @@ export interface FileRouteTypes {
     | '/agency'
     | '/login'
     | '/signup'
+    | '/portal/admin'
     | '/portal/client'
+    | '/portal/pm'
     | '/portal/student'
     | '/portal/talent'
   id:
@@ -128,7 +151,9 @@ export interface FileRouteTypes {
     | '/agency'
     | '/login'
     | '/signup'
+    | '/_authenticated/portal/admin'
     | '/_authenticated/portal/client'
+    | '/_authenticated/portal/pm'
     | '/_authenticated/portal/student'
     | '/_authenticated/portal/talent'
   fileRoutesById: FileRoutesById
@@ -200,6 +225,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedPortalStudentRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/portal/pm': {
+      id: '/_authenticated/portal/pm'
+      path: '/portal/pm'
+      fullPath: '/portal/pm'
+      preLoaderRoute: typeof AuthenticatedPortalPmRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/portal/client': {
       id: '/_authenticated/portal/client'
       path: '/portal/client'
@@ -207,17 +239,28 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedPortalClientRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/portal/admin': {
+      id: '/_authenticated/portal/admin'
+      path: '/portal/admin'
+      fullPath: '/portal/admin'
+      preLoaderRoute: typeof AuthenticatedPortalAdminRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
   }
 }
 
 interface AuthenticatedRouteRouteChildren {
+  AuthenticatedPortalAdminRoute: typeof AuthenticatedPortalAdminRoute
   AuthenticatedPortalClientRoute: typeof AuthenticatedPortalClientRoute
+  AuthenticatedPortalPmRoute: typeof AuthenticatedPortalPmRoute
   AuthenticatedPortalStudentRoute: typeof AuthenticatedPortalStudentRoute
   AuthenticatedPortalTalentRoute: typeof AuthenticatedPortalTalentRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedPortalAdminRoute: AuthenticatedPortalAdminRoute,
   AuthenticatedPortalClientRoute: AuthenticatedPortalClientRoute,
+  AuthenticatedPortalPmRoute: AuthenticatedPortalPmRoute,
   AuthenticatedPortalStudentRoute: AuthenticatedPortalStudentRoute,
   AuthenticatedPortalTalentRoute: AuthenticatedPortalTalentRoute,
 }

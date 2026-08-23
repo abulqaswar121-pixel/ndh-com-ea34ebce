@@ -1,6 +1,3 @@
 User-agent: *
 Allow: /
-Disallow: /dashboard/
-Disallow: /api/
-
-Sitemap: https://ndh.com.ng/sitemap.xml
+Disallow: /portal/
