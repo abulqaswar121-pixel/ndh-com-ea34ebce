@@ -17,6 +17,7 @@ import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedPortalTalentRouteImport } from './routes/_authenticated/portal.talent'
 import { Route as AuthenticatedPortalStudentRouteImport } from './routes/_authenticated/portal.student'
+import { Route as AuthenticatedPortalPmRouteImport } from './routes/_authenticated/portal.pm'
 import { Route as AuthenticatedPortalClientRouteImport } from './routes/_authenticated/portal.client'
 
 const SignupRoute = SignupRouteImport.update({
@@ -60,6 +61,11 @@ const AuthenticatedPortalStudentRoute =
     path: '/portal/student',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedPortalPmRoute = AuthenticatedPortalPmRouteImport.update({
+  id: '/portal/pm',
+  path: '/portal/pm',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const AuthenticatedPortalClientRoute =
   AuthenticatedPortalClientRouteImport.update({
     id: '/portal/client',
@@ -74,6 +80,7 @@ export interface FileRoutesByFullPath {
   '/login': typeof LoginRoute
   '/signup': typeof SignupRoute
   '/portal/client': typeof AuthenticatedPortalClientRoute
+  '/portal/pm': typeof AuthenticatedPortalPmRoute
   '/portal/student': typeof AuthenticatedPortalStudentRoute
   '/portal/talent': typeof AuthenticatedPortalTalentRoute
 }
@@ -84,6 +91,7 @@ export interface FileRoutesByTo {
   '/login': typeof LoginRoute
   '/signup': typeof SignupRoute
   '/portal/client': typeof AuthenticatedPortalClientRoute
+  '/portal/pm': typeof AuthenticatedPortalPmRoute
   '/portal/student': typeof AuthenticatedPortalStudentRoute
   '/portal/talent': typeof AuthenticatedPortalTalentRoute
 }
@@ -96,6 +104,7 @@ export interface FileRoutesById {
   '/login': typeof LoginRoute
   '/signup': typeof SignupRoute
   '/_authenticated/portal/client': typeof AuthenticatedPortalClientRoute
+  '/_authenticated/portal/pm': typeof AuthenticatedPortalPmRoute
   '/_authenticated/portal/student': typeof AuthenticatedPortalStudentRoute
   '/_authenticated/portal/talent': typeof AuthenticatedPortalTalentRoute
 }
@@ -108,6 +117,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/signup'
     | '/portal/client'
+    | '/portal/pm'
     | '/portal/student'
     | '/portal/talent'
   fileRoutesByTo: FileRoutesByTo
@@ -118,6 +128,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/signup'
     | '/portal/client'
+    | '/portal/pm'
     | '/portal/student'
     | '/portal/talent'
   id:
@@ -129,6 +140,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/signup'
     | '/_authenticated/portal/client'
+    | '/_authenticated/portal/pm'
     | '/_authenticated/portal/student'
     | '/_authenticated/portal/talent'
   fileRoutesById: FileRoutesById
@@ -200,6 +212,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedPortalStudentRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/portal/pm': {
+      id: '/_authenticated/portal/pm'
+      path: '/portal/pm'
+      fullPath: '/portal/pm'
+      preLoaderRoute: typeof AuthenticatedPortalPmRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/portal/client': {
       id: '/_authenticated/portal/client'
       path: '/portal/client'
@@ -212,12 +231,14 @@ declare module '@tanstack/react-router' {
 
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedPortalClientRoute: typeof AuthenticatedPortalClientRoute
+  AuthenticatedPortalPmRoute: typeof AuthenticatedPortalPmRoute
   AuthenticatedPortalStudentRoute: typeof AuthenticatedPortalStudentRoute
   AuthenticatedPortalTalentRoute: typeof AuthenticatedPortalTalentRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedPortalClientRoute: AuthenticatedPortalClientRoute,
+  AuthenticatedPortalPmRoute: AuthenticatedPortalPmRoute,
   AuthenticatedPortalStudentRoute: AuthenticatedPortalStudentRoute,
   AuthenticatedPortalTalentRoute: AuthenticatedPortalTalentRoute,
 }
