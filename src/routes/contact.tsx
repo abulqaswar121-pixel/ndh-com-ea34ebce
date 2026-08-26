@@ -1,1 +1,65 @@
-import { createFileRoute } from '@tanstack/react-router'; import { PageShell, PageIntro } from '@/components/PageShell'; export const Route=createFileRoute('/contact')({component:()=> <PageShell><PageIntro eyebrow="CONTACT" title="Start with a clear brief." body="Tell us what you are building and what support you need."/><main className="content"><div className="contact-links"><a href="https://wa.me/2349029932794">WhatsApp / Phone: +234 902 993 2794</a><a href="https://www.facebook.com/share/1Be6HN8zjS/">Facebook</a><a href="https://www.instagram.com/njb_digital_hub">Instagram</a></div><form className="contact-form"><label>Name<input required /></label><label>Email<input type="email" required /></label><label>How can we help?<textarea rows={6} required /></label><button className="button" type="submit">Send enquiry</button></form></main></PageShell>});
+import { createFileRoute } from '@tanstack/react-router';
+import { Facebook, Instagram, MessageCircle } from 'lucide-react';
+import { PageShell, PageIntro } from '@/components/PageShell';
+import { Reveal } from '@/components/Reveal';
+
+const title = 'Contact — Najeeb Digital Hub';
+const description = 'Share a brief with Najeeb Digital Hub by form, WhatsApp or social. We reply within one business day.';
+
+export const Route = createFileRoute('/contact')({
+  head: () => ({
+    meta: [
+      { title },
+      { name: 'description', content: description },
+      { property: 'og:title', content: title },
+      { property: 'og:description', content: description },
+    ],
+  }),
+  component: Contact,
+});
+
+function Contact() {
+  return (
+    <PageShell>
+      <PageIntro
+        eyebrow="Contact"
+        title="Start with a clear brief."
+        body="Tell us what you are building and what support you need. We reply within one business day."
+      />
+      <main className="content">
+        <Reveal>
+          <div className="contact-links">
+            <a href="https://wa.me/2349029932794">
+              <MessageCircle size={16} /> +234 902 993 2794
+            </a>
+            <a href="https://www.facebook.com/share/1Be6HN8zjS/">
+              <Facebook size={16} /> Facebook
+            </a>
+            <a href="https://www.instagram.com/njb_digital_hub">
+              <Instagram size={16} /> Instagram
+            </a>
+          </div>
+        </Reveal>
+        <Reveal delay={80}>
+          <form className="contact-form">
+            <label>
+              Name
+              <input required />
+            </label>
+            <label>
+              Email
+              <input type="email" required />
+            </label>
+            <label>
+              How can we help?
+              <textarea rows={6} required />
+            </label>
+            <button className="button" type="submit">
+              Send enquiry
+            </button>
+          </form>
+        </Reveal>
+      </main>
+    </PageShell>
+  );
+}
