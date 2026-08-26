@@ -1,2 +1,89 @@
-import { createFileRoute } from '@tanstack/react-router'; import { useState } from 'react'; import { CheckCircle2, Send } from 'lucide-react'; import { supabase } from '@/integrations/supabase/client'; import { PageShell, PageIntro } from '@/components/PageShell'; import { Reveal } from '@/components/Reveal';
-export const Route=createFileRoute('/talent-application')({component:TalentApplication}); function TalentApplication(){const [sent,setSent]=useState(false);const [loading,setLoading]=useState(false);async function submit(e:React.FormEvent<HTMLFormElement>){e.preventDefault();setLoading(true);const f=new FormData(e.currentTarget);const {error}=await (supabase as any).from('career_applications').insert({full_name:String(f.get('name')),email:String(f.get('email')),role_applied:'talent',portfolio_url:String(f.get('portfolio')),cover_letter:String(f.get('pitch'))});setLoading(false);if(!error)setSent(true)}return <PageShell><PageIntro eyebrow="TALENT APPLICATION" title="Bring your craft to the work." body="Tell us about your skills and the kind of work you do. An application is reviewed before any invitation is sent."/><main className="content"><Reveal>{sent?<div className="success-card"><CheckCircle2 size={28}/><h2>Application received.</h2><p>Thank you for sharing your details. The application will be reviewed.</p></div>:<form className="auth-form" onSubmit={submit}><label>Full name<input name="name" required/></label><label>Email<input name="email" type="email" required/></label><label>Skills<input name="skills" placeholder="e.g. brand identity, development, motion" required/></label><label>Portfolio link<input name="portfolio" type="url" required/></label><label>Short pitch<textarea name="pitch" rows={6} required/></label><button className="button" disabled={loading}>{loading?'Sending…':<>Submit application <Send size={16}/></>}</button></form>}</Reveal></main></PageShell>}
+import { createFileRoute } from '@tanstack/react-router';
+import { useState } from 'react';
+import { CheckCircle2, Send } from 'lucide-react';
+import { supabase } from '@/integrations/supabase/client';
+import { PageShell, PageIntro } from '@/components/PageShell';
+import { Reveal } from '@/components/Reveal';
+
+const title = 'Talent application — Work with Najeeb Digital Hub';
+const description =
+  'Apply to join the Najeeb Digital Hub talent pool. Applications are reviewed before any invitation is sent.';
+
+export const Route = createFileRoute('/talent-application')({
+  head: () => ({
+    meta: [
+      { title },
+      { name: 'description', content: description },
+      { property: 'og:title', content: title },
+      { property: 'og:description', content: description },
+    ],
+  }),
+  component: TalentApplication,
+});
+
+function TalentApplication() {
+  const [sent, setSent] = useState(false);
+  const [loading, setLoading] = useState(false);
+
+  async function submit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    setLoading(true);
+    const f = new FormData(e.currentTarget);
+    const { error } = await (supabase as any).from('career_applications').insert({
+      full_name: String(f.get('name')),
+      email: String(f.get('email')),
+      role_applied: 'talent',
+      portfolio_url: String(f.get('portfolio')),
+      cover_letter: String(f.get('pitch')),
+    });
+    setLoading(false);
+    if (!error) setSent(true);
+  }
+
+  return (
+    <PageShell>
+      <PageIntro
+        eyebrow="Talent application"
+        title="Bring your craft to the work."
+        body="Tell us about your skills and the kind of work you do. Every application is reviewed before an invitation is sent."
+      />
+      <main className="content">
+        <Reveal>
+          {sent ? (
+            <div className="success-card">
+              <CheckCircle2 size={28} />
+              <h2>Application received.</h2>
+              <p>Thank you for sharing your details. We will review and be in touch.</p>
+            </div>
+          ) : (
+            <form className="auth-form" onSubmit={submit}>
+              <label>
+                Full name
+                <input name="name" required />
+              </label>
+              <label>
+                Email
+                <input name="email" type="email" required />
+              </label>
+              <label>
+                Skills
+                <input name="skills" placeholder="e.g. brand identity, development, motion" required />
+              </label>
+              <label>
+                Portfolio link
+                <input name="portfolio" type="url" required />
+              </label>
+              <label>
+                Short pitch
+                <textarea name="pitch" rows={6} required />
+              </label>
+              <button className="button" disabled={loading}>
+                {loading ? 'Sending…' : <>Submit application <Send size={16} /></>}
+              </button>
+            </form>
+          )}
+        </Reveal>
+      </main>
+    </PageShell>
+  );
+}
