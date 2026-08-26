@@ -14,132 +14,11 @@ export type Database = {
   }
   public: {
     Tables: {
-      academy_submissions: {
-        Row: {
-          ai_feedback: string | null
-          ai_verdict: string | null
-          brief: string | null
-          course_id: string
-          created_at: string
-          id: string
-          reviewed_at: string | null
-          reviewed_by: string | null
-          reviewer_note: string | null
-          status: Database["public"]["Enums"]["submission_status"]
-          student_id: string
-          submission_file_path: string | null
-          submission_text: string | null
-          submission_url: string | null
-          updated_at: string
-        }
-        Insert: {
-          ai_feedback?: string | null
-          ai_verdict?: string | null
-          brief?: string | null
-          course_id: string
-          created_at?: string
-          id?: string
-          reviewed_at?: string | null
-          reviewed_by?: string | null
-          reviewer_note?: string | null
-          status?: Database["public"]["Enums"]["submission_status"]
-          student_id: string
-          submission_file_path?: string | null
-          submission_text?: string | null
-          submission_url?: string | null
-          updated_at?: string
-        }
-        Update: {
-          ai_feedback?: string | null
-          ai_verdict?: string | null
-          brief?: string | null
-          course_id?: string
-          created_at?: string
-          id?: string
-          reviewed_at?: string | null
-          reviewed_by?: string | null
-          reviewer_note?: string | null
-          status?: Database["public"]["Enums"]["submission_status"]
-          student_id?: string
-          submission_file_path?: string | null
-          submission_text?: string | null
-          submission_url?: string | null
-          updated_at?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "academy_submissions_course_id_fkey"
-            columns: ["course_id"]
-            isOneToOne: false
-            referencedRelation: "courses"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      audit_logs: {
-        Row: {
-          action: string
-          actor_id: string | null
-          created_at: string
-          details: Json
-          id: string
-          target_user_id: string | null
-        }
-        Insert: {
-          action: string
-          actor_id?: string | null
-          created_at?: string
-          details?: Json
-          id?: string
-          target_user_id?: string | null
-        }
-        Update: {
-          action?: string
-          actor_id?: string | null
-          created_at?: string
-          details?: Json
-          id?: string
-          target_user_id?: string | null
-        }
-        Relationships: []
-      }
       course_pricing: {
-        Row: {
-          amount: number
-          course_id: string
-          created_at: string
-          currency: string
-          id: string
-          region: string
-          updated_at: string
-        }
-        Insert: {
-          amount?: number
-          course_id: string
-          created_at?: string
-          currency?: string
-          id?: string
-          region: string
-          updated_at?: string
-        }
-        Update: {
-          amount?: number
-          course_id?: string
-          created_at?: string
-          currency?: string
-          id?: string
-          region?: string
-          updated_at?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "course_pricing_course_id_fkey"
-            columns: ["course_id"]
-            isOneToOne: false
-            referencedRelation: "courses"
-            referencedColumns: ["id"]
-          },
-        ]
+        Row: { id: string; course_id: string; region: "NG" | "AF" | "GLOBAL"; currency: string; amount: number }
+        Insert: { id?: string; course_id: string; region: "NG" | "AF" | "GLOBAL"; currency: string; amount: number }
+        Update: { id?: string; course_id?: string; region?: "NG" | "AF" | "GLOBAL"; currency?: string; amount?: number }
+        Relationships: []
       }
       courses: {
         Row: {
@@ -148,10 +27,10 @@ export type Database = {
           currency: string
           id: string
           is_published: boolean
-          learning_objectives: string | null
-          price_amount: number | null
-          project_theme: string | null
+          learning_objectives: string
+          project_theme: string
           school: string | null
+          price_amount: number | null
           slug: string
           summary: string | null
           title: string
@@ -163,10 +42,10 @@ export type Database = {
           currency?: string
           id?: string
           is_published?: boolean
-          learning_objectives?: string | null
-          price_amount?: number | null
-          project_theme?: string | null
+          learning_objectives?: string
+          project_theme?: string
           school?: string | null
+          price_amount?: number | null
           slug: string
           summary?: string | null
           title: string
@@ -178,10 +57,10 @@ export type Database = {
           currency?: string
           id?: string
           is_published?: boolean
-          learning_objectives?: string | null
-          price_amount?: number | null
-          project_theme?: string | null
+          learning_objectives?: string
+          project_theme?: string
           school?: string | null
+          price_amount?: number | null
           slug?: string
           summary?: string | null
           title?: string
@@ -386,69 +265,6 @@ export type Database = {
           },
         ]
       }
-      payout_requests: {
-        Row: {
-          amount: number
-          created_at: string
-          currency: string
-          id: string
-          note: string | null
-          processed_at: string | null
-          requested_at: string
-          status: Database["public"]["Enums"]["payout_status"]
-          talent_id: string
-          updated_at: string
-        }
-        Insert: {
-          amount?: number
-          created_at?: string
-          currency?: string
-          id?: string
-          note?: string | null
-          processed_at?: string | null
-          requested_at?: string
-          status?: Database["public"]["Enums"]["payout_status"]
-          talent_id: string
-          updated_at?: string
-        }
-        Update: {
-          amount?: number
-          created_at?: string
-          currency?: string
-          id?: string
-          note?: string | null
-          processed_at?: string | null
-          requested_at?: string
-          status?: Database["public"]["Enums"]["payout_status"]
-          talent_id?: string
-          updated_at?: string
-        }
-        Relationships: []
-      }
-      pm_review_access: {
-        Row: {
-          created_at: string
-          enabled: boolean
-          id: string
-          pm_id: string
-          updated_at: string
-        }
-        Insert: {
-          created_at?: string
-          enabled?: boolean
-          id?: string
-          pm_id: string
-          updated_at?: string
-        }
-        Update: {
-          created_at?: string
-          enabled?: boolean
-          id?: string
-          pm_id?: string
-          updated_at?: string
-        }
-        Relationships: []
-      }
       profiles: {
         Row: {
           avatar_url: string | null
@@ -523,39 +339,6 @@ export type Database = {
           start_date?: string | null
           status?: Database["public"]["Enums"]["project_status"]
           title?: string
-          updated_at?: string
-        }
-        Relationships: []
-      }
-      talent_earnings: {
-        Row: {
-          available_amount: number
-          created_at: string
-          currency: string
-          id: string
-          paid_amount: number
-          pending_amount: number
-          talent_id: string
-          updated_at: string
-        }
-        Insert: {
-          available_amount?: number
-          created_at?: string
-          currency?: string
-          id?: string
-          paid_amount?: number
-          pending_amount?: number
-          talent_id: string
-          updated_at?: string
-        }
-        Update: {
-          available_amount?: number
-          created_at?: string
-          currency?: string
-          id?: string
-          paid_amount?: number
-          pending_amount?: number
-          talent_id?: string
           updated_at?: string
         }
         Relationships: []
@@ -672,7 +455,6 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      can_review_submissions: { Args: never; Returns: boolean }
       can_see_project: { Args: { _project_id: string }; Returns: boolean }
       has_role: {
         Args: {
@@ -690,14 +472,12 @@ export type Database = {
       enrollment_status: "pending" | "active" | "completed" | "cancelled"
       escrow_state: "none" | "held" | "released" | "refunded"
       invoice_status: "draft" | "sent" | "paid" | "overdue" | "void"
-      payout_status: "pending" | "approved" | "paid" | "rejected"
       project_status:
         | "draft"
         | "active"
         | "in_review"
         | "completed"
         | "cancelled"
-      submission_status: "submitted" | "approved" | "rejected"
       talent_availability: "available" | "limited" | "unavailable"
       task_status: "todo" | "in_progress" | "in_review" | "done" | "cancelled"
       vetting_status: "pending" | "approved" | "rejected"
@@ -832,7 +612,6 @@ export const Constants = {
       enrollment_status: ["pending", "active", "completed", "cancelled"],
       escrow_state: ["none", "held", "released", "refunded"],
       invoice_status: ["draft", "sent", "paid", "overdue", "void"],
-      payout_status: ["pending", "approved", "paid", "rejected"],
       project_status: [
         "draft",
         "active",
@@ -840,7 +619,6 @@ export const Constants = {
         "completed",
         "cancelled",
       ],
-      submission_status: ["submitted", "approved", "rejected"],
       talent_availability: ["available", "limited", "unavailable"],
       task_status: ["todo", "in_progress", "in_review", "done", "cancelled"],
       vetting_status: ["pending", "approved", "rejected"],

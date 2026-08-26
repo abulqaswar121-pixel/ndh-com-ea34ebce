@@ -1,14 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { PageShell } from "@/components/PageShell";
-
-export const Route = createFileRoute("/")({
-  head: () => ({
-    meta: [
-      { title: "Najeeb Digital Hub" },
-      { name: "description", content: "Najeeb Digital Hub — agency services and academy." },
-      { property: "og:title", content: "Najeeb Digital Hub" },
-      { property: "og:description", content: "Najeeb Digital Hub — agency services and academy." },
-    ],
-  }),
-  component: () => <PageShell title="Homepage" />,
-});
+import { createFileRoute } from '@tanstack/react-router'; import { ArrowUpRight, Boxes, BrainCircuit, CheckCircle2, Code2, PenTool, Sparkles } from 'lucide-react'; import { PageShell, Button } from '@/components/PageShell'; import { Reveal } from '@/components/Reveal';
+export const Route=createFileRoute('/')({component:Home});
+const pillars=[['Digital delivery','Brand, product, web, media, and growth work guided by a project manager.',Boxes],['AI skills','Short courses built around an AI Exam, project review, and certificate.',BrainCircuit],['Clear process','A defined route from brief to scope, assignment, review, and delivery.',CheckCircle2]] as const;
+function Home(){return <PageShell><main><section className="hero home-hero"><div className="hero-copy"><p className="eyebrow">NAJEEB DIGITAL HUB</p><h1>Build with clarity.<br/><em>Move with intent.</em></h1><p className="lede">A digital agency and AI skills academy for people building useful things.</p><div className="actions"><Button to="/agency">Hire a Team <ArrowUpRight size={16}/></Button><Button to="/academy" secondary>Learn AI Skills</Button></div></div><Reveal><div className="hero-stage"><img src="/ndh-hero-new.png" alt="Abstract NDH systems graphic"/><div className="stage-note"><Sparkles size={16}/><span>Ideas into useful work</span></div></div></Reveal></section><section className="home-section"><Reveal><div className="section-heading"><p className="eyebrow">ONE HUB, TWO WAYS FORWARD</p><h2>Make the next step easier to see.</h2></div></Reveal><div className="pillar-grid">{pillars.map(([title,text,Icon])=><Reveal key={title}><article className="pillar-card"><Icon size={22}/><h3>{title}</h3><p>{text}</p></article></Reveal>)}</div></section><section className="split-section"><Reveal><div className="split-visual"><img src="/ndh-agency-work.png" alt="NDH digital delivery illustration"/></div></Reveal><Reveal><div className="split-copy"><p className="eyebrow">FOR BUSINESSES</p><h2>Brief the work. We’ll help shape the route.</h2><p>From the first conversation to the final review, NDH brings structure to digital delivery.</p><Button to="/agency">Explore the agency <ArrowUpRight size={16}/></Button></div></Reveal></section></main></PageShell>}

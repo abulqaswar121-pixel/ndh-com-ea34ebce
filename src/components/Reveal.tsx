@@ -1,0 +1,2 @@
+import { useEffect, useRef, type ReactNode } from 'react';
+export function Reveal({children}:{children:ReactNode}){const ref=useRef<HTMLDivElement>(null);useEffect(()=>{const el=ref.current;if(!el)return;const o=new IntersectionObserver(([e])=>{if(e.isIntersecting){el.classList.add('is-visible');o.disconnect()}},{threshold:.12});o.observe(el);return()=>o.disconnect()},[]);return <div ref={ref} className="reveal">{children}</div>}

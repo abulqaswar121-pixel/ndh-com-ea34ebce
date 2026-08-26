@@ -1,14 +1,4 @@
-import type { ReactNode } from "react";
-
-/**
- * Neutral empty page shell. Deliberately contains no marketing copy — the
- * page body is left for the implementation spec to fill in.
- */
-export function PageShell({ title, children }: { title: string; children?: ReactNode }) {
-  return (
-    <main className="mx-auto min-h-screen w-full max-w-5xl px-6 py-16">
-      <h1 className="font-semibold text-2xl tracking-tight text-foreground">{title}</h1>
-      {children}
-    </main>
-  );
-}
+import { Link } from '@tanstack/react-router'; import { useState, type ReactNode } from 'react'; import { Menu, X, MessageCircle, Facebook, Instagram } from 'lucide-react';
+const links=[['/agency','Agency'],['/academy','Academy'],['/about','About'],['/contact','Contact']];
+export function PageShell({children,title}:{children?:ReactNode;title?:string}){const [open,setOpen]=useState(false);return <><header className="site-header"><Link to="/" className="brand" onClick={()=>setOpen(false)}><img src="/ndh-logo.png" alt="Najeeb Digital Hub"/></Link><nav className="desktop-nav">{links.map(([to,label])=><Link key={to} to={to}>{label}</Link>)}</nav><Link to="/signup" className="nav-action desktop-action">Get started</Link><button className="menu-button" aria-label="Open navigation" aria-expanded={open} onClick={()=>setOpen(true)}><Menu size={24}/></button></header>{open&&<div className="nav-backdrop" onClick={()=>setOpen(false)}><aside className="mobile-panel" onClick={e=>e.stopPropagation()}><div className="panel-head"><span>Navigate</span><button className="close-button" aria-label="Close navigation" onClick={()=>setOpen(false)}><X size={24}/></button></div>{links.map(([to,label])=><Link key={to} to={to} onClick={()=>setOpen(false)}>{label}</Link>)}<Link to="/signup" className="button" onClick={()=>setOpen(false)}>Get started</Link></aside></div>}{children}<footer><div className="footer-brand"><img src="/ndh-logo.png" alt="Najeeb Digital Hub"/></div><p>Digital delivery and AI skills certification.</p><div className="footer-links"><Link to="/terms">Terms</Link><Link to="/privacy">Privacy</Link><Link to="/contact">Contact</Link></div><div className="social-links"><a href="https://wa.me/2349029932794" aria-label="WhatsApp"><MessageCircle size={18}/></a><a href="https://www.facebook.com/share/1Be6HN8zjS/" aria-label="Facebook"><Facebook size={18}/></a><a href="https://www.instagram.com/njb_digital_hub" aria-label="Instagram"><Instagram size={18}/></a></div></footer></>}
+export function PageIntro({eyebrow,title,body}:{eyebrow:string;title:string;body:string}){return <section className="page-intro"><p className="eyebrow">{eyebrow}</p><h1>{title}</h1><p className="lede">{body}</p></section>}; export function Button({to,children,secondary=false}:{to:string;children:ReactNode;secondary?:boolean}){return <Link to={to} className={secondary?'button button-secondary':'button'}>{children}</Link>}

@@ -1,18 +1,2 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { PageShell } from "@/components/PageShell";
-import { RequireRole } from "@/components/RequireRole";
-
-export const Route = createFileRoute("/_authenticated/portal/pm")({
-  head: () => ({
-    meta: [
-      { title: "PM Portal — Najeeb Digital Hub" },
-      { name: "description", content: "Project manager portal." },
-      { name: "robots", content: "noindex" },
-    ],
-  }),
-  component: () => (
-    <RequireRole role="pm">
-      <PageShell title="PM Portal" />
-    </RequireRole>
-  ),
-});
+import { createFileRoute } from '@tanstack/react-router'; import { useEffect,useState } from 'react'; import { ClipboardCheck, FolderKanban, MessageSquare, UsersRound } from 'lucide-react'; import { supabase } from '@/integrations/supabase/client'; import { PageShell } from '@/components/PageShell'; import { RequireRole } from '@/components/RequireRole'; import { useAuth } from '@/lib/auth'; import { Reveal } from '@/components/Reveal';
+export const Route=createFileRoute('/_authenticated/portal/pm')({component:()=> <RequireRole role="pm"><PMPortal/></RequireRole>}); function PMPortal(){const {user}=useAuth();const [projects,setProjects]=useState<any[]>([]);const [tasks,setTasks]=useState<any[]>([]);useEffect(()=>{if(!user)return;supabase.from('projects').select('*').eq('pm_id',user.id).order('created_at',{ascending:false}).then(({data})=>setProjects(data??[]));supabase.from('tasks').select('*').eq('assignee_id',user.id).order('due_date').then(({data})=>setTasks(data??[]))},[user]);return <PageShell><main className="portal"><div className="portal-head"><div><p className="eyebrow">PROJECT MANAGER PORTAL</p><h1>Your assigned work.</h1><p>Manage the projects and tasks assigned to you.</p></div><FolderKanban size={42}/></div><Reveal><section className="portal-section"><div className="portal-section-title"><h2>Assigned projects</h2><span>{projects.length} projects</span></div>{projects.length===0?<div className="empty-card">No projects assigned yet.</div>:<div className="portal-grid">{projects.map(p=><article className="portal-card" key={p.id}><FolderKanban size={20}/><h3>{p.title}</h3><span className="status-pill">{p.status}</span><p>{p.brief||'No brief added.'}</p><div className="project-actions"><button><MessageSquare size={16}/>Client PM chat</button><button><UsersRound size={16}/>Assign talent</button></div></article>)}</div>}</section></Reveal><Reveal><section className="portal-section"><div className="portal-section-title"><h2>Assigned tasks</h2><ClipboardCheck size={22}/></div>{tasks.length===0?<div className="empty-card">No tasks assigned yet.</div>:<div className="portal-grid">{tasks.map(t=><article className="portal-card" key={t.id}><ClipboardCheck size={20}/><h3>{t.title}</h3><span className="status-pill">{t.status}</span><p>Deadline: {t.due_date||'Not set'}</p></article>)}</div>}</section></Reveal></main></PageShell>}

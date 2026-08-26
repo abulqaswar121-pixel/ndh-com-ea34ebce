@@ -1,0 +1,5 @@
+CREATE TABLE IF NOT EXISTS public.payout_requests (id uuid PRIMARY KEY DEFAULT gen_random_uuid(), talent_id uuid NOT NULL, amount numeric(12,2) NOT NULL, currency text NOT NULL DEFAULT 'NGN', status text NOT NULL DEFAULT 'pending' CHECK (status IN ('pending','approved','paid','rejected')), requested_at timestamptz NOT NULL DEFAULT now(), processed_at timestamptz);
+GRANT SELECT, INSERT ON public.payout_requests TO authenticated; GRANT ALL ON public.payout_requests TO service_role; ALTER TABLE public.payout_requests ENABLE ROW LEVEL SECURITY;
+CREATE POLICY "talent own payout requests" ON public.payout_requests FOR SELECT TO authenticated USING (talent_id=auth.uid() OR public.is_admin());
+CREATE POLICY "talent request payout" ON public.payout_requests FOR INSERT TO authenticated WITH CHECK (talent_id=auth.uid() AND public.has_role(auth.uid(),'talent'));
+CREATE POLICY "admin manage payout requests" ON public.payout_requests FOR ALL TO authenticated USING (public.is_admin()) WITH CHECK (public.is_admin());

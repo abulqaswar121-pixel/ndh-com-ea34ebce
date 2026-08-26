@@ -1,18 +1,2 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { PageShell } from "@/components/PageShell";
-import { RequireRole } from "@/components/RequireRole";
-
-export const Route = createFileRoute("/_authenticated/portal/client")({
-  head: () => ({
-    meta: [
-      { title: "Client Portal — Najeeb Digital Hub" },
-      { name: "description", content: "Client portal." },
-      { name: "robots", content: "noindex" },
-    ],
-  }),
-  component: () => (
-    <RequireRole role="client">
-      <PageShell title="Client Portal" />
-    </RequireRole>
-  ),
-});
+import { createFileRoute } from '@tanstack/react-router'; import { useEffect,useState } from 'react'; import { BriefcaseBusiness, FileDown, MessageCircle, Receipt, ShieldCheck } from 'lucide-react'; import { supabase } from '@/integrations/supabase/client'; import { PageShell } from '@/components/PageShell'; import { RequireRole } from '@/components/RequireRole'; import { useAuth } from '@/lib/auth'; import { Reveal } from '@/components/Reveal';
+export const Route=createFileRoute('/_authenticated/portal/client')({component:()=> <RequireRole role="client"><ClientPortal/></RequireRole>}); function ClientPortal(){const {user}=useAuth();const [projects,setProjects]=useState<any[]>([]);const [invoices,setInvoices]=useState<any[]>([]);useEffect(()=>{if(!user)return;supabase.from('projects').select('*').eq('client_id',user.id).order('created_at',{ascending:false}).then(({data})=>setProjects(data??[]));supabase.from('invoices').select('*').eq('client_id',user.id).then(({data})=>setInvoices(data??[]))},[user]);return <PageShell><main className="portal"><div className="portal-head"><div><p className="eyebrow">CLIENT PORTAL</p><h1>Your work, in view.</h1><p>Track delivery, review finance, and stay connected with your project manager.</p></div><BriefcaseBusiness size={42}/></div><Reveal><section className="portal-section"><div className="portal-section-title"><h2>Projects</h2><span>{projects.length} active view</span></div>{projects.length===0?<Empty/>:<div className="portal-grid">{projects.map(p=><article className="portal-card" key={p.id}><div className="card-icon"><BriefcaseBusiness size={20}/></div><h3>{p.title}</h3><span className="status-pill">{p.status==='active'?'In Progress':p.status}</span><p>{p.brief||'Project details will appear here.'}</p><div className="project-actions"><button><MessageCircle size={16}/>Message PM</button><button><FileDown size={16}/>Files</button></div></article>)}</div>}</section></Reveal><Reveal><section className="portal-section"><div className="portal-section-title"><h2>Invoices</h2><Receipt size={22}/></div>{invoices.length===0?<div className="empty-card">No invoices yet.</div>:<div className="invoice-list">{invoices.map(i=><div className="invoice-row" key={i.id}><span><b>{i.invoice_number}</b><small>Due {i.due_date||'Not set'}</small></span><strong>{i.currency} {Number(i.amount).toLocaleString()}</strong><span className="status-pill">{i.status}</span></div>)}</div>}</section></Reveal><Reveal><section className="portal-section"><div className="portal-section-title"><h2>Escrow</h2><ShieldCheck size={22}/></div><div className="empty-card">Escrow updates for your projects will appear here.</div></section></Reveal></main></PageShell>}; function Empty(){return <div className="empty-card">No active projects yet. <a href="/agency">Book a scoping call to get started.</a></div>}

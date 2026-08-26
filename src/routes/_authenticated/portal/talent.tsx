@@ -1,18 +1,2 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { PageShell } from "@/components/PageShell";
-import { RequireRole } from "@/components/RequireRole";
-
-export const Route = createFileRoute("/_authenticated/portal/talent")({
-  head: () => ({
-    meta: [
-      { title: "Talent Portal — Najeeb Digital Hub" },
-      { name: "description", content: "Talent portal." },
-      { name: "robots", content: "noindex" },
-    ],
-  }),
-  component: () => (
-    <RequireRole role="talent">
-      <PageShell title="Talent Portal" />
-    </RequireRole>
-  ),
-});
+import { createFileRoute } from '@tanstack/react-router'; import { useEffect,useState } from 'react'; import { Banknote, CalendarClock, ClipboardCheck, WalletCards } from 'lucide-react'; import { supabase } from '@/integrations/supabase/client'; import { PageShell } from '@/components/PageShell'; import { RequireRole } from '@/components/RequireRole'; import { useAuth } from '@/lib/auth'; import { Reveal } from '@/components/Reveal';
+export const Route=createFileRoute('/_authenticated/portal/talent')({component:()=> <RequireRole role="talent"><TalentPortal/></RequireRole>}); function TalentPortal(){const {user}=useAuth();const [tasks,setTasks]=useState<any[]>([]);const [amounts,setAmounts]=useState({pending:0,available:0,paid:0});const [busy,setBusy]=useState(false);useEffect(()=>{if(!user)return;supabase.from('tasks').select('*').eq('assignee_id',user.id).order('due_date').then(({data})=>setTasks(data??[]));(supabase as any).from('talent_earnings').select('pending_amount,available_amount,paid_amount').eq('talent_id',user.id).maybeSingle().then(({data}:any)=>{if(data)setAmounts({pending:Number(data.pending_amount),available:Number(data.available_amount),paid:Number(data.paid_amount)})})},[user]);async function payout(){if(!user||amounts.available<=0)return;setBusy(true);await (supabase as any).from('payout_requests').insert({talent_id:user.id,amount:amounts.available});setBusy(false)}return <PageShell><main className="portal"><div className="portal-head"><div><p className="eyebrow">TALENT PORTAL</p><h1>Your assignments, clearly organized.</h1><p>See assigned work and request a payout when funds are available.</p></div><WalletCards size={42}/></div><Reveal><section className="portal-section"><div className="portal-section-title"><h2>Earnings</h2><Banknote size={22}/></div><div className="earnings-grid"><Stat icon={Banknote} label="Pending" value={amounts.pending}/><Stat icon={WalletCards} label="Available" value={amounts.available}/><Stat icon={ClipboardCheck} label="Total paid" value={amounts.paid}/></div><button className="button payout-button" onClick={payout} disabled={busy||amounts.available<=0}>{busy?'Requesting…':'Request payout'}</button></section></Reveal><Reveal><section className="portal-section"><div className="portal-section-title"><h2>Assigned tasks</h2><CalendarClock size={22}/></div>{tasks.length===0?<div className="empty-card">No tasks assigned yet. New assignments will appear here.</div>:<div className="portal-grid">{tasks.map(t=><article className="portal-card" key={t.id}><ClipboardCheck size={20}/><h3>{t.title}</h3><span className="status-pill">{t.status}</span><p>Deadline: {t.due_date||'Not set'}</p></article>)}</div>}</section></Reveal></main></PageShell>}; function Stat({icon:Icon,label,value}:{icon:typeof Banknote;label:string;value:number}){return <div className="stat-card"><Icon size={20}/><span>{label}</span><strong>₦{value.toLocaleString()}</strong></div>}

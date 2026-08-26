@@ -1,14 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { PageShell } from "@/components/PageShell";
-
-export const Route = createFileRoute("/agency")({
-  head: () => ({
-    meta: [
-      { title: "Agency — Najeeb Digital Hub" },
-      { name: "description", content: "Agency services at Najeeb Digital Hub." },
-      { property: "og:title", content: "Agency — Najeeb Digital Hub" },
-      { property: "og:description", content: "Agency services at Najeeb Digital Hub." },
-    ],
-  }),
-  component: () => <PageShell title="Agency" />,
-});
+import { createFileRoute } from '@tanstack/react-router'; import { ArrowUpRight, BarChart3, Camera, Code2, Megaphone, Palette, PenTool, Video } from 'lucide-react'; import { PageShell, PageIntro, Button } from '@/components/PageShell'; import { Reveal } from '@/components/Reveal';
+export const Route=createFileRoute('/agency')({component:Agency});
+const services=[['Brand & Identity','Visual systems that make a business easier to recognize.',Palette],['Design & Product','Interfaces, flows, and product experiences shaped around use.',PenTool],['Development','Web and product builds prepared for real use.',Code2],['Content & Writing','Clear words for pages, campaigns, and ongoing communication.',PenTool],['Marketing & Growth','Structured campaigns and practical growth support.',Megaphone],['Video & Media','Editing, motion, photography, and podcast production.',Video],['Data & Business','Dashboards and operational support for decisions.',BarChart3],['AI & Automation','AI-assisted workflows, agents, and connected tools.',SparkIcon]] as const; function SparkIcon(p:{size:number}){return <Camera {...p}/>}
+function Agency(){return <PageShell><PageIntro eyebrow="AGENCY" title="Digital work, with a better route through it." body="NDH brings digital services, project management, and review into one considered delivery process."/><main className="content agency-content"><Reveal><div className="agency-banner"><img src="/ndh-services-new.png" alt="Abstract NDH delivery systems visual"/><div><p className="eyebrow">THE NDH METHOD</p><h2>Good work needs a clear path.</h2><p>Start with the brief. Shape the scope. Match the work. Review before delivery.</p></div></div></Reveal><Reveal><section><p className="eyebrow">SERVICE AREAS</p><h2>Bring us the work you need to move.</h2><div className="service-grid">{services.map(([name,text,Icon])=><article className="service-card" key={name}><Icon size={22}/><h3>{name}</h3><p>{text}</p><ArrowUpRight size={18} className="card-arrow"/></article>)}</div></section></Reveal><Reveal><section className="process-section"><p className="eyebrow">HOW WE WORK</p><div className="process-row"><div><span>01</span><h3>Brief</h3><p>Share what needs to be done.</p></div><div><span>02</span><h3>Scope</h3><p>A PM clarifies the work.</p></div><div><span>03</span><h3>Match</h3><p>The right capability is assigned.</p></div><div><span>04</span><h3>Review</h3><p>Work is checked before delivery.</p></div></div></section></Reveal><Button to="/contact">Book a Free Scoping Call <ArrowUpRight size={16}/></Button></main></PageShell>}
