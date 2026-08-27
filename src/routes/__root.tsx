@@ -6,6 +6,7 @@ import {
   useRouter,
   HeadContent,
   Scripts,
+  ClientOnly,
 } from "@tanstack/react-router";
 import { useEffect, type ReactNode } from "react";
 
@@ -13,6 +14,7 @@ import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { AuthProvider } from "../lib/auth";
 import { Toaster } from "sonner";
+import { SupportChat } from "@/components/SupportChat";
 
 function NotFoundComponent() {
   return (
@@ -123,6 +125,9 @@ function RootComponent() {
       <AuthProvider>
         {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
         <Outlet />
+        <ClientOnly fallback={null}>
+          <SupportChat />
+        </ClientOnly>
         <Toaster position="top-right" richColors />
       </AuthProvider>
     </QueryClientProvider>
