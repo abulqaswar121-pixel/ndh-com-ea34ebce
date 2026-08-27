@@ -51,7 +51,7 @@ function Home() {
           </div>
           <Reveal delay={120}>
             <div className="hero-stage">
-              <img src="/ndh-hero-new.png" alt="Abstract graphic representing NDH delivery systems" />
+              <img src="/ndh-hero-new.png" alt="A designer's desk with a website layout in progress" />
               <div className="stage-note">
                 <Sparkles size={16} />
                 <span>Ideas into useful work</span>
@@ -83,7 +83,7 @@ function Home() {
         <section className="split-section">
           <Reveal>
             <div className="split-visual">
-              <img src="/ndh-agency-work.png" alt="Illustration of NDH digital delivery work" />
+              <img src="/ndh-agency-work.png" alt="A project team reviewing work together in a studio" />
             </div>
           </Reveal>
           <Reveal delay={100}>
@@ -117,7 +117,7 @@ function Home() {
           </Reveal>
           <Reveal delay={100}>
             <div className="split-visual">
-              <img src="/ndh-academy-new.png" alt="Abstract visual for the NDH AI schools" />
+              <img src="/ndh-academy-new.png" alt="A learner following an online AI course and taking notes" />
             </div>
           </Reveal>
         </section>

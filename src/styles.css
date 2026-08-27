@@ -276,6 +276,7 @@ img {
   gap: 32px;
   padding-inline: max(var(--gutter), calc((100vw - var(--shell)) / 2 + var(--gutter)));
   background: color-mix(in srgb, var(--paper) 82%, transparent);
+  -webkit-backdrop-filter: saturate(180%) blur(16px);
   backdrop-filter: saturate(180%) blur(16px);
   border-bottom: 1px solid transparent;
   transition: border-color 0.3s var(--ease), box-shadow 0.3s var(--ease);
@@ -1376,13 +1377,23 @@ footer p {
 }
 
 @media (max-width: 860px) {
-  .desktop-nav,
-  .desktop-action {
+  .site-header {
+    gap: 10px;
+    height: 66px;
+  }
+  .desktop-nav {
     display: none;
   }
-  .menu-button {
-    display: block;
+  .desktop-action {
     margin-left: auto;
+    padding: 9px 16px;
+    font-size: 14px;
+  }
+  .menu-button {
+    display: inline-flex;
+    align-items: center;
+    padding: 8px;
+    margin-left: 0;
   }
   .close-button {
     display: block;

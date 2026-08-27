@@ -48,7 +48,7 @@ function Agency() {
       <main className="content agency-content">
         <Reveal>
           <div className="agency-banner">
-            <img src="/ndh-services-new.png" alt="Abstract visual of NDH delivery systems" />
+            <img src="/ndh-services-new.png" alt="A project timeline mapped out on a planning wall" />
             <div>
               <p className="eyebrow">The NDH method</p>
               <h2>Good work needs a clear path.</h2>
