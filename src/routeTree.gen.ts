@@ -21,6 +21,7 @@ import { Route as AboutRouteImport } from './routes/about'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as InviteTokenRouteImport } from './routes/invite.$token'
+import { Route as ApiPublicSupportChatRouteImport } from './routes/api/public/support-chat'
 import { Route as AuthenticatedPortalTalentRouteImport } from './routes/_authenticated/portal/talent'
 import { Route as AuthenticatedPortalStudentRouteImport } from './routes/_authenticated/portal/student'
 import { Route as AuthenticatedPortalPmRouteImport } from './routes/_authenticated/portal/pm'
@@ -86,6 +87,11 @@ const InviteTokenRoute = InviteTokenRouteImport.update({
   path: '/invite/$token',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiPublicSupportChatRoute = ApiPublicSupportChatRouteImport.update({
+  id: '/api/public/support-chat',
+  path: '/api/public/support-chat',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AuthenticatedPortalTalentRoute =
   AuthenticatedPortalTalentRouteImport.update({
     id: '/portal/talent',
@@ -133,6 +139,7 @@ export interface FileRoutesByFullPath {
   '/portal/pm': typeof AuthenticatedPortalPmRoute
   '/portal/student': typeof AuthenticatedPortalStudentRoute
   '/portal/talent': typeof AuthenticatedPortalTalentRoute
+  '/api/public/support-chat': typeof ApiPublicSupportChatRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -151,6 +158,7 @@ export interface FileRoutesByTo {
   '/portal/pm': typeof AuthenticatedPortalPmRoute
   '/portal/student': typeof AuthenticatedPortalStudentRoute
   '/portal/talent': typeof AuthenticatedPortalTalentRoute
+  '/api/public/support-chat': typeof ApiPublicSupportChatRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -171,6 +179,7 @@ export interface FileRoutesById {
   '/_authenticated/portal/pm': typeof AuthenticatedPortalPmRoute
   '/_authenticated/portal/student': typeof AuthenticatedPortalStudentRoute
   '/_authenticated/portal/talent': typeof AuthenticatedPortalTalentRoute
+  '/api/public/support-chat': typeof ApiPublicSupportChatRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -191,6 +200,7 @@ export interface FileRouteTypes {
     | '/portal/pm'
     | '/portal/student'
     | '/portal/talent'
+    | '/api/public/support-chat'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -209,6 +219,7 @@ export interface FileRouteTypes {
     | '/portal/pm'
     | '/portal/student'
     | '/portal/talent'
+    | '/api/public/support-chat'
   id:
     | '__root__'
     | '/'
@@ -228,6 +239,7 @@ export interface FileRouteTypes {
     | '/_authenticated/portal/pm'
     | '/_authenticated/portal/student'
     | '/_authenticated/portal/talent'
+    | '/api/public/support-chat'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -243,6 +255,7 @@ export interface RootRouteChildren {
   TalentApplicationRoute: typeof TalentApplicationRoute
   TermsRoute: typeof TermsRoute
   InviteTokenRoute: typeof InviteTokenRoute
+  ApiPublicSupportChatRoute: typeof ApiPublicSupportChatRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -331,6 +344,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof InviteTokenRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/public/support-chat': {
+      id: '/api/public/support-chat'
+      path: '/api/public/support-chat'
+      fullPath: '/api/public/support-chat'
+      preLoaderRoute: typeof ApiPublicSupportChatRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/_authenticated/portal/talent': {
       id: '/_authenticated/portal/talent'
       path: '/portal/talent'
@@ -401,6 +421,7 @@ const rootRouteChildren: RootRouteChildren = {
   TalentApplicationRoute: TalentApplicationRoute,
   TermsRoute: TermsRoute,
   InviteTokenRoute: InviteTokenRoute,
+  ApiPublicSupportChatRoute: ApiPublicSupportChatRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
