@@ -103,6 +103,74 @@ export type Database = {
         }
         Relationships: []
       }
+      career_applications: {
+        Row: {
+          cover_letter: string | null
+          created_at: string
+          email: string
+          full_name: string
+          id: string
+          portfolio_url: string | null
+          role_applied: string
+          status: string
+        }
+        Insert: {
+          cover_letter?: string | null
+          created_at?: string
+          email: string
+          full_name: string
+          id?: string
+          portfolio_url?: string | null
+          role_applied: string
+          status?: string
+        }
+        Update: {
+          cover_letter?: string | null
+          created_at?: string
+          email?: string
+          full_name?: string
+          id?: string
+          portfolio_url?: string | null
+          role_applied?: string
+          status?: string
+        }
+        Relationships: []
+      }
+      certificates: {
+        Row: {
+          certificate_number: string
+          course_id: string
+          created_at: string
+          id: string
+          issue_date: string
+          student_id: string
+        }
+        Insert: {
+          certificate_number: string
+          course_id: string
+          created_at?: string
+          id?: string
+          issue_date?: string
+          student_id: string
+        }
+        Update: {
+          certificate_number?: string
+          course_id?: string
+          created_at?: string
+          id?: string
+          issue_date?: string
+          student_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "certificates_course_id_fkey"
+            columns: ["course_id"]
+            isOneToOne: false
+            referencedRelation: "courses"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       course_pricing: {
         Row: {
           amount: number
@@ -286,6 +354,50 @@ export type Database = {
           },
         ]
       }
+      exam_attempts: {
+        Row: {
+          answers: Json
+          course_id: string
+          id: string
+          passed: boolean | null
+          questions: Json
+          score: number | null
+          started_at: string
+          student_id: string
+          submitted_at: string | null
+        }
+        Insert: {
+          answers?: Json
+          course_id: string
+          id?: string
+          passed?: boolean | null
+          questions?: Json
+          score?: number | null
+          started_at?: string
+          student_id: string
+          submitted_at?: string | null
+        }
+        Update: {
+          answers?: Json
+          course_id?: string
+          id?: string
+          passed?: boolean | null
+          questions?: Json
+          score?: number | null
+          started_at?: string
+          student_id?: string
+          submitted_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "exam_attempts_course_id_fkey"
+            columns: ["course_id"]
+            isOneToOne: false
+            referencedRelation: "courses"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       invoices: {
         Row: {
           amount: number
@@ -339,6 +451,32 @@ export type Database = {
           },
         ]
       }
+      lesson_progress: {
+        Row: {
+          completed_at: string
+          lesson_id: string
+          student_id: string
+        }
+        Insert: {
+          completed_at?: string
+          lesson_id: string
+          student_id: string
+        }
+        Update: {
+          completed_at?: string
+          lesson_id?: string
+          student_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "lesson_progress_lesson_id_fkey"
+            columns: ["lesson_id"]
+            isOneToOne: false
+            referencedRelation: "lessons"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       lessons: {
         Row: {
           content: string | null
@@ -386,6 +524,53 @@ export type Database = {
           },
         ]
       }
+      payment_transactions: {
+        Row: {
+          amount: number
+          course_id: string
+          created_at: string
+          currency: string
+          id: string
+          provider: string
+          reference: string
+          status: string
+          student_id: string
+          verified_at: string | null
+        }
+        Insert: {
+          amount: number
+          course_id: string
+          created_at?: string
+          currency: string
+          id?: string
+          provider?: string
+          reference: string
+          status?: string
+          student_id: string
+          verified_at?: string | null
+        }
+        Update: {
+          amount?: number
+          course_id?: string
+          created_at?: string
+          currency?: string
+          id?: string
+          provider?: string
+          reference?: string
+          status?: string
+          student_id?: string
+          verified_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "payment_transactions_course_id_fkey"
+            columns: ["course_id"]
+            isOneToOne: false
+            referencedRelation: "courses"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       payout_requests: {
         Row: {
           amount: number
@@ -422,6 +607,45 @@ export type Database = {
           status?: Database["public"]["Enums"]["payout_status"]
           talent_id?: string
           updated_at?: string
+        }
+        Relationships: []
+      }
+      pm_invitations: {
+        Row: {
+          accepted_at: string | null
+          accepted_user_id: string | null
+          created_at: string
+          email: string
+          expires_at: string
+          full_name: string
+          id: string
+          invited_by: string | null
+          status: string
+          token: string
+        }
+        Insert: {
+          accepted_at?: string | null
+          accepted_user_id?: string | null
+          created_at?: string
+          email: string
+          expires_at: string
+          full_name: string
+          id?: string
+          invited_by?: string | null
+          status?: string
+          token: string
+        }
+        Update: {
+          accepted_at?: string | null
+          accepted_user_id?: string | null
+          created_at?: string
+          email?: string
+          expires_at?: string
+          full_name?: string
+          id?: string
+          invited_by?: string | null
+          status?: string
+          token?: string
         }
         Relationships: []
       }
@@ -527,6 +751,62 @@ export type Database = {
         }
         Relationships: []
       }
+      student_projects: {
+        Row: {
+          ai_feedback: string | null
+          ai_verdict: string | null
+          brief: string
+          course_id: string
+          created_at: string
+          id: string
+          reviewer_note: string | null
+          status: string
+          student_id: string
+          submission_file_path: string | null
+          submission_text: string | null
+          submission_url: string | null
+          updated_at: string
+        }
+        Insert: {
+          ai_feedback?: string | null
+          ai_verdict?: string | null
+          brief: string
+          course_id: string
+          created_at?: string
+          id?: string
+          reviewer_note?: string | null
+          status?: string
+          student_id: string
+          submission_file_path?: string | null
+          submission_text?: string | null
+          submission_url?: string | null
+          updated_at?: string
+        }
+        Update: {
+          ai_feedback?: string | null
+          ai_verdict?: string | null
+          brief?: string
+          course_id?: string
+          created_at?: string
+          id?: string
+          reviewer_note?: string | null
+          status?: string
+          student_id?: string
+          submission_file_path?: string | null
+          submission_text?: string | null
+          submission_url?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "student_projects_course_id_fkey"
+            columns: ["course_id"]
+            isOneToOne: false
+            referencedRelation: "courses"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       talent_earnings: {
         Row: {
           available_amount: number
@@ -557,6 +837,45 @@ export type Database = {
           pending_amount?: number
           talent_id?: string
           updated_at?: string
+        }
+        Relationships: []
+      }
+      talent_invitations: {
+        Row: {
+          accepted_at: string | null
+          accepted_user_id: string | null
+          created_at: string
+          email: string
+          expires_at: string
+          full_name: string
+          id: string
+          invited_by: string | null
+          status: string
+          token: string
+        }
+        Insert: {
+          accepted_at?: string | null
+          accepted_user_id?: string | null
+          created_at?: string
+          email: string
+          expires_at: string
+          full_name: string
+          id?: string
+          invited_by?: string | null
+          status?: string
+          token: string
+        }
+        Update: {
+          accepted_at?: string | null
+          accepted_user_id?: string | null
+          created_at?: string
+          email?: string
+          expires_at?: string
+          full_name?: string
+          id?: string
+          invited_by?: string | null
+          status?: string
+          token?: string
         }
         Relationships: []
       }
@@ -672,6 +991,10 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      activate_course_after_payment: {
+        Args: { _reference: string }
+        Returns: boolean
+      }
       can_review_submissions: { Args: never; Returns: boolean }
       can_see_project: { Args: { _project_id: string }; Returns: boolean }
       has_role: {
@@ -684,6 +1007,7 @@ export type Database = {
       is_admin: { Args: never; Returns: boolean }
       is_enrolled: { Args: { _course_id: string }; Returns: boolean }
       is_staff: { Args: never; Returns: boolean }
+      validate_invite_token: { Args: { _token: string }; Returns: Json }
     }
     Enums: {
       app_role: "client" | "student" | "talent" | "pm" | "admin"
