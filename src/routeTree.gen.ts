@@ -22,11 +22,16 @@ import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as InviteTokenRouteImport } from './routes/invite.$token'
 import { Route as ApiPublicSupportChatRouteImport } from './routes/api/public/support-chat'
+import { Route as ApiPublicPaystackWebhookRouteImport } from './routes/api/public/paystack-webhook'
+import { Route as AuthenticatedProjectSlugRouteImport } from './routes/_authenticated/project.$slug'
 import { Route as AuthenticatedPortalTalentRouteImport } from './routes/_authenticated/portal/talent'
 import { Route as AuthenticatedPortalStudentRouteImport } from './routes/_authenticated/portal/student'
 import { Route as AuthenticatedPortalPmRouteImport } from './routes/_authenticated/portal/pm'
 import { Route as AuthenticatedPortalClientRouteImport } from './routes/_authenticated/portal/client'
 import { Route as AuthenticatedPortalAdminRouteImport } from './routes/_authenticated/portal/admin'
+import { Route as AuthenticatedLearningSlugRouteImport } from './routes/_authenticated/learning.$slug'
+import { Route as AuthenticatedExamSlugRouteImport } from './routes/_authenticated/exam.$slug'
+import { Route as AuthenticatedCertificateIdRouteImport } from './routes/_authenticated/certificate.$id'
 
 const TermsRoute = TermsRouteImport.update({
   id: '/terms',
@@ -92,6 +97,18 @@ const ApiPublicSupportChatRoute = ApiPublicSupportChatRouteImport.update({
   path: '/api/public/support-chat',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiPublicPaystackWebhookRoute =
+  ApiPublicPaystackWebhookRouteImport.update({
+    id: '/api/public/paystack-webhook',
+    path: '/api/public/paystack-webhook',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const AuthenticatedProjectSlugRoute =
+  AuthenticatedProjectSlugRouteImport.update({
+    id: '/project/$slug',
+    path: '/project/$slug',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedPortalTalentRoute =
   AuthenticatedPortalTalentRouteImport.update({
     id: '/portal/talent',
@@ -121,6 +138,23 @@ const AuthenticatedPortalAdminRoute =
     path: '/portal/admin',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedLearningSlugRoute =
+  AuthenticatedLearningSlugRouteImport.update({
+    id: '/learning/$slug',
+    path: '/learning/$slug',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedExamSlugRoute = AuthenticatedExamSlugRouteImport.update({
+  id: '/exam/$slug',
+  path: '/exam/$slug',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedCertificateIdRoute =
+  AuthenticatedCertificateIdRouteImport.update({
+    id: '/certificate/$id',
+    path: '/certificate/$id',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -134,11 +168,16 @@ export interface FileRoutesByFullPath {
   '/talent-application': typeof TalentApplicationRoute
   '/terms': typeof TermsRoute
   '/invite/$token': typeof InviteTokenRoute
+  '/certificate/$id': typeof AuthenticatedCertificateIdRoute
+  '/exam/$slug': typeof AuthenticatedExamSlugRoute
+  '/learning/$slug': typeof AuthenticatedLearningSlugRoute
   '/portal/admin': typeof AuthenticatedPortalAdminRoute
   '/portal/client': typeof AuthenticatedPortalClientRoute
   '/portal/pm': typeof AuthenticatedPortalPmRoute
   '/portal/student': typeof AuthenticatedPortalStudentRoute
   '/portal/talent': typeof AuthenticatedPortalTalentRoute
+  '/project/$slug': typeof AuthenticatedProjectSlugRoute
+  '/api/public/paystack-webhook': typeof ApiPublicPaystackWebhookRoute
   '/api/public/support-chat': typeof ApiPublicSupportChatRoute
 }
 export interface FileRoutesByTo {
@@ -153,11 +192,16 @@ export interface FileRoutesByTo {
   '/talent-application': typeof TalentApplicationRoute
   '/terms': typeof TermsRoute
   '/invite/$token': typeof InviteTokenRoute
+  '/certificate/$id': typeof AuthenticatedCertificateIdRoute
+  '/exam/$slug': typeof AuthenticatedExamSlugRoute
+  '/learning/$slug': typeof AuthenticatedLearningSlugRoute
   '/portal/admin': typeof AuthenticatedPortalAdminRoute
   '/portal/client': typeof AuthenticatedPortalClientRoute
   '/portal/pm': typeof AuthenticatedPortalPmRoute
   '/portal/student': typeof AuthenticatedPortalStudentRoute
   '/portal/talent': typeof AuthenticatedPortalTalentRoute
+  '/project/$slug': typeof AuthenticatedProjectSlugRoute
+  '/api/public/paystack-webhook': typeof ApiPublicPaystackWebhookRoute
   '/api/public/support-chat': typeof ApiPublicSupportChatRoute
 }
 export interface FileRoutesById {
@@ -174,11 +218,16 @@ export interface FileRoutesById {
   '/talent-application': typeof TalentApplicationRoute
   '/terms': typeof TermsRoute
   '/invite/$token': typeof InviteTokenRoute
+  '/_authenticated/certificate/$id': typeof AuthenticatedCertificateIdRoute
+  '/_authenticated/exam/$slug': typeof AuthenticatedExamSlugRoute
+  '/_authenticated/learning/$slug': typeof AuthenticatedLearningSlugRoute
   '/_authenticated/portal/admin': typeof AuthenticatedPortalAdminRoute
   '/_authenticated/portal/client': typeof AuthenticatedPortalClientRoute
   '/_authenticated/portal/pm': typeof AuthenticatedPortalPmRoute
   '/_authenticated/portal/student': typeof AuthenticatedPortalStudentRoute
   '/_authenticated/portal/talent': typeof AuthenticatedPortalTalentRoute
+  '/_authenticated/project/$slug': typeof AuthenticatedProjectSlugRoute
+  '/api/public/paystack-webhook': typeof ApiPublicPaystackWebhookRoute
   '/api/public/support-chat': typeof ApiPublicSupportChatRoute
 }
 export interface FileRouteTypes {
@@ -195,11 +244,16 @@ export interface FileRouteTypes {
     | '/talent-application'
     | '/terms'
     | '/invite/$token'
+    | '/certificate/$id'
+    | '/exam/$slug'
+    | '/learning/$slug'
     | '/portal/admin'
     | '/portal/client'
     | '/portal/pm'
     | '/portal/student'
     | '/portal/talent'
+    | '/project/$slug'
+    | '/api/public/paystack-webhook'
     | '/api/public/support-chat'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -214,11 +268,16 @@ export interface FileRouteTypes {
     | '/talent-application'
     | '/terms'
     | '/invite/$token'
+    | '/certificate/$id'
+    | '/exam/$slug'
+    | '/learning/$slug'
     | '/portal/admin'
     | '/portal/client'
     | '/portal/pm'
     | '/portal/student'
     | '/portal/talent'
+    | '/project/$slug'
+    | '/api/public/paystack-webhook'
     | '/api/public/support-chat'
   id:
     | '__root__'
@@ -234,11 +293,16 @@ export interface FileRouteTypes {
     | '/talent-application'
     | '/terms'
     | '/invite/$token'
+    | '/_authenticated/certificate/$id'
+    | '/_authenticated/exam/$slug'
+    | '/_authenticated/learning/$slug'
     | '/_authenticated/portal/admin'
     | '/_authenticated/portal/client'
     | '/_authenticated/portal/pm'
     | '/_authenticated/portal/student'
     | '/_authenticated/portal/talent'
+    | '/_authenticated/project/$slug'
+    | '/api/public/paystack-webhook'
     | '/api/public/support-chat'
   fileRoutesById: FileRoutesById
 }
@@ -255,6 +319,7 @@ export interface RootRouteChildren {
   TalentApplicationRoute: typeof TalentApplicationRoute
   TermsRoute: typeof TermsRoute
   InviteTokenRoute: typeof InviteTokenRoute
+  ApiPublicPaystackWebhookRoute: typeof ApiPublicPaystackWebhookRoute
   ApiPublicSupportChatRoute: typeof ApiPublicSupportChatRoute
 }
 
@@ -351,6 +416,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiPublicSupportChatRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/public/paystack-webhook': {
+      id: '/api/public/paystack-webhook'
+      path: '/api/public/paystack-webhook'
+      fullPath: '/api/public/paystack-webhook'
+      preLoaderRoute: typeof ApiPublicPaystackWebhookRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/project/$slug': {
+      id: '/_authenticated/project/$slug'
+      path: '/project/$slug'
+      fullPath: '/project/$slug'
+      preLoaderRoute: typeof AuthenticatedProjectSlugRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/portal/talent': {
       id: '/_authenticated/portal/talent'
       path: '/portal/talent'
@@ -386,23 +465,52 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedPortalAdminRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/learning/$slug': {
+      id: '/_authenticated/learning/$slug'
+      path: '/learning/$slug'
+      fullPath: '/learning/$slug'
+      preLoaderRoute: typeof AuthenticatedLearningSlugRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/exam/$slug': {
+      id: '/_authenticated/exam/$slug'
+      path: '/exam/$slug'
+      fullPath: '/exam/$slug'
+      preLoaderRoute: typeof AuthenticatedExamSlugRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/certificate/$id': {
+      id: '/_authenticated/certificate/$id'
+      path: '/certificate/$id'
+      fullPath: '/certificate/$id'
+      preLoaderRoute: typeof AuthenticatedCertificateIdRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
   }
 }
 
 interface AuthenticatedRouteRouteChildren {
+  AuthenticatedCertificateIdRoute: typeof AuthenticatedCertificateIdRoute
+  AuthenticatedExamSlugRoute: typeof AuthenticatedExamSlugRoute
+  AuthenticatedLearningSlugRoute: typeof AuthenticatedLearningSlugRoute
   AuthenticatedPortalAdminRoute: typeof AuthenticatedPortalAdminRoute
   AuthenticatedPortalClientRoute: typeof AuthenticatedPortalClientRoute
   AuthenticatedPortalPmRoute: typeof AuthenticatedPortalPmRoute
   AuthenticatedPortalStudentRoute: typeof AuthenticatedPortalStudentRoute
   AuthenticatedPortalTalentRoute: typeof AuthenticatedPortalTalentRoute
+  AuthenticatedProjectSlugRoute: typeof AuthenticatedProjectSlugRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedCertificateIdRoute: AuthenticatedCertificateIdRoute,
+  AuthenticatedExamSlugRoute: AuthenticatedExamSlugRoute,
+  AuthenticatedLearningSlugRoute: AuthenticatedLearningSlugRoute,
   AuthenticatedPortalAdminRoute: AuthenticatedPortalAdminRoute,
   AuthenticatedPortalClientRoute: AuthenticatedPortalClientRoute,
   AuthenticatedPortalPmRoute: AuthenticatedPortalPmRoute,
   AuthenticatedPortalStudentRoute: AuthenticatedPortalStudentRoute,
   AuthenticatedPortalTalentRoute: AuthenticatedPortalTalentRoute,
+  AuthenticatedProjectSlugRoute: AuthenticatedProjectSlugRoute,
 }
 
 const AuthenticatedRouteRouteWithChildren =
@@ -421,6 +529,7 @@ const rootRouteChildren: RootRouteChildren = {
   TalentApplicationRoute: TalentApplicationRoute,
   TermsRoute: TermsRoute,
   InviteTokenRoute: InviteTokenRoute,
+  ApiPublicPaystackWebhookRoute: ApiPublicPaystackWebhookRoute,
   ApiPublicSupportChatRoute: ApiPublicSupportChatRoute,
 }
 export const routeTree = rootRouteImport

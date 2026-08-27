@@ -1,18 +1,2 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { PageShell } from "@/components/PageShell";
-import { RequireRole } from "@/components/RequireRole";
-
-export const Route = createFileRoute("/_authenticated/portal/student")({
-  head: () => ({
-    meta: [
-      { title: "Student Portal — Najeeb Digital Hub" },
-      { name: "description", content: "Student portal." },
-      { name: "robots", content: "noindex" },
-    ],
-  }),
-  component: () => (
-    <RequireRole role="student">
-      <PageShell title="Student Portal" />
-    </RequireRole>
-  ),
-});
+import { createFileRoute, Link } from '@tanstack/react-router'; import { useEffect,useState } from 'react'; import { Award, BookOpen, CirclePlay } from 'lucide-react'; import { supabase } from '@/integrations/supabase/client'; import { PageShell } from '@/components/PageShell'; import { RequireRole } from '@/components/RequireRole'; import { useAuth } from '@/lib/auth'; import { Reveal } from '@/components/Reveal';
+export const Route=createFileRoute('/_authenticated/portal/student')({component:()=> <RequireRole role="student"><StudentPortal/></RequireRole>}); function StudentPortal(){const {user}=useAuth();const [courses,setCourses]=useState<any[]>([]);const [certs,setCerts]=useState<any[]>([]);useEffect(()=>{if(!user)return;supabase.from('enrollments').select('*, courses(title,summary,slug)').eq('student_id',user.id).then(({data})=>setCourses(data??[]));(supabase as any).from('certificates').select('*').eq('student_id',user.id).order('issue_date',{ascending:false}).then(({data}:any)=>setCerts(data??[]))},[user]);return <PageShell><main className="portal"><div className="portal-head"><div><p className="eyebrow">STUDENT PORTAL</p><h1>Keep learning, one skill at a time.</h1><p>Continue your enrolled courses and keep your certificates together.</p></div><BookOpen size={42}/></div><Reveal><section className="portal-section"><div className="portal-section-title"><h2>My courses</h2><BookOpen size={22}/></div>{courses.length===0?<div className="empty-card">No courses yet — <Link to="/academy">browse the Academy to get started.</Link></div>:<div className="portal-grid">{courses.map(e=><article className="portal-card" key={e.id}><CirclePlay size={20}/><h3>{e.courses?.title||'Course'}</h3><p>{e.courses?.summary}</p><div className="progress-track"><span style={{width:`${Math.max(0,Math.min(100,e.progress??0))}%`}}/></div><p>{e.progress??0}% complete</p><Link className="button" to="/academy">Continue learning</Link></article>)}</div>}</section></Reveal><Reveal><section className="portal-section"><div className="portal-section-title"><h2>Certificates</h2><Award size={22}/></div>{certs.length===0?<div className="empty-card">No certificates yet.</div>:<div className="portal-grid">{certs.map(c=><article className="portal-card" key={c.id}><Award size={20}/><h3>{c.certificate_number}</h3><p>Issued {new Date(c.issue_date).toLocaleDateString()}</p><Link className="button button-secondary" to="/certificate/$id" params={{id:c.id}}>View certificate</Link></article>)}</div>}</section></Reveal></main></PageShell>}
