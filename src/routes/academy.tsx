@@ -73,7 +73,7 @@ function Academy() {
       <main className="content">
         <Reveal>
           <div className="academy-visual">
-            <img src="/ndh-academy-new.png" alt="Abstract visual for the six AI course schools" />
+            <img src="/ndh-academy-new.png" alt="A learner following an online AI course and taking notes" />
           </div>
         </Reveal>
 
