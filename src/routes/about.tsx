@@ -45,7 +45,14 @@ function About() {
             </div>
           </Reveal>
           <Reveal delay={100}>
-            <img className="founder-photo" src="/founder-office.jpg" alt="The Najeeb Digital Hub office" />
+            <img
+              className="founder-photo"
+              src="/ndh-about-new.png"
+              alt="A minimal studio workspace for digital delivery and AI skills certification"
+              loading="lazy"
+              width={1280}
+              height={1024}
+            />
           </Reveal>
         </div>
       </main>
