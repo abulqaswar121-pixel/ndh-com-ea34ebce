@@ -1376,13 +1376,23 @@ footer p {
 }
 
 @media (max-width: 860px) {
-  .desktop-nav,
-  .desktop-action {
+  .site-header {
+    gap: 10px;
+    height: 66px;
+  }
+  .desktop-nav {
     display: none;
   }
-  .menu-button {
-    display: block;
+  .desktop-action {
     margin-left: auto;
+    padding: 9px 16px;
+    font-size: 14px;
+  }
+  .menu-button {
+    display: inline-flex;
+    align-items: center;
+    padding: 8px;
+    margin-left: 0;
   }
   .close-button {
     display: block;
