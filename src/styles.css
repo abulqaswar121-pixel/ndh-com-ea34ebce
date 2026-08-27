@@ -276,6 +276,7 @@ img {
   gap: 32px;
   padding-inline: max(var(--gutter), calc((100vw - var(--shell)) / 2 + var(--gutter)));
   background: color-mix(in srgb, var(--paper) 82%, transparent);
+  -webkit-backdrop-filter: saturate(180%) blur(16px);
   backdrop-filter: saturate(180%) blur(16px);
   border-bottom: 1px solid transparent;
   transition: border-color 0.3s var(--ease), box-shadow 0.3s var(--ease);
