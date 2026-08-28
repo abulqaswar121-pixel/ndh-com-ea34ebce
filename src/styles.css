@@ -1602,3 +1602,59 @@ footer img {
     transform: none;
   }
 }
+
+/* ============================================================
+   14. CONTACT LAYOUT
+   ============================================================ */
+
+.contact-layout {
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  gap: 56px;
+  align-items: start;
+}
+
+.card-panel {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-soft);
+  padding: 32px;
+  max-width: none;
+}
+
+.contact-aside h2 {
+  font-size: 20px;
+  margin-bottom: 16px;
+}
+
+.contact-aside h3 {
+  font-size: 15px;
+  margin: 32px 0 12px;
+}
+
+.contact-aside .contact-links {
+  flex-direction: column;
+  align-items: flex-start;
+  margin-bottom: 0;
+}
+
+.plain-list {
+  margin: 0;
+  padding-left: 18px;
+  display: grid;
+  gap: 8px;
+  color: var(--muted);
+  font-size: 14.5px;
+}
+
+@media (max-width: 860px) {
+  .contact-layout {
+    grid-template-columns: 1fr;
+    gap: 36px;
+  }
+
+  .card-panel {
+    padding: 22px;
+  }
+}
