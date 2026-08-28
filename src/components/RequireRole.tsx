@@ -11,7 +11,13 @@ import type { ReactNode } from "react";
  * private data must re-check the caller's role on the server.
  */
 export function RequireRole({ role, children }: { role: AppRole; children: ReactNode }) {
-  const { user, role: currentRole, loading } = useAuth();
+  const { user, role: currentRole, loading, signOut } = useAuth();
+  const [waited, setWaited] = useState(false);
+
+  useEffect(() => {
+    const t = setTimeout(() => setWaited(true), 6000);
+    return () => clearTimeout(t);
+  }, []);
 
   if (loading) {
     return (
