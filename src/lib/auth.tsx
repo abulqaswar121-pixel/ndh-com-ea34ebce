@@ -46,25 +46,40 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const { data: sub } = supabase.auth.onAuthStateChange((_event, s) => {
-      setSession(s);
-      if (!s?.user) {
-        setRole(null);
-        return;
-      }
-      // Defer the DB read out of the auth callback.
-      setTimeout(() => {
-        void fetchPrimaryRole(s.user.id).then(setRole);
-      }, 0);
-    });
+    let unsubscribe: (() => void) | undefined;
 
-    void supabase.auth.getSession().then(async ({ data }) => {
-      setSession(data.session);
-      if (data.session?.user) setRole(await fetchPrimaryRole(data.session.user.id));
+    try {
+      const { data: sub } = supabase.auth.onAuthStateChange((_event, s) => {
+        setSession(s);
+        if (!s?.user) {
+          setRole(null);
+          return;
+        }
+        // Defer the DB read out of the auth callback.
+        setTimeout(() => {
+          void fetchPrimaryRole(s.user.id).then(setRole);
+        }, 0);
+      });
+      unsubscribe = () => sub.subscription.unsubscribe();
+
+      void supabase.auth
+        .getSession()
+        .then(async ({ data }) => {
+          setSession(data.session);
+          if (data.session?.user) setRole(await fetchPrimaryRole(data.session.user.id));
+        })
+        .catch((error: unknown) => {
+          console.error("Authentication could not be initialised", error);
+        })
+        .finally(() => setLoading(false));
+    } catch (error) {
+      // Public pages must remain available if browser auth configuration has
+      // not yet reached a newly built preview bundle.
+      console.error("Authentication could not be initialised", error);
       setLoading(false);
-    });
+    }
 
-    return () => sub.subscription.unsubscribe();
+    return () => unsubscribe?.();
   }, []);
 
   const value: AuthState = {
