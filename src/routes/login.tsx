@@ -47,42 +47,42 @@ function LoginPage() {
   };
 
   return (
-    <main className="grid min-h-screen place-items-center bg-background px-6 py-12">
-      <div className="w-full max-w-sm">
-        <img src={logo} alt="Najeeb Digital Hub" width={48} height={48} className="mb-6 h-12 w-12 rounded-full object-cover" />
-        <h1 className="font-semibold text-2xl tracking-tight text-foreground">Sign in</h1>
+    <main className="auth-page">
+      <div className="auth-card">
+        <img src={logo} alt="Najeeb Digital Hub" width={48} height={48}  />
+        <h1>Sign in</h1>
 
-        <Button type="button" variant="outline" className="mt-6 w-full" onClick={handleGoogle}>
+        <Button type="button" variant="outline" className="auth-oauth" onClick={handleGoogle}>
           Continue with Google
         </Button>
 
-        <div className="my-5 flex items-center gap-3 text-xs text-muted-foreground">
+        <div className="auth-divider">
           <span className="h-px flex-1 bg-border" />
           or
           <span className="h-px flex-1 bg-border" />
         </div>
 
-        <form onSubmit={handleSubmit} className="grid gap-4">
+        <form onSubmit={handleSubmit} className="auth-form">
           <div>
-            <label htmlFor="email" className="text-sm font-medium text-foreground">Email</label>
+            <label htmlFor="email" >Email</label>
             <input
               id="email"
               type="email"
               required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="mt-1 w-full rounded-md border border-input bg-background px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-ring"
+              
             />
           </div>
           <div>
-            <label htmlFor="password" className="text-sm font-medium text-foreground">Password</label>
+            <label htmlFor="password" >Password</label>
             <input
               id="password"
               type="password"
               required
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="mt-1 w-full rounded-md border border-input bg-background px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-ring"
+              
             />
           </div>
           <Button type="submit" disabled={loading}>
@@ -90,8 +90,8 @@ function LoginPage() {
           </Button>
         </form>
 
-        <p className="mt-6 text-center text-sm text-muted-foreground">
-          No account? <Link to="/signup" className="font-medium text-foreground">Create one</Link>
+        <p className="auth-alt">
+          No account? <Link to="/signup" >Create one</Link>
         </p>
       </div>
     </main>
