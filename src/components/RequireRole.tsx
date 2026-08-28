@@ -1,7 +1,7 @@
 import { Navigate } from "@tanstack/react-router";
 import { Loader2 } from "lucide-react";
 import { useAuth, roleHome, type AppRole } from "@/lib/auth";
-import type { ReactNode } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 
 /**
  * Portal gate. Signed-out users go to /login; a signed-in user holding the
