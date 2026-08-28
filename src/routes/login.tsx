@@ -36,7 +36,14 @@ function LoginPage() {
     setLoading(true);
     const { error } = await supabase.auth.signInWithPassword({ email, password });
     setLoading(false);
-    if (error) toast.error(error.message);
+    if (error) {
+      const invalid = /invalid login credentials/i.test(error.message);
+      toast.error(
+        invalid
+          ? "Email or password is incorrect. If you created this account with Google, use “Continue with Google” instead."
+          : error.message,
+      );
+    }
   };
 
   const handleGoogle = async () => {
