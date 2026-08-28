@@ -31,9 +31,25 @@ export function RequireRole({ role, children }: { role: AppRole; children: React
 
   // Role row not loaded yet — hold rather than bounce to the wrong place.
   if (!currentRole) {
+    if (!waited) {
+      return (
+        <div className="grid min-h-screen place-items-center bg-background">
+          <Loader2 className="h-5 w-5 animate-spin text-muted-foreground" />
+        </div>
+      );
+    }
     return (
-      <div className="grid min-h-screen place-items-center bg-background">
-        <Loader2 className="h-5 w-5 animate-spin text-muted-foreground" />
+      <div className="grid min-h-screen place-items-center bg-background px-6">
+        <div className="max-w-sm space-y-3 text-center">
+          <h1 className="text-lg font-semibold">Your account isn’t set up yet</h1>
+          <p className="text-sm text-muted-foreground">
+            We couldn’t load your account access. Please try again in a moment, or contact support at
+            hello@ndh.com.ng.
+          </p>
+          <button className="button" onClick={() => void signOut()}>
+            Sign out
+          </button>
+        </div>
       </div>
     );
   }
