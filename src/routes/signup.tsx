@@ -54,7 +54,16 @@ function SignupPage() {
       },
     });
     setLoading(false);
-    if (error) toast.error(error.message);
+    if (error) {
+      const exists = /already registered|user_already_exists/i.test(error.message);
+      toast.error(
+        exists
+          ? "An account with this email already exists — sign in instead, or use Continue with Google."
+          : error.message,
+      );
+      return;
+    }
+    toast.success("Check your email to confirm your account, then sign in.");
   };
 
   const handleGoogle = async () => {

@@ -1,7 +1,7 @@
 import { Navigate } from "@tanstack/react-router";
 import { Loader2 } from "lucide-react";
 import { useAuth, roleHome, type AppRole } from "@/lib/auth";
-import type { ReactNode } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 
 /**
  * Portal gate. Signed-out users go to /login; a signed-in user holding the
@@ -11,7 +11,13 @@ import type { ReactNode } from "react";
  * private data must re-check the caller's role on the server.
  */
 export function RequireRole({ role, children }: { role: AppRole; children: ReactNode }) {
-  const { user, role: currentRole, loading } = useAuth();
+  const { user, role: currentRole, loading, signOut } = useAuth();
+  const [waited, setWaited] = useState(false);
+
+  useEffect(() => {
+    const t = setTimeout(() => setWaited(true), 6000);
+    return () => clearTimeout(t);
+  }, []);
 
   if (loading) {
     return (
@@ -25,9 +31,25 @@ export function RequireRole({ role, children }: { role: AppRole; children: React
 
   // Role row not loaded yet — hold rather than bounce to the wrong place.
   if (!currentRole) {
+    if (!waited) {
+      return (
+        <div className="grid min-h-screen place-items-center bg-background">
+          <Loader2 className="h-5 w-5 animate-spin text-muted-foreground" />
+        </div>
+      );
+    }
     return (
-      <div className="grid min-h-screen place-items-center bg-background">
-        <Loader2 className="h-5 w-5 animate-spin text-muted-foreground" />
+      <div className="grid min-h-screen place-items-center bg-background px-6">
+        <div className="max-w-sm space-y-3 text-center">
+          <h1 className="text-lg font-semibold">Your account isn’t set up yet</h1>
+          <p className="text-sm text-muted-foreground">
+            We couldn’t load your account access. Please try again in a moment, or contact support at
+            hello@ndh.com.ng.
+          </p>
+          <button className="button" onClick={() => void signOut()}>
+            Sign out
+          </button>
+        </div>
       </div>
     );
   }
