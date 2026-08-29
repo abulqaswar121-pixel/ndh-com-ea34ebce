@@ -45,32 +45,46 @@ function SignupPage() {
       return;
     }
     setLoading(true);
-    const { error } = await supabase.auth.signUp({
-      email,
-      password,
-      options: {
-        emailRedirectTo: window.location.origin,
-        data: { full_name: fullName, role: accountType },
-      },
-    });
-    setLoading(false);
-    if (error) {
-      const exists = /already registered|user_already_exists/i.test(error.message);
-      toast.error(
-        exists
-          ? "An account with this email already exists — sign in instead, or use Continue with Google."
-          : error.message,
-      );
-      return;
+    try {
+      const { error } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          emailRedirectTo: window.location.origin,
+          data: { full_name: fullName, role: accountType },
+        },
+      });
+      if (error) {
+        const exists = /already registered|user_already_exists/i.test(error.message);
+        toast.error(
+          exists
+            ? "An account with this email already exists — sign in instead, or use Continue with Google."
+            : error.message,
+        );
+        return;
+      }
+      toast.success("Check your email to confirm your account, then sign in.");
+    } catch (error) {
+      console.error("Account creation could not start", error);
+      toast.error("Account creation is temporarily unavailable. Refresh the page and try again.");
+    } finally {
+      setLoading(false);
     }
-    toast.success("Check your email to confirm your account, then sign in.");
   };
 
   const handleGoogle = async () => {
-    const result = await lovable.auth.signInWithOAuth("google", {
-      redirect_uri: window.location.origin + "/signup",
-    });
-    if (result?.error) toast.error((result.error as Error).message ?? "Google sign-up failed");
+    setLoading(true);
+    try {
+      const result = await lovable.auth.signInWithOAuth("google", {
+        redirect_uri: window.location.origin + "/signup",
+      });
+      if (result?.error) toast.error((result.error as Error).message ?? "Google sign-up failed");
+    } catch (error) {
+      console.error("Google sign-up could not start", error);
+      toast.error("Google sign-up is temporarily unavailable. Refresh the page and try again.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -92,8 +106,8 @@ function SignupPage() {
           ))}
         </div>
 
-        <Button type="button" variant="outline" className="auth-oauth" onClick={handleGoogle}>
-          Continue with Google
+        <Button type="button" variant="outline" className="auth-oauth" onClick={handleGoogle} disabled={loading}>
+          {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : "Continue with Google"}
         </Button>
 
         <div className="auth-divider">

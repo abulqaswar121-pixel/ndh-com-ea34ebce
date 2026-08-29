@@ -34,23 +34,37 @@ function LoginPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    const { error } = await supabase.auth.signInWithPassword({ email, password });
-    setLoading(false);
-    if (error) {
-      const invalid = /invalid login credentials/i.test(error.message);
-      toast.error(
-        invalid
-          ? "Email or password is incorrect. If you created this account with Google, use “Continue with Google” instead."
-          : error.message,
-      );
+    try {
+      const { error } = await supabase.auth.signInWithPassword({ email, password });
+      if (error) {
+        const invalid = /invalid login credentials/i.test(error.message);
+        toast.error(
+          invalid
+            ? "Email or password is incorrect. If you created this account with Google, use “Continue with Google” instead."
+            : error.message,
+        );
+      }
+    } catch (error) {
+      console.error("Sign-in could not start", error);
+      toast.error("Sign-in is temporarily unavailable. Refresh the page and try again.");
+    } finally {
+      setLoading(false);
     }
   };
 
   const handleGoogle = async () => {
-    const result = await lovable.auth.signInWithOAuth("google", {
-      redirect_uri: window.location.origin + "/login",
-    });
-    if (result?.error) toast.error((result.error as Error).message ?? "Google sign-in failed");
+    setLoading(true);
+    try {
+      const result = await lovable.auth.signInWithOAuth("google", {
+        redirect_uri: window.location.origin + "/login",
+      });
+      if (result?.error) toast.error((result.error as Error).message ?? "Google sign-in failed");
+    } catch (error) {
+      console.error("Google sign-in could not start", error);
+      toast.error("Google sign-in is temporarily unavailable. Refresh the page and try again.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -59,8 +73,8 @@ function LoginPage() {
         <img src={logo} alt="Najeeb Digital Hub" width={48} height={48}  />
         <h1>Sign in</h1>
 
-        <Button type="button" variant="outline" className="auth-oauth" onClick={handleGoogle}>
-          Continue with Google
+        <Button type="button" variant="outline" className="auth-oauth" onClick={handleGoogle} disabled={loading}>
+          {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : "Continue with Google"}
         </Button>
 
         <div className="auth-divider">
