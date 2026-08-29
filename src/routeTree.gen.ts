@@ -22,6 +22,7 @@ import { Route as AboutRouteImport } from './routes/about'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as InviteTokenRouteImport } from './routes/invite.$token'
+import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
 import { Route as AcademySlugRouteImport } from './routes/academy.$slug'
 import { Route as ApiPublicSupportChatRouteImport } from './routes/api/public/support-chat'
 import { Route as ApiPublicPaystackWebhookRouteImport } from './routes/api/public/paystack-webhook'
@@ -99,6 +100,11 @@ const InviteTokenRoute = InviteTokenRouteImport.update({
   path: '/invite/$token',
   getParentRoute: () => rootRouteImport,
 } as any)
+const BlogSlugRoute = BlogSlugRouteImport.update({
+  id: '/$slug',
+  path: '/$slug',
+  getParentRoute: () => BlogRoute,
+} as any)
 const AcademySlugRoute = AcademySlugRouteImport.update({
   id: '/$slug',
   path: '/$slug',
@@ -173,7 +179,7 @@ export interface FileRoutesByFullPath {
   '/about': typeof AboutRoute
   '/academy': typeof AcademyRouteWithChildren
   '/agency': typeof AgencyRoute
-  '/blog': typeof BlogRoute
+  '/blog': typeof BlogRouteWithChildren
   '/contact': typeof ContactRoute
   '/login': typeof LoginRoute
   '/privacy': typeof PrivacyRoute
@@ -181,6 +187,7 @@ export interface FileRoutesByFullPath {
   '/talent-application': typeof TalentApplicationRoute
   '/terms': typeof TermsRoute
   '/academy/$slug': typeof AcademySlugRoute
+  '/blog/$slug': typeof BlogSlugRoute
   '/invite/$token': typeof InviteTokenRoute
   '/certificate/$id': typeof AuthenticatedCertificateIdRoute
   '/exam/$slug': typeof AuthenticatedExamSlugRoute
@@ -199,7 +206,7 @@ export interface FileRoutesByTo {
   '/about': typeof AboutRoute
   '/academy': typeof AcademyRouteWithChildren
   '/agency': typeof AgencyRoute
-  '/blog': typeof BlogRoute
+  '/blog': typeof BlogRouteWithChildren
   '/contact': typeof ContactRoute
   '/login': typeof LoginRoute
   '/privacy': typeof PrivacyRoute
@@ -207,6 +214,7 @@ export interface FileRoutesByTo {
   '/talent-application': typeof TalentApplicationRoute
   '/terms': typeof TermsRoute
   '/academy/$slug': typeof AcademySlugRoute
+  '/blog/$slug': typeof BlogSlugRoute
   '/invite/$token': typeof InviteTokenRoute
   '/certificate/$id': typeof AuthenticatedCertificateIdRoute
   '/exam/$slug': typeof AuthenticatedExamSlugRoute
@@ -227,7 +235,7 @@ export interface FileRoutesById {
   '/about': typeof AboutRoute
   '/academy': typeof AcademyRouteWithChildren
   '/agency': typeof AgencyRoute
-  '/blog': typeof BlogRoute
+  '/blog': typeof BlogRouteWithChildren
   '/contact': typeof ContactRoute
   '/login': typeof LoginRoute
   '/privacy': typeof PrivacyRoute
@@ -235,6 +243,7 @@ export interface FileRoutesById {
   '/talent-application': typeof TalentApplicationRoute
   '/terms': typeof TermsRoute
   '/academy/$slug': typeof AcademySlugRoute
+  '/blog/$slug': typeof BlogSlugRoute
   '/invite/$token': typeof InviteTokenRoute
   '/_authenticated/certificate/$id': typeof AuthenticatedCertificateIdRoute
   '/_authenticated/exam/$slug': typeof AuthenticatedExamSlugRoute
@@ -263,6 +272,7 @@ export interface FileRouteTypes {
     | '/talent-application'
     | '/terms'
     | '/academy/$slug'
+    | '/blog/$slug'
     | '/invite/$token'
     | '/certificate/$id'
     | '/exam/$slug'
@@ -289,6 +299,7 @@ export interface FileRouteTypes {
     | '/talent-application'
     | '/terms'
     | '/academy/$slug'
+    | '/blog/$slug'
     | '/invite/$token'
     | '/certificate/$id'
     | '/exam/$slug'
@@ -316,6 +327,7 @@ export interface FileRouteTypes {
     | '/talent-application'
     | '/terms'
     | '/academy/$slug'
+    | '/blog/$slug'
     | '/invite/$token'
     | '/_authenticated/certificate/$id'
     | '/_authenticated/exam/$slug'
@@ -336,7 +348,7 @@ export interface RootRouteChildren {
   AboutRoute: typeof AboutRoute
   AcademyRoute: typeof AcademyRouteWithChildren
   AgencyRoute: typeof AgencyRoute
-  BlogRoute: typeof BlogRoute
+  BlogRoute: typeof BlogRouteWithChildren
   ContactRoute: typeof ContactRoute
   LoginRoute: typeof LoginRoute
   PrivacyRoute: typeof PrivacyRoute
@@ -440,6 +452,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/invite/$token'
       preLoaderRoute: typeof InviteTokenRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/blog/$slug': {
+      id: '/blog/$slug'
+      path: '/$slug'
+      fullPath: '/blog/$slug'
+      preLoaderRoute: typeof BlogSlugRouteImport
+      parentRoute: typeof BlogRoute
     }
     '/academy/$slug': {
       id: '/academy/$slug'
@@ -566,13 +585,23 @@ const AcademyRouteChildren: AcademyRouteChildren = {
 const AcademyRouteWithChildren =
   AcademyRoute._addFileChildren(AcademyRouteChildren)
 
+interface BlogRouteChildren {
+  BlogSlugRoute: typeof BlogSlugRoute
+}
+
+const BlogRouteChildren: BlogRouteChildren = {
+  BlogSlugRoute: BlogSlugRoute,
+}
+
+const BlogRouteWithChildren = BlogRoute._addFileChildren(BlogRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AboutRoute: AboutRoute,
   AcademyRoute: AcademyRouteWithChildren,
   AgencyRoute: AgencyRoute,
-  BlogRoute: BlogRoute,
+  BlogRoute: BlogRouteWithChildren,
   ContactRoute: ContactRoute,
   LoginRoute: LoginRoute,
   PrivacyRoute: PrivacyRoute,
