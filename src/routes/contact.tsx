@@ -1,7 +1,9 @@
 import { createFileRoute } from '@tanstack/react-router';
+import { useState } from 'react';
 import { Facebook, Instagram, MessageCircle } from 'lucide-react';
 import { PageShell, PageIntro } from '@/components/PageShell';
 import { Reveal } from '@/components/Reveal';
+import { submitEnquiry } from '@/lib/catalog.functions';
 
 const title = 'Contact — Najeeb Digital Hub';
 const description = 'Share a brief with Najeeb Digital Hub by form, WhatsApp or social. We reply within one business day.';
@@ -13,12 +15,38 @@ export const Route = createFileRoute('/contact')({
       { name: 'description', content: description },
       { property: 'og:title', content: title },
       { property: 'og:description', content: description },
+      { property: 'og:type', content: 'website' },
+      { name: 'twitter:card', content: 'summary_large_image' },
     ],
   }),
   component: Contact,
 });
 
 function Contact() {
+  const [fullName, setFullName] = useState('');
+  const [email, setEmail] = useState('');
+  const [phone, setPhone] = useState('');
+  const [message, setMessage] = useState('');
+  const [state, setState] = useState<'idle' | 'sending' | 'sent'>('idle');
+  const [error, setError] = useState('');
+
+  async function onSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    setState('sending');
+    setError('');
+    try {
+      await submitEnquiry({ data: { full_name: fullName, email, phone, message, source: 'contact' } });
+      setState('sent');
+      setFullName('');
+      setEmail('');
+      setPhone('');
+      setMessage('');
+    } catch (err) {
+      setState('idle');
+      setError(err instanceof Error ? err.message : 'Something went wrong. Please try WhatsApp instead.');
+    }
+  }
+
   return (
     <PageShell>
       <PageIntro
@@ -29,22 +57,32 @@ function Contact() {
       <main className="content">
         <div className="contact-layout">
           <Reveal>
-            <form className="contact-form card-panel">
+            <form className="contact-form card-panel" onSubmit={onSubmit}>
               <label>
                 Name
-                <input required />
+                <input required value={fullName} onChange={(e) => setFullName(e.target.value)} />
               </label>
               <label>
                 Email
-                <input type="email" required />
+                <input type="email" required value={email} onChange={(e) => setEmail(e.target.value)} />
+              </label>
+              <label>
+                Phone or WhatsApp (optional)
+                <input value={phone} onChange={(e) => setPhone(e.target.value)} />
               </label>
               <label>
                 How can we help?
-                <textarea rows={6} required />
+                <textarea rows={6} required value={message} onChange={(e) => setMessage(e.target.value)} />
               </label>
-              <button className="button" type="submit">
-                Send enquiry
+              <button className="button" type="submit" disabled={state === 'sending'}>
+                {state === 'sending' ? 'Sending…' : 'Send enquiry'}
               </button>
+              {state === 'sent' && (
+                <p className="form-success">
+                  Thank you — your enquiry has been received. We reply within one business day.
+                </p>
+              )}
+              {error && <p className="form-error">{error}</p>}
             </form>
           </Reveal>
           <Reveal delay={80}>
@@ -72,7 +110,6 @@ function Contact() {
           </Reveal>
         </div>
       </main>
-
     </PageShell>
   );
 }
