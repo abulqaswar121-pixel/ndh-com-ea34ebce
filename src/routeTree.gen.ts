@@ -9,6 +9,7 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as WorkRouteImport } from './routes/work'
 import { Route as TermsRouteImport } from './routes/terms'
 import { Route as TalentApplicationRouteImport } from './routes/talent-application'
 import { Route as SignupRouteImport } from './routes/signup'
@@ -36,6 +37,11 @@ import { Route as AuthenticatedLearningSlugRouteImport } from './routes/_authent
 import { Route as AuthenticatedExamSlugRouteImport } from './routes/_authenticated/exam.$slug'
 import { Route as AuthenticatedCertificateIdRouteImport } from './routes/_authenticated/certificate.$id'
 
+const WorkRoute = WorkRouteImport.update({
+  id: '/work',
+  path: '/work',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const TermsRoute = TermsRouteImport.update({
   id: '/terms',
   path: '/terms',
@@ -186,6 +192,7 @@ export interface FileRoutesByFullPath {
   '/signup': typeof SignupRoute
   '/talent-application': typeof TalentApplicationRoute
   '/terms': typeof TermsRoute
+  '/work': typeof WorkRoute
   '/academy/$slug': typeof AcademySlugRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/invite/$token': typeof InviteTokenRoute
@@ -213,6 +220,7 @@ export interface FileRoutesByTo {
   '/signup': typeof SignupRoute
   '/talent-application': typeof TalentApplicationRoute
   '/terms': typeof TermsRoute
+  '/work': typeof WorkRoute
   '/academy/$slug': typeof AcademySlugRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/invite/$token': typeof InviteTokenRoute
@@ -242,6 +250,7 @@ export interface FileRoutesById {
   '/signup': typeof SignupRoute
   '/talent-application': typeof TalentApplicationRoute
   '/terms': typeof TermsRoute
+  '/work': typeof WorkRoute
   '/academy/$slug': typeof AcademySlugRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/invite/$token': typeof InviteTokenRoute
@@ -271,6 +280,7 @@ export interface FileRouteTypes {
     | '/signup'
     | '/talent-application'
     | '/terms'
+    | '/work'
     | '/academy/$slug'
     | '/blog/$slug'
     | '/invite/$token'
@@ -298,6 +308,7 @@ export interface FileRouteTypes {
     | '/signup'
     | '/talent-application'
     | '/terms'
+    | '/work'
     | '/academy/$slug'
     | '/blog/$slug'
     | '/invite/$token'
@@ -326,6 +337,7 @@ export interface FileRouteTypes {
     | '/signup'
     | '/talent-application'
     | '/terms'
+    | '/work'
     | '/academy/$slug'
     | '/blog/$slug'
     | '/invite/$token'
@@ -355,6 +367,7 @@ export interface RootRouteChildren {
   SignupRoute: typeof SignupRoute
   TalentApplicationRoute: typeof TalentApplicationRoute
   TermsRoute: typeof TermsRoute
+  WorkRoute: typeof WorkRoute
   InviteTokenRoute: typeof InviteTokenRoute
   ApiPublicPaystackWebhookRoute: typeof ApiPublicPaystackWebhookRoute
   ApiPublicSupportChatRoute: typeof ApiPublicSupportChatRoute
@@ -362,6 +375,13 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/work': {
+      id: '/work'
+      path: '/work'
+      fullPath: '/work'
+      preLoaderRoute: typeof WorkRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/terms': {
       id: '/terms'
       path: '/terms'
@@ -608,6 +628,7 @@ const rootRouteChildren: RootRouteChildren = {
   SignupRoute: SignupRoute,
   TalentApplicationRoute: TalentApplicationRoute,
   TermsRoute: TermsRoute,
+  WorkRoute: WorkRoute,
   InviteTokenRoute: InviteTokenRoute,
   ApiPublicPaystackWebhookRoute: ApiPublicPaystackWebhookRoute,
   ApiPublicSupportChatRoute: ApiPublicSupportChatRoute,
