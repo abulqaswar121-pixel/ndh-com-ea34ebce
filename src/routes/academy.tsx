@@ -1,11 +1,13 @@
-import { createFileRoute } from '@tanstack/react-router';
-import { PageShell, PageIntro, Button } from '@/components/PageShell';
+import { createFileRoute, Link } from '@tanstack/react-router';
+import { useMemo, useState } from 'react';
+import { ArrowUpRight, Search } from 'lucide-react';
+import { PageShell, PageIntro } from '@/components/PageShell';
 import { Reveal } from '@/components/Reveal';
-import { PenLine, Palette, Film, Megaphone, Cpu, Briefcase } from 'lucide-react';
+import { listCourses, type CourseSummary } from '@/lib/catalog.functions';
 
 const title = 'Academy — Practical AI courses and certification | NDH';
 const description =
-  'Short, self-serve AI courses across six schools. Each ends with an AI-set exam, a reviewed project and a signed certificate.';
+  'Short, self-serve AI courses across six schools. Each course ends with a final assessment, a practical project and a signed certificate.';
 
 export const Route = createFileRoute('/academy')({
   head: () => ({
@@ -14,96 +16,110 @@ export const Route = createFileRoute('/academy')({
       { name: 'description', content: description },
       { property: 'og:title', content: title },
       { property: 'og:description', content: description },
+      { property: 'og:type', content: 'website' },
+      { name: 'twitter:card', content: 'summary_large_image' },
     ],
   }),
+  loader: () => listCourses(),
+  errorComponent: () => (
+    <PageShell>
+      <main className="content">
+        <h1>Courses are unavailable</h1>
+        <p>We could not load the catalog just now. Please refresh the page.</p>
+      </main>
+    </PageShell>
+  ),
   component: Academy,
 });
 
-const courses: [string, string][] = [
-  ['AI Copywriting', 'Write clear, persuasive copy for landing pages, ads and campaigns with AI.'],
-  ['AI Content Strategy', 'Plan, organise and scale a content system with AI-assisted research.'],
-  ['AI Blogging & SEO', 'Create useful, search-aware articles with an AI-assisted workflow.'],
-  ['AI Scriptwriting', 'Develop scripts for video, podcasts and short-form content.'],
-  ['AI Graphic Design', 'Create visual assets with AI design tools and a focused art direction process.'],
-  ['AI Branding & Identity', 'Build a coherent brand system with AI-assisted exploration and refinement.'],
-  ['AI UI/UX Design', 'Move from user needs to clear interfaces and prototypes with AI support.'],
-  ['AI Illustration', 'Direct and refine custom AI illustrations for a defined visual brief.'],
-  ['AI Video Editing', 'Edit, caption and package video content with an AI-assisted workflow.'],
-  ['AI Video Generation', 'Explore AI video generation and shape usable visual sequences.'],
-  ['AI Podcast Production', 'Plan, edit and package a podcast using AI-assisted production tools.'],
-  ['AI Photography & Retouching', 'Improve and prepare images with AI-assisted retouching techniques.'],
-  ['AI Social Media Management', 'Plan social content and use AI to support publishing and review.'],
-  ['AI Paid Ads', 'Prepare paid advertising campaigns with AI-assisted research and creative work.'],
-  ['AI Email Marketing', 'Build useful email campaigns and flows with AI support.'],
-  ['Prompt Engineering', 'Write structured prompts that produce more consistent AI results.'],
-  ['Build AI Agents', 'Design practical agent workflows with AI tools and integrations.'],
-  ['No-Code AI Apps', 'Turn a clear product idea into a working no-code AI application.'],
-  ['AI Workflow Automation', 'Map repeatable work and connect tools into an AI-assisted workflow.'],
-  ['AI Virtual Assistant', 'Build modern virtual-assistant workflows supported by AI tools.'],
-  ['AI Customer Support', 'Plan helpful AI-assisted support experiences for customers.'],
-  ['AI Project Management', 'Use AI to plan, track and report on project work.'],
-  ['AI Data Entry & Analysis', 'Speed up structured data work and produce clearer analysis with AI.'],
-  ['AI YouTube Growth Management', 'Audit a channel, plan content and use AI tools to guide growth decisions.'],
-  ['AI LinkedIn Ghostwriting', 'Write consistent LinkedIn posts in a defined founder voice.'],
-  ['AI E-book Writing & Design', 'Create, design and package a non-fiction e-book from outline to export.'],
-  ['AI 3D Product Animation', 'Create a short product turntable from references and prepare delivery files.'],
-  ['AI CRM Setup — HubSpot/GoHighLevel', 'Map a sales process and configure a working CRM automation.'],
-  ['AI Conversion Rate Optimization', 'Audit a landing page and recommend changes grounded in user behaviour.'],
-  ['SaaS Boilerplate Launch', 'Configure and deploy a working SaaS starter with auth, billing and dashboard.'],
-];
-
-const icons = [
-  PenLine, PenLine, PenLine, PenLine,
-  Palette, Palette, Palette, Palette,
-  Film, Film, Film, Film,
-  Megaphone, Megaphone, Megaphone,
-  Cpu, Cpu, Cpu, Cpu,
-  Briefcase, Briefcase, Briefcase, Briefcase,
-  Megaphone, PenLine, PenLine, Film, Briefcase, Megaphone, Cpu,
-];
+export function formatPrice(prices: CourseSummary['prices']) {
+  const ng = prices.find((p) => p.region === 'NG');
+  if (ng) return `₦${ng.amount.toLocaleString()}`;
+  const first = prices[0];
+  return first ? `${first.currency} ${first.amount.toLocaleString()}` : 'Price on request';
+}
 
 function Academy() {
+  const courses = Route.useLoaderData();
+  const [query, setQuery] = useState('');
+  const [school, setSchool] = useState('All');
+
+  const schools = useMemo(
+    () => ['All', ...Array.from(new Set(courses.map((c) => c.school).filter(Boolean) as string[]))],
+    [courses],
+  );
+
+  const filtered = useMemo(
+    () =>
+      courses.filter(
+        (c) =>
+          (school === 'All' || c.school === school) &&
+          (query.trim() === '' ||
+            `${c.title} ${c.summary ?? ''}`.toLowerCase().includes(query.trim().toLowerCase())),
+      ),
+    [courses, school, query],
+  );
+
   return (
     <PageShell>
       <PageIntro
         eyebrow="Academy"
         title="Learn a practical AI skill, then prove it."
-        body="Short, self-serve courses built around an AI-set exam, an AI-reviewed project and an admin-signed certificate."
+        body="Short, self-serve courses across six schools. Finish the lessons, sit the final assessment, submit a practical project and receive a signed certificate."
       />
       <main className="content">
         <Reveal>
-          <div className="academy-visual">
-            <img src="/ndh-academy-new.png" alt="A learner following an online AI course and taking notes" />
+          <div className="catalog-controls">
+            <div className="catalog-search">
+              <Search size={16} />
+              <input
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                placeholder="Search courses"
+                aria-label="Search courses"
+              />
+            </div>
+            <div className="catalog-filters">
+              {schools.map((s) => (
+                <button
+                  key={s}
+                  type="button"
+                  className={s === school ? 'chip is-active' : 'chip'}
+                  onClick={() => setSchool(s)}
+                >
+                  {s}
+                </button>
+              ))}
+            </div>
           </div>
         </Reveal>
 
-        <Reveal>
-          <section className="catalog-head">
-            <div>
-              <p className="eyebrow">Course catalog</p>
-              <h2>Choose a skill to build.</h2>
-            </div>
-            <Button to="/signup">Explore courses</Button>
-          </section>
-        </Reveal>
+        <p className="catalog-count">
+          {filtered.length} {filtered.length === 1 ? 'course' : 'courses'}
+        </p>
 
-        <div className="course-grid">
-          {courses.map(([name, text], i) => {
-            const Icon = icons[i];
-            return (
-              <Reveal key={name} delay={(i % 3) * 70}>
-                <article className="course-card">
+        {filtered.length === 0 ? (
+          <div className="empty-card">No courses match that search yet.</div>
+        ) : (
+          <div className="course-grid">
+            {filtered.map((c, i) => (
+              <Reveal key={c.id} delay={(i % 3) * 60}>
+                <Link to="/academy/$slug" params={{ slug: c.slug }} className="course-card course-card-link">
                   <div className="card-top">
-                    <span className="number-badge">{String(i + 1).padStart(2, '0')}</span>
-                    <Icon size={20} />
+                    <span className="tag">{c.school}</span>
+                    <ArrowUpRight size={18} />
                   </div>
-                  <h3>{name}</h3>
-                  <p>{text}</p>
-                </article>
+                  <h3>{c.title}</h3>
+                  <p>{c.summary}</p>
+                  <div className="course-card-foot">
+                    <strong>{formatPrice(c.prices)}</strong>
+                    <span>Self-paced · Certificate</span>
+                  </div>
+                </Link>
               </Reveal>
-            );
-          })}
-        </div>
+            ))}
+          </div>
+        )}
       </main>
     </PageShell>
   );
