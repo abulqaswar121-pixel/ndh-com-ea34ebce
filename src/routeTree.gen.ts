@@ -15,6 +15,7 @@ import { Route as SignupRouteImport } from './routes/signup'
 import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as ContactRouteImport } from './routes/contact'
+import { Route as BlogRouteImport } from './routes/blog'
 import { Route as AgencyRouteImport } from './routes/agency'
 import { Route as AcademyRouteImport } from './routes/academy'
 import { Route as AboutRouteImport } from './routes/about'
@@ -62,6 +63,11 @@ const LoginRoute = LoginRouteImport.update({
 const ContactRoute = ContactRouteImport.update({
   id: '/contact',
   path: '/contact',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BlogRoute = BlogRouteImport.update({
+  id: '/blog',
+  path: '/blog',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AgencyRoute = AgencyRouteImport.update({
@@ -167,6 +173,7 @@ export interface FileRoutesByFullPath {
   '/about': typeof AboutRoute
   '/academy': typeof AcademyRouteWithChildren
   '/agency': typeof AgencyRoute
+  '/blog': typeof BlogRoute
   '/contact': typeof ContactRoute
   '/login': typeof LoginRoute
   '/privacy': typeof PrivacyRoute
@@ -192,6 +199,7 @@ export interface FileRoutesByTo {
   '/about': typeof AboutRoute
   '/academy': typeof AcademyRouteWithChildren
   '/agency': typeof AgencyRoute
+  '/blog': typeof BlogRoute
   '/contact': typeof ContactRoute
   '/login': typeof LoginRoute
   '/privacy': typeof PrivacyRoute
@@ -219,6 +227,7 @@ export interface FileRoutesById {
   '/about': typeof AboutRoute
   '/academy': typeof AcademyRouteWithChildren
   '/agency': typeof AgencyRoute
+  '/blog': typeof BlogRoute
   '/contact': typeof ContactRoute
   '/login': typeof LoginRoute
   '/privacy': typeof PrivacyRoute
@@ -246,6 +255,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/academy'
     | '/agency'
+    | '/blog'
     | '/contact'
     | '/login'
     | '/privacy'
@@ -271,6 +281,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/academy'
     | '/agency'
+    | '/blog'
     | '/contact'
     | '/login'
     | '/privacy'
@@ -297,6 +308,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/academy'
     | '/agency'
+    | '/blog'
     | '/contact'
     | '/login'
     | '/privacy'
@@ -324,6 +336,7 @@ export interface RootRouteChildren {
   AboutRoute: typeof AboutRoute
   AcademyRoute: typeof AcademyRouteWithChildren
   AgencyRoute: typeof AgencyRoute
+  BlogRoute: typeof BlogRoute
   ContactRoute: typeof ContactRoute
   LoginRoute: typeof LoginRoute
   PrivacyRoute: typeof PrivacyRoute
@@ -377,6 +390,13 @@ declare module '@tanstack/react-router' {
       path: '/contact'
       fullPath: '/contact'
       preLoaderRoute: typeof ContactRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/blog': {
+      id: '/blog'
+      path: '/blog'
+      fullPath: '/blog'
+      preLoaderRoute: typeof BlogRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/agency': {
@@ -552,6 +572,7 @@ const rootRouteChildren: RootRouteChildren = {
   AboutRoute: AboutRoute,
   AcademyRoute: AcademyRouteWithChildren,
   AgencyRoute: AgencyRoute,
+  BlogRoute: BlogRoute,
   ContactRoute: ContactRoute,
   LoginRoute: LoginRoute,
   PrivacyRoute: PrivacyRoute,
