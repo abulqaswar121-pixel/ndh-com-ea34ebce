@@ -1,6 +1,6 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import { Loader2 } from "lucide-react";
+import { ArrowLeft, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { lovable } from "@/integrations/lovable";
@@ -25,7 +25,7 @@ function LoginPage() {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState<"email" | "google" | null>(null);
 
   useEffect(() => {
     if (user && role) void navigate({ to: roleHome(role) });
@@ -33,7 +33,7 @@ function LoginPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setLoading(true);
+    setLoading("email");
     try {
       const { error } = await supabase.auth.signInWithPassword({ email, password });
       if (error) {
@@ -48,12 +48,12 @@ function LoginPage() {
       console.error("Sign-in could not start", error);
       toast.error("Sign-in is temporarily unavailable. Refresh the page and try again.");
     } finally {
-      setLoading(false);
+      setLoading(null);
     }
   };
 
   const handleGoogle = async () => {
-    setLoading(true);
+    setLoading("google");
     try {
       const result = await lovable.auth.signInWithOAuth("google", {
         redirect_uri: window.location.origin + "/login",
@@ -63,18 +63,21 @@ function LoginPage() {
       console.error("Google sign-in could not start", error);
       toast.error("Google sign-in is temporarily unavailable. Refresh the page and try again.");
     } finally {
-      setLoading(false);
+      setLoading(null);
     }
   };
 
   return (
     <main className="auth-page">
       <div className="auth-card">
+        <Link to="/" className="auth-close" aria-label="Back to homepage">
+          <ArrowLeft size={18} />
+        </Link>
         <img src={logo} alt="Najeeb Digital Hub" width={48} height={48}  />
         <h1>Sign in</h1>
 
-        <Button type="button" variant="outline" className="auth-oauth" onClick={handleGoogle} disabled={loading}>
-          {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : "Continue with Google"}
+        <Button type="button" variant="outline" className="auth-oauth" onClick={handleGoogle} disabled={loading !== null}>
+          {loading === "google" ? <Loader2 className="h-4 w-4 animate-spin" /> : "Continue with Google"}
         </Button>
 
         <div className="auth-divider">
@@ -106,8 +109,8 @@ function LoginPage() {
               
             />
           </div>
-          <Button type="submit" disabled={loading}>
-            {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : "Sign in"}
+          <Button type="submit" disabled={loading !== null}>
+            {loading === "email" ? <Loader2 className="h-4 w-4 animate-spin" /> : "Sign in"}
           </Button>
         </form>
 

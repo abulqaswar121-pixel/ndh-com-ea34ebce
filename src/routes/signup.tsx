@@ -1,6 +1,6 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import { Loader2 } from "lucide-react";
+import { ArrowLeft, Loader2, MailCheck } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { lovable } from "@/integrations/lovable";
@@ -32,7 +32,8 @@ function SignupPage() {
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState<"email" | "google" | null>(null);
+  const [confirmationEmail, setConfirmationEmail] = useState<string | null>(null);
 
   useEffect(() => {
     if (user && currentRole) void navigate({ to: roleHome(currentRole) });
@@ -44,9 +45,9 @@ function SignupPage() {
       toast.error("Password must be at least 8 characters");
       return;
     }
-    setLoading(true);
+    setLoading("email");
     try {
-      const { error } = await supabase.auth.signUp({
+      const { data, error } = await supabase.auth.signUp({
         email,
         password,
         options: {
@@ -63,17 +64,20 @@ function SignupPage() {
         );
         return;
       }
-      toast.success("Check your email to confirm your account, then sign in.");
+      if (!data.session) {
+        setConfirmationEmail(email);
+        toast.success("Check your email to confirm your account.");
+      }
     } catch (error) {
       console.error("Account creation could not start", error);
       toast.error("Account creation is temporarily unavailable. Refresh the page and try again.");
     } finally {
-      setLoading(false);
+      setLoading(null);
     }
   };
 
   const handleGoogle = async () => {
-    setLoading(true);
+    setLoading("google");
     try {
       const result = await lovable.auth.signInWithOAuth("google", {
         redirect_uri: window.location.origin + "/signup",
@@ -83,15 +87,27 @@ function SignupPage() {
       console.error("Google sign-up could not start", error);
       toast.error("Google sign-up is temporarily unavailable. Refresh the page and try again.");
     } finally {
-      setLoading(false);
+      setLoading(null);
     }
   };
 
   return (
     <main className="auth-page">
       <div className="auth-card">
+        <Link to="/" className="auth-close" aria-label="Back to homepage">
+          <ArrowLeft size={18} />
+        </Link>
         <img src={logo} alt="Najeeb Digital Hub" width={48} height={48}  />
-        <h1>Create your account</h1>
+        {confirmationEmail ? (
+          <div className="auth-confirmation" role="status">
+            <MailCheck size={28} />
+            <h1>Check your email</h1>
+            <p>We sent a confirmation link to {confirmationEmail}. Open it to finish creating your account.</p>
+            <Link to="/login" className="button">Go to sign in</Link>
+          </div>
+        ) : (
+          <>
+          <h1>Create your account</h1>
 
         <div className="auth-toggle">
           {(["client", "student"] as const).map((t) => (
@@ -106,8 +122,8 @@ function SignupPage() {
           ))}
         </div>
 
-        <Button type="button" variant="outline" className="auth-oauth" onClick={handleGoogle} disabled={loading}>
-          {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : "Continue with Google"}
+        <Button type="button" variant="outline" className="auth-oauth" onClick={handleGoogle} disabled={loading !== null}>
+          {loading === "google" ? <Loader2 className="h-4 w-4 animate-spin" /> : "Continue with Google"}
         </Button>
 
         <div className="auth-divider">
@@ -150,14 +166,16 @@ function SignupPage() {
               
             />
           </div>
-          <Button type="submit" disabled={loading}>
-            {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : "Create account"}
+          <Button type="submit" disabled={loading !== null}>
+            {loading === "email" ? <Loader2 className="h-4 w-4 animate-spin" /> : "Create account"}
           </Button>
         </form>
 
         <p className="auth-alt">
           Already have an account? <Link to="/login" >Sign in</Link>
         </p>
+          </>
+        )}
       </div>
     </main>
   );

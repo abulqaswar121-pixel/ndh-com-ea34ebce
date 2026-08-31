@@ -1002,10 +1002,31 @@ textarea {
 }
 
 .auth-card {
+  position: relative;
   width: min(430px, 100%);
   padding: 36px 32px;
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-lift);
+}
+
+.auth-close {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  display: grid;
+  width: 38px;
+  height: 38px;
+  place-items: center;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  color: var(--ink);
+  background: var(--paper);
+  transition: background 0.18s ease, border-color 0.18s ease;
+}
+
+.auth-close:hover {
+  border-color: var(--ink);
+  background: var(--surface);
 }
 
 .auth-card img {
@@ -1746,6 +1767,24 @@ footer img {
 .auth-form button[type="submit"] {
   width: 100%;
   margin-top: 4px;
+}
+
+.auth-confirmation {
+  display: grid;
+  gap: 14px;
+}
+
+.auth-confirmation > svg {
+  color: var(--accent);
+}
+
+.auth-confirmation p {
+  color: var(--muted);
+}
+
+.auth-confirmation .button {
+  width: 100%;
+  margin-top: 6px;
 }
 
 /* ---------- Catalog, course detail, blog, work, CMS ---------- */
