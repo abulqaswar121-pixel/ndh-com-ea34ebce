@@ -5,6 +5,8 @@ import { Menu, X, MessageCircle, Facebook, Instagram } from 'lucide-react';
 const links: [string, string][] = [
   ['/agency', 'Agency'],
   ['/academy', 'Academy'],
+  ['/work', 'Work'],
+  ['/blog', 'Blog'],
   ['/about', 'About'],
   ['/contact', 'Contact'],
 ];
@@ -104,6 +106,8 @@ export function PageShell({ children, title }: { children?: ReactNode; title?: s
           <Link to="/agency">Agency</Link>
           <Link to="/academy">Academy</Link>
           <Link to="/about">About</Link>
+          <Link to="/work">Work</Link>
+          <Link to="/blog">Blog</Link>
           <Link to="/talent-application">Work with us</Link>
         </div>
 

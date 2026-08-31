@@ -21,7 +21,7 @@ export const Route = createFileRoute('/')({
 
 const pillars = [
   ['Digital delivery', 'Brand, product, web, media and growth work guided by a project manager.', Boxes],
-  ['AI skills', 'Short courses built around an AI exam, a reviewed project and a certificate.', BrainCircuit],
+  ['AI skills', 'Short courses built around a final assessment, a practical project and a certificate.', BrainCircuit],
   ['Clear process', 'A defined route from brief to scope, assignment, review and delivery.', CheckCircle2],
 ] as const;
 
@@ -107,7 +107,7 @@ function Home() {
               <p className="eyebrow">For learners</p>
               <h2>Learn a practical AI skill, then prove it.</h2>
               <p>
-                Focused courses across six AI schools. Finish the lessons, sit an AI-set exam, submit a
+                Focused courses across six AI schools. Finish the lessons, sit the final assessment, submit a
                 project, and receive a signed certificate.
               </p>
               <Button to="/academy" secondary>
