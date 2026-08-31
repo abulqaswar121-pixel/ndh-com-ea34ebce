@@ -37,7 +37,7 @@ function About() {
               </p>
               <h2>How the academy works</h2>
               <p>
-                Courses are short and specific. Each one ends with an AI-set exam and a reviewed project,
+                Courses are short and specific. Each one ends with a final assessment and a reviewed project,
                 so a certificate reflects work actually done rather than time spent watching.
               </p>
               <h2>Where we work</h2>
