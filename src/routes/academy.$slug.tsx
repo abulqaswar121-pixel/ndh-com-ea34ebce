@@ -3,7 +3,7 @@ import { BadgeCheck, CheckCircle2, Clock, GraduationCap, ListChecks } from 'luci
 import { PageShell } from '@/components/PageShell';
 import { Reveal } from '@/components/Reveal';
 import { getCourse } from '@/lib/catalog.functions';
-import { formatPrice } from './academy';
+import { formatPrice } from '@/lib/format';
 
 export const Route = createFileRoute('/academy/$slug')({
   loader: async ({ params }) => {

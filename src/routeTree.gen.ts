@@ -22,6 +22,7 @@ import { Route as AcademyRouteImport } from './routes/academy'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AcademyIndexRouteImport } from './routes/academy.index'
 import { Route as InviteTokenRouteImport } from './routes/invite.$token'
 import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
 import { Route as AcademySlugRouteImport } from './routes/academy.$slug'
@@ -100,6 +101,11 @@ const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
+} as any)
+const AcademyIndexRoute = AcademyIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AcademyRoute,
 } as any)
 const InviteTokenRoute = InviteTokenRouteImport.update({
   id: '/invite/$token',
@@ -196,6 +202,7 @@ export interface FileRoutesByFullPath {
   '/academy/$slug': typeof AcademySlugRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/invite/$token': typeof InviteTokenRoute
+  '/academy/': typeof AcademyIndexRoute
   '/certificate/$id': typeof AuthenticatedCertificateIdRoute
   '/exam/$slug': typeof AuthenticatedExamSlugRoute
   '/learning/$slug': typeof AuthenticatedLearningSlugRoute
@@ -211,7 +218,6 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
-  '/academy': typeof AcademyRouteWithChildren
   '/agency': typeof AgencyRoute
   '/blog': typeof BlogRouteWithChildren
   '/contact': typeof ContactRoute
@@ -224,6 +230,7 @@ export interface FileRoutesByTo {
   '/academy/$slug': typeof AcademySlugRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/invite/$token': typeof InviteTokenRoute
+  '/academy': typeof AcademyIndexRoute
   '/certificate/$id': typeof AuthenticatedCertificateIdRoute
   '/exam/$slug': typeof AuthenticatedExamSlugRoute
   '/learning/$slug': typeof AuthenticatedLearningSlugRoute
@@ -254,6 +261,7 @@ export interface FileRoutesById {
   '/academy/$slug': typeof AcademySlugRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/invite/$token': typeof InviteTokenRoute
+  '/academy/': typeof AcademyIndexRoute
   '/_authenticated/certificate/$id': typeof AuthenticatedCertificateIdRoute
   '/_authenticated/exam/$slug': typeof AuthenticatedExamSlugRoute
   '/_authenticated/learning/$slug': typeof AuthenticatedLearningSlugRoute
@@ -284,6 +292,7 @@ export interface FileRouteTypes {
     | '/academy/$slug'
     | '/blog/$slug'
     | '/invite/$token'
+    | '/academy/'
     | '/certificate/$id'
     | '/exam/$slug'
     | '/learning/$slug'
@@ -299,7 +308,6 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/about'
-    | '/academy'
     | '/agency'
     | '/blog'
     | '/contact'
@@ -312,6 +320,7 @@ export interface FileRouteTypes {
     | '/academy/$slug'
     | '/blog/$slug'
     | '/invite/$token'
+    | '/academy'
     | '/certificate/$id'
     | '/exam/$slug'
     | '/learning/$slug'
@@ -341,6 +350,7 @@ export interface FileRouteTypes {
     | '/academy/$slug'
     | '/blog/$slug'
     | '/invite/$token'
+    | '/academy/'
     | '/_authenticated/certificate/$id'
     | '/_authenticated/exam/$slug'
     | '/_authenticated/learning/$slug'
@@ -465,6 +475,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/academy/': {
+      id: '/academy/'
+      path: '/'
+      fullPath: '/academy/'
+      preLoaderRoute: typeof AcademyIndexRouteImport
+      parentRoute: typeof AcademyRoute
     }
     '/invite/$token': {
       id: '/invite/$token'
@@ -596,10 +613,12 @@ const AuthenticatedRouteRouteWithChildren =
 
 interface AcademyRouteChildren {
   AcademySlugRoute: typeof AcademySlugRoute
+  AcademyIndexRoute: typeof AcademyIndexRoute
 }
 
 const AcademyRouteChildren: AcademyRouteChildren = {
   AcademySlugRoute: AcademySlugRoute,
+  AcademyIndexRoute: AcademyIndexRoute,
 }
 
 const AcademyRouteWithChildren =
