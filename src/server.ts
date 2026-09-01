@@ -7,6 +7,15 @@ type ServerEntry = {
   fetch: (request: Request, env: unknown, ctx: unknown) => Promise<Response> | Response;
 };
 
+type RuntimeEnvironment = Record<string, unknown>;
+
+declare global {
+  // The Cloudflare-compatible process shim reads request bindings from this
+  // runtime slot. Keep it current for every request, including cold starts.
+  // eslint-disable-next-line no-var
+  var __env__: RuntimeEnvironment | undefined;
+}
+
 let serverEntryPromise: Promise<ServerEntry> | undefined;
 
 async function getServerEntry(): Promise<ServerEntry> {
@@ -40,6 +49,9 @@ async function normalizeCatastrophicSsrResponse(response: Response): Promise<Res
 export default {
   async fetch(request: Request, env: unknown, ctx: unknown) {
     try {
+      if (env && typeof env === "object") {
+        globalThis.__env__ = env as RuntimeEnvironment;
+      }
       const handler = await getServerEntry();
       const response = await handler.fetch(request, env, ctx);
       return await normalizeCatastrophicSsrResponse(response);

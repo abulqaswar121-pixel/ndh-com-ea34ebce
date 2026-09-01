@@ -1,8 +1,30 @@
 import { createServerFn } from '@tanstack/react-start';
+import { createClient } from '@supabase/supabase-js';
+import type { Database } from '@/integrations/supabase/types';
 
-async function publicDataClient() {
-  const { supabaseAdmin } = await import('@/integrations/supabase/client.server');
-  return supabaseAdmin;
+function createPublicDataClient(url: string, key: string) {
+  return createClient<Database>(url, key, {
+    global: {
+      fetch: (input, init) => {
+        const headers = new Headers(
+          typeof Request !== 'undefined' && input instanceof Request ? input.headers : undefined,
+        );
+        if (init?.headers) {
+          new Headers(init.headers).forEach((value, name) => headers.set(name, value));
+        }
+        if (key.startsWith('sb_') && headers.get('Authorization') === `Bearer ${key}`) {
+          headers.delete('Authorization');
+        }
+        headers.set('apikey', key);
+        return fetch(input, { ...init, headers });
+      },
+    },
+    auth: {
+      storage: undefined,
+      persistSession: false,
+      autoRefreshToken: false,
+    },
+  });
 }
 
 export type CoursePrice = { region: string; currency: string; amount: number };
@@ -16,7 +38,10 @@ export type CourseSummary = {
 };
 
 export const listCourses = createServerFn({ method: 'GET' }).handler(async (): Promise<CourseSummary[]> => {
-  const db = await publicDataClient();
+  const url = process.env['SUPABASE_URL'];
+  const key = process.env['SUPABASE_PUBLISHABLE_KEY'];
+  if (!url || !key) throw new Error('Public catalog configuration is unavailable.');
+  const db = createPublicDataClient(url, key);
   const [{ data: courses }, { data: pricing }] = await Promise.all([
     db.from('courses').select('id, slug, title, summary, school').eq('is_published', true).order('title'),
     db.from('course_pricing').select('course_id, region, currency, amount'),
@@ -39,7 +64,10 @@ export type CourseDetail = CourseSummary & {
 export const getCourse = createServerFn({ method: 'GET' })
   .inputValidator((data: { slug: string }) => data)
   .handler(async ({ data }): Promise<CourseDetail | null> => {
-    const db = await publicDataClient();
+    const url = process.env['SUPABASE_URL'];
+    const key = process.env['SUPABASE_PUBLISHABLE_KEY'];
+    if (!url || !key) throw new Error('Public catalog configuration is unavailable.');
+    const db = createPublicDataClient(url, key);
     const { data: course } = await db
       .from('courses')
       .select('id, slug, title, summary, school, learning_objectives, project_theme, cover_image_url')
@@ -59,7 +87,10 @@ export const getCourse = createServerFn({ method: 'GET' })
   });
 
 export const listPosts = createServerFn({ method: 'GET' }).handler(async () => {
-  const db = await publicDataClient();
+  const url = process.env['SUPABASE_URL'];
+  const key = process.env['SUPABASE_PUBLISHABLE_KEY'];
+  if (!url || !key) throw new Error('Public catalog configuration is unavailable.');
+  const db = createPublicDataClient(url, key);
   const { data } = await db
     .from('posts')
     .select('slug, title, excerpt, cover_image_url, author_name, published_at')
@@ -71,7 +102,10 @@ export const listPosts = createServerFn({ method: 'GET' }).handler(async () => {
 export const getPost = createServerFn({ method: 'GET' })
   .inputValidator((data: { slug: string }) => data)
   .handler(async ({ data }) => {
-    const db = await publicDataClient();
+    const url = process.env['SUPABASE_URL'];
+    const key = process.env['SUPABASE_PUBLISHABLE_KEY'];
+    if (!url || !key) throw new Error('Public catalog configuration is unavailable.');
+    const db = createPublicDataClient(url, key);
     const { data: post } = await db
       .from('posts')
       .select('slug, title, excerpt, body, cover_image_url, author_name, published_at')
@@ -82,7 +116,10 @@ export const getPost = createServerFn({ method: 'GET' })
   });
 
 export const listCaseStudies = createServerFn({ method: 'GET' }).handler(async () => {
-  const db = await publicDataClient();
+  const url = process.env['SUPABASE_URL'];
+  const key = process.env['SUPABASE_PUBLISHABLE_KEY'];
+  if (!url || !key) throw new Error('Public catalog configuration is unavailable.');
+  const db = createPublicDataClient(url, key);
   const { data } = await db
     .from('case_studies')
     .select('slug, title, client_name, summary, challenge, approach, result, cover_image_url')
@@ -92,7 +129,10 @@ export const listCaseStudies = createServerFn({ method: 'GET' }).handler(async (
 });
 
 export const listTestimonials = createServerFn({ method: 'GET' }).handler(async () => {
-  const db = await publicDataClient();
+  const url = process.env['SUPABASE_URL'];
+  const key = process.env['SUPABASE_PUBLISHABLE_KEY'];
+  if (!url || !key) throw new Error('Public catalog configuration is unavailable.');
+  const db = createPublicDataClient(url, key);
   const { data } = await db
     .from('testimonials')
     .select('id, author_name, author_role, company, quote')
@@ -116,7 +156,10 @@ export const submitEnquiry = createServerFn({ method: 'POST' })
     return data;
   })
   .handler(async ({ data }) => {
-    const db = await publicDataClient();
+    const url = process.env['SUPABASE_URL'];
+    const key = process.env['SUPABASE_PUBLISHABLE_KEY'];
+    if (!url || !key) throw new Error('Enquiry service configuration is unavailable.');
+    const db = createPublicDataClient(url, key);
     const { error } = await db.from('enquiries').insert({
       full_name: data.full_name.trim().slice(0, 200),
       email: data.email.trim().slice(0, 200),
