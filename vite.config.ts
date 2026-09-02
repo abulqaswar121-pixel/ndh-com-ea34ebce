@@ -11,11 +11,15 @@ const publicBackendUrl = process.env["VITE_SUPABASE_URL"] ?? process.env["SUPABA
 const publicBackendKey =
   process.env["VITE_SUPABASE_PUBLISHABLE_KEY"] ?? process.env["SUPABASE_PUBLISHABLE_KEY"];
 
-if (!publicBackendUrl || !publicBackendKey) {
-  throw new Error(
-    "The managed public backend URL and publishable key must be available while building the browser bundle.",
-  );
-}
+const publicBackendDefinitions =
+  publicBackendUrl && publicBackendKey
+    ? {
+        "import.meta.env.VITE_SUPABASE_URL": JSON.stringify(publicBackendUrl),
+        "import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY": JSON.stringify(publicBackendKey),
+        "process.env.SUPABASE_URL": JSON.stringify(publicBackendUrl),
+        "process.env.SUPABASE_PUBLISHABLE_KEY": JSON.stringify(publicBackendKey),
+      }
+    : undefined;
 
 export default defineConfig({
   tanstackStart: {
@@ -25,12 +29,7 @@ export default defineConfig({
     // The managed Cloud bindings are available to the server build without a
     // VITE_ prefix. Explicitly bridge only these public values into browser
     // code so authentication can initialize on a fresh production visit.
-    define: {
-      "import.meta.env.VITE_SUPABASE_URL": JSON.stringify(publicBackendUrl),
-      "import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY": JSON.stringify(publicBackendKey),
-      "process.env.SUPABASE_URL": JSON.stringify(publicBackendUrl),
-      "process.env.SUPABASE_PUBLISHABLE_KEY": JSON.stringify(publicBackendKey),
-    },
+    define: publicBackendDefinitions,
     plugins: [mcpPlugin()],
     server: {
       host: "0.0.0.0",
