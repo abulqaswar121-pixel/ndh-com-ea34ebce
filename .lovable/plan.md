@@ -1,33 +1,27 @@
-# Fix live authentication + clean up stale users
+# Guarantee browser auth config on the live site
 
-## Diagnosis (verified directly against the backend)
+## The variables
 
-- The backend currently holds **19 user accounts**, all email-confirmed, created June–August 2026. They are **not** the cause of the sign-up/sign-in failure — each account is an independent row and cannot block another user's authentication.
-- One row is a leftover test artifact: `invalid-preview-check@example.invalid` (created 2026-08-29). Safe to delete.
-- The real, confirmed root cause of "temporarily unavailable" on ndh.com.ng: the **deployed frontend bundle was built without the browser auth configuration** (`VITE_SUPABASE_URL` / `VITE_SUPABASE_PUBLISHABLE_KEY`). Login/signup run entirely in the browser, so the auth client throws immediately and the UI shows the fallback message. Refreshing can never fix this.
-- The code fix is already in place (build-time bridge that injects the managed public URL/key and **fails the build** if they are absent, so a broken bundle can never be deployed again). It is waiting on a publish.
+Two public, build-time (browser-visible) variables. Both are safe to expose — they are the same values every Supabase frontend ships publicly.
 
-## Plan
+- `VITE_SUPABASE_URL` = `https://uwhiftozhvrvtulwtrve.supabase.co`
+- `VITE_SUPABASE_PUBLISHABLE_KEY` (anon key) =
+  `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InV3aGlmdG96aHZydnR1bHd0cnZlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODI4MTE0NTgsImV4cCI6MjA5ODM4NzQ1OH0.l3-CqLOBLQ6JlQjS2JaiTbqGnAnqEXAXoLQuZvAluS8`
 
-1. **Clean up the stale test user**
-   - Delete `invalid-preview-check@example.invalid` from auth (and any linked profile/roles rows) using the privileged server path.
-   - Keep all real users untouched. Keep `abunnajeeh7@gmail.com` as admin.
+These are already present in the project environment, and `vite.config.ts` already bridges them into the browser bundle. What is not guaranteed is that the **deploy build** sees them — that is the remaining gap.
 
-2. **Verify the build carries the browser auth config**
-   - Confirm the new production bundle contains `uwhiftozhvrvtulwtrve.supabase.co` and the publishable key, and no longer contains the empty `{}.SUPABASE_URL` pattern.
+## What to change
 
-3. **Publish**
-   - Publish the current build so the fixed bundle replaces the broken one on ndh.com.ng.
+1. `vite.config.ts` — give the public bridge literal fallbacks to the two values above, so the browser bundle can never again compile with an empty backend URL/key regardless of how the deploy environment is populated. Keep environment values as the first choice.
+2. Add a build-time assertion: if neither environment nor fallback yields both values, fail the build instead of shipping a broken auth bundle.
+3. `src/lib/auth.tsx` — make session initialization non-throwing so a configuration problem degrades to "signed out" rather than a dead UI.
 
-4. **Verify on the live site with fresh browser sessions (no prior storage)**
-   - `/signup`: create a disposable account → no "temporarily unavailable", confirmation email flow shown.
-   - `/login`: sign in with an existing account → routes to the correct portal; sign out and back in.
-   - Browser console: no "Missing Supabase environment variable(s)" errors, no failed auth requests.
-   - Start Google sign-in and confirm the flow opens and returns correctly.
-   - Delete the disposable test account afterwards.
+`src/integrations/supabase/client.ts` is auto-generated and stays untouched.
 
-## Technical details
+## Verify
 
-- User deletion goes through `supabaseAdmin` (Auth Admin API) inside a server function — never exposed to the browser; cascades remove linked `profiles` / `user_roles` rows.
-- The build-time bridge reads only the managed **publishable** values; the service-role secret is never touched or shipped.
-- Acceptance is judged only on ndh.com.ng from fresh browser contexts with recorded evidence — not from localhost or a warm refresh.
+- Confirm the freshly built browser asset contains `uwhiftozhvrvtulwtrve.supabase.co` and no `{}.SUPABASE_URL`.
+- Publish, then from clean browser contexts on `ndh.com.ng`: sign up a disposable account, confirm, sign out, sign back in, land on the right portal, delete it. Start Google sign-in and confirm the provider flow opens.
+- Console must show no "Missing Supabase environment variable(s)" and no failed auth requests.
+
+I report success only with live-domain evidence, not preview or localhost.
