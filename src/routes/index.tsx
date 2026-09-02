@@ -2,6 +2,7 @@ import { createFileRoute } from '@tanstack/react-router';
 import { ArrowUpRight, Boxes, BrainCircuit, CheckCircle2, Sparkles } from 'lucide-react';
 import { PageShell, Button } from '@/components/PageShell';
 import { Reveal } from '@/components/Reveal';
+import { ResponsiveImage } from '@/components/ResponsiveImage';
 
 const title = 'Najeeb Digital Hub — Digital delivery and AI skills';
 const description =
@@ -14,6 +15,10 @@ export const Route = createFileRoute('/')({
       { name: 'description', content: description },
       { property: 'og:title', content: title },
       { property: 'og:description', content: description },
+      { property: 'og:type', content: 'website' },
+      { property: 'og:image', content: 'https://ndh.com.ng/og-image.png' },
+      { name: 'twitter:card', content: 'summary_large_image' },
+      { name: 'twitter:image', content: 'https://ndh.com.ng/og-image.png' },
     ],
   }),
   component: Home,
@@ -51,7 +56,7 @@ function Home() {
           </div>
           <Reveal delay={120}>
             <div className="hero-stage">
-              <img src="/ndh-hero-new.png" alt="A designer's desk with a website layout in progress" />
+              <ResponsiveImage name="ndh-hero" alt="A designer's desk with a website layout in progress" width={1280} height={960} priority sizes="(max-width: 760px) 100vw, 52vw" />
               <div className="stage-note">
                 <Sparkles size={16} />
                 <span>Ideas into useful work</span>
@@ -83,7 +88,7 @@ function Home() {
         <section className="split-section">
           <Reveal>
             <div className="split-visual">
-              <img src="/ndh-agency-work.png" alt="A project team reviewing work together in a studio" />
+              <ResponsiveImage name="ndh-agency-work" alt="A project team reviewing work together in a studio" width={1280} height={960} />
             </div>
           </Reveal>
           <Reveal delay={100}>
@@ -117,7 +122,7 @@ function Home() {
           </Reveal>
           <Reveal delay={100}>
             <div className="split-visual">
-              <img src="/ndh-academy-new.png" alt="A learner following an online AI course and taking notes" />
+              <ResponsiveImage name="ndh-academy" alt="A learner following an online AI course and taking notes" width={1600} height={912} />
             </div>
           </Reveal>
         </section>

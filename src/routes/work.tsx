@@ -14,7 +14,9 @@ export const Route = createFileRoute('/work')({
       { property: 'og:title', content: title },
       { property: 'og:description', content: description },
       { property: 'og:type', content: 'website' },
+      { property: 'og:image', content: 'https://ndh.com.ng/og-image.png' },
       { name: 'twitter:card', content: 'summary_large_image' },
+      { name: 'twitter:image', content: 'https://ndh.com.ng/og-image.png' },
     ],
   }),
   loader: () => listCaseStudies(),
@@ -49,7 +51,7 @@ function Work() {
             {studies.map((s, i) => (
               <Reveal key={s.slug} delay={(i % 2) * 80}>
                 <article className="case-card">
-                  {s.cover_image_url && <img src={s.cover_image_url} alt="" loading="lazy" />}
+                  {s.cover_image_url && <img src={s.cover_image_url} alt={`Project cover for ${s.title}`} width={1200} height={800} loading="lazy" decoding="async" />}
                   <div>
                     <p className="eyebrow">{s.client_name}</p>
                     <h2>{s.title}</h2>

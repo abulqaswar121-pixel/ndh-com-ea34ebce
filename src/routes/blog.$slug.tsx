@@ -25,6 +25,9 @@ export const Route = createFileRoute('/blog/$slug')({
     if (loaderData.cover_image_url?.startsWith('https://')) {
       meta.push({ property: 'og:image', content: loaderData.cover_image_url });
       meta.push({ name: 'twitter:image', content: loaderData.cover_image_url });
+    } else {
+      meta.push({ property: 'og:image', content: 'https://ndh.com.ng/og-image.png' });
+      meta.push({ name: 'twitter:image', content: 'https://ndh.com.ng/og-image.png' });
     }
     return { meta };
   },
@@ -66,7 +69,7 @@ function Post() {
           {post.author_name ?? 'NDH'}
           {post.published_at ? ` · ${new Date(post.published_at).toLocaleDateString()}` : ''}
         </p>
-        {post.cover_image_url && <img className="article-cover" src={post.cover_image_url} alt="" />}
+        {post.cover_image_url && <img className="article-cover" src={post.cover_image_url} alt={`Cover for ${post.title}`} width={1200} height={675} loading="eager" fetchPriority="high" decoding="async" />}
         <div className="article-body">
           {(post.body ?? '')
             .split('\n')
