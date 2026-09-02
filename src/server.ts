@@ -50,7 +50,15 @@ export default {
   async fetch(request: Request, env: unknown, ctx: unknown) {
     try {
       if (env && typeof env === "object") {
-        globalThis.__env__ = env as RuntimeEnvironment;
+        const runtimeEnvironment = env as RuntimeEnvironment;
+        globalThis.__env__ = runtimeEnvironment;
+        // Keep Node-compatible dependencies and direct process.env reads aligned
+        // with the current Worker request bindings, including on cold starts.
+        if (typeof process !== "undefined" && process.env) {
+          for (const [name, value] of Object.entries(runtimeEnvironment)) {
+            if (typeof value === "string") process.env[name] = value;
+          }
+        }
       }
       const handler = await getServerEntry();
       const response = await handler.fetch(request, env, ctx);
