@@ -15,6 +15,8 @@ export const Route = createFileRoute("/signup")({
       { name: "description", content: "Create a Najeeb Digital Hub account." },
       { property: "og:title", content: "Create an account — Najeeb Digital Hub" },
       { property: "og:description", content: "Create a Najeeb Digital Hub account." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary" },
     ],
   }),
   component: SignupPage,

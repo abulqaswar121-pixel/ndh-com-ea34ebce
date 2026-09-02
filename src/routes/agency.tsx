@@ -14,6 +14,10 @@ export const Route = createFileRoute('/agency')({
       { name: 'description', content: description },
       { property: 'og:title', content: title },
       { property: 'og:description', content: description },
+      { property: 'og:type', content: 'website' },
+      { property: 'og:image', content: 'https://ndh.com.ng/og-image.png' },
+      { name: 'twitter:card', content: 'summary_large_image' },
+      { name: 'twitter:image', content: 'https://ndh.com.ng/og-image.png' },
     ],
   }),
   component: Agency,
@@ -48,7 +52,7 @@ function Agency() {
       <main className="content agency-content">
         <Reveal>
           <div className="agency-banner">
-            <img src="/ndh-services-new.png" alt="A project timeline mapped out on a planning wall" />
+            <img src="/ndh-services-new.png" alt="A project timeline mapped out on a planning wall" width={1280} height={960} loading="lazy" decoding="async" />
             <div>
               <p className="eyebrow">The NDH method</p>
               <h2>Good work needs a clear path.</h2>

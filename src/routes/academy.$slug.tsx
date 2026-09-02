@@ -24,7 +24,9 @@ export const Route = createFileRoute('/academy/$slug')({
         { property: 'og:title', content: t },
         { property: 'og:description', content: d },
         { property: 'og:type', content: 'article' },
+        { property: 'og:image', content: 'https://ndh.com.ng/og-image.png' },
         { name: 'twitter:card', content: 'summary_large_image' },
+        { name: 'twitter:image', content: 'https://ndh.com.ng/og-image.png' },
       ],
     };
   },
