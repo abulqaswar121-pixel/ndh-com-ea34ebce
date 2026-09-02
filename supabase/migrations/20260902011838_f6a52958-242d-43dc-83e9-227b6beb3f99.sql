@@ -1,0 +1,1 @@
+ALTER FUNCTION public.course_outline(text) SECURITY INVOKER;
