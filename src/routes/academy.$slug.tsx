@@ -164,12 +164,7 @@ function CoursePage() {
                   or {intl.currency} {intl.amount.toLocaleString()} outside Nigeria
                 </p>
               )}
-              <Link to="/signup" className="button">
-                Enrol now
-              </Link>
-              <Link to="/login" className="button button-secondary">
-                Sign in to continue
-              </Link>
+              <EnrolActions slug={course.slug} hasIntlPrice={Boolean(intl)} />
               <ul className="plain-list">
                 <li>
                   <GraduationCap size={15} /> Lifetime access to the lessons
@@ -184,3 +179,79 @@ function CoursePage() {
     </PageShell>
   );
 }
+
+function EnrolActions({ slug, hasIntlPrice }: { slug: string; hasIntlPrice: boolean }) {
+  const { user, loading } = useAuth();
+  const navigate = useNavigate();
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState('');
+  const [region, setRegion] = useState<'NG' | 'INTL'>('NG');
+
+  async function enrol() {
+    setBusy(true);
+    setError('');
+    try {
+      const result = await startCourseCheckout({ data: { slug, region, origin: window.location.origin } });
+      if (result.status === 'redirect' && result.url) {
+        window.location.href = result.url;
+        return;
+      }
+      await navigate({ to: '/learning/$slug', params: { slug } });
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'We could not start checkout. Please try again.');
+      setBusy(false);
+    }
+  }
+
+  if (loading) {
+    return (
+      <button className="button" disabled>
+        Loading…
+      </button>
+    );
+  }
+
+  if (!user) {
+    return (
+      <>
+        <Link to="/signup" className="button">
+          Create an account to enrol
+        </Link>
+        <Link to="/login" className="button button-secondary">
+          Sign in to continue
+        </Link>
+      </>
+    );
+  }
+
+  return (
+    <>
+      {hasIntlPrice && (
+        <div className="region-toggle">
+          <button
+            type="button"
+            className={region === 'NG' ? 'is-active' : ''}
+            onClick={() => setRegion('NG')}
+          >
+            Pay in Nigeria
+          </button>
+          <button
+            type="button"
+            className={region === 'INTL' ? 'is-active' : ''}
+            onClick={() => setRegion('INTL')}
+          >
+            Pay internationally
+          </button>
+        </div>
+      )}
+      <button className="button" onClick={() => void enrol()} disabled={busy}>
+        {busy ? 'Starting checkout…' : 'Enrol now'}
+      </button>
+      <Link to="/portal/student" className="button button-secondary">
+        Go to my learning
+      </Link>
+      {error && <p className="form-error">{error}</p>}
+    </>
+  );
+}
+
