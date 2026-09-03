@@ -21,6 +21,7 @@ type AuthState = {
   session: Session | null;
   user: User | null;
   role: AppRole | null;
+  roles: AppRole[];
   loading: boolean;
   signOut: () => Promise<void>;
 };
@@ -29,16 +30,21 @@ const Ctx = createContext<AuthState>({
   session: null,
   user: null,
   role: null,
+  roles: [],
   loading: true,
   signOut: async () => {},
 });
 
-async function fetchPrimaryRole(userId: string): Promise<AppRole | null> {
+async function fetchRoles(userId: string): Promise<AppRole[]> {
   const { data, error } = await supabase.from("user_roles").select("role").eq("user_id", userId);
-  if (error || !data?.length) return null;
-  const roles = data.map((r) => r.role as AppRole);
+  if (error || !data?.length) return [];
+  return data.map((r) => r.role as AppRole);
+}
+
+function primaryRole(roles: AppRole[]): AppRole | null {
   return ROLE_PRIORITY.find((r) => roles.includes(r)) ?? roles[0] ?? null;
 }
+
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [session, setSession] = useState<Session | null>(null);
