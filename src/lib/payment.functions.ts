@@ -90,8 +90,10 @@ export const startCourseCheckout = createServerFn({ method: 'POST' })
           { onConflict: 'student_id,course_id' },
         );
       if (error) throw new Error(error.message);
+      await grantStudentRole(context.userId);
       return { status: 'enrolled' };
     }
+
 
     const email = (context.claims as any)?.email as string | undefined;
     if (!email) throw new Error('Your account has no email address on file.');
@@ -167,6 +169,8 @@ export const verifyCoursePayment = createServerFn({ method: 'POST' })
       _reference: tx.reference,
     });
     if (activationError) throw new Error(activationError.message);
+    await grantStudentRole(context.userId);
+
 
     const { data: course } = await context.supabase
       .from('courses')
