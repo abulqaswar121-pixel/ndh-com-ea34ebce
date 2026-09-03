@@ -7,19 +7,33 @@
 import { defineConfig } from "@lovable.dev/vite-tanstack-config";
 import { mcpPlugin } from "@lovable.dev/mcp-js/stacks/tanstack/vite";
 
-const publicBackendUrl = process.env["VITE_SUPABASE_URL"] ?? process.env["SUPABASE_URL"];
-const publicBackendKey =
-  process.env["VITE_SUPABASE_PUBLISHABLE_KEY"] ?? process.env["SUPABASE_PUBLISHABLE_KEY"];
+// Public (browser-visible) backend values. These are the publishable URL/anon
+// key — safe to ship in client code. Literal fallbacks guarantee the browser
+// bundle is never built without auth configuration, whatever the deploy env.
+const FALLBACK_BACKEND_URL = "https://uwhiftozhvrvtulwtrve.supabase.co";
+const FALLBACK_BACKEND_KEY =
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InV3aGlmdG96aHZydnR1bHd0cnZlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODI4MTE0NTgsImV4cCI6MjA5ODM4NzQ1OH0.l3-CqLOBLQ6JlQjS2JaiTbqGnAnqEXAXoLQuZvAluS8";
 
-const publicBackendDefinitions =
-  publicBackendUrl && publicBackendKey
-    ? {
-        "import.meta.env.VITE_SUPABASE_URL": JSON.stringify(publicBackendUrl),
-        "import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY": JSON.stringify(publicBackendKey),
-        "process.env.SUPABASE_URL": JSON.stringify(publicBackendUrl),
-        "process.env.SUPABASE_PUBLISHABLE_KEY": JSON.stringify(publicBackendKey),
-      }
-    : undefined;
+const publicBackendUrl =
+  process.env["VITE_SUPABASE_URL"] ?? process.env["SUPABASE_URL"] ?? FALLBACK_BACKEND_URL;
+const publicBackendKey =
+  process.env["VITE_SUPABASE_PUBLISHABLE_KEY"] ??
+  process.env["SUPABASE_PUBLISHABLE_KEY"] ??
+  FALLBACK_BACKEND_KEY;
+
+if (!publicBackendUrl || !publicBackendKey) {
+  throw new Error(
+    "Refusing to build: public backend URL/publishable key are missing, which would ship a broken authentication bundle.",
+  );
+}
+
+const publicBackendDefinitions = {
+  "import.meta.env.VITE_SUPABASE_URL": JSON.stringify(publicBackendUrl),
+  "import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY": JSON.stringify(publicBackendKey),
+  "process.env.SUPABASE_URL": JSON.stringify(publicBackendUrl),
+  "process.env.SUPABASE_PUBLISHABLE_KEY": JSON.stringify(publicBackendKey),
+};
+
 
 export default defineConfig({
   tanstackStart: {
