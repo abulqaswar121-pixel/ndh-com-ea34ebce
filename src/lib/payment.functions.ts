@@ -184,12 +184,37 @@ export const verifyCoursePayment = createServerFn({ method: 'POST' })
     if (activationError) throw new Error(activationError.message);
     await grantStudentRole(context.userId);
 
-
     const { data: course } = await context.supabase
       .from('courses')
       .select('slug, title')
       .eq('id', meta.course_id)
       .maybeSingle();
 
-    return { paid: true, slug: course?.slug ?? meta.slug ?? null, title: course?.title ?? null };
+    const slug = course?.slug ?? meta.slug ?? null;
+    const title = course?.title ?? null;
+
+    const recipient = (context.claims as { email?: string } | undefined)?.email ?? tx?.customer?.email;
+    if (recipient) {
+      const { sendTransactionalEmail, SITE_URL } = await import('@/lib/email/transactional.server');
+      await sendTransactionalEmail({
+        to: recipient,
+        subject: `Payment received — ${title ?? 'your course'}`,
+        label: 'payment_receipt',
+        preview: 'Your enrolment is active. Here is your receipt.',
+        heading: 'Payment received',
+        intro: `Thank you. Your enrolment${title ? ` for ${title}` : ''} is now active.`,
+        details: [
+          ...(title ? [{ label: 'Course', value: title }] : []),
+          { label: 'Amount', value: `${tx.currency} ${(Number(tx.amount) / 100).toLocaleString()}` },
+          { label: 'Reference', value: String(tx.reference) },
+          { label: 'Date', value: new Date().toUTCString() },
+        ],
+        ctaLabel: 'Start learning',
+        ctaUrl: slug ? `${SITE_URL}/learning/${slug}` : `${SITE_URL}/portal/student`,
+        footnote: 'Keep this email as your receipt.',
+      });
+    }
+
+    return { paid: true, slug, title };
   });
+
