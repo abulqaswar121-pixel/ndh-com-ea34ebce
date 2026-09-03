@@ -37,6 +37,7 @@ import { Route as AuthenticatedPortalClientRouteImport } from './routes/_authent
 import { Route as AuthenticatedPortalAdminRouteImport } from './routes/_authenticated/portal/admin'
 import { Route as AuthenticatedLearningSlugRouteImport } from './routes/_authenticated/learning.$slug'
 import { Route as AuthenticatedExamSlugRouteImport } from './routes/_authenticated/exam.$slug'
+import { Route as AuthenticatedEnrolCallbackRouteImport } from './routes/_authenticated/enrol.callback'
 import { Route as AuthenticatedCertificateIdRouteImport } from './routes/_authenticated/certificate.$id'
 import { Route as LovableEmailQueueProcessRouteImport } from './routes/lovable/email/queue/process'
 import { Route as LovableEmailAuthWebhookRouteImport } from './routes/lovable/email/auth/webhook'
@@ -188,6 +189,12 @@ const AuthenticatedExamSlugRoute = AuthenticatedExamSlugRouteImport.update({
   path: '/exam/$slug',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedEnrolCallbackRoute =
+  AuthenticatedEnrolCallbackRouteImport.update({
+    id: '/enrol/callback',
+    path: '/enrol/callback',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedCertificateIdRoute =
   AuthenticatedCertificateIdRouteImport.update({
     id: '/certificate/$id',
@@ -230,6 +237,7 @@ export interface FileRoutesByFullPath {
   '/academy/': typeof AcademyIndexRoute
   '/blog/': typeof BlogIndexRoute
   '/certificate/$id': typeof AuthenticatedCertificateIdRoute
+  '/enrol/callback': typeof AuthenticatedEnrolCallbackRoute
   '/exam/$slug': typeof AuthenticatedExamSlugRoute
   '/learning/$slug': typeof AuthenticatedLearningSlugRoute
   '/portal/admin': typeof AuthenticatedPortalAdminRoute
@@ -261,6 +269,7 @@ export interface FileRoutesByTo {
   '/academy': typeof AcademyIndexRoute
   '/blog': typeof BlogIndexRoute
   '/certificate/$id': typeof AuthenticatedCertificateIdRoute
+  '/enrol/callback': typeof AuthenticatedEnrolCallbackRoute
   '/exam/$slug': typeof AuthenticatedExamSlugRoute
   '/learning/$slug': typeof AuthenticatedLearningSlugRoute
   '/portal/admin': typeof AuthenticatedPortalAdminRoute
@@ -296,6 +305,7 @@ export interface FileRoutesById {
   '/academy/': typeof AcademyIndexRoute
   '/blog/': typeof BlogIndexRoute
   '/_authenticated/certificate/$id': typeof AuthenticatedCertificateIdRoute
+  '/_authenticated/enrol/callback': typeof AuthenticatedEnrolCallbackRoute
   '/_authenticated/exam/$slug': typeof AuthenticatedExamSlugRoute
   '/_authenticated/learning/$slug': typeof AuthenticatedLearningSlugRoute
   '/_authenticated/portal/admin': typeof AuthenticatedPortalAdminRoute
@@ -331,6 +341,7 @@ export interface FileRouteTypes {
     | '/academy/'
     | '/blog/'
     | '/certificate/$id'
+    | '/enrol/callback'
     | '/exam/$slug'
     | '/learning/$slug'
     | '/portal/admin'
@@ -362,6 +373,7 @@ export interface FileRouteTypes {
     | '/academy'
     | '/blog'
     | '/certificate/$id'
+    | '/enrol/callback'
     | '/exam/$slug'
     | '/learning/$slug'
     | '/portal/admin'
@@ -396,6 +408,7 @@ export interface FileRouteTypes {
     | '/academy/'
     | '/blog/'
     | '/_authenticated/certificate/$id'
+    | '/_authenticated/enrol/callback'
     | '/_authenticated/exam/$slug'
     | '/_authenticated/learning/$slug'
     | '/_authenticated/portal/admin'
@@ -631,6 +644,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedExamSlugRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/enrol/callback': {
+      id: '/_authenticated/enrol/callback'
+      path: '/enrol/callback'
+      fullPath: '/enrol/callback'
+      preLoaderRoute: typeof AuthenticatedEnrolCallbackRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/certificate/$id': {
       id: '/_authenticated/certificate/$id'
       path: '/certificate/$id'
@@ -664,6 +684,7 @@ declare module '@tanstack/react-router' {
 
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedCertificateIdRoute: typeof AuthenticatedCertificateIdRoute
+  AuthenticatedEnrolCallbackRoute: typeof AuthenticatedEnrolCallbackRoute
   AuthenticatedExamSlugRoute: typeof AuthenticatedExamSlugRoute
   AuthenticatedLearningSlugRoute: typeof AuthenticatedLearningSlugRoute
   AuthenticatedPortalAdminRoute: typeof AuthenticatedPortalAdminRoute
@@ -676,6 +697,7 @@ interface AuthenticatedRouteRouteChildren {
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedCertificateIdRoute: AuthenticatedCertificateIdRoute,
+  AuthenticatedEnrolCallbackRoute: AuthenticatedEnrolCallbackRoute,
   AuthenticatedExamSlugRoute: AuthenticatedExamSlugRoute,
   AuthenticatedLearningSlugRoute: AuthenticatedLearningSlugRoute,
   AuthenticatedPortalAdminRoute: AuthenticatedPortalAdminRoute,
