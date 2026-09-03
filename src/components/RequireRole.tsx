@@ -11,7 +11,8 @@ import { useEffect, useState, type ReactNode } from "react";
  * private data must re-check the caller's role on the server.
  */
 export function RequireRole({ role, children }: { role: AppRole; children: ReactNode }) {
-  const { user, role: currentRole, loading, signOut } = useAuth();
+  const { user, role: currentRole, roles, loading, signOut } = useAuth();
+
   const [waited, setWaited] = useState(false);
 
   useEffect(() => {
@@ -54,7 +55,9 @@ export function RequireRole({ role, children }: { role: AppRole; children: React
     );
   }
 
-  if (currentRole !== role) return <Navigate to={roleHome(currentRole)} replace />;
+  // A user may hold several roles (a client who also studies, for example).
+  if (!roles.includes(role)) return <Navigate to={roleHome(currentRole)} replace />;
+
 
   return <>{children}</>;
 }
