@@ -48,7 +48,7 @@ function primaryRole(roles: AppRole[]): AppRole | null {
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [session, setSession] = useState<Session | null>(null);
-  const [role, setRole] = useState<AppRole | null>(null);
+  const [roles, setRoles] = useState<AppRole[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -58,12 +58,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       const { data: sub } = supabase.auth.onAuthStateChange((_event, s) => {
         setSession(s);
         if (!s?.user) {
-          setRole(null);
+          setRoles([]);
           return;
         }
         // Defer the DB read out of the auth callback.
         setTimeout(() => {
-          void fetchPrimaryRole(s.user.id).then(setRole);
+          void fetchRoles(s.user.id).then(setRoles);
         }, 0);
       });
       unsubscribe = () => sub.subscription.unsubscribe();
@@ -72,7 +72,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         .getSession()
         .then(async ({ data }) => {
           setSession(data.session);
-          if (data.session?.user) setRole(await fetchPrimaryRole(data.session.user.id));
+          if (data.session?.user) setRoles(await fetchRoles(data.session.user.id));
         })
         .catch((error: unknown) => {
           console.error("Authentication could not be initialised", error);
@@ -91,8 +91,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const value: AuthState = {
     session,
     user: session?.user ?? null,
-    role,
+    role: primaryRole(roles),
+    roles,
     loading,
+
     signOut: async () => {
       await supabase.auth.signOut();
     },
