@@ -172,14 +172,58 @@ export const submitEnquiry = createServerFn({ method: 'POST' })
   })
   .handler(async ({ data }) => {
     const db = publicDataClient('enquiry');
+    const fullName = data.full_name.trim().slice(0, 200);
+    const email = data.email.trim().slice(0, 200);
+    const phone = data.phone?.trim().slice(0, 60) || null;
+    const subject = data.subject?.trim().slice(0, 200) || null;
+    const message = data.message.trim().slice(0, 5000);
+    const source = data.source || 'contact';
     const { error } = await db.from('enquiries').insert({
-      full_name: data.full_name.trim().slice(0, 200),
-      email: data.email.trim().slice(0, 200),
-      phone: data.phone?.trim().slice(0, 60) || null,
-      subject: data.subject?.trim().slice(0, 200) || null,
-      message: data.message.trim().slice(0, 5000),
-      source: data.source || 'contact',
+      full_name: fullName,
+      email,
+      phone,
+      subject,
+      message,
+      source,
     });
     if (error) throw new Error('We could not send your enquiry. Please try again or use WhatsApp.');
+
+    const { sendTransactionalEmail, adminNotificationEmail, SITE_URL } = await import(
+      '@/lib/email/transactional.server'
+    );
+    await Promise.all([
+      sendTransactionalEmail({
+        to: email,
+        subject: 'We received your enquiry — Najeeb Digital Hub',
+        label: 'enquiry_received',
+        preview: 'Thanks for getting in touch. We reply within one business day.',
+        heading: `Thanks, ${fullName.split(' ')[0]}`,
+        intro: 'We have received your enquiry and will reply within one business day.',
+        details: [
+          ...(subject ? [{ label: 'Subject', value: subject }] : []),
+          { label: 'Your message', value: message.slice(0, 800) },
+        ],
+        ctaLabel: 'Visit the website',
+        ctaUrl: SITE_URL,
+        footnote: 'If it is urgent, message us on WhatsApp at +234 902 993 2794.',
+      }),
+      sendTransactionalEmail({
+        to: adminNotificationEmail(),
+        replyTo: email,
+        subject: `New enquiry from ${fullName}`,
+        label: 'enquiry_alert',
+        preview: `New ${source} enquiry from ${fullName}`,
+        heading: 'New enquiry',
+        intro: `A new enquiry arrived through the ${source} form.`,
+        details: [
+          { label: 'Name', value: fullName },
+          { label: 'Email', value: email },
+          ...(phone ? [{ label: 'Phone', value: phone }] : []),
+          ...(subject ? [{ label: 'Subject', value: subject }] : []),
+          { label: 'Message', value: message.slice(0, 2000) },
+        ],
+      }),
+    ]);
     return { ok: true };
   });
+
