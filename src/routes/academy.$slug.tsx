@@ -1,9 +1,13 @@
-import { createFileRoute, Link, notFound } from '@tanstack/react-router';
+import { createFileRoute, Link, notFound, useNavigate } from '@tanstack/react-router';
+import { useState } from 'react';
 import { BadgeCheck, CheckCircle2, Clock, GraduationCap, ListChecks } from 'lucide-react';
 import { PageShell } from '@/components/PageShell';
 import { Reveal } from '@/components/Reveal';
 import { getCourse } from '@/lib/catalog.functions';
+import { startCourseCheckout } from '@/lib/payment.functions';
+import { useAuth } from '@/lib/auth';
 import { formatPrice } from '@/lib/format';
+
 
 export const Route = createFileRoute('/academy/$slug')({
   loader: async ({ params }) => {
