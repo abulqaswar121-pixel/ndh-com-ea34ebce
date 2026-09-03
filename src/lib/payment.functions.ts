@@ -15,6 +15,19 @@ function safeOrigin(origin: string): string {
   return origin;
 }
 
+/**
+ * A buyer must hold the student role to reach the learning pages, even when
+ * they already signed up as a client.
+ */
+async function grantStudentRole(userId: string): Promise<void> {
+  const { supabaseAdmin } = await import('@/integrations/supabase/client.server');
+  await (supabaseAdmin as any)
+    .from('user_roles')
+    .upsert({ user_id: userId, role: 'student' }, { onConflict: 'user_id,role' });
+}
+
+
+
 export const initializeCoursePayment = createServerFn({ method: 'POST' })
   .middleware([requireSupabaseAuth])
   .inputValidator((d: unknown) =>
