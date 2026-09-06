@@ -1,0 +1,2 @@
+CREATE POLICY "projects pm read unassigned" ON public.projects FOR SELECT TO authenticated USING (pm_id IS NULL AND public.has_role(auth.uid(),'pm'));
+CREATE POLICY "projects pm claim unassigned" ON public.projects FOR UPDATE TO authenticated USING (pm_id IS NULL AND public.has_role(auth.uid(),'pm')) WITH CHECK (pm_id = auth.uid());
