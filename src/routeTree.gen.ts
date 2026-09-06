@@ -29,6 +29,7 @@ import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
 import { Route as AcademySlugRouteImport } from './routes/academy.$slug'
 import { Route as ApiPublicSupportChatRouteImport } from './routes/api/public/support-chat'
 import { Route as ApiPublicPaystackWebhookRouteImport } from './routes/api/public/paystack-webhook'
+import { Route as AuthenticatedWorkspaceIdRouteImport } from './routes/_authenticated/workspace.$id'
 import { Route as AuthenticatedProjectSlugRouteImport } from './routes/_authenticated/project.$slug'
 import { Route as AuthenticatedPortalTalentRouteImport } from './routes/_authenticated/portal/talent'
 import { Route as AuthenticatedPortalStudentRouteImport } from './routes/_authenticated/portal/student'
@@ -143,6 +144,12 @@ const ApiPublicPaystackWebhookRoute =
     path: '/api/public/paystack-webhook',
     getParentRoute: () => rootRouteImport,
   } as any)
+const AuthenticatedWorkspaceIdRoute =
+  AuthenticatedWorkspaceIdRouteImport.update({
+    id: '/workspace/$id',
+    path: '/workspace/$id',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedProjectSlugRoute =
   AuthenticatedProjectSlugRouteImport.update({
     id: '/project/$slug',
@@ -246,6 +253,7 @@ export interface FileRoutesByFullPath {
   '/portal/student': typeof AuthenticatedPortalStudentRoute
   '/portal/talent': typeof AuthenticatedPortalTalentRoute
   '/project/$slug': typeof AuthenticatedProjectSlugRoute
+  '/workspace/$id': typeof AuthenticatedWorkspaceIdRoute
   '/api/public/paystack-webhook': typeof ApiPublicPaystackWebhookRoute
   '/api/public/support-chat': typeof ApiPublicSupportChatRoute
   '/lovable/email/auth/preview': typeof LovableEmailAuthPreviewRoute
@@ -278,6 +286,7 @@ export interface FileRoutesByTo {
   '/portal/student': typeof AuthenticatedPortalStudentRoute
   '/portal/talent': typeof AuthenticatedPortalTalentRoute
   '/project/$slug': typeof AuthenticatedProjectSlugRoute
+  '/workspace/$id': typeof AuthenticatedWorkspaceIdRoute
   '/api/public/paystack-webhook': typeof ApiPublicPaystackWebhookRoute
   '/api/public/support-chat': typeof ApiPublicSupportChatRoute
   '/lovable/email/auth/preview': typeof LovableEmailAuthPreviewRoute
@@ -314,6 +323,7 @@ export interface FileRoutesById {
   '/_authenticated/portal/student': typeof AuthenticatedPortalStudentRoute
   '/_authenticated/portal/talent': typeof AuthenticatedPortalTalentRoute
   '/_authenticated/project/$slug': typeof AuthenticatedProjectSlugRoute
+  '/_authenticated/workspace/$id': typeof AuthenticatedWorkspaceIdRoute
   '/api/public/paystack-webhook': typeof ApiPublicPaystackWebhookRoute
   '/api/public/support-chat': typeof ApiPublicSupportChatRoute
   '/lovable/email/auth/preview': typeof LovableEmailAuthPreviewRoute
@@ -350,6 +360,7 @@ export interface FileRouteTypes {
     | '/portal/student'
     | '/portal/talent'
     | '/project/$slug'
+    | '/workspace/$id'
     | '/api/public/paystack-webhook'
     | '/api/public/support-chat'
     | '/lovable/email/auth/preview'
@@ -382,6 +393,7 @@ export interface FileRouteTypes {
     | '/portal/student'
     | '/portal/talent'
     | '/project/$slug'
+    | '/workspace/$id'
     | '/api/public/paystack-webhook'
     | '/api/public/support-chat'
     | '/lovable/email/auth/preview'
@@ -417,6 +429,7 @@ export interface FileRouteTypes {
     | '/_authenticated/portal/student'
     | '/_authenticated/portal/talent'
     | '/_authenticated/project/$slug'
+    | '/_authenticated/workspace/$id'
     | '/api/public/paystack-webhook'
     | '/api/public/support-chat'
     | '/lovable/email/auth/preview'
@@ -588,6 +601,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiPublicPaystackWebhookRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated/workspace/$id': {
+      id: '/_authenticated/workspace/$id'
+      path: '/workspace/$id'
+      fullPath: '/workspace/$id'
+      preLoaderRoute: typeof AuthenticatedWorkspaceIdRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/project/$slug': {
       id: '/_authenticated/project/$slug'
       path: '/project/$slug'
@@ -693,6 +713,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedPortalStudentRoute: typeof AuthenticatedPortalStudentRoute
   AuthenticatedPortalTalentRoute: typeof AuthenticatedPortalTalentRoute
   AuthenticatedProjectSlugRoute: typeof AuthenticatedProjectSlugRoute
+  AuthenticatedWorkspaceIdRoute: typeof AuthenticatedWorkspaceIdRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
@@ -706,6 +727,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedPortalStudentRoute: AuthenticatedPortalStudentRoute,
   AuthenticatedPortalTalentRoute: AuthenticatedPortalTalentRoute,
   AuthenticatedProjectSlugRoute: AuthenticatedProjectSlugRoute,
+  AuthenticatedWorkspaceIdRoute: AuthenticatedWorkspaceIdRoute,
 }
 
 const AuthenticatedRouteRouteWithChildren =
