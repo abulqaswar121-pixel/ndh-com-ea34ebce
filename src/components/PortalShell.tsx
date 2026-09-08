@@ -123,7 +123,7 @@ export function PortalShell({
         <button className="portal-menu-button" aria-label="Open portal menu" onClick={() => setOpen(true)}>
           <Menu size={22} />
         </button>
-        <Link to={roleHome(role)} className="portal-brand">
+        <Link to={roleHome(role) as never} className="portal-brand">
           <img src="/ndh-logo.png" alt="Najeeb Digital Hub" width={34} height={34} />
           <span>{nav.name}</span>
         </Link>
@@ -180,7 +180,7 @@ function PortalNav({ items }: { items: NavItem[] }) {
         return (
           <Link
             key={`${item.to}-${item.label}`}
-            to={item.to}
+            to={item.to as never}
             hash={item.hash}
             className="portal-nav-link"
             activeOptions={{ exact: true, includeHash: false }}
@@ -243,7 +243,7 @@ function AccountMenu({ role }: { role: AppRole }) {
             <div className="portal-account-group">
               <small>Switch portal</small>
               {otherRoles.map((r) => (
-                <Link key={r} to={roleHome(r)} onClick={() => setOpen(false)}>
+                <Link key={r} to={roleHome(r) as never} onClick={() => setOpen(false)}>
                   <Briefcase size={15} /> {ROLE_LABEL[r]}
                 </Link>
               ))}
