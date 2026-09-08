@@ -71,6 +71,8 @@ const PORTAL_NAV: Record<AppRole, { name: string; items: NavItem[] }> = {
       { to: '/portal/admin', label: 'Dashboard', icon: LayoutDashboard },
       { to: '/portal/admin', label: 'Review queue', icon: ClipboardCheck, hash: 'reviews' },
       { to: '/portal/admin', label: 'Invitations & access', icon: UsersRound, hash: 'access' },
+      { to: '/portal/admin', label: 'People & roles', icon: UserRound, hash: 'users' },
+      { to: '/portal/admin', label: 'Talent applications', icon: Inbox, hash: 'applications' },
       { to: '/portal/admin', label: 'Courses & lessons', icon: BookOpen, hash: 'courses' },
       { to: '/portal/admin', label: 'Content', icon: FileText, hash: 'content' },
       { to: '/portal/admin', label: 'Enquiries', icon: Mail, hash: 'enquiries' },
