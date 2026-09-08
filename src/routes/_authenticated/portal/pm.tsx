@@ -2,7 +2,7 @@ import { createFileRoute, Link } from '@tanstack/react-router';
 import { useCallback, useEffect, useState } from 'react';
 import { ClipboardCheck, FolderKanban, PlusCircle, UsersRound } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
-import { PageShell } from '@/components/PageShell';
+import { PortalShell } from '@/components/PortalShell';
 import { RequireRole } from '@/components/RequireRole';
 import { useAuth } from '@/lib/auth';
 import { Reveal } from '@/components/Reveal';
@@ -50,19 +50,31 @@ function PMPortal() {
   }
 
   return (
-    <PageShell>
-      <main className="portal">
-        <div className="portal-head">
-          <div>
-            <p className="eyebrow">PROJECT MANAGER PORTAL</p>
-            <h1>Your assigned work.</h1>
-            <p>Create projects, message clients, share files and track tasks.</p>
+    <PortalShell
+      role="pm"
+      eyebrow="PROJECT MANAGER PORTAL"
+      title="Your assigned work."
+      intro="Create projects, message clients, share files and track tasks."
+      icon={FolderKanban}
+    >
+      <>
+        <div className="portal-stats">
+          <div className="portal-stat">
+            <small>My projects</small>
+            <strong>{projects.length}</strong>
           </div>
-          <FolderKanban size={42} />
+          <div className="portal-stat">
+            <small>Open briefs</small>
+            <strong>{unassigned.length}</strong>
+          </div>
+          <div className="portal-stat">
+            <small>My tasks</small>
+            <strong>{tasks.length}</strong>
+          </div>
         </div>
 
         <Reveal>
-          <section className="portal-section">
+          <section className="portal-section" id="projects">
             <div className="portal-section-title">
               <h2>Assigned projects</h2>
               <span>{projects.length} projects</span>
@@ -90,7 +102,7 @@ function PMPortal() {
         </Reveal>
 
         <Reveal>
-          <section className="portal-section">
+          <section className="portal-section" id="briefs">
             <div className="portal-section-title">
               <h2>New client briefs</h2>
               <UsersRound size={22} />
@@ -118,7 +130,7 @@ function PMPortal() {
         </Reveal>
 
         <Reveal>
-          <section className="portal-section">
+          <section className="portal-section" id="new-project">
             <div className="portal-section-title">
               <h2>Create a project</h2>
               <PlusCircle size={22} />
@@ -128,7 +140,7 @@ function PMPortal() {
         </Reveal>
 
         <Reveal>
-          <section className="portal-section">
+          <section className="portal-section" id="tasks">
             <div className="portal-section-title">
               <h2>Assigned tasks</h2>
               <ClipboardCheck size={22} />
@@ -149,8 +161,8 @@ function PMPortal() {
             )}
           </section>
         </Reveal>
-      </main>
-    </PageShell>
+      </>
+    </PortalShell>
   );
 }
 
