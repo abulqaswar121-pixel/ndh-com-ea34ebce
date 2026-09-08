@@ -125,7 +125,7 @@ function StudentPortal() {
             )}
           </section>
         </Reveal>
-      </main>
-    </PageShell>
+      </>
+    </PortalShell>
   );
 }
