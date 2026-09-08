@@ -2,7 +2,7 @@ import { createFileRoute, Link } from '@tanstack/react-router';
 import { useEffect, useState } from 'react';
 import { BookOpen, CheckCircle2, LockKeyhole } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
-import { PageShell } from '@/components/PageShell';
+import { PortalFrame } from '@/components/PortalShell';
 import { RequireRole } from '@/components/RequireRole';
 import { useAuth } from '@/lib/auth';
 import { Reveal } from '@/components/Reveal';
@@ -73,7 +73,7 @@ function LearningPage() {
   const complete100 = lessons.length > 0 && percent === 100;
 
   return (
-    <PageShell>
+    <PortalFrame>
       <main className="portal">
         <div className="portal-head">
           <div>
@@ -170,7 +170,7 @@ function LearningPage() {
           </div>
         </section>
       </main>
-    </PageShell>
+    </PortalFrame>
   );
 }
 
