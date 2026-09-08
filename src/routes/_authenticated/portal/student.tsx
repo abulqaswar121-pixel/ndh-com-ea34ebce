@@ -102,7 +102,7 @@ function StudentPortal() {
         </Reveal>
 
         <Reveal>
-          <section className="portal-section">
+          <section className="portal-section" id="certificates">
             <div className="portal-section-title">
               <h2>Certificates</h2>
               <Award size={22} />
