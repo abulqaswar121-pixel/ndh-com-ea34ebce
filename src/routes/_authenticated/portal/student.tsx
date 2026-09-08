@@ -2,7 +2,7 @@ import { createFileRoute, Link } from '@tanstack/react-router';
 import { useEffect, useState } from 'react';
 import { Award, BookOpen, CirclePlay } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
-import { PageShell } from '@/components/PageShell';
+import { PortalShell } from '@/components/PortalShell';
 import { RequireRole } from '@/components/RequireRole';
 import { useAuth } from '@/lib/auth';
 import { Reveal } from '@/components/Reveal';
@@ -36,19 +36,36 @@ function StudentPortal() {
   }, [user]);
 
   return (
-    <PageShell>
-      <main className="portal">
-        <div className="portal-head">
-          <div>
-            <p className="eyebrow">STUDENT PORTAL</p>
-            <h1>Keep learning, one skill at a time.</h1>
-            <p>Continue your enrolled courses and keep your certificates together.</p>
+    <PortalShell
+      role="student"
+      eyebrow="STUDENT PORTAL"
+      title="Keep learning, one skill at a time."
+      intro="Continue your enrolled courses and keep your certificates together."
+      icon={BookOpen}
+    >
+      <>
+        <div className="portal-stats">
+          <div className="portal-stat">
+            <small>Courses</small>
+            <strong>{courses.length}</strong>
           </div>
-          <BookOpen size={42} />
+          <div className="portal-stat">
+            <small>Average progress</small>
+            <strong>
+              {courses.length
+                ? Math.round(courses.reduce((a, c) => a + (c.progress ?? 0), 0) / courses.length)
+                : 0}
+              %
+            </strong>
+          </div>
+          <div className="portal-stat">
+            <small>Certificates</small>
+            <strong>{certs.length}</strong>
+          </div>
         </div>
 
         <Reveal>
-          <section className="portal-section">
+          <section className="portal-section" id="courses">
             <div className="portal-section-title">
               <h2>My courses</h2>
               <BookOpen size={22} />
@@ -85,7 +102,7 @@ function StudentPortal() {
         </Reveal>
 
         <Reveal>
-          <section className="portal-section">
+          <section className="portal-section" id="certificates">
             <div className="portal-section-title">
               <h2>Certificates</h2>
               <Award size={22} />
