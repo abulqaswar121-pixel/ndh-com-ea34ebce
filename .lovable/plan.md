@@ -1,63 +1,44 @@
-# Full site audit — what is broken or missing, page by page
+# Where we stopped — and what's left to make the site fully working
 
-Everything below was checked against the live code and the database, not assumed.
+## Already done (last few sessions)
 
-## The single biggest gap
+1. **Sign up / sign in fixed** — the broken auth bundle is repaired; login works.
+2. **Academy is real now** — 30 courses in the database, each with 8 lessons (240 total, first lesson is a free preview).
+3. **Buying a course works end to end** — course page starts a real Paystack checkout (NG / international price toggle), the return page verifies the payment, grants the student role and activates the enrolment.
+4. **Learning area works** — enrolled students get a lesson player with video, notes, "mark as complete" progress, and the exam/project tabs unlock at 100% completion. The student portal shows progress and certificates.
+5. **Transactional email wired** — enquiry acknowledgement + alert to you, payment receipt, certificate-issued email, and invitation emails all queue through the branded template on `notify.ndh.com.ng`.
+6. **Client & PM portals are functional** — every project has a workspace with messaging, file sharing (50 MB, private), and tasks. Clients can raise a brief; PMs can create projects, claim unassigned briefs, and manage tasks.
 
-**Nobody can actually buy or start a course.** The "Enrol now" button on a course page links to the signup form and stops there. The payment function exists on the server but no page ever calls it. There are 30 courses and 60 price rows in the database, but **0 lessons, 0 enrolments, 0 payments, 0 certificates**. So the whole Academy is a brochure right now.
+## What still needs to be done (in the order you set)
 
-## Public pages
+**4. Content — publish your first real material**
+- 0 case studies published → `/work` shows an empty state to every visitor.
+- 0 blog posts published → `/blog` is empty.
+- 0 testimonials → homepage has no social proof.
+- The admin panel already has the publishing tools; what is needed is the actual content (real client results, quotes, articles).
 
-**Home (`/`)** — Static. No testimonials strip, no featured courses pulled from the database, no case studies, no trust row (payment badges, response time, real address). Nothing here proves the business is real.
+**5. Missing public pages**
+- Certificate verification page (`/verify/{code}`) so employers can confirm a certificate is real.
+- Per-service detail pages under the Agency section (deliverables, process, indicative pricing, "start a brief" button).
+- FAQ page; fuller Privacy / Terms (currently placeholder-length).
 
-**Academy list (`/academy`)** — Loads the 30 real courses correctly. Missing: search, filter by school/level/price, sorting, and any "most popular" ordering.
+**6. Talent pipeline**
+- No admin screen reviews talent applications yet, so applications pile up unanswered.
+- Talent profiles, availability, and an earnings process that actually writes rows so "Request payout" can work.
 
-**Course page (`/academy/{course}`)** — Shows title, price and outcomes, but:
-- Enrol goes to signup, not to checkout. No payment, no enrolment created.
-- Curriculum section says lessons "are being finalised" because there are genuinely **0 lessons in the database** for all 30 courses.
-- No instructor, no student count, no reviews, no FAQ, no preview lesson.
+**7. Security & go-live hygiene**
+- 3 open security findings from the last scan (an endpoint any signed-in user can call, a self-approval path, students able to edit submissions after grading).
+- 11 linter warnings on database functions (search_path / security definer) — pre-existing, should be hardened.
+- Paystack live test: run one real test transaction, confirm the webhook activates the enrolment, then switch to live keys.
+- Analytics / Search Console on ndh.com.ng.
 
-**Agency (`/agency`)** — Still just 8 icons and 4 process steps. No individual service pages, no deliverables, no timelines, no indicative pricing, no per-service "start a brief" CTA.
+## Settings you need to provide/confirm (outside my control)
 
-**Work (`/work`)** — Wired to the database correctly, but **0 case studies published**, so every visitor sees an empty state.
+- **Verify the email sending domain** `notify.ndh.com.ng` DNS — until then no email actually sends.
+- **Set `ADMIN_NOTIFICATION_EMAIL`** if enquiry alerts should go somewhere other than hello@ndh.com.ng.
+- **Paystack live keys** when you're ready to take real money (test keys are in place).
+- **Real content** for case studies, testimonials and blog posts — I can structure them, but the stories must be yours.
 
-**Blog (`/blog`)** — Wired correctly, but **0 posts published**. Empty for every visitor.
+## Suggested next step
 
-**Contact (`/contact`)** — Form saves to the database properly. Missing: no email alert to you when an enquiry arrives, no acknowledgement email to the sender. **0 enquiries** so far. You would not know if one came in.
-
-**Talent application (`/talent-application`)** — Submits, but nothing reviews it: no admin screen lists applications, and `talent_profiles` is empty.
-
-**About / Privacy / Terms** — Privacy and Terms are 33 lines each — placeholder-length, not real policies. This matters if you take payments.
-
-**Missing routes entirely** — no `/verify/{code}` certificate verification page (a certificate nobody can verify is worth little to an employer), no FAQ, no pricing page, no per-service pages, no cookie notice.
-
-## Portals
-
-**Student** — Lists enrolments and certificates. "Continue learning" links back to the Academy list instead of the lesson player. No progress, because there are no lessons. Exam and Project pages exist but can never unlock (unlock requires 100% lesson completion; there are no lessons).
-
-**Client** — "Message PM" and "Files" buttons are decorative: no click handler, no messaging, no file storage. Escrow section is a hardcoded empty box. No way for a client to raise a new brief from inside the portal.
-
-**PM** — "Client PM chat" and "Assign talent" buttons are also dead, no handlers. No way to create a project, add tasks, or set deadlines.
-
-**Talent** — Earnings read from a table with no rows and no process that ever writes to it, so earnings are permanently zero and "Request payout" can never be used. No profile, no portfolio, no availability.
-
-**Admin** — The strongest portal, but: PM access is granted by pasting a raw user ID (no user picker), invitations only produce a link you must copy manually (no email sent), there is no talent-application review, no project/task creation, no lesson uploader, and no enrolment or revenue overview.
-
-## Cross-cutting
-
-- **No transactional email at all**: no welcome, enrolment receipt, certificate issued, enquiry alert, or invitation email.
-- **Payments never tested end to end**; live keys not in place.
-- **Three open security findings** from the last scan: an endpoint any signed-in user can call, a self-approval path, and a table policy that lets students edit their own submissions after grading.
-- **No analytics or Search Console** on the live domain.
-
-## Suggested order to fix
-
-1. Lessons + working enrol/checkout so a course can actually be bought and studied.
-2. Email: enquiry alerts, receipts, invitations, certificate issued.
-3. Client/PM portal: real messaging, files, project and task creation.
-4. Content: publish first case studies, testimonials and posts through the admin panel.
-5. Certificate verification page, service detail pages, FAQ, real privacy/terms.
-6. Talent pipeline: application review, profiles, earnings that are actually written.
-7. Security findings, payment go-live test, analytics.
-
-Tell me which of these to start with and I will plan that piece in detail.
+Pick the next item: (a) certificate verification + FAQ + service pages, (b) talent application review, (c) security findings + payment live test, or (d) help drafting/publishing your first case studies and posts.
