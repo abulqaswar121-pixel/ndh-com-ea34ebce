@@ -2,7 +2,7 @@ import { createFileRoute, Link } from '@tanstack/react-router';
 import { useEffect, useState } from 'react';
 import { Award, BookOpen, CirclePlay } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
-import { PageShell } from '@/components/PageShell';
+import { PortalShell } from '@/components/PortalShell';
 import { RequireRole } from '@/components/RequireRole';
 import { useAuth } from '@/lib/auth';
 import { Reveal } from '@/components/Reveal';
