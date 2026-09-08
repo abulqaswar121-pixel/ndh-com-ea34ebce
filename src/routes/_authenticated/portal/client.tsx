@@ -2,7 +2,7 @@ import { createFileRoute, Link } from '@tanstack/react-router';
 import { useCallback, useEffect, useState } from 'react';
 import { BriefcaseBusiness, FolderKanban, PlusCircle, Receipt, ShieldCheck } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
-import { PageShell } from '@/components/PageShell';
+import { PortalShell } from '@/components/PortalShell';
 import { RequireRole } from '@/components/RequireRole';
 import { useAuth } from '@/lib/auth';
 import { Reveal } from '@/components/Reveal';
@@ -45,19 +45,31 @@ function ClientPortal() {
   }, [load]);
 
   return (
-    <PageShell>
-      <main className="portal">
-        <div className="portal-head">
-          <div>
-            <p className="eyebrow">CLIENT PORTAL</p>
-            <h1>Your work, in view.</h1>
-            <p>Track delivery, share files, and message your project manager.</p>
+    <PortalShell
+      role="client"
+      eyebrow="CLIENT PORTAL"
+      title="Your work, in view."
+      intro="Track delivery, share files, and message your project manager."
+      icon={BriefcaseBusiness}
+    >
+      <>
+        <div className="portal-stats">
+          <div className="portal-stat">
+            <small>Projects</small>
+            <strong>{projects.length}</strong>
           </div>
-          <BriefcaseBusiness size={42} />
+          <div className="portal-stat">
+            <small>Active</small>
+            <strong>{projects.filter((p) => p.status === 'active').length}</strong>
+          </div>
+          <div className="portal-stat">
+            <small>Unpaid invoices</small>
+            <strong>{invoices.filter((i) => i.status !== 'paid').length}</strong>
+          </div>
         </div>
 
         <Reveal>
-          <section className="portal-section">
+          <section className="portal-section" id="projects">
             <div className="portal-section-title">
               <h2>Projects</h2>
               <span>{projects.length} in view</span>
@@ -87,7 +99,7 @@ function ClientPortal() {
         </Reveal>
 
         <Reveal>
-          <section className="portal-section">
+          <section className="portal-section" id="new-brief">
             <div className="portal-section-title">
               <h2>Start a new brief</h2>
               <PlusCircle size={22} />
@@ -97,7 +109,7 @@ function ClientPortal() {
         </Reveal>
 
         <Reveal>
-          <section className="portal-section">
+          <section className="portal-section" id="invoices">
             <div className="portal-section-title">
               <h2>Invoices</h2>
               <Receipt size={22} />
@@ -124,7 +136,7 @@ function ClientPortal() {
         </Reveal>
 
         <Reveal>
-          <section className="portal-section">
+          <section className="portal-section" id="escrow">
             <div className="portal-section-title">
               <h2>Escrow</h2>
               <ShieldCheck size={22} />
@@ -146,8 +158,8 @@ function ClientPortal() {
             )}
           </section>
         </Reveal>
-      </main>
-    </PageShell>
+      </>
+    </PortalShell>
   );
 }
 

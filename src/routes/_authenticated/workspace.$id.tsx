@@ -2,7 +2,7 @@ import { createFileRoute, Link } from '@tanstack/react-router';
 import { useEffect, useState } from 'react';
 import { ArrowLeft, FolderKanban } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
-import { PageShell } from '@/components/PageShell';
+import { PortalFrame } from '@/components/PortalShell';
 import { Reveal } from '@/components/Reveal';
 import { useAuth } from '@/lib/auth';
 import { ProjectMessages, ProjectFiles, ProjectTasks } from '@/components/ProjectWorkspace';
@@ -30,7 +30,7 @@ function Workspace() {
   }, [id, user]);
 
   return (
-    <PageShell>
+    <PortalFrame>
       <main className="portal">
         <div className="portal-head">
           <div>
@@ -66,6 +66,6 @@ function Workspace() {
           </>
         )}
       </main>
-    </PageShell>
+    </PortalFrame>
   );
 }

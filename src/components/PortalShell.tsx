@@ -262,3 +262,30 @@ function AccountMenu({ role }: { role: AppRole }) {
     </div>
   );
 }
+
+/**
+ * Lighter signed-in frame for focused pages (lesson player, exam, project,
+ * certificate, project workspace). Top bar with the account menu, no sidebar.
+ */
+export function PortalFrame({ children }: { children: ReactNode }) {
+  const { role } = useAuth();
+  const active: AppRole = role ?? 'student';
+  return (
+    <div className="portal-shell">
+      <header className="portal-topbar">
+        <Link to={roleHome(active) as never} className="portal-brand">
+          <img src="/ndh-logo.png" alt="Najeeb Digital Hub" width={34} height={34} />
+          <span>{PORTAL_NAV[active].name}</span>
+        </Link>
+        <AccountMenu role={active} />
+      </header>
+      <div className="portal-body portal-body-plain">{children}</div>
+      <footer className="portal-footer">
+        <span>© {new Date().getFullYear()} Najeeb Digital Hub</span>
+        <a href="mailto:hello@ndh.com.ng">hello@ndh.com.ng</a>
+        <Link to="/terms">Terms</Link>
+        <Link to="/privacy">Privacy</Link>
+      </footer>
+    </div>
+  );
+}

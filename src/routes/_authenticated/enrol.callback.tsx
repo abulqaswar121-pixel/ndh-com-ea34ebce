@@ -1,7 +1,7 @@
 import { createFileRoute, Link, useSearch } from '@tanstack/react-router';
 import { useEffect, useState } from 'react';
 import { CheckCircle2, Loader2, XCircle } from 'lucide-react';
-import { PageShell } from '@/components/PageShell';
+import { PortalFrame } from '@/components/PortalShell';
 import { verifyCoursePayment } from '@/lib/payment.functions';
 
 type Search = { reference?: string; trxref?: string };
@@ -48,7 +48,7 @@ function EnrolCallback() {
   }, [reference]);
 
   return (
-    <PageShell>
+    <PortalFrame>
       <main className="content enrol-callback">
         {state === 'checking' && (
           <div className="empty-card">
@@ -98,6 +98,6 @@ function EnrolCallback() {
           </div>
         )}
       </main>
-    </PageShell>
+    </PortalFrame>
   );
 }
