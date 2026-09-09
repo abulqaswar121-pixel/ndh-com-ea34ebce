@@ -57,7 +57,7 @@ function Catalogue() {
               <button
                 key={s}
                 type="button"
-                className={s === school ? 'chip chip-active' : 'chip'}
+                className={s === school ? 'chip is-active' : 'chip'}
                 onClick={() => setSchool(s)}
               >
                 {s}
