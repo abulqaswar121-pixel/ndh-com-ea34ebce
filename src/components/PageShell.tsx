@@ -12,9 +12,18 @@ const links: [string, string][] = [
   ['/contact', 'Contact'],
 ];
 
-export function PageShell({ children, title }: { children?: ReactNode; title?: string }) {
+export function PageShell({
+  children,
+  title,
+  allowSignedIn = false,
+}: {
+  children?: ReactNode;
+  title?: string;
+  allowSignedIn?: boolean;
+}) {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const { user, role, loading } = useAuth();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 8);
