@@ -39,6 +39,10 @@ export function PageShell({
     };
   }, [open]);
 
+  if (!allowSignedIn && !loading && user && role) {
+    return <Navigate to={roleHome(role) as never} replace />;
+  }
+
   return (
     <>
       <header className={scrolled ? 'site-header is-scrolled' : 'site-header'}>
