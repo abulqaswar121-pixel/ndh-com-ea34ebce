@@ -44,6 +44,7 @@ import { Route as AuthenticatedPortalTalentIndexRouteImport } from './routes/_au
 import { Route as AuthenticatedPortalStudentIndexRouteImport } from './routes/_authenticated/portal/student.index'
 import { Route as AuthenticatedPortalPmIndexRouteImport } from './routes/_authenticated/portal/pm.index'
 import { Route as AuthenticatedPortalClientIndexRouteImport } from './routes/_authenticated/portal/client.index'
+import { Route as AuthenticatedPortalAdminIndexRouteImport } from './routes/_authenticated/portal/admin.index'
 import { Route as LovableEmailQueueProcessRouteImport } from './routes/lovable/email/queue/process'
 import { Route as LovableEmailAuthWebhookRouteImport } from './routes/lovable/email/auth/webhook'
 import { Route as LovableEmailAuthPreviewRouteImport } from './routes/lovable/email/auth/preview'
@@ -65,6 +66,10 @@ import { Route as AuthenticatedPortalClientNewBriefRouteImport } from './routes/
 import { Route as AuthenticatedPortalClientInvoicesRouteImport } from './routes/_authenticated/portal/client.invoices'
 import { Route as AuthenticatedPortalClientEscrowRouteImport } from './routes/_authenticated/portal/client.escrow'
 import { Route as AuthenticatedPortalClientAccountRouteImport } from './routes/_authenticated/portal/client.account'
+import { Route as AuthenticatedPortalAdminUsersRouteImport } from './routes/_authenticated/portal/admin.users'
+import { Route as AuthenticatedPortalAdminReviewsRouteImport } from './routes/_authenticated/portal/admin.reviews'
+import { Route as AuthenticatedPortalAdminApplicationsRouteImport } from './routes/_authenticated/portal/admin.applications'
+import { Route as AuthenticatedPortalAdminAccessRouteImport } from './routes/_authenticated/portal/admin.access'
 import { Route as AuthenticatedPortalStudentCatalogueIndexRouteImport } from './routes/_authenticated/portal/student.catalogue.index'
 import { Route as AuthenticatedPortalStudentCatalogueSlugRouteImport } from './routes/_authenticated/portal/student.catalogue.$slug'
 
@@ -256,6 +261,12 @@ const AuthenticatedPortalClientIndexRoute =
     path: '/',
     getParentRoute: () => AuthenticatedPortalClientRoute,
   } as any)
+const AuthenticatedPortalAdminIndexRoute =
+  AuthenticatedPortalAdminIndexRouteImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => AuthenticatedPortalAdminRoute,
+  } as any)
 const LovableEmailQueueProcessRoute =
   LovableEmailQueueProcessRouteImport.update({
     id: '/lovable/email/queue/process',
@@ -380,6 +391,30 @@ const AuthenticatedPortalClientAccountRoute =
     path: '/account',
     getParentRoute: () => AuthenticatedPortalClientRoute,
   } as any)
+const AuthenticatedPortalAdminUsersRoute =
+  AuthenticatedPortalAdminUsersRouteImport.update({
+    id: '/users',
+    path: '/users',
+    getParentRoute: () => AuthenticatedPortalAdminRoute,
+  } as any)
+const AuthenticatedPortalAdminReviewsRoute =
+  AuthenticatedPortalAdminReviewsRouteImport.update({
+    id: '/reviews',
+    path: '/reviews',
+    getParentRoute: () => AuthenticatedPortalAdminRoute,
+  } as any)
+const AuthenticatedPortalAdminApplicationsRoute =
+  AuthenticatedPortalAdminApplicationsRouteImport.update({
+    id: '/applications',
+    path: '/applications',
+    getParentRoute: () => AuthenticatedPortalAdminRoute,
+  } as any)
+const AuthenticatedPortalAdminAccessRoute =
+  AuthenticatedPortalAdminAccessRouteImport.update({
+    id: '/access',
+    path: '/access',
+    getParentRoute: () => AuthenticatedPortalAdminRoute,
+  } as any)
 const AuthenticatedPortalStudentCatalogueIndexRoute =
   AuthenticatedPortalStudentCatalogueIndexRouteImport.update({
     id: '/',
@@ -415,7 +450,7 @@ export interface FileRoutesByFullPath {
   '/enrol/callback': typeof AuthenticatedEnrolCallbackRoute
   '/exam/$slug': typeof AuthenticatedExamSlugRoute
   '/learning/$slug': typeof AuthenticatedLearningSlugRoute
-  '/portal/admin': typeof AuthenticatedPortalAdminRoute
+  '/portal/admin': typeof AuthenticatedPortalAdminRouteWithChildren
   '/portal/client': typeof AuthenticatedPortalClientRouteWithChildren
   '/portal/pm': typeof AuthenticatedPortalPmRouteWithChildren
   '/portal/student': typeof AuthenticatedPortalStudentRouteWithChildren
@@ -424,6 +459,10 @@ export interface FileRoutesByFullPath {
   '/workspace/$id': typeof AuthenticatedWorkspaceIdRoute
   '/api/public/paystack-webhook': typeof ApiPublicPaystackWebhookRoute
   '/api/public/support-chat': typeof ApiPublicSupportChatRoute
+  '/portal/admin/access': typeof AuthenticatedPortalAdminAccessRoute
+  '/portal/admin/applications': typeof AuthenticatedPortalAdminApplicationsRoute
+  '/portal/admin/reviews': typeof AuthenticatedPortalAdminReviewsRoute
+  '/portal/admin/users': typeof AuthenticatedPortalAdminUsersRoute
   '/portal/client/account': typeof AuthenticatedPortalClientAccountRoute
   '/portal/client/escrow': typeof AuthenticatedPortalClientEscrowRoute
   '/portal/client/invoices': typeof AuthenticatedPortalClientInvoicesRoute
@@ -445,6 +484,7 @@ export interface FileRoutesByFullPath {
   '/lovable/email/auth/preview': typeof LovableEmailAuthPreviewRoute
   '/lovable/email/auth/webhook': typeof LovableEmailAuthWebhookRoute
   '/lovable/email/queue/process': typeof LovableEmailQueueProcessRoute
+  '/portal/admin/': typeof AuthenticatedPortalAdminIndexRoute
   '/portal/client/': typeof AuthenticatedPortalClientIndexRoute
   '/portal/pm/': typeof AuthenticatedPortalPmIndexRoute
   '/portal/student/': typeof AuthenticatedPortalStudentIndexRoute
@@ -472,11 +512,14 @@ export interface FileRoutesByTo {
   '/enrol/callback': typeof AuthenticatedEnrolCallbackRoute
   '/exam/$slug': typeof AuthenticatedExamSlugRoute
   '/learning/$slug': typeof AuthenticatedLearningSlugRoute
-  '/portal/admin': typeof AuthenticatedPortalAdminRoute
   '/project/$slug': typeof AuthenticatedProjectSlugRoute
   '/workspace/$id': typeof AuthenticatedWorkspaceIdRoute
   '/api/public/paystack-webhook': typeof ApiPublicPaystackWebhookRoute
   '/api/public/support-chat': typeof ApiPublicSupportChatRoute
+  '/portal/admin/access': typeof AuthenticatedPortalAdminAccessRoute
+  '/portal/admin/applications': typeof AuthenticatedPortalAdminApplicationsRoute
+  '/portal/admin/reviews': typeof AuthenticatedPortalAdminReviewsRoute
+  '/portal/admin/users': typeof AuthenticatedPortalAdminUsersRoute
   '/portal/client/account': typeof AuthenticatedPortalClientAccountRoute
   '/portal/client/escrow': typeof AuthenticatedPortalClientEscrowRoute
   '/portal/client/invoices': typeof AuthenticatedPortalClientInvoicesRoute
@@ -497,6 +540,7 @@ export interface FileRoutesByTo {
   '/lovable/email/auth/preview': typeof LovableEmailAuthPreviewRoute
   '/lovable/email/auth/webhook': typeof LovableEmailAuthWebhookRoute
   '/lovable/email/queue/process': typeof LovableEmailQueueProcessRoute
+  '/portal/admin': typeof AuthenticatedPortalAdminIndexRoute
   '/portal/client': typeof AuthenticatedPortalClientIndexRoute
   '/portal/pm': typeof AuthenticatedPortalPmIndexRoute
   '/portal/student': typeof AuthenticatedPortalStudentIndexRoute
@@ -528,7 +572,7 @@ export interface FileRoutesById {
   '/_authenticated/enrol/callback': typeof AuthenticatedEnrolCallbackRoute
   '/_authenticated/exam/$slug': typeof AuthenticatedExamSlugRoute
   '/_authenticated/learning/$slug': typeof AuthenticatedLearningSlugRoute
-  '/_authenticated/portal/admin': typeof AuthenticatedPortalAdminRoute
+  '/_authenticated/portal/admin': typeof AuthenticatedPortalAdminRouteWithChildren
   '/_authenticated/portal/client': typeof AuthenticatedPortalClientRouteWithChildren
   '/_authenticated/portal/pm': typeof AuthenticatedPortalPmRouteWithChildren
   '/_authenticated/portal/student': typeof AuthenticatedPortalStudentRouteWithChildren
@@ -537,6 +581,10 @@ export interface FileRoutesById {
   '/_authenticated/workspace/$id': typeof AuthenticatedWorkspaceIdRoute
   '/api/public/paystack-webhook': typeof ApiPublicPaystackWebhookRoute
   '/api/public/support-chat': typeof ApiPublicSupportChatRoute
+  '/_authenticated/portal/admin/access': typeof AuthenticatedPortalAdminAccessRoute
+  '/_authenticated/portal/admin/applications': typeof AuthenticatedPortalAdminApplicationsRoute
+  '/_authenticated/portal/admin/reviews': typeof AuthenticatedPortalAdminReviewsRoute
+  '/_authenticated/portal/admin/users': typeof AuthenticatedPortalAdminUsersRoute
   '/_authenticated/portal/client/account': typeof AuthenticatedPortalClientAccountRoute
   '/_authenticated/portal/client/escrow': typeof AuthenticatedPortalClientEscrowRoute
   '/_authenticated/portal/client/invoices': typeof AuthenticatedPortalClientInvoicesRoute
@@ -558,6 +606,7 @@ export interface FileRoutesById {
   '/lovable/email/auth/preview': typeof LovableEmailAuthPreviewRoute
   '/lovable/email/auth/webhook': typeof LovableEmailAuthWebhookRoute
   '/lovable/email/queue/process': typeof LovableEmailQueueProcessRoute
+  '/_authenticated/portal/admin/': typeof AuthenticatedPortalAdminIndexRoute
   '/_authenticated/portal/client/': typeof AuthenticatedPortalClientIndexRoute
   '/_authenticated/portal/pm/': typeof AuthenticatedPortalPmIndexRoute
   '/_authenticated/portal/student/': typeof AuthenticatedPortalStudentIndexRoute
@@ -598,6 +647,10 @@ export interface FileRouteTypes {
     | '/workspace/$id'
     | '/api/public/paystack-webhook'
     | '/api/public/support-chat'
+    | '/portal/admin/access'
+    | '/portal/admin/applications'
+    | '/portal/admin/reviews'
+    | '/portal/admin/users'
     | '/portal/client/account'
     | '/portal/client/escrow'
     | '/portal/client/invoices'
@@ -619,6 +672,7 @@ export interface FileRouteTypes {
     | '/lovable/email/auth/preview'
     | '/lovable/email/auth/webhook'
     | '/lovable/email/queue/process'
+    | '/portal/admin/'
     | '/portal/client/'
     | '/portal/pm/'
     | '/portal/student/'
@@ -646,11 +700,14 @@ export interface FileRouteTypes {
     | '/enrol/callback'
     | '/exam/$slug'
     | '/learning/$slug'
-    | '/portal/admin'
     | '/project/$slug'
     | '/workspace/$id'
     | '/api/public/paystack-webhook'
     | '/api/public/support-chat'
+    | '/portal/admin/access'
+    | '/portal/admin/applications'
+    | '/portal/admin/reviews'
+    | '/portal/admin/users'
     | '/portal/client/account'
     | '/portal/client/escrow'
     | '/portal/client/invoices'
@@ -671,6 +728,7 @@ export interface FileRouteTypes {
     | '/lovable/email/auth/preview'
     | '/lovable/email/auth/webhook'
     | '/lovable/email/queue/process'
+    | '/portal/admin'
     | '/portal/client'
     | '/portal/pm'
     | '/portal/student'
@@ -710,6 +768,10 @@ export interface FileRouteTypes {
     | '/_authenticated/workspace/$id'
     | '/api/public/paystack-webhook'
     | '/api/public/support-chat'
+    | '/_authenticated/portal/admin/access'
+    | '/_authenticated/portal/admin/applications'
+    | '/_authenticated/portal/admin/reviews'
+    | '/_authenticated/portal/admin/users'
     | '/_authenticated/portal/client/account'
     | '/_authenticated/portal/client/escrow'
     | '/_authenticated/portal/client/invoices'
@@ -731,6 +793,7 @@ export interface FileRouteTypes {
     | '/lovable/email/auth/preview'
     | '/lovable/email/auth/webhook'
     | '/lovable/email/queue/process'
+    | '/_authenticated/portal/admin/'
     | '/_authenticated/portal/client/'
     | '/_authenticated/portal/pm/'
     | '/_authenticated/portal/student/'
@@ -1008,6 +1071,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedPortalClientIndexRouteImport
       parentRoute: typeof AuthenticatedPortalClientRoute
     }
+    '/_authenticated/portal/admin/': {
+      id: '/_authenticated/portal/admin/'
+      path: '/'
+      fullPath: '/portal/admin/'
+      preLoaderRoute: typeof AuthenticatedPortalAdminIndexRouteImport
+      parentRoute: typeof AuthenticatedPortalAdminRoute
+    }
     '/lovable/email/queue/process': {
       id: '/lovable/email/queue/process'
       path: '/lovable/email/queue/process'
@@ -1155,6 +1225,34 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedPortalClientAccountRouteImport
       parentRoute: typeof AuthenticatedPortalClientRoute
     }
+    '/_authenticated/portal/admin/users': {
+      id: '/_authenticated/portal/admin/users'
+      path: '/users'
+      fullPath: '/portal/admin/users'
+      preLoaderRoute: typeof AuthenticatedPortalAdminUsersRouteImport
+      parentRoute: typeof AuthenticatedPortalAdminRoute
+    }
+    '/_authenticated/portal/admin/reviews': {
+      id: '/_authenticated/portal/admin/reviews'
+      path: '/reviews'
+      fullPath: '/portal/admin/reviews'
+      preLoaderRoute: typeof AuthenticatedPortalAdminReviewsRouteImport
+      parentRoute: typeof AuthenticatedPortalAdminRoute
+    }
+    '/_authenticated/portal/admin/applications': {
+      id: '/_authenticated/portal/admin/applications'
+      path: '/applications'
+      fullPath: '/portal/admin/applications'
+      preLoaderRoute: typeof AuthenticatedPortalAdminApplicationsRouteImport
+      parentRoute: typeof AuthenticatedPortalAdminRoute
+    }
+    '/_authenticated/portal/admin/access': {
+      id: '/_authenticated/portal/admin/access'
+      path: '/access'
+      fullPath: '/portal/admin/access'
+      preLoaderRoute: typeof AuthenticatedPortalAdminAccessRouteImport
+      parentRoute: typeof AuthenticatedPortalAdminRoute
+    }
     '/_authenticated/portal/student/catalogue/': {
       id: '/_authenticated/portal/student/catalogue/'
       path: '/'
@@ -1171,6 +1269,29 @@ declare module '@tanstack/react-router' {
     }
   }
 }
+
+interface AuthenticatedPortalAdminRouteChildren {
+  AuthenticatedPortalAdminAccessRoute: typeof AuthenticatedPortalAdminAccessRoute
+  AuthenticatedPortalAdminApplicationsRoute: typeof AuthenticatedPortalAdminApplicationsRoute
+  AuthenticatedPortalAdminReviewsRoute: typeof AuthenticatedPortalAdminReviewsRoute
+  AuthenticatedPortalAdminUsersRoute: typeof AuthenticatedPortalAdminUsersRoute
+  AuthenticatedPortalAdminIndexRoute: typeof AuthenticatedPortalAdminIndexRoute
+}
+
+const AuthenticatedPortalAdminRouteChildren: AuthenticatedPortalAdminRouteChildren =
+  {
+    AuthenticatedPortalAdminAccessRoute: AuthenticatedPortalAdminAccessRoute,
+    AuthenticatedPortalAdminApplicationsRoute:
+      AuthenticatedPortalAdminApplicationsRoute,
+    AuthenticatedPortalAdminReviewsRoute: AuthenticatedPortalAdminReviewsRoute,
+    AuthenticatedPortalAdminUsersRoute: AuthenticatedPortalAdminUsersRoute,
+    AuthenticatedPortalAdminIndexRoute: AuthenticatedPortalAdminIndexRoute,
+  }
+
+const AuthenticatedPortalAdminRouteWithChildren =
+  AuthenticatedPortalAdminRoute._addFileChildren(
+    AuthenticatedPortalAdminRouteChildren,
+  )
 
 interface AuthenticatedPortalClientRouteChildren {
   AuthenticatedPortalClientAccountRoute: typeof AuthenticatedPortalClientAccountRoute
@@ -1297,7 +1418,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedEnrolCallbackRoute: typeof AuthenticatedEnrolCallbackRoute
   AuthenticatedExamSlugRoute: typeof AuthenticatedExamSlugRoute
   AuthenticatedLearningSlugRoute: typeof AuthenticatedLearningSlugRoute
-  AuthenticatedPortalAdminRoute: typeof AuthenticatedPortalAdminRoute
+  AuthenticatedPortalAdminRoute: typeof AuthenticatedPortalAdminRouteWithChildren
   AuthenticatedPortalClientRoute: typeof AuthenticatedPortalClientRouteWithChildren
   AuthenticatedPortalPmRoute: typeof AuthenticatedPortalPmRouteWithChildren
   AuthenticatedPortalStudentRoute: typeof AuthenticatedPortalStudentRouteWithChildren
@@ -1311,7 +1432,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedEnrolCallbackRoute: AuthenticatedEnrolCallbackRoute,
   AuthenticatedExamSlugRoute: AuthenticatedExamSlugRoute,
   AuthenticatedLearningSlugRoute: AuthenticatedLearningSlugRoute,
-  AuthenticatedPortalAdminRoute: AuthenticatedPortalAdminRoute,
+  AuthenticatedPortalAdminRoute: AuthenticatedPortalAdminRouteWithChildren,
   AuthenticatedPortalClientRoute: AuthenticatedPortalClientRouteWithChildren,
   AuthenticatedPortalPmRoute: AuthenticatedPortalPmRouteWithChildren,
   AuthenticatedPortalStudentRoute: AuthenticatedPortalStudentRouteWithChildren,
