@@ -43,7 +43,7 @@ function Catalogue() {
     >
       <section className="portal-section">
         <div className="catalog-controls">
-          <label className="search-field">
+          <label className="catalog-search">
             <Search size={17} />
             <input
               value={query}
@@ -52,12 +52,12 @@ function Catalogue() {
               aria-label="Search courses"
             />
           </label>
-          <div className="filter-chips">
+          <div className="catalog-filters">
             {schools.map((s) => (
               <button
                 key={s}
                 type="button"
-                className={s === school ? 'chip chip-active' : 'chip'}
+                className={s === school ? 'chip is-active' : 'chip'}
                 onClick={() => setSchool(s)}
               >
                 {s}

@@ -89,13 +89,13 @@ function PortalCourse() {
             </p>
           )}
           {intl && !enrolled && (
-            <div className="filter-chips">
-              <button type="button" className={region === 'NG' ? 'chip chip-active' : 'chip'} onClick={() => setRegion('NG')}>
+            <div className="catalog-filters">
+              <button type="button" className={region === 'NG' ? 'chip is-active' : 'chip'} onClick={() => setRegion('NG')}>
                 Pay in Nigeria
               </button>
               <button
                 type="button"
-                className={region === 'INTL' ? 'chip chip-active' : 'chip'}
+                className={region === 'INTL' ? 'chip is-active' : 'chip'}
                 onClick={() => setRegion('INTL')}
               >
                 Pay from abroad

@@ -1,6 +1,7 @@
-import { Link } from '@tanstack/react-router';
+import { Link, Navigate } from '@tanstack/react-router';
 import { useEffect, useState, type ReactNode } from 'react';
 import { Menu, X, MessageCircle, Facebook, Instagram } from 'lucide-react';
+import { roleHome, useAuth } from '@/lib/auth';
 
 const links: [string, string][] = [
   ['/agency', 'Agency'],
@@ -11,9 +12,18 @@ const links: [string, string][] = [
   ['/contact', 'Contact'],
 ];
 
-export function PageShell({ children, title }: { children?: ReactNode; title?: string }) {
+export function PageShell({
+  children,
+  title,
+  allowSignedIn = false,
+}: {
+  children?: ReactNode;
+  title?: string;
+  allowSignedIn?: boolean;
+}) {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const { user, role, loading } = useAuth();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 8);
@@ -28,6 +38,10 @@ export function PageShell({ children, title }: { children?: ReactNode; title?: s
       document.body.style.overflow = '';
     };
   }, [open]);
+
+  if (!allowSignedIn && !loading && user && role) {
+    return <Navigate to={roleHome(role) as never} replace />;
+  }
 
   return (
     <>
