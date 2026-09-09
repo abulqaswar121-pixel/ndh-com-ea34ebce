@@ -1,6 +1,7 @@
-import { Link } from '@tanstack/react-router';
+import { Link, Navigate } from '@tanstack/react-router';
 import { useEffect, useState, type ReactNode } from 'react';
 import { Menu, X, MessageCircle, Facebook, Instagram } from 'lucide-react';
+import { roleHome, useAuth } from '@/lib/auth';
 
 const links: [string, string][] = [
   ['/agency', 'Agency'],
