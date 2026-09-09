@@ -1,4 +1,4 @@
-import { Link, useNavigate, useRouterState } from '@tanstack/react-router';
+import { Link, Outlet, useNavigate, useRouterState } from '@tanstack/react-router';
 import { useEffect, useRef, useState, type ReactNode } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 import {
@@ -9,7 +9,9 @@ import {
   ClipboardCheck,
   FileText,
   FolderKanban,
+  GraduationCap,
   Inbox,
+  KeyRound,
   LayoutDashboard,
   LogOut,
   Mail,
@@ -24,59 +26,64 @@ import {
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth, roleHome, type AppRole } from '@/lib/auth';
 
-type NavItem = { to: string; label: string; icon: typeof LayoutDashboard; hash?: string };
+type NavItem = { to: string; label: string; icon: typeof LayoutDashboard };
 
-const PORTAL_NAV: Record<AppRole, { name: string; items: NavItem[] }> = {
+export const PORTAL_NAV: Record<AppRole, { name: string; items: NavItem[] }> = {
   student: {
     name: 'Student portal',
     items: [
       { to: '/portal/student', label: 'Dashboard', icon: LayoutDashboard },
-      { to: '/portal/student', label: 'My courses', icon: BookOpen, hash: 'courses' },
-      { to: '/portal/student', label: 'Certificates', icon: Award, hash: 'certificates' },
-      { to: '/academy', label: 'Browse Academy', icon: FileText },
+      { to: '/portal/student/courses', label: 'My courses', icon: BookOpen },
+      { to: '/portal/student/catalogue', label: 'Browse courses', icon: GraduationCap },
+      { to: '/portal/student/certificates', label: 'Certificates', icon: Award },
+      { to: '/portal/student/account', label: 'Account', icon: UserRound },
     ],
   },
   client: {
     name: 'Client portal',
     items: [
       { to: '/portal/client', label: 'Dashboard', icon: LayoutDashboard },
-      { to: '/portal/client', label: 'Projects', icon: FolderKanban, hash: 'projects' },
-      { to: '/portal/client', label: 'New brief', icon: FileText, hash: 'new-brief' },
-      { to: '/portal/client', label: 'Invoices', icon: Receipt, hash: 'invoices' },
-      { to: '/portal/client', label: 'Escrow', icon: ShieldCheck, hash: 'escrow' },
+      { to: '/portal/client/projects', label: 'Projects', icon: FolderKanban },
+      { to: '/portal/client/new-brief', label: 'New brief', icon: FileText },
+      { to: '/portal/client/invoices', label: 'Invoices', icon: Receipt },
+      { to: '/portal/client/escrow', label: 'Escrow', icon: ShieldCheck },
+      { to: '/portal/client/account', label: 'Account', icon: UserRound },
     ],
   },
   pm: {
     name: 'Project manager',
     items: [
       { to: '/portal/pm', label: 'Dashboard', icon: LayoutDashboard },
-      { to: '/portal/pm', label: 'My projects', icon: FolderKanban, hash: 'projects' },
-      { to: '/portal/pm', label: 'Open briefs', icon: Inbox, hash: 'briefs' },
-      { to: '/portal/pm', label: 'Create project', icon: FileText, hash: 'new-project' },
-      { to: '/portal/pm', label: 'My tasks', icon: ClipboardCheck, hash: 'tasks' },
+      { to: '/portal/pm/projects', label: 'My projects', icon: FolderKanban },
+      { to: '/portal/pm/briefs', label: 'Open briefs', icon: Inbox },
+      { to: '/portal/pm/new-project', label: 'Create project', icon: FileText },
+      { to: '/portal/pm/tasks', label: 'My tasks', icon: ClipboardCheck },
+      { to: '/portal/pm/account', label: 'Account', icon: UserRound },
     ],
   },
   talent: {
     name: 'Talent portal',
     items: [
       { to: '/portal/talent', label: 'Dashboard', icon: LayoutDashboard },
-      { to: '/portal/talent', label: 'Earnings', icon: WalletCards, hash: 'earnings' },
-      { to: '/portal/talent', label: 'My tasks', icon: ClipboardCheck, hash: 'tasks' },
-      { to: '/portal/talent', label: 'My profile', icon: UserRound, hash: 'profile' },
+      { to: '/portal/talent/tasks', label: 'My tasks', icon: ClipboardCheck },
+      { to: '/portal/talent/earnings', label: 'Earnings', icon: WalletCards },
+      { to: '/portal/talent/profile', label: 'My profile', icon: Briefcase },
+      { to: '/portal/talent/account', label: 'Account', icon: UserRound },
     ],
   },
   admin: {
     name: 'Admin portal',
     items: [
       { to: '/portal/admin', label: 'Dashboard', icon: LayoutDashboard },
-      { to: '/portal/admin', label: 'Review queue', icon: ClipboardCheck, hash: 'reviews' },
-      { to: '/portal/admin', label: 'Invitations & access', icon: UsersRound, hash: 'access' },
-      { to: '/portal/admin', label: 'People & roles', icon: UserRound, hash: 'users' },
-      { to: '/portal/admin', label: 'Talent applications', icon: Inbox, hash: 'applications' },
-      { to: '/portal/admin', label: 'Courses & lessons', icon: BookOpen, hash: 'courses' },
-      { to: '/portal/admin', label: 'Content', icon: FileText, hash: 'content' },
-      { to: '/portal/admin', label: 'Enquiries', icon: Mail, hash: 'enquiries' },
-      { to: '/portal/admin', label: 'Payouts', icon: WalletCards, hash: 'payouts' },
+      { to: '/portal/admin/reviews', label: 'Review queue', icon: ClipboardCheck },
+      { to: '/portal/admin/access', label: 'Invitations & access', icon: KeyRound },
+      { to: '/portal/admin/users', label: 'People & roles', icon: UsersRound },
+      { to: '/portal/admin/applications', label: 'Talent applications', icon: Inbox },
+      { to: '/portal/admin/courses', label: 'Courses', icon: BookOpen },
+      { to: '/portal/admin/content', label: 'Content', icon: FileText },
+      { to: '/portal/admin/enquiries', label: 'Enquiries', icon: Mail },
+      { to: '/portal/admin/payouts', label: 'Payouts', icon: WalletCards },
+      { to: '/portal/admin/account', label: 'Account', icon: UserRound },
     ],
   },
 };
@@ -89,21 +96,8 @@ const ROLE_LABEL: Record<AppRole, string> = {
   admin: 'Admin',
 };
 
-export function PortalShell({
-  role,
-  title,
-  eyebrow,
-  intro,
-  icon: Icon,
-  children,
-}: {
-  role: AppRole;
-  title: string;
-  eyebrow: string;
-  intro?: string;
-  icon?: typeof LayoutDashboard;
-  children: ReactNode;
-}) {
+/** Frame for a whole portal. Renders the child page through <Outlet />. */
+export function PortalShell({ role, children }: { role: AppRole; children?: ReactNode }) {
   const [open, setOpen] = useState(false);
   const nav = PORTAL_NAV[role];
   const pathname = useRouterState({ select: (s) => s.location.pathname });
@@ -151,26 +145,51 @@ export function PortalShell({
           </div>
         )}
 
-        <main className="portal portal-main">
-          <div className="portal-head">
-            <div>
-              <p className="eyebrow">{eyebrow}</p>
-              <h1>{title}</h1>
-              {intro ? <p>{intro}</p> : null}
-            </div>
-            {Icon ? <Icon size={42} /> : null}
-          </div>
-          {children}
-        </main>
+        <main className="portal portal-main">{children ?? <Outlet />}</main>
       </div>
 
-      <footer className="portal-footer">
-        <span>© {new Date().getFullYear()} Najeeb Digital Hub</span>
-        <a href="mailto:hello@ndh.com.ng">hello@ndh.com.ng</a>
-        <Link to="/terms">Terms</Link>
-        <Link to="/privacy">Privacy</Link>
-      </footer>
+      <PortalFooter />
     </div>
+  );
+}
+
+/** Page header used at the top of every portal page. */
+export function PortalPage({
+  eyebrow,
+  title,
+  intro,
+  icon: Icon,
+  children,
+}: {
+  eyebrow: string;
+  title: string;
+  intro?: string;
+  icon?: typeof LayoutDashboard;
+  children: ReactNode;
+}) {
+  return (
+    <>
+      <div className="portal-head">
+        <div>
+          <p className="eyebrow">{eyebrow}</p>
+          <h1>{title}</h1>
+          {intro ? <p>{intro}</p> : null}
+        </div>
+        {Icon ? <Icon size={42} /> : null}
+      </div>
+      {children}
+    </>
+  );
+}
+
+function PortalFooter() {
+  return (
+    <footer className="portal-footer">
+      <span>© {new Date().getFullYear()} Najeeb Digital Hub</span>
+      <a href="mailto:hello@ndh.com.ng">hello@ndh.com.ng</a>
+      <Link to="/portal/terms">Terms</Link>
+      <Link to="/portal/privacy">Privacy</Link>
+    </footer>
   );
 }
 
@@ -181,11 +200,11 @@ function PortalNav({ items }: { items: NavItem[] }) {
         const Icon = item.icon;
         return (
           <Link
-            key={`${item.to}-${item.label}`}
+            key={item.to}
             to={item.to as never}
-            hash={item.hash}
             className="portal-nav-link"
-            activeOptions={{ exact: true, includeHash: false }}
+            activeProps={{ className: 'portal-nav-link active' }}
+            activeOptions={{ exact: true }}
           >
             <Icon size={17} />
             {item.label}
@@ -216,18 +235,6 @@ function AccountMenu({ role }: { role: AppRole }) {
   const initial = name.charAt(0).toUpperCase();
   const otherRoles = roles.filter((r) => r !== role);
 
-  async function signOut() {
-    setBusy(true);
-    try {
-      await queryClient.cancelQueries();
-      queryClient.clear();
-      await supabase.auth.signOut();
-    } finally {
-      setBusy(false);
-      void navigate({ to: '/login', replace: true });
-    }
-  }
-
   return (
     <div className="portal-account" ref={ref}>
       <button className="portal-account-button" onClick={() => setOpen((v) => !v)} aria-expanded={open}>
@@ -252,10 +259,20 @@ function AccountMenu({ role }: { role: AppRole }) {
             </div>
           )}
           <div className="portal-account-group">
-            <Link to="/" onClick={() => setOpen(false)}>
-              <FileText size={15} /> Back to main site
-            </Link>
-            <button onClick={signOut} disabled={busy}>
+            <button
+              onClick={async () => {
+                setBusy(true);
+                try {
+                  await queryClient.cancelQueries();
+                  queryClient.clear();
+                  await supabase.auth.signOut();
+                } finally {
+                  setBusy(false);
+                  void navigate({ to: '/login', replace: true });
+                }
+              }}
+              disabled={busy}
+            >
               <LogOut size={15} /> {busy ? 'Signing out…' : 'Sign out'}
             </button>
           </div>
@@ -282,12 +299,7 @@ export function PortalFrame({ children }: { children: ReactNode }) {
         <AccountMenu role={active} />
       </header>
       <div className="portal-body portal-body-plain">{children}</div>
-      <footer className="portal-footer">
-        <span>© {new Date().getFullYear()} Najeeb Digital Hub</span>
-        <a href="mailto:hello@ndh.com.ng">hello@ndh.com.ng</a>
-        <Link to="/terms">Terms</Link>
-        <Link to="/privacy">Privacy</Link>
-      </footer>
+      <PortalFooter />
     </div>
   );
 }
