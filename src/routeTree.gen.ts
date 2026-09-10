@@ -15,6 +15,7 @@ import { Route as TalentApplicationRouteImport } from './routes/talent-applicati
 import { Route as SignupRouteImport } from './routes/signup'
 import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as LoginRouteImport } from './routes/login'
+import { Route as FaqRouteImport } from './routes/faq'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as BlogRouteImport } from './routes/blog'
 import { Route as AgencyRouteImport } from './routes/agency'
@@ -22,10 +23,13 @@ import { Route as AcademyRouteImport } from './routes/academy'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as VerifyIndexRouteImport } from './routes/verify.index'
 import { Route as BlogIndexRouteImport } from './routes/blog.index'
 import { Route as AcademyIndexRouteImport } from './routes/academy.index'
+import { Route as VerifyCodeRouteImport } from './routes/verify.$code'
 import { Route as InviteTokenRouteImport } from './routes/invite.$token'
 import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
+import { Route as AgencySlugRouteImport } from './routes/agency.$slug'
 import { Route as AcademySlugRouteImport } from './routes/academy.$slug'
 import { Route as ApiPublicSupportChatRouteImport } from './routes/api/public/support-chat'
 import { Route as ApiPublicPaystackWebhookRouteImport } from './routes/api/public/paystack-webhook'
@@ -110,6 +114,11 @@ const LoginRoute = LoginRouteImport.update({
   path: '/login',
   getParentRoute: () => rootRouteImport,
 } as any)
+const FaqRoute = FaqRouteImport.update({
+  id: '/faq',
+  path: '/faq',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ContactRoute = ContactRouteImport.update({
   id: '/contact',
   path: '/contact',
@@ -144,6 +153,11 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const VerifyIndexRoute = VerifyIndexRouteImport.update({
+  id: '/verify/',
+  path: '/verify/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const BlogIndexRoute = BlogIndexRouteImport.update({
   id: '/',
   path: '/',
@@ -154,6 +168,11 @@ const AcademyIndexRoute = AcademyIndexRouteImport.update({
   path: '/',
   getParentRoute: () => AcademyRoute,
 } as any)
+const VerifyCodeRoute = VerifyCodeRouteImport.update({
+  id: '/verify/$code',
+  path: '/verify/$code',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const InviteTokenRoute = InviteTokenRouteImport.update({
   id: '/invite/$token',
   path: '/invite/$token',
@@ -163,6 +182,11 @@ const BlogSlugRoute = BlogSlugRouteImport.update({
   id: '/$slug',
   path: '/$slug',
   getParentRoute: () => BlogRoute,
+} as any)
+const AgencySlugRoute = AgencySlugRouteImport.update({
+  id: '/$slug',
+  path: '/$slug',
+  getParentRoute: () => AgencyRoute,
 } as any)
 const AcademySlugRoute = AcademySlugRouteImport.update({
   id: '/$slug',
@@ -481,9 +505,10 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/academy': typeof AcademyRouteWithChildren
-  '/agency': typeof AgencyRoute
+  '/agency': typeof AgencyRouteWithChildren
   '/blog': typeof BlogRouteWithChildren
   '/contact': typeof ContactRoute
+  '/faq': typeof FaqRoute
   '/login': typeof LoginRoute
   '/privacy': typeof PrivacyRoute
   '/signup': typeof SignupRoute
@@ -491,10 +516,13 @@ export interface FileRoutesByFullPath {
   '/terms': typeof TermsRoute
   '/work': typeof WorkRoute
   '/academy/$slug': typeof AcademySlugRoute
+  '/agency/$slug': typeof AgencySlugRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/invite/$token': typeof InviteTokenRoute
+  '/verify/$code': typeof VerifyCodeRoute
   '/academy/': typeof AcademyIndexRoute
   '/blog/': typeof BlogIndexRoute
+  '/verify/': typeof VerifyIndexRoute
   '/certificate/$id': typeof AuthenticatedCertificateIdRoute
   '/enrol/callback': typeof AuthenticatedEnrolCallbackRoute
   '/exam/$slug': typeof AuthenticatedExamSlugRoute
@@ -551,8 +579,9 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
-  '/agency': typeof AgencyRoute
+  '/agency': typeof AgencyRouteWithChildren
   '/contact': typeof ContactRoute
+  '/faq': typeof FaqRoute
   '/login': typeof LoginRoute
   '/privacy': typeof PrivacyRoute
   '/signup': typeof SignupRoute
@@ -560,10 +589,13 @@ export interface FileRoutesByTo {
   '/terms': typeof TermsRoute
   '/work': typeof WorkRoute
   '/academy/$slug': typeof AcademySlugRoute
+  '/agency/$slug': typeof AgencySlugRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/invite/$token': typeof InviteTokenRoute
+  '/verify/$code': typeof VerifyCodeRoute
   '/academy': typeof AcademyIndexRoute
   '/blog': typeof BlogIndexRoute
+  '/verify': typeof VerifyIndexRoute
   '/certificate/$id': typeof AuthenticatedCertificateIdRoute
   '/enrol/callback': typeof AuthenticatedEnrolCallbackRoute
   '/exam/$slug': typeof AuthenticatedExamSlugRoute
@@ -617,9 +649,10 @@ export interface FileRoutesById {
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/about': typeof AboutRoute
   '/academy': typeof AcademyRouteWithChildren
-  '/agency': typeof AgencyRoute
+  '/agency': typeof AgencyRouteWithChildren
   '/blog': typeof BlogRouteWithChildren
   '/contact': typeof ContactRoute
+  '/faq': typeof FaqRoute
   '/login': typeof LoginRoute
   '/privacy': typeof PrivacyRoute
   '/signup': typeof SignupRoute
@@ -627,10 +660,13 @@ export interface FileRoutesById {
   '/terms': typeof TermsRoute
   '/work': typeof WorkRoute
   '/academy/$slug': typeof AcademySlugRoute
+  '/agency/$slug': typeof AgencySlugRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/invite/$token': typeof InviteTokenRoute
+  '/verify/$code': typeof VerifyCodeRoute
   '/academy/': typeof AcademyIndexRoute
   '/blog/': typeof BlogIndexRoute
+  '/verify/': typeof VerifyIndexRoute
   '/_authenticated/certificate/$id': typeof AuthenticatedCertificateIdRoute
   '/_authenticated/enrol/callback': typeof AuthenticatedEnrolCallbackRoute
   '/_authenticated/exam/$slug': typeof AuthenticatedExamSlugRoute
@@ -693,6 +729,7 @@ export interface FileRouteTypes {
     | '/agency'
     | '/blog'
     | '/contact'
+    | '/faq'
     | '/login'
     | '/privacy'
     | '/signup'
@@ -700,10 +737,13 @@ export interface FileRouteTypes {
     | '/terms'
     | '/work'
     | '/academy/$slug'
+    | '/agency/$slug'
     | '/blog/$slug'
     | '/invite/$token'
+    | '/verify/$code'
     | '/academy/'
     | '/blog/'
+    | '/verify/'
     | '/certificate/$id'
     | '/enrol/callback'
     | '/exam/$slug'
@@ -762,6 +802,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/agency'
     | '/contact'
+    | '/faq'
     | '/login'
     | '/privacy'
     | '/signup'
@@ -769,10 +810,13 @@ export interface FileRouteTypes {
     | '/terms'
     | '/work'
     | '/academy/$slug'
+    | '/agency/$slug'
     | '/blog/$slug'
     | '/invite/$token'
+    | '/verify/$code'
     | '/academy'
     | '/blog'
+    | '/verify'
     | '/certificate/$id'
     | '/enrol/callback'
     | '/exam/$slug'
@@ -828,6 +872,7 @@ export interface FileRouteTypes {
     | '/agency'
     | '/blog'
     | '/contact'
+    | '/faq'
     | '/login'
     | '/privacy'
     | '/signup'
@@ -835,10 +880,13 @@ export interface FileRouteTypes {
     | '/terms'
     | '/work'
     | '/academy/$slug'
+    | '/agency/$slug'
     | '/blog/$slug'
     | '/invite/$token'
+    | '/verify/$code'
     | '/academy/'
     | '/blog/'
+    | '/verify/'
     | '/_authenticated/certificate/$id'
     | '/_authenticated/enrol/callback'
     | '/_authenticated/exam/$slug'
@@ -898,9 +946,10 @@ export interface RootRouteChildren {
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AboutRoute: typeof AboutRoute
   AcademyRoute: typeof AcademyRouteWithChildren
-  AgencyRoute: typeof AgencyRoute
+  AgencyRoute: typeof AgencyRouteWithChildren
   BlogRoute: typeof BlogRouteWithChildren
   ContactRoute: typeof ContactRoute
+  FaqRoute: typeof FaqRoute
   LoginRoute: typeof LoginRoute
   PrivacyRoute: typeof PrivacyRoute
   SignupRoute: typeof SignupRoute
@@ -908,6 +957,8 @@ export interface RootRouteChildren {
   TermsRoute: typeof TermsRoute
   WorkRoute: typeof WorkRoute
   InviteTokenRoute: typeof InviteTokenRoute
+  VerifyCodeRoute: typeof VerifyCodeRoute
+  VerifyIndexRoute: typeof VerifyIndexRoute
   ApiPublicPaystackWebhookRoute: typeof ApiPublicPaystackWebhookRoute
   ApiPublicSupportChatRoute: typeof ApiPublicSupportChatRoute
   LovableEmailAuthPreviewRoute: typeof LovableEmailAuthPreviewRoute
@@ -959,6 +1010,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LoginRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/faq': {
+      id: '/faq'
+      path: '/faq'
+      fullPath: '/faq'
+      preLoaderRoute: typeof FaqRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/contact': {
       id: '/contact'
       path: '/contact'
@@ -1008,6 +1066,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/verify/': {
+      id: '/verify/'
+      path: '/verify'
+      fullPath: '/verify/'
+      preLoaderRoute: typeof VerifyIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/blog/': {
       id: '/blog/'
       path: '/'
@@ -1022,6 +1087,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AcademyIndexRouteImport
       parentRoute: typeof AcademyRoute
     }
+    '/verify/$code': {
+      id: '/verify/$code'
+      path: '/verify/$code'
+      fullPath: '/verify/$code'
+      preLoaderRoute: typeof VerifyCodeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/invite/$token': {
       id: '/invite/$token'
       path: '/invite/$token'
@@ -1035,6 +1107,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/blog/$slug'
       preLoaderRoute: typeof BlogSlugRouteImport
       parentRoute: typeof BlogRoute
+    }
+    '/agency/$slug': {
+      id: '/agency/$slug'
+      path: '/$slug'
+      fullPath: '/agency/$slug'
+      preLoaderRoute: typeof AgencySlugRouteImport
+      parentRoute: typeof AgencyRoute
     }
     '/academy/$slug': {
       id: '/academy/$slug'
@@ -1612,6 +1691,17 @@ const AcademyRouteChildren: AcademyRouteChildren = {
 const AcademyRouteWithChildren =
   AcademyRoute._addFileChildren(AcademyRouteChildren)
 
+interface AgencyRouteChildren {
+  AgencySlugRoute: typeof AgencySlugRoute
+}
+
+const AgencyRouteChildren: AgencyRouteChildren = {
+  AgencySlugRoute: AgencySlugRoute,
+}
+
+const AgencyRouteWithChildren =
+  AgencyRoute._addFileChildren(AgencyRouteChildren)
+
 interface BlogRouteChildren {
   BlogSlugRoute: typeof BlogSlugRoute
   BlogIndexRoute: typeof BlogIndexRoute
@@ -1629,9 +1719,10 @@ const rootRouteChildren: RootRouteChildren = {
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AboutRoute: AboutRoute,
   AcademyRoute: AcademyRouteWithChildren,
-  AgencyRoute: AgencyRoute,
+  AgencyRoute: AgencyRouteWithChildren,
   BlogRoute: BlogRouteWithChildren,
   ContactRoute: ContactRoute,
+  FaqRoute: FaqRoute,
   LoginRoute: LoginRoute,
   PrivacyRoute: PrivacyRoute,
   SignupRoute: SignupRoute,
@@ -1639,6 +1730,8 @@ const rootRouteChildren: RootRouteChildren = {
   TermsRoute: TermsRoute,
   WorkRoute: WorkRoute,
   InviteTokenRoute: InviteTokenRoute,
+  VerifyCodeRoute: VerifyCodeRoute,
+  VerifyIndexRoute: VerifyIndexRoute,
   ApiPublicPaystackWebhookRoute: ApiPublicPaystackWebhookRoute,
   ApiPublicSupportChatRoute: ApiPublicSupportChatRoute,
   LovableEmailAuthPreviewRoute: LovableEmailAuthPreviewRoute,
