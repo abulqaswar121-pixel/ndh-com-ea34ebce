@@ -40,9 +40,11 @@ function Reviews() {
             {reviews.map((r) => (
               <article className="portal-card" key={r.id}>
                 <ClipboardCheck size={20} />
-                <h3>Student submission</h3>
-                <p>{r.ai_verdict || 'AI verdict pending'}</p>
-                {r.submission_url && <a href={r.submission_url}>View submission</a>}
+                <h3>{r.profiles?.full_name ?? 'Student'} — {r.courses?.title ?? 'Course project'}</h3>
+                <p className="admin-note">{r.profiles?.email}</p>
+                <p>{r.brief}</p>
+                {r.submission_text && <p>{r.submission_text}</p>}
+                {r.submission_url && <a href={r.submission_url} target="_blank" rel="noreferrer">View submission</a>}
                 <div className="project-actions">
                   <button
                     className="button"
