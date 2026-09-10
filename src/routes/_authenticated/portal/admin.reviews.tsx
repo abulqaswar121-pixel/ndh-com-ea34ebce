@@ -14,8 +14,8 @@ function Reviews() {
 
   async function load() {
     const { data } = await (supabase as any)
-      .from('academy_submissions')
-      .select('*')
+      .from('student_projects')
+      .select('*, courses(title), profiles(full_name, email)')
       .eq('status', 'submitted')
       .order('created_at', { ascending: false });
     setReviews(data ?? []);
