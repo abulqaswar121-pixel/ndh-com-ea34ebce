@@ -1394,6 +1394,7 @@ export type Database = {
         }[]
       }
       validate_invite_token: { Args: { _token: string }; Returns: Json }
+      verify_certificate: { Args: { _code: string }; Returns: Json }
     }
     Enums: {
       app_role: "client" | "student" | "talent" | "pm" | "admin"
