@@ -2001,6 +2001,7 @@ html { -webkit-text-size-adjust: 100%; }
 @media (max-height: 500px) and (orientation: landscape) {
   .portal-topbar { position: static; padding-block: 8px; }
   .portal-sidebar { display: none; }
+  .portal-menu-button { display: inline-flex; }
   .portal-body { display: block; }
   .portal-main { padding: 16px; }
   .portal-head h1 { font-size: 22px; }
