@@ -59,17 +59,17 @@ function Work() {
                     <h2>{s.title}</h2>
                     <p>{s.summary}</p>
                     {s.challenge && (
-                      <p>
+                      <p className="case-detail">
                         <strong>Challenge.</strong> {s.challenge}
                       </p>
                     )}
                     {s.approach && (
-                      <p>
+                      <p className="case-detail">
                         <strong>Approach.</strong> {s.approach}
                       </p>
                     )}
                     {s.result && (
-                      <p>
+                      <p className="case-detail">
                         <strong>Result.</strong> {s.result}
                       </p>
                     )}
