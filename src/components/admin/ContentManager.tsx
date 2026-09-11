@@ -114,6 +114,8 @@ export function CaseStudiesManager() {
   const [form, setForm] = useState({
     title: '',
     client_name: '',
+    category: '',
+    live_url: '',
     summary: '',
     challenge: '',
     approach: '',
@@ -128,7 +130,7 @@ export function CaseStudiesManager() {
         onSubmit={async (e) => {
           e.preventDefault();
           await cs.insert({ ...form, slug: slugify(form.title), is_published: true });
-          setForm({ title: '', client_name: '', summary: '', challenge: '', approach: '', result: '', cover_image_url: '' });
+          setForm({ title: '', client_name: '', category: '', live_url: '', summary: '', challenge: '', approach: '', result: '', cover_image_url: '' });
         }}
       >
         <label>
