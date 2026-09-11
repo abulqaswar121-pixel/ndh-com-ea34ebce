@@ -1,4 +1,5 @@
 import { createFileRoute } from '@tanstack/react-router';
+import { ArrowUpRight } from 'lucide-react';
 import { PageShell, PageIntro, Button } from '@/components/PageShell';
 import { Reveal } from '@/components/Reveal';
 import { listCaseStudies } from '@/lib/catalog.functions';
@@ -53,6 +54,7 @@ function Work() {
                 <article className="case-card">
                   {s.cover_image_url && <img src={s.cover_image_url} alt={`Project cover for ${s.title}`} width={1200} height={800} loading="lazy" decoding="async" />}
                   <div>
+                    {s.category && <p className="tag-pill">{s.category}</p>}
                     <p className="eyebrow">{s.client_name}</p>
                     <h2>{s.title}</h2>
                     <p>{s.summary}</p>
@@ -69,6 +71,13 @@ function Work() {
                     {s.result && (
                       <p>
                         <strong>Result.</strong> {s.result}
+                      </p>
+                    )}
+                    {s.live_url && (
+                      <p>
+                        <a className="text-link" href={s.live_url} target="_blank" rel="noopener noreferrer">
+                          View live project <ArrowUpRight size={15} />
+                        </a>
                       </p>
                     )}
                   </div>
