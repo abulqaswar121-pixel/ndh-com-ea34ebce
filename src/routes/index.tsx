@@ -2,6 +2,7 @@ import { createFileRoute } from '@tanstack/react-router';
 import { ArrowUpRight, Boxes, BrainCircuit, CheckCircle2, Sparkles } from 'lucide-react';
 import { PageShell, Button } from '@/components/PageShell';
 import { Reveal } from '@/components/Reveal';
+import { Rail } from '@/components/Rail';
 import { ResponsiveImage } from '@/components/ResponsiveImage';
 
 const title = 'Najeeb Digital Hub — Digital delivery and AI skills';
