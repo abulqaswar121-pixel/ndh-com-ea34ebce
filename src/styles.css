@@ -2360,3 +2360,29 @@ html { -webkit-text-size-adjust: 100%; }
     scroll-snap-type: none;
   }
 }
+
+/* step cards inside the process rail */
+.step-card .step-number {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--accent);
+}
+
+.step-card h3 {
+  display: block;
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 17px;
+  margin: 10px 0 6px;
+  color: var(--ink);
+}
+
+.step-card p {
+  font-size: 14px;
+  color: var(--muted);
+  margin: 0;
+}
+
+.process-row-rail .rail-track {
+  grid-auto-columns: minmax(220px, 260px);
+}
