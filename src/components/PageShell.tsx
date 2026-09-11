@@ -128,6 +128,8 @@ export function PageShell({
         <div className="footer-links">
           <strong style={{ fontSize: 13, letterSpacing: '0.1em', textTransform: 'uppercase' }}>Company</strong>
           <Link to="/contact">Contact</Link>
+          <Link to="/faq">FAQ</Link>
+          <Link to="/verify">Verify a certificate</Link>
           <Link to="/login">Sign in</Link>
           <Link to="/terms">Terms</Link>
           <Link to="/privacy">Privacy</Link>
