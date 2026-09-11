@@ -100,15 +100,15 @@ function Agency() {
               <p className="eyebrow">How we work</p>
               <h2>Four steps, no guesswork.</h2>
             </div>
-            <div className="process-row">
+            <Rail label="How we work" className="process-row-rail">
               {steps.map(([n, heading, text]) => (
-                <div key={n}>
-                  <span>{n}</span>
+                <div className="step-card" key={n}>
+                  <span className="step-number">{n}</span>
                   <h3>{heading}</h3>
                   <p>{text}</p>
                 </div>
               ))}
-            </div>
+            </Rail>
           </section>
         </Reveal>
 
