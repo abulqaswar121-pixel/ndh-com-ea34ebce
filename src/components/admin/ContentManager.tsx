@@ -142,6 +142,14 @@ export function CaseStudiesManager() {
           <input value={form.client_name} onChange={(e) => setForm({ ...form, client_name: e.target.value })} />
         </label>
         <label>
+          Category tag
+          <input placeholder="e.g. Web App Development / Business Systems" value={form.category} onChange={(e) => setForm({ ...form, category: e.target.value })} />
+        </label>
+        <label>
+          Live project URL
+          <input placeholder="https://..." value={form.live_url} onChange={(e) => setForm({ ...form, live_url: e.target.value })} />
+        </label>
+        <label>
           Summary
           <textarea rows={2} value={form.summary} onChange={(e) => setForm({ ...form, summary: e.target.value })} />
         </label>
@@ -172,6 +180,7 @@ export function CaseStudiesManager() {
             <article className="portal-card" key={r.id}>
               <Star size={18} />
               <h3>{r.title}</h3>
+              {r.category && <p className="tag-pill">{r.category}</p>}
               <p>{r.summary}</p>
               <div className="project-actions">
                 <button onClick={() => cs.update(r.id, { is_published: !r.is_published })}>
