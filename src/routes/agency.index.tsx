@@ -120,7 +120,7 @@ function Agency() {
                 <h2>Real projects, delivered and verified.</h2>
                 <p>Every project below is live work built, authored or managed by NDH — no hypothetical metrics.</p>
               </div>
-              <div className="service-grid">
+              <Rail label="Selected work">
                 {studies.slice(0, 6).map((s) => (
                   <Link className="service-card" key={s.slug} to="/work">
                     <BadgeCheck size={22} />
@@ -129,7 +129,7 @@ function Agency() {
                     <ArrowUpRight size={18} className="card-arrow" />
                   </Link>
                 ))}
-              </div>
+              </Rail>
               {testimonials.length > 0 && (
                 <div className="testimonial-block">
                   <div className="section-heading">
