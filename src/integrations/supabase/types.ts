@@ -139,12 +139,14 @@ export type Database = {
       case_studies: {
         Row: {
           approach: string | null
+          category: string | null
           challenge: string | null
           client_name: string | null
           cover_image_url: string | null
           created_at: string
           id: string
           is_published: boolean
+          live_url: string | null
           result: string | null
           slug: string
           sort_order: number
@@ -154,12 +156,14 @@ export type Database = {
         }
         Insert: {
           approach?: string | null
+          category?: string | null
           challenge?: string | null
           client_name?: string | null
           cover_image_url?: string | null
           created_at?: string
           id?: string
           is_published?: boolean
+          live_url?: string | null
           result?: string | null
           slug: string
           sort_order?: number
@@ -169,12 +173,14 @@ export type Database = {
         }
         Update: {
           approach?: string | null
+          category?: string | null
           challenge?: string | null
           client_name?: string | null
           cover_image_url?: string | null
           created_at?: string
           id?: string
           is_published?: boolean
+          live_url?: string | null
           result?: string | null
           slug?: string
           sort_order?: number
@@ -1283,6 +1289,7 @@ export type Database = {
           author_name: string
           author_role: string | null
           avatar_url: string | null
+          badge: string | null
           company: string | null
           created_at: string
           id: string
@@ -1295,6 +1302,7 @@ export type Database = {
           author_name: string
           author_role?: string | null
           avatar_url?: string | null
+          badge?: string | null
           company?: string | null
           created_at?: string
           id?: string
@@ -1307,6 +1315,7 @@ export type Database = {
           author_name?: string
           author_role?: string | null
           avatar_url?: string | null
+          badge?: string | null
           company?: string | null
           created_at?: string
           id?: string
