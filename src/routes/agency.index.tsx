@@ -2,6 +2,7 @@ import { createFileRoute, Link } from '@tanstack/react-router';
 import { ArrowUpRight, BarChart3, BadgeCheck, Bot, Code2, Megaphone, Palette, PenTool, Video } from 'lucide-react';
 import { PageShell, PageIntro, Button } from '@/components/PageShell';
 import { Reveal } from '@/components/Reveal';
+import { Rail } from '@/components/Rail';
 import { listCaseStudies, listTestimonials } from '@/lib/catalog.functions';
 
 const title = 'Agency — Digital delivery managed end to end | NDH';
