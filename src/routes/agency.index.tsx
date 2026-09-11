@@ -136,7 +136,7 @@ function Agency() {
                     <p className="eyebrow">Client &amp; stakeholder verification</p>
                     <h2>What our clients say.</h2>
                   </div>
-                  <div className="testimonial-grid">
+                  <Rail label="Client testimonials">
                     {testimonials.slice(0, 3).map((t) => (
                       <blockquote className="testimonial-card" key={t.id}>
                         {t.badge && <p className="badge-pill">{t.badge}</p>}
