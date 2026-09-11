@@ -1,4 +1,4 @@
-import { createFileRoute } from '@tanstack/react-router';
+import { createFileRoute, Link } from '@tanstack/react-router';
 import { ArrowUpRight, BarChart3, Bot, Code2, Megaphone, Palette, PenTool, Video } from 'lucide-react';
 import { PageShell, PageIntro, Button } from '@/components/PageShell';
 import { Reveal } from '@/components/Reveal';
@@ -24,14 +24,14 @@ export const Route = createFileRoute('/agency')({
 });
 
 const services = [
-  ['Brand & identity', 'Visual systems that make a business easier to recognise.', Palette],
-  ['Design & product', 'Interfaces, flows and product experiences shaped around use.', PenTool],
-  ['Development', 'Web and product builds prepared for real use.', Code2],
-  ['Content & writing', 'Clear words for pages, campaigns and ongoing communication.', PenTool],
-  ['Marketing & growth', 'Structured campaigns and practical growth support.', Megaphone],
-  ['Video & media', 'Editing, motion, photography and podcast production.', Video],
-  ['Data & business', 'Dashboards and operational support for decisions.', BarChart3],
-  ['AI & automation', 'AI-assisted workflows, agents and connected tools.', Bot],
+  ['brand-identity', 'Brand & identity', 'Visual systems that make a business easier to recognise.', Palette],
+  ['design-product', 'Design & product', 'Interfaces, flows and product experiences shaped around use.', PenTool],
+  ['development', 'Development', 'Web and product builds prepared for real use.', Code2],
+  ['content-writing', 'Content & writing', 'Clear words for pages, campaigns and ongoing communication.', PenTool],
+  ['marketing-growth', 'Marketing & growth', 'Structured campaigns and practical growth support.', Megaphone],
+  ['video-media', 'Video & media', 'Editing, motion, photography and podcast production.', Video],
+  ['data-business', 'Data & business', 'Dashboards and operational support for decisions.', BarChart3],
+  ['ai-automation', 'AI & automation', 'AI-assisted workflows, agents and connected tools.', Bot],
 ] as const;
 
 const steps = [
@@ -68,13 +68,13 @@ function Agency() {
               <h2>Bring us the work you need to move.</h2>
             </div>
             <div className="service-grid">
-              {services.map(([name, text, Icon]) => (
-                <article className="service-card" key={name}>
+              {services.map(([slug, name, text, Icon]) => (
+                <Link className="service-card" key={slug} to="/agency/$slug" params={{ slug }}>
                   <Icon size={22} />
                   <h3>{name}</h3>
                   <p>{text}</p>
                   <ArrowUpRight size={18} className="card-arrow" />
-                </article>
+                </Link>
               ))}
             </div>
           </section>
