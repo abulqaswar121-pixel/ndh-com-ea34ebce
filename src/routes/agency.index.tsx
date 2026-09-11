@@ -81,7 +81,7 @@ function Agency() {
               <p className="eyebrow">Service areas</p>
               <h2>Bring us the work you need to move.</h2>
             </div>
-            <div className="service-grid">
+            <Rail label="Service areas">
               {services.map(([slug, name, text, Icon]) => (
                 <Link className="service-card" key={slug} to="/agency/$slug" params={{ slug }}>
                   <Icon size={22} />
@@ -90,7 +90,7 @@ function Agency() {
                   <ArrowUpRight size={18} className="card-arrow" />
                 </Link>
               ))}
-            </div>
+            </Rail>
           </section>
         </Reveal>
 
