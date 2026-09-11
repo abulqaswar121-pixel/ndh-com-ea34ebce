@@ -2,6 +2,7 @@ import { createFileRoute, Link } from '@tanstack/react-router';
 import { ArrowUpRight, BarChart3, BadgeCheck, Bot, Code2, Megaphone, Palette, PenTool, Video } from 'lucide-react';
 import { PageShell, PageIntro, Button } from '@/components/PageShell';
 import { Reveal } from '@/components/Reveal';
+import { Rail } from '@/components/Rail';
 import { listCaseStudies, listTestimonials } from '@/lib/catalog.functions';
 
 const title = 'Agency — Digital delivery managed end to end | NDH';
@@ -81,7 +82,7 @@ function Agency() {
               <p className="eyebrow">Service areas</p>
               <h2>Bring us the work you need to move.</h2>
             </div>
-            <div className="service-grid">
+            <Rail label="Service areas">
               {services.map(([slug, name, text, Icon]) => (
                 <Link className="service-card" key={slug} to="/agency/$slug" params={{ slug }}>
                   <Icon size={22} />
@@ -90,7 +91,7 @@ function Agency() {
                   <ArrowUpRight size={18} className="card-arrow" />
                 </Link>
               ))}
-            </div>
+            </Rail>
           </section>
         </Reveal>
 
@@ -100,15 +101,15 @@ function Agency() {
               <p className="eyebrow">How we work</p>
               <h2>Four steps, no guesswork.</h2>
             </div>
-            <div className="process-row">
+            <Rail label="How we work" className="process-row-rail">
               {steps.map(([n, heading, text]) => (
-                <div key={n}>
-                  <span>{n}</span>
+                <div className="step-card" key={n}>
+                  <span className="step-number">{n}</span>
                   <h3>{heading}</h3>
                   <p>{text}</p>
                 </div>
               ))}
-            </div>
+            </Rail>
           </section>
         </Reveal>
 
@@ -120,7 +121,7 @@ function Agency() {
                 <h2>Real projects, delivered and verified.</h2>
                 <p>Every project below is live work built, authored or managed by NDH — no hypothetical metrics.</p>
               </div>
-              <div className="service-grid">
+              <Rail label="Selected work">
                 {studies.slice(0, 6).map((s) => (
                   <Link className="service-card" key={s.slug} to="/work">
                     <BadgeCheck size={22} />
@@ -129,14 +130,14 @@ function Agency() {
                     <ArrowUpRight size={18} className="card-arrow" />
                   </Link>
                 ))}
-              </div>
+              </Rail>
               {testimonials.length > 0 && (
                 <div className="testimonial-block">
                   <div className="section-heading">
                     <p className="eyebrow">Client &amp; stakeholder verification</p>
                     <h2>What our clients say.</h2>
                   </div>
-                  <div className="testimonial-grid">
+                  <Rail label="Client testimonials">
                     {testimonials.slice(0, 3).map((t) => (
                       <blockquote className="testimonial-card" key={t.id}>
                         {t.badge && <p className="badge-pill">{t.badge}</p>}
@@ -147,7 +148,7 @@ function Agency() {
                         </footer>
                       </blockquote>
                     ))}
-                  </div>
+                  </Rail>
                 </div>
               )}
             </section>

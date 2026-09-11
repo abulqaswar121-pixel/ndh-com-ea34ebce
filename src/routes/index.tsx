@@ -2,6 +2,7 @@ import { createFileRoute } from '@tanstack/react-router';
 import { ArrowUpRight, Boxes, BrainCircuit, CheckCircle2, Sparkles } from 'lucide-react';
 import { PageShell, Button } from '@/components/PageShell';
 import { Reveal } from '@/components/Reveal';
+import { Rail } from '@/components/Rail';
 import { ResponsiveImage } from '@/components/ResponsiveImage';
 
 const title = 'Najeeb Digital Hub — Digital delivery and AI skills';
@@ -72,7 +73,7 @@ function Home() {
               <h2>Make the next step easier to see.</h2>
             </div>
           </Reveal>
-          <div className="pillar-grid">
+          <Rail label="What we offer">
             {pillars.map(([heading, text, Icon], i) => (
               <Reveal key={heading} delay={i * 90}>
                 <article className="pillar-card">
@@ -82,7 +83,7 @@ function Home() {
                 </article>
               </Reveal>
             ))}
-          </div>
+          </Rail>
         </section>
 
         <section className="split-section">
