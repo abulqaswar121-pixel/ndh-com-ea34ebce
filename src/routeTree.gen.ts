@@ -25,6 +25,7 @@ import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as VerifyIndexRouteImport } from './routes/verify.index'
 import { Route as BlogIndexRouteImport } from './routes/blog.index'
+import { Route as AgencyIndexRouteImport } from './routes/agency.index'
 import { Route as AcademyIndexRouteImport } from './routes/academy.index'
 import { Route as VerifyCodeRouteImport } from './routes/verify.$code'
 import { Route as InviteTokenRouteImport } from './routes/invite.$token'
@@ -162,6 +163,11 @@ const BlogIndexRoute = BlogIndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => BlogRoute,
+} as any)
+const AgencyIndexRoute = AgencyIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AgencyRoute,
 } as any)
 const AcademyIndexRoute = AcademyIndexRouteImport.update({
   id: '/',
@@ -521,6 +527,7 @@ export interface FileRoutesByFullPath {
   '/invite/$token': typeof InviteTokenRoute
   '/verify/$code': typeof VerifyCodeRoute
   '/academy/': typeof AcademyIndexRoute
+  '/agency/': typeof AgencyIndexRoute
   '/blog/': typeof BlogIndexRoute
   '/verify/': typeof VerifyIndexRoute
   '/certificate/$id': typeof AuthenticatedCertificateIdRoute
@@ -579,7 +586,6 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
-  '/agency': typeof AgencyRouteWithChildren
   '/contact': typeof ContactRoute
   '/faq': typeof FaqRoute
   '/login': typeof LoginRoute
@@ -594,6 +600,7 @@ export interface FileRoutesByTo {
   '/invite/$token': typeof InviteTokenRoute
   '/verify/$code': typeof VerifyCodeRoute
   '/academy': typeof AcademyIndexRoute
+  '/agency': typeof AgencyIndexRoute
   '/blog': typeof BlogIndexRoute
   '/verify': typeof VerifyIndexRoute
   '/certificate/$id': typeof AuthenticatedCertificateIdRoute
@@ -665,6 +672,7 @@ export interface FileRoutesById {
   '/invite/$token': typeof InviteTokenRoute
   '/verify/$code': typeof VerifyCodeRoute
   '/academy/': typeof AcademyIndexRoute
+  '/agency/': typeof AgencyIndexRoute
   '/blog/': typeof BlogIndexRoute
   '/verify/': typeof VerifyIndexRoute
   '/_authenticated/certificate/$id': typeof AuthenticatedCertificateIdRoute
@@ -742,6 +750,7 @@ export interface FileRouteTypes {
     | '/invite/$token'
     | '/verify/$code'
     | '/academy/'
+    | '/agency/'
     | '/blog/'
     | '/verify/'
     | '/certificate/$id'
@@ -800,7 +809,6 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/about'
-    | '/agency'
     | '/contact'
     | '/faq'
     | '/login'
@@ -815,6 +823,7 @@ export interface FileRouteTypes {
     | '/invite/$token'
     | '/verify/$code'
     | '/academy'
+    | '/agency'
     | '/blog'
     | '/verify'
     | '/certificate/$id'
@@ -885,6 +894,7 @@ export interface FileRouteTypes {
     | '/invite/$token'
     | '/verify/$code'
     | '/academy/'
+    | '/agency/'
     | '/blog/'
     | '/verify/'
     | '/_authenticated/certificate/$id'
@@ -1079,6 +1089,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/blog/'
       preLoaderRoute: typeof BlogIndexRouteImport
       parentRoute: typeof BlogRoute
+    }
+    '/agency/': {
+      id: '/agency/'
+      path: '/'
+      fullPath: '/agency/'
+      preLoaderRoute: typeof AgencyIndexRouteImport
+      parentRoute: typeof AgencyRoute
     }
     '/academy/': {
       id: '/academy/'
@@ -1693,10 +1710,12 @@ const AcademyRouteWithChildren =
 
 interface AgencyRouteChildren {
   AgencySlugRoute: typeof AgencySlugRoute
+  AgencyIndexRoute: typeof AgencyIndexRoute
 }
 
 const AgencyRouteChildren: AgencyRouteChildren = {
   AgencySlugRoute: AgencySlugRoute,
+  AgencyIndexRoute: AgencyIndexRoute,
 }
 
 const AgencyRouteWithChildren =
