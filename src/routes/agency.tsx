@@ -1,4 +1,4 @@
-import { createFileRoute } from '@tanstack/react-router';
+import { createFileRoute, Link } from '@tanstack/react-router';
 import { ArrowUpRight, BarChart3, Bot, Code2, Megaphone, Palette, PenTool, Video } from 'lucide-react';
 import { PageShell, PageIntro, Button } from '@/components/PageShell';
 import { Reveal } from '@/components/Reveal';
@@ -68,13 +68,13 @@ function Agency() {
               <h2>Bring us the work you need to move.</h2>
             </div>
             <div className="service-grid">
-              {services.map(([name, text, Icon]) => (
-                <article className="service-card" key={name}>
+              {services.map(([slug, name, text, Icon]) => (
+                <Link className="service-card" key={slug} to="/agency/$slug" params={{ slug }}>
                   <Icon size={22} />
                   <h3>{name}</h3>
                   <p>{text}</p>
                   <ArrowUpRight size={18} className="card-arrow" />
-                </article>
+                </Link>
               ))}
             </div>
           </section>
