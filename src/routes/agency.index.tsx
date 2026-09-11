@@ -1,7 +1,8 @@
 import { createFileRoute, Link } from '@tanstack/react-router';
-import { ArrowUpRight, BarChart3, Bot, Code2, Megaphone, Palette, PenTool, Video } from 'lucide-react';
+import { ArrowUpRight, BarChart3, BadgeCheck, Bot, Code2, Megaphone, Palette, PenTool, Video } from 'lucide-react';
 import { PageShell, PageIntro, Button } from '@/components/PageShell';
 import { Reveal } from '@/components/Reveal';
+import { listCaseStudies, listTestimonials } from '@/lib/catalog.functions';
 
 const title = 'Agency — Digital delivery managed end to end | NDH';
 const description =
@@ -20,6 +21,18 @@ export const Route = createFileRoute('/agency/')({
       { name: 'twitter:image', content: 'https://ndh.com.ng/og-image.png' },
     ],
   }),
+  loader: async () => {
+    const [studies, testimonials] = await Promise.all([listCaseStudies(), listTestimonials()]);
+    return { studies, testimonials };
+  },
+  errorComponent: () => (
+    <PageShell>
+      <main className="content">
+        <h1>Agency</h1>
+        <p>Some content could not be loaded. Please refresh the page.</p>
+      </main>
+    </PageShell>
+  ),
   component: Agency,
 });
 
@@ -42,6 +55,7 @@ const steps = [
 ] as const;
 
 function Agency() {
+  const { studies, testimonials } = Route.useLoaderData();
   return (
     <PageShell>
       <PageIntro
@@ -97,6 +111,48 @@ function Agency() {
             </div>
           </section>
         </Reveal>
+
+        {studies.length > 0 && (
+          <Reveal>
+            <section>
+              <div className="section-heading">
+                <p className="eyebrow">Selected work</p>
+                <h2>Real projects, delivered and verified.</h2>
+                <p>Every project below is live work built, authored or managed by NDH — no hypothetical metrics.</p>
+              </div>
+              <div className="service-grid">
+                {studies.slice(0, 6).map((s) => (
+                  <Link className="service-card" key={s.slug} to="/work">
+                    <BadgeCheck size={22} />
+                    <h3>{s.title}</h3>
+                    <p>{s.category ?? s.summary}</p>
+                    <ArrowUpRight size={18} className="card-arrow" />
+                  </Link>
+                ))}
+              </div>
+              {testimonials.length > 0 && (
+                <div className="testimonial-block">
+                  <div className="section-heading">
+                    <p className="eyebrow">Client &amp; stakeholder verification</p>
+                    <h2>What our clients say.</h2>
+                  </div>
+                  <div className="testimonial-grid">
+                    {testimonials.slice(0, 3).map((t) => (
+                      <blockquote className="testimonial-card" key={t.id}>
+                        {t.badge && <p className="badge-pill">{t.badge}</p>}
+                        <p>&ldquo;{t.quote}&rdquo;</p>
+                        <footer>
+                          {t.author_name}
+                          {t.company ? ` — ${t.company}` : ''}
+                        </footer>
+                      </blockquote>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </section>
+          </Reveal>
+        )}
 
         <Reveal>
           <div className="cta-panel">

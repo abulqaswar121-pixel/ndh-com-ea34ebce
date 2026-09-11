@@ -50,7 +50,7 @@ function useTable(table: string, order = 'created_at') {
 
 export function TestimonialsManager() {
   const t = useTable('testimonials');
-  const [form, setForm] = useState({ author_name: '', author_role: '', company: '', quote: '' });
+  const [form, setForm] = useState({ author_name: '', author_role: '', company: '', quote: '', badge: '' });
 
   return (
     <div className="cms-block">
@@ -59,7 +59,7 @@ export function TestimonialsManager() {
         onSubmit={async (e) => {
           e.preventDefault();
           await t.insert({ ...form, is_published: true });
-          setForm({ author_name: '', author_role: '', company: '', quote: '' });
+          setForm({ author_name: '', author_role: '', company: '', quote: '', badge: '' });
         }}
       >
         <label>
@@ -78,6 +78,10 @@ export function TestimonialsManager() {
           Testimonial
           <textarea required rows={3} value={form.quote} onChange={(e) => setForm({ ...form, quote: e.target.value })} />
         </label>
+        <label>
+          Verification badge (optional)
+          <input placeholder="e.g. Verified Project Delivery" value={form.badge} onChange={(e) => setForm({ ...form, badge: e.target.value })} />
+        </label>
         <button className="button">Publish testimonial</button>
       </form>
       {t.error && <p className="form-error">{t.error}</p>}
@@ -91,6 +95,7 @@ export function TestimonialsManager() {
               <h3>{r.author_name}</h3>
               <p>{r.quote}</p>
               <div className="project-actions">
+                {r.badge && <p className="badge-pill">{r.badge}</p>}
                 <button onClick={() => t.update(r.id, { is_published: !r.is_published })}>
                   {r.is_published ? 'Unpublish' : 'Publish'}
                 </button>
@@ -109,6 +114,8 @@ export function CaseStudiesManager() {
   const [form, setForm] = useState({
     title: '',
     client_name: '',
+    category: '',
+    live_url: '',
     summary: '',
     challenge: '',
     approach: '',
@@ -123,7 +130,7 @@ export function CaseStudiesManager() {
         onSubmit={async (e) => {
           e.preventDefault();
           await cs.insert({ ...form, slug: slugify(form.title), is_published: true });
-          setForm({ title: '', client_name: '', summary: '', challenge: '', approach: '', result: '', cover_image_url: '' });
+          setForm({ title: '', client_name: '', category: '', live_url: '', summary: '', challenge: '', approach: '', result: '', cover_image_url: '' });
         }}
       >
         <label>
@@ -133,6 +140,14 @@ export function CaseStudiesManager() {
         <label>
           Client
           <input value={form.client_name} onChange={(e) => setForm({ ...form, client_name: e.target.value })} />
+        </label>
+        <label>
+          Category tag
+          <input placeholder="e.g. Web App Development / Business Systems" value={form.category} onChange={(e) => setForm({ ...form, category: e.target.value })} />
+        </label>
+        <label>
+          Live project URL
+          <input placeholder="https://..." value={form.live_url} onChange={(e) => setForm({ ...form, live_url: e.target.value })} />
         </label>
         <label>
           Summary
@@ -165,6 +180,7 @@ export function CaseStudiesManager() {
             <article className="portal-card" key={r.id}>
               <Star size={18} />
               <h3>{r.title}</h3>
+              {r.category && <p className="tag-pill">{r.category}</p>}
               <p>{r.summary}</p>
               <div className="project-actions">
                 <button onClick={() => cs.update(r.id, { is_published: !r.is_published })}>

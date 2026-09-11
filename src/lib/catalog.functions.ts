@@ -138,7 +138,7 @@ export const listCaseStudies = createServerFn({ method: 'GET' }).handler(async (
   const db = publicDataClient();
   const { data, error } = await db
     .from('case_studies')
-    .select('slug, title, client_name, summary, challenge, approach, result, cover_image_url')
+    .select('slug, title, client_name, summary, challenge, approach, result, cover_image_url, category, live_url')
     .eq('is_published', true)
     .order('sort_order');
   assertQuery(error, 'case studies');
@@ -149,7 +149,7 @@ export const listTestimonials = createServerFn({ method: 'GET' }).handler(async 
   const db = publicDataClient();
   const { data, error } = await db
     .from('testimonials')
-    .select('id, author_name, author_role, company, quote')
+    .select('id, author_name, author_role, company, quote, badge')
     .eq('is_published', true)
     .order('sort_order');
   assertQuery(error, 'testimonials');
