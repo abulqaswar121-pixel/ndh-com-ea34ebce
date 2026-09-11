@@ -50,7 +50,7 @@ function useTable(table: string, order = 'created_at') {
 
 export function TestimonialsManager() {
   const t = useTable('testimonials');
-  const [form, setForm] = useState({ author_name: '', author_role: '', company: '', quote: '' });
+  const [form, setForm] = useState({ author_name: '', author_role: '', company: '', quote: '', badge: '' });
 
   return (
     <div className="cms-block">
@@ -59,7 +59,7 @@ export function TestimonialsManager() {
         onSubmit={async (e) => {
           e.preventDefault();
           await t.insert({ ...form, is_published: true });
-          setForm({ author_name: '', author_role: '', company: '', quote: '' });
+          setForm({ author_name: '', author_role: '', company: '', quote: '', badge: '' });
         }}
       >
         <label>
@@ -78,6 +78,10 @@ export function TestimonialsManager() {
           Testimonial
           <textarea required rows={3} value={form.quote} onChange={(e) => setForm({ ...form, quote: e.target.value })} />
         </label>
+        <label>
+          Verification badge (optional)
+          <input placeholder="e.g. Verified Project Delivery" value={form.badge} onChange={(e) => setForm({ ...form, badge: e.target.value })} />
+        </label>
         <button className="button">Publish testimonial</button>
       </form>
       {t.error && <p className="form-error">{t.error}</p>}
@@ -91,6 +95,7 @@ export function TestimonialsManager() {
               <h3>{r.author_name}</h3>
               <p>{r.quote}</p>
               <div className="project-actions">
+                {r.badge && <p className="badge-pill">{r.badge}</p>}
                 <button onClick={() => t.update(r.id, { is_published: !r.is_published })}>
                   {r.is_published ? 'Unpublish' : 'Publish'}
                 </button>
