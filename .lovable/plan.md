@@ -40,11 +40,41 @@ They are not being delivered. The sending domain setup failed, and the log shows
 
 ---
 
+# Your question: how the team workflow and pay should work
+
+## Delivery flow — my recommendation
+
+```text
+Client brief (tagged with a service area)
+   -> PMs see only briefs in their service area and claim one
+   -> PM discusses scope/price with client in the project chat
+   -> PM breaks work into tasks and assigns each to a talent
+      with an agreed fee written on the task before it starts
+   -> Talent delivers; PM reviews each task (approve / send back)
+   -> Client reviews and accepts the finished project
+   -> Escrow releases; talent fees and PM fee are credited
+```
+
+- **PMs grouped by service**: each PM profile gets one or more service areas (Web, Brand, Content, Growth...). Unclaimed briefs are filtered so a PM only sees what they can actually deliver. No more random claiming.
+- **Talent picked by skill**: talents already have skill tags; the PM picks from matching, available talent. Assignments carry an agreed fee so nobody starts work without knowing their pay.
+- **Review is exactly as you said**: talent -> PM review -> client acceptance. That is the quality gate.
+
+## Pay — my recommendation (simple and fair)
+
+- **Talents: fixed agreed fee per task** (not a percentage, not hourly). Written on the task before work starts. No underpay/overpay surprises.
+- **PM: fixed management fee per project** (e.g. a flat NGN amount) or a small percentage (10–15%) of the project budget — agree per project and record it on the project.
+- **NDH keeps the rest** as margin after talent fees + PM fee. This is visible on each project so you always know what a project actually earns.
+- **Pay schedule: weekly batch, every Friday**, paying all *approved* earnings from tasks accepted up to that point. Weekly is better than monthly for talent motivation and easier to audit than ad-hoc. Admin sees one clean payout list each week, approves, pays out.
+
+This maps cleanly to what we need to build: fee fields on tasks/projects, an earnings ledger that fills on approval, a weekly payout run in Admin.
+
+---
+
 # What is not okay — in priority order
 
 1. **Email delivery is dead.** Sending domain failed to provision. Fix the domain, resend the DNS records, re-verify, set your real alert address, then send a test of every message type.
 2. **Agency money has no path.** Add invoice creation for admin/PM, client payment of an invoice through Paystack, and automatic escrow movement (held on payment, released on project completion).
-3. **Talent balances are never calculated.** When a project invoice is paid and released, credit the assigned talent; block payout requests above the available balance.
+3. **Talent and PM pay is never calculated.** Add agreed fee fields on tasks (talent) and projects (PM), service-area tags on PMs so briefs route to the right PM, credit fees on approval, and run the weekly payout batch in Admin — with a guard so a payout cannot exceed the available balance.
 4. **Course payment never proven with a real card.** Run one live transaction end to end: pay, confirm enrolment activates, receipt arrives, lessons unlock.
 5. **Nobody is told when a brief arrives.** Email you and the project managers on new brief, and email the client when a manager is assigned.
 6. **No student has ever completed the funnel.** Walk one test learner from enrol to certificate to public verification, to prove it before real students arrive.
