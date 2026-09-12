@@ -5,6 +5,7 @@ import { PageShell, PageIntro } from '@/components/PageShell';
 import { Reveal } from '@/components/Reveal';
 import { listCourses } from '@/lib/catalog.functions';
 import { formatPrice } from '@/lib/format';
+import academyLearning from '@/assets/academy-learning.jpg';
 
 const title = 'Academy — Practical AI courses and certification | NDH';
 const description =
@@ -63,6 +64,18 @@ function Academy() {
         title="Learn a practical AI skill, then prove it."
         body="Short, self-serve courses across six schools. Finish the lessons, sit the final assessment, submit a practical project and receive a signed certificate."
       />
+      <Reveal>
+        <div className="academy-visual">
+          <img
+            src={academyLearning}
+            alt="A learner taking notes during an online course"
+            width={1600}
+            height={1008}
+            loading="lazy"
+            decoding="async"
+          />
+        </div>
+      </Reveal>
       <main className="content">
         <Reveal>
           <div className="catalog-controls">

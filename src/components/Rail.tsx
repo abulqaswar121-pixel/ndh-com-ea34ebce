@@ -5,14 +5,19 @@ export function Rail({
   children,
   label,
   className = '',
+  autoPlay = false,
 }: {
   children: ReactNode;
   label: string;
   className?: string;
+  autoPlay?: boolean;
 }) {
   const trackRef = useRef<HTMLDivElement>(null);
+  const railRef = useRef<HTMLDivElement>(null);
   const [atStart, setAtStart] = useState(true);
   const [atEnd, setAtEnd] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
+  const [isPaused, setIsPaused] = useState(false);
 
   const sync = useCallback(() => {
     const el = trackRef.current;
@@ -31,6 +36,31 @@ export function Rail({
     return () => ro.disconnect();
   }, [sync]);
 
+  useEffect(() => {
+    const el = railRef.current;
+    if (!el || !autoPlay) return;
+    const observer = new IntersectionObserver(([entry]) => setIsVisible(entry.isIntersecting), {
+      threshold: 0.55,
+    });
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [autoPlay]);
+
+  useEffect(() => {
+    if (!autoPlay || !isVisible || isPaused || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const interval = window.setInterval(() => {
+      const el = trackRef.current;
+      if (!el) return;
+      const max = el.scrollWidth - el.clientWidth;
+      if (el.scrollLeft >= max - 4) {
+        el.scrollTo({ left: 0, behavior: 'smooth' });
+      } else {
+        el.scrollBy({ left: Math.max(260, el.clientWidth * 0.72), behavior: 'smooth' });
+      }
+    }, 5200);
+    return () => window.clearInterval(interval);
+  }, [autoPlay, isPaused, isVisible]);
+
   const nudge = (dir: 1 | -1) => {
     const el = trackRef.current;
     if (!el) return;
@@ -38,7 +68,16 @@ export function Rail({
   };
 
   return (
-    <div className={`rail ${atEnd ? 'is-end' : ''} ${className}`.trim()}>
+    <div
+      ref={railRef}
+      className={`rail ${atEnd ? 'is-end' : ''} ${className}`.trim()}
+      onMouseEnter={() => setIsPaused(true)}
+      onMouseLeave={() => setIsPaused(false)}
+      onFocusCapture={() => setIsPaused(true)}
+      onBlurCapture={() => setIsPaused(false)}
+      onTouchStart={() => setIsPaused(true)}
+      onPointerDown={() => setIsPaused(true)}
+    >
       <div className="rail-track" ref={trackRef} onScroll={sync} role="group" aria-label={label}>
         {children}
       </div>
