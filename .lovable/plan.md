@@ -74,7 +74,7 @@ This maps cleanly to what we need to build: fee fields on tasks/projects, an ear
 
 1. **Email delivery is dead.** Sending domain failed to provision. Fix the domain, resend the DNS records, re-verify, set your real alert address, then send a test of every message type.
 2. **Agency money has no path.** Add invoice creation for admin/PM, client payment of an invoice through Paystack, and automatic escrow movement (held on payment, released on project completion).
-3. **Talent balances are never calculated.** When a project invoice is paid and released, credit the assigned talent; block payout requests above the available balance.
+3. **Talent and PM pay is never calculated.** Add agreed fee fields on tasks (talent) and projects (PM), service-area tags on PMs so briefs route to the right PM, credit fees on approval, and run the weekly payout batch in Admin — with a guard so a payout cannot exceed the available balance.
 4. **Course payment never proven with a real card.** Run one live transaction end to end: pay, confirm enrolment activates, receipt arrives, lessons unlock.
 5. **Nobody is told when a brief arrives.** Email you and the project managers on new brief, and email the client when a manager is assigned.
 6. **No student has ever completed the funnel.** Walk one test learner from enrol to certificate to public verification, to prove it before real students arrive.
