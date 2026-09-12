@@ -3,6 +3,7 @@ import { ArrowUpRight } from 'lucide-react';
 import { PageShell, PageIntro, Button } from '@/components/PageShell';
 import { Reveal } from '@/components/Reveal';
 import { listCaseStudies } from '@/lib/catalog.functions';
+import projectDelivery from '@/assets/project-delivery.jpg';
 
 const title = 'Selected work — Case studies | Najeeb Digital Hub';
 const description = 'Projects delivered by Najeeb Digital Hub: the brief, the approach and the outcome.';
@@ -42,6 +43,19 @@ function Work() {
         body="A closer look at briefs we have taken on: the problem, the route we chose and the result."
       />
       <main className="content">
+        <Reveal>
+          <figure className="work-editorial-visual">
+            <img
+              src={projectDelivery}
+              alt="Interface planning materials used to represent the digital delivery process"
+              width={1600}
+              height={1008}
+              loading="lazy"
+              decoding="async"
+            />
+            <figcaption>Editorial view of the planning and delivery process.</figcaption>
+          </figure>
+        </Reveal>
         {studies.length === 0 ? (
           <div className="empty-card">
             <p>Case studies are being prepared for publication.</p>

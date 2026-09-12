@@ -4,6 +4,8 @@ import { PageShell, PageIntro, Button } from '@/components/PageShell';
 import { Reveal } from '@/components/Reveal';
 import { Rail } from '@/components/Rail';
 import { listCaseStudies, listTestimonials } from '@/lib/catalog.functions';
+import agencyCollaboration from '@/assets/agency-collaboration.jpg';
+import projectDelivery from '@/assets/project-delivery.jpg';
 
 const title = 'Agency — Digital delivery managed end to end | NDH';
 const description =
@@ -67,7 +69,7 @@ function Agency() {
       <main className="content agency-content">
         <Reveal>
           <div className="agency-banner">
-            <img src="/ndh-services-new.png" alt="A project timeline mapped out on a planning wall" width={1280} height={960} loading="lazy" decoding="async" />
+            <img src={agencyCollaboration} alt="A creative team reviewing digital work together" width={1600} height={1008} loading="lazy" decoding="async" />
             <div>
               <p className="eyebrow">The NDH method</p>
               <h2>Good work needs a clear path.</h2>
@@ -82,7 +84,7 @@ function Agency() {
               <p className="eyebrow">Service areas</p>
               <h2>Bring us the work you need to move.</h2>
             </div>
-            <Rail label="Service areas">
+            <div className="service-grid">
               {services.map(([slug, name, text, Icon]) => (
                 <Link className="service-card" key={slug} to="/agency/$slug" params={{ slug }}>
                   <Icon size={22} />
@@ -91,7 +93,7 @@ function Agency() {
                   <ArrowUpRight size={18} className="card-arrow" />
                 </Link>
               ))}
-            </Rail>
+            </div>
           </section>
         </Reveal>
 
@@ -101,7 +103,7 @@ function Agency() {
               <p className="eyebrow">How we work</p>
               <h2>Four steps, no guesswork.</h2>
             </div>
-            <Rail label="How we work" className="process-row-rail">
+            <Rail label="How we work" className="process-row-rail" autoPlay>
               {steps.map(([n, heading, text]) => (
                 <div className="step-card" key={n}>
                   <span className="step-number">{n}</span>
@@ -121,23 +123,33 @@ function Agency() {
                 <h2>Real projects, delivered and verified.</h2>
                 <p>Every project below is live work built, authored or managed by NDH — no hypothetical metrics.</p>
               </div>
-              <Rail label="Selected work">
+              <img
+                className="selected-work-visual"
+                src={projectDelivery}
+                alt="An editorial view of interface planning and digital project delivery"
+                width={1600}
+                height={1008}
+                loading="lazy"
+                decoding="async"
+              />
+              <div className="featured-work-list">
                 {studies.slice(0, 6).map((s) => (
-                  <Link className="service-card" key={s.slug} to="/work">
+                  <Link className="featured-work-item" key={s.slug} to="/work">
                     <BadgeCheck size={22} />
-                    <h3>{s.title}</h3>
-                    <p>{s.category ?? s.summary}</p>
-                    <ArrowUpRight size={18} className="card-arrow" />
+                    <div>
+                      <h3>{s.title}</h3>
+                      <p>{s.category ?? s.summary}</p>
+                    </div>
                   </Link>
                 ))}
-              </Rail>
+              </div>
               {testimonials.length > 0 && (
                 <div className="testimonial-block">
                   <div className="section-heading">
                     <p className="eyebrow">Client &amp; stakeholder verification</p>
                     <h2>What our clients say.</h2>
                   </div>
-                  <Rail label="Client testimonials">
+                  <Rail label="Client testimonials" className="testimonial-rail" autoPlay>
                     {testimonials.slice(0, 3).map((t) => (
                       <blockquote className="testimonial-card" key={t.id}>
                         {t.badge && <p className="badge-pill">{t.badge}</p>}

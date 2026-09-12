@@ -2386,3 +2386,204 @@ html { -webkit-text-size-adjust: 100%; }
 .process-row-rail .rail-track {
   grid-auto-columns: minmax(220px, 260px);
 }
+
+/* ============================================================
+   15. SELECTIVE SCROLLING + EDITORIAL MEDIA
+   ============================================================ */
+
+/* Core browsing remains vertical and easy to scan. */
+.service-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0 32px;
+  border-top: 1px solid var(--line);
+}
+
+.service-grid .service-card {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-content: start;
+  column-gap: 14px;
+  min-height: 0;
+  padding: 24px 0;
+  border: 0;
+  border-bottom: 1px solid var(--line);
+  border-radius: 0;
+  box-shadow: none;
+  overflow: visible;
+}
+
+.service-grid .service-card::before,
+.service-grid .card-arrow {
+  display: none;
+}
+
+.service-grid .service-card > svg {
+  grid-row: 1 / span 2;
+  margin: 2px 0 0;
+}
+
+.service-grid .service-card h3,
+.service-grid .service-card p {
+  grid-column: 2;
+}
+
+.service-grid .service-card:hover {
+  transform: none;
+  box-shadow: none;
+  border-color: var(--accent-line);
+}
+
+.pillar-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.course-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  overflow: visible;
+}
+
+.course-card p,
+.case-card .case-detail {
+  display: block;
+  overflow: visible;
+}
+
+.selected-work-visual,
+.work-editorial-visual img {
+  display: block;
+  width: 100%;
+  max-height: 420px;
+  object-fit: cover;
+  border-radius: var(--radius);
+}
+
+.selected-work-visual {
+  margin-bottom: 12px;
+}
+
+.featured-work-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  border-top: 1px solid var(--line);
+}
+
+.featured-work-item {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 14px;
+  align-items: start;
+  padding: 24px 0;
+  color: var(--ink);
+  border-bottom: 1px solid var(--line);
+}
+
+.featured-work-item:nth-child(odd) {
+  padding-right: 24px;
+}
+
+.featured-work-item:nth-child(even) {
+  padding-left: 24px;
+  border-left: 1px solid var(--line);
+}
+
+.featured-work-item svg {
+  color: var(--accent);
+  margin-top: 2px;
+}
+
+.featured-work-item h3 {
+  font-size: 18px;
+  margin-bottom: 6px;
+}
+
+.featured-work-item p {
+  font-size: 14px;
+  margin: 0;
+}
+
+.work-editorial-visual {
+  margin: 0 0 40px;
+}
+
+.work-editorial-visual figcaption {
+  margin-top: 8px;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+/* Only short sequences and quotes use rails. */
+.process-row-rail .rail-track {
+  grid-auto-columns: minmax(250px, 300px);
+}
+
+.process-row-rail .step-card {
+  min-height: 150px;
+  border-radius: var(--radius-sm);
+}
+
+.testimonial-rail .rail-track {
+  grid-auto-columns: minmax(300px, 420px);
+  gap: 20px;
+}
+
+.testimonial-rail .testimonial-card {
+  min-height: 220px;
+  border-radius: var(--radius-sm);
+}
+
+.testimonial-rail .testimonial-card > p {
+  display: block;
+  overflow: visible;
+  font-size: 17px;
+  line-height: 1.65;
+}
+
+.academy-visual img {
+  max-height: 400px;
+}
+
+@media (max-width: 760px) {
+  .pillar-grid,
+  .service-grid,
+  .course-grid,
+  .featured-work-list {
+    grid-template-columns: 1fr;
+  }
+
+  .course-grid {
+    grid-auto-flow: row;
+    grid-auto-columns: auto;
+    overflow: visible;
+    scroll-snap-type: none;
+    padding-bottom: 0;
+  }
+
+  .featured-work-item:nth-child(odd),
+  .featured-work-item:nth-child(even) {
+    padding: 20px 0;
+    border-left: 0;
+  }
+
+  .selected-work-visual,
+  .work-editorial-visual img,
+  .academy-visual img {
+    max-height: 300px;
+  }
+
+  .case-card {
+    padding: 0 0 28px;
+    border-width: 0 0 1px;
+    border-radius: 0;
+  }
+
+  .case-card:hover {
+    transform: none;
+    box-shadow: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rail-track {
+    scroll-behavior: auto;
+  }
+}
