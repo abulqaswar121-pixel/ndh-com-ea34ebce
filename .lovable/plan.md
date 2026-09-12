@@ -40,6 +40,36 @@ They are not being delivered. The sending domain setup failed, and the log shows
 
 ---
 
+# Your question: how the team workflow and pay should work
+
+## Delivery flow — my recommendation
+
+```text
+Client brief (tagged with a service area)
+   -> PMs see only briefs in their service area and claim one
+   -> PM discusses scope/price with client in the project chat
+   -> PM breaks work into tasks and assigns each to a talent
+      with an agreed fee written on the task before it starts
+   -> Talent delivers; PM reviews each task (approve / send back)
+   -> Client reviews and accepts the finished project
+   -> Escrow releases; talent fees and PM fee are credited
+```
+
+- **PMs grouped by service**: each PM profile gets one or more service areas (Web, Brand, Content, Growth...). Unclaimed briefs are filtered so a PM only sees what they can actually deliver. No more random claiming.
+- **Talent picked by skill**: talents already have skill tags; the PM picks from matching, available talent. Assignments carry an agreed fee so nobody starts work without knowing their pay.
+- **Review is exactly as you said**: talent -> PM review -> client acceptance. That is the quality gate.
+
+## Pay — my recommendation (simple and fair)
+
+- **Talents: fixed agreed fee per task** (not a percentage, not hourly). Written on the task before work starts. No underpay/overpay surprises.
+- **PM: fixed management fee per project** (e.g. a flat NGN amount) or a small percentage (10–15%) of the project budget — agree per project and record it on the project.
+- **NDH keeps the rest** as margin after talent fees + PM fee. This is visible on each project so you always know what a project actually earns.
+- **Pay schedule: weekly batch, every Friday**, paying all *approved* earnings from tasks accepted up to that point. Weekly is better than monthly for talent motivation and easier to audit than ad-hoc. Admin sees one clean payout list each week, approves, pays out.
+
+This maps cleanly to what we need to build: fee fields on tasks/projects, an earnings ledger that fills on approval, a weekly payout run in Admin.
+
+---
+
 # What is not okay — in priority order
 
 1. **Email delivery is dead.** Sending domain failed to provision. Fix the domain, resend the DNS records, re-verify, set your real alert address, then send a test of every message type.
