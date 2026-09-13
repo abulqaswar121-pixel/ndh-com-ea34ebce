@@ -1085,6 +1085,84 @@ export type Database = {
         }
         Relationships: []
       }
+      stage_courses: {
+        Row: {
+          checklist: string | null
+          common_mistakes: string | null
+          learning_objectives: string | null
+          overview: string | null
+          preparation: string | null
+          project_brief: string | null
+          rubric: Json | null
+          source_video_id: string | null
+          title: string
+        }
+        Insert: {
+          checklist?: string | null
+          common_mistakes?: string | null
+          learning_objectives?: string | null
+          overview?: string | null
+          preparation?: string | null
+          project_brief?: string | null
+          rubric?: Json | null
+          source_video_id?: string | null
+          title: string
+        }
+        Update: {
+          checklist?: string | null
+          common_mistakes?: string | null
+          learning_objectives?: string | null
+          overview?: string | null
+          preparation?: string | null
+          project_brief?: string | null
+          rubric?: Json | null
+          source_video_id?: string | null
+          title?: string
+        }
+        Relationships: []
+      }
+      stage_lessons: {
+        Row: {
+          content: string | null
+          course_title: string
+          end_seconds: number | null
+          is_free_preview: boolean
+          knowledge_check: string | null
+          position: number
+          practice_task: string | null
+          start_seconds: number | null
+          title: string
+          video_id: string | null
+          video_url: string | null
+        }
+        Insert: {
+          content?: string | null
+          course_title: string
+          end_seconds?: number | null
+          is_free_preview?: boolean
+          knowledge_check?: string | null
+          position: number
+          practice_task?: string | null
+          start_seconds?: number | null
+          title: string
+          video_id?: string | null
+          video_url?: string | null
+        }
+        Update: {
+          content?: string | null
+          course_title?: string
+          end_seconds?: number | null
+          is_free_preview?: boolean
+          knowledge_check?: string | null
+          position?: number
+          practice_task?: string | null
+          start_seconds?: number | null
+          title?: string
+          video_id?: string | null
+          video_url?: string | null
+        }
+        Relationships: []
+      }
       student_projects: {
         Row: {
           ai_feedback: string | null
