@@ -1,2 +1,193 @@
-import { createFileRoute } from '@tanstack/react-router'; import { useEffect,useState } from 'react'; import { FolderKanban, Send } from 'lucide-react'; import { supabase } from '@/integrations/supabase/client'; import { generateProjectBrief } from '@/lib/academy.functions'; import { PortalFrame } from '@/components/PortalShell'; import { RequireRole } from '@/components/RequireRole'; import { useAuth } from '@/lib/auth'; import { Reveal } from '@/components/Reveal';
-export const Route=createFileRoute('/_authenticated/project/$slug')({component:()=> <RequireRole role="student"><ProjectPage/></RequireRole>}); function ProjectPage(){const {slug}=Route.useParams();const {user}=useAuth();const [course,setCourse]=useState<any>();const [project,setProject]=useState<any>();const [url,setUrl]=useState('');const [text,setText]=useState('');const [error,setError]=useState('');const [busy,setBusy]=useState(false);useEffect(()=>{if(!user)return;(supabase as any).from('courses').select('*').eq('slug',slug).maybeSingle().then(({data}:any)=>setCourse(data))},[slug,user]);async function create(){if(!course)return;setBusy(true);try{setProject(await generateProjectBrief({data:{courseId:course.id,theme:course.project_theme}}))}catch(e){setError(e instanceof Error?e.message:'Unable to create project')}finally{setBusy(false)}}async function submit(e:React.FormEvent){e.preventDefault();if(!project)return;setBusy(true);const {data,error}=await (supabase as any).from('student_projects').update({submission_url:url,submission_text:text,status:'submitted'}).eq('id',project.id).eq('student_id',user?.id).select('*').single();if(error)setError(error.message);else setProject(data);setBusy(false)}return <PortalFrame><main className="portal"><div className="portal-head"><div><p className="eyebrow">PROJECT</p><h1>{course?.title||'Course project'}</h1><p>Complete the brief and submit your work for review.</p></div><FolderKanban size={42}/></div><Reveal><section className="portal-section">{!project?<div className="empty-card"><h2>Generate your project brief</h2><p>Your brief is created from this course theme.</p><button className="button" onClick={create} disabled={busy}>{busy?'Creating…':'Generate brief'}</button></div>:<div className="exam-card"><h2>Your project brief</h2><p className="brief-text">{project.brief}</p><form className="auth-form" onSubmit={submit}><label>Submission link<input type="url" value={url} onChange={e=>setUrl(e.target.value)} placeholder="https://"/></label><label>Submission text<textarea rows={7} value={text} onChange={e=>setText(e.target.value)}/></label><button className="button" disabled={busy}>{busy?'Submitting…':<>Submit project <Send size={16}/></>}</button></form>{project.status!=='submitted'&&<p>Status: {project.status}</p>}{error&&<p className="error-text">{error}</p>}</div>}</section></Reveal></main></PortalFrame>}
+import { createFileRoute } from '@tanstack/react-router';
+import { useEffect, useState } from 'react';
+import { FolderKanban, Send } from 'lucide-react';
+import { supabase } from '@/integrations/supabase/client';
+import { generateProjectBrief } from '@/lib/academy.functions';
+import { PortalFrame } from '@/components/PortalShell';
+import { RequireRole } from '@/components/RequireRole';
+import { useAuth } from '@/lib/auth';
+import { Reveal } from '@/components/Reveal';
+
+export const Route = createFileRoute('/_authenticated/project/$slug')({
+  component: () => (
+    <RequireRole role="student">
+      <ProjectPage />
+    </RequireRole>
+  ),
+});
+
+function ProjectPage() {
+  const { slug } = Route.useParams();
+  const { user } = useAuth();
+  const [course, setCourse] = useState<any>();
+  const [project, setProject] = useState<any>();
+  const [url, setUrl] = useState('');
+  const [text, setText] = useState('');
+  const [error, setError] = useState('');
+  const [busy, setBusy] = useState(false);
+
+  useEffect(() => {
+    if (!user) return;
+    void (supabase as any)
+      .from('courses')
+      .select('*')
+      .eq('slug', slug)
+      .maybeSingle()
+      .then(({ data }: any) => setCourse(data));
+  }, [slug, user]);
+
+  useEffect(() => {
+    if (!user || !course) return;
+    void (supabase as any)
+      .from('student_projects')
+      .select('*')
+      .eq('student_id', user.id)
+      .eq('course_id', course.id)
+      .order('created_at', { ascending: false })
+      .limit(1)
+      .maybeSingle()
+      .then(({ data }: any) => {
+        if (data) setProject(data);
+      });
+  }, [user, course]);
+
+  const rubric: { criterion: string; weight: number; standard: string }[] = Array.isArray(course?.rubric)
+    ? course.rubric
+    : [];
+
+  async function create() {
+    if (!course) return;
+    setBusy(true);
+    setError('');
+    try {
+      setProject(
+        await generateProjectBrief({
+          data: { courseId: course.id, theme: course.project_brief || course.project_theme || course.title },
+        }),
+      );
+    } catch (e) {
+      setError(e instanceof Error ? e.message : 'Unable to create project');
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  async function submit(e: React.FormEvent) {
+    e.preventDefault();
+    if (!project) return;
+    setBusy(true);
+    const { data, error: updateError } = await (supabase as any)
+      .from('student_projects')
+      .update({ submission_url: url, submission_text: text, status: 'submitted' })
+      .eq('id', project.id)
+      .eq('student_id', user?.id)
+      .select('*')
+      .single();
+    if (updateError) setError(updateError.message);
+    else setProject(data);
+    setBusy(false);
+  }
+
+  return (
+    <PortalFrame>
+      <main className="portal">
+        <div className="portal-head">
+          <div>
+            <p className="eyebrow">PROJECT</p>
+            <h1>{course?.title || 'Course project'}</h1>
+            <p>Complete the brief and submit your work for review.</p>
+          </div>
+          <FolderKanban size={42} />
+        </div>
+
+        {course?.project_brief && (
+          <Reveal>
+            <section className="portal-section">
+              <div className="portal-section-title">
+                <h2>Course project brief</h2>
+              </div>
+              <BriefText text={course.project_brief} />
+            </section>
+          </Reveal>
+        )}
+
+        {rubric.length > 0 && (
+          <section className="portal-section">
+            <div className="portal-section-title">
+              <h2>How your work is graded</h2>
+            </div>
+            <ul className="rubric-list">
+              {rubric.map((r) => (
+                <li key={r.criterion}>
+                  <strong>{r.criterion}</strong>
+                  <em>{r.weight}%</em>
+                  <span>{r.standard}</span>
+                </li>
+              ))}
+            </ul>
+          </section>
+        )}
+
+        <Reveal>
+          <section className="portal-section">
+            {!project ? (
+              <div className="empty-card">
+                <h2>Start your project</h2>
+                <p>Your personal brief is created from this course project.</p>
+                <button className="button" onClick={() => void create()} disabled={busy}>
+                  {busy ? 'Creating…' : 'Start project'}
+                </button>
+              </div>
+            ) : (
+              <div className="exam-card">
+                <h2>Your project brief</h2>
+                <BriefText text={project.brief} />
+                {project.status === 'submitted' || project.status === 'approved' ? (
+                  <p className="form-success">
+                    Submitted for review. Current status: {project.status}.
+                    {project.reviewer_note ? ` Reviewer note: ${project.reviewer_note}` : ''}
+                  </p>
+                ) : (
+                  <form className="auth-form" onSubmit={submit}>
+                    <label>
+                      Submission link
+                      <input type="url" value={url} onChange={(e) => setUrl(e.target.value)} placeholder="https://" />
+                    </label>
+                    <label>
+                      Submission notes
+                      <textarea rows={7} value={text} onChange={(e) => setText(e.target.value)} />
+                    </label>
+                    <button className="button" disabled={busy}>
+                      {busy ? 'Submitting…' : (
+                        <>
+                          Submit project <Send size={16} />
+                        </>
+                      )}
+                    </button>
+                  </form>
+                )}
+                {error && <p className="error-text">{error}</p>}
+              </div>
+            )}
+          </section>
+        </Reveal>
+      </main>
+    </PortalFrame>
+  );
+}
+
+function BriefText({ text }: { text: string }) {
+  return (
+    <div className="lesson-content">
+      {String(text)
+        .split('\n')
+        .filter((l) => l.trim())
+        .map((line, i) => {
+          const t = line.trim();
+          if (t.startsWith('•') || t.startsWith('- ')) return <p className="lesson-bullet" key={i}>• {t.replace(/^[•-]\s*/, '')}</p>;
+          if (/^\d+\.\s/.test(t)) return <p className="lesson-bullet" key={i}>{t}</p>;
+          return <p key={i}>{t}</p>;
+        })}
+    </div>
+  );
+}
