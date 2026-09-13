@@ -2587,3 +2587,83 @@ html { -webkit-text-size-adjust: 100%; }
     scroll-behavior: auto;
   }
 }
+
+/* Curriculum detail: lesson timings, tasks and grading rubric */
+.lesson-time {
+  margin-left: auto;
+  font-size: 0.78rem;
+  font-style: normal;
+  color: hsl(var(--muted-foreground));
+  font-variant-numeric: tabular-nums;
+}
+
+.lesson-task {
+  margin: 0.9rem 0;
+  padding: 0.9rem 1rem;
+  border: 1px solid hsl(var(--border));
+  border-radius: 14px;
+  background: hsl(var(--muted) / 0.45);
+}
+
+.lesson-task h4 {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  margin: 0 0 0.35rem;
+  font-size: 0.82rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: hsl(var(--muted-foreground));
+}
+
+.lesson-task p {
+  margin: 0;
+  line-height: 1.6;
+}
+
+.rubric-list {
+  list-style: none;
+  margin: 1rem 0;
+  padding: 0;
+  display: grid;
+  gap: 0.6rem;
+}
+
+.rubric-list li {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 0.25rem 1rem;
+  padding: 0.75rem 0.9rem;
+  border: 1px solid hsl(var(--border));
+  border-radius: 14px;
+  background: hsl(var(--card));
+}
+
+.rubric-list li em {
+  font-style: normal;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.rubric-list li span {
+  grid-column: 1 / -1;
+  color: hsl(var(--muted-foreground));
+  font-size: 0.92rem;
+  line-height: 1.55;
+}
+
+.checkbox-row {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+}
+
+.checkbox-row input {
+  width: auto;
+}
+
+@media (max-width: 640px) {
+  .lesson-time {
+    display: none;
+  }
+}
