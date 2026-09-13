@@ -81,6 +81,11 @@ export type CourseDetail = CourseSummary & {
   learning_objectives: string | null;
   project_theme: string | null;
   cover_image_url: string | null;
+  overview: string | null;
+  preparation: string | null;
+  checklist: string | null;
+  project_brief: string | null;
+  rubric: { criterion: string; weight: number; standard: string }[];
   outline: { lesson_position: number; lesson_title: string; free_preview: boolean }[];
 };
 
@@ -90,7 +95,9 @@ export const getCourse = createServerFn({ method: 'GET' })
     const db = publicDataClient();
     const { data: course, error: courseError } = await db
       .from('courses')
-      .select('id, slug, title, summary, school, learning_objectives, project_theme, cover_image_url')
+      .select(
+        'id, slug, title, summary, school, learning_objectives, project_theme, cover_image_url, overview, preparation, checklist, project_brief, rubric',
+      )
       .eq('slug', data.slug)
       .eq('is_published', true)
       .maybeSingle();
