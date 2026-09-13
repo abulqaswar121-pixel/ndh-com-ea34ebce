@@ -111,6 +111,7 @@ export const getCourse = createServerFn({ method: 'GET' })
     assertQuery(outlineError, 'course outline');
     return {
       ...course,
+      rubric: (Array.isArray(course.rubric) ? course.rubric : []) as CourseDetail['rubric'],
       prices: (pricing ?? []).map((p) => ({ region: p.region, currency: p.currency, amount: Number(p.amount) })),
       outline: (outline ?? []) as CourseDetail['outline'],
     };
