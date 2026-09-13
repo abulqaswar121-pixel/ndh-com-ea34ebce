@@ -97,6 +97,17 @@ function CoursePage() {
               </header>
             </Reveal>
 
+            {course.overview && (
+              <Reveal>
+                <section className="course-section">
+                  <h2>About this course</h2>
+                  {course.overview.split('\n').filter(Boolean).map((p) => (
+                    <p key={p}>{p}</p>
+                  ))}
+                </section>
+              </Reveal>
+            )}
+
             {objectives.length > 0 && (
               <Reveal>
                 <section className="course-section">
@@ -108,6 +119,17 @@ function CoursePage() {
                       </li>
                     ))}
                   </ul>
+                </section>
+              </Reveal>
+            )}
+
+            {course.preparation && (
+              <Reveal>
+                <section className="course-section">
+                  <h2>Before you start</h2>
+                  {course.preparation.split('\n').filter(Boolean).map((p) => (
+                    <p key={p}>{p}</p>
+                  ))}
                 </section>
               </Reveal>
             )}
@@ -138,15 +160,34 @@ function CoursePage() {
               <section className="course-section">
                 <h2>Assessment and certificate</h2>
                 <p>
-                  When you finish the lessons you sit a final assessment covering the material, then submit a
-                  practical project: {course.project_theme}
+                  When you finish the lessons you sit a final assessment covering the material, then submit the
+                  practical project for this course.
                 </p>
+                {course.project_brief
+                  ? course.project_brief
+                      .split('\n')
+                      .filter(Boolean)
+                      .slice(0, 6)
+                      .map((p) => <p key={p}>{p}</p>)
+                  : course.project_theme && <p>{course.project_theme}</p>}
+                {course.rubric.length > 0 && (
+                  <ul className="rubric-list">
+                    {course.rubric.map((r) => (
+                      <li key={r.criterion}>
+                        <strong>{r.criterion}</strong>
+                        <em>{r.weight}%</em>
+                        <span>{r.standard}</span>
+                      </li>
+                    ))}
+                  </ul>
+                )}
                 <p>
                   Your project is reviewed by the Academy team. Once it is approved, a signed certificate with a
                   unique verification number is issued to your account.
                 </p>
               </section>
             </Reveal>
+
 
             <Reveal>
               <section className="course-section">
