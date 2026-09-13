@@ -265,46 +265,67 @@ export type Database = {
       }
       courses: {
         Row: {
+          checklist: string | null
+          common_mistakes: string | null
           cover_image_url: string | null
           created_at: string
           currency: string
           id: string
           is_published: boolean
           learning_objectives: string | null
+          overview: string | null
+          preparation: string | null
           price_amount: number | null
+          project_brief: string | null
           project_theme: string | null
+          rubric: Json
           school: string | null
           slug: string
+          source_video_id: string | null
           summary: string | null
           title: string
           updated_at: string
         }
         Insert: {
+          checklist?: string | null
+          common_mistakes?: string | null
           cover_image_url?: string | null
           created_at?: string
           currency?: string
           id?: string
           is_published?: boolean
           learning_objectives?: string | null
+          overview?: string | null
+          preparation?: string | null
           price_amount?: number | null
+          project_brief?: string | null
           project_theme?: string | null
+          rubric?: Json
           school?: string | null
           slug: string
+          source_video_id?: string | null
           summary?: string | null
           title: string
           updated_at?: string
         }
         Update: {
+          checklist?: string | null
+          common_mistakes?: string | null
           cover_image_url?: string | null
           created_at?: string
           currency?: string
           id?: string
           is_published?: boolean
           learning_objectives?: string | null
+          overview?: string | null
+          preparation?: string | null
           price_amount?: number | null
+          project_brief?: string | null
           project_theme?: string | null
+          rubric?: Json
           school?: string | null
           slug?: string
+          source_video_id?: string | null
           summary?: string | null
           title?: string
           updated_at?: string
@@ -662,36 +683,54 @@ export type Database = {
           content: string | null
           course_id: string
           created_at: string
+          end_seconds: number | null
           id: string
           is_free_preview: boolean
+          is_required: boolean
+          knowledge_check: string | null
           notes: string | null
           position: number
+          practice_task: string | null
+          start_seconds: number | null
           title: string
           updated_at: string
+          video_id: string | null
           video_url: string | null
         }
         Insert: {
           content?: string | null
           course_id: string
           created_at?: string
+          end_seconds?: number | null
           id?: string
           is_free_preview?: boolean
+          is_required?: boolean
+          knowledge_check?: string | null
           notes?: string | null
           position?: number
+          practice_task?: string | null
+          start_seconds?: number | null
           title: string
           updated_at?: string
+          video_id?: string | null
           video_url?: string | null
         }
         Update: {
           content?: string | null
           course_id?: string
           created_at?: string
+          end_seconds?: number | null
           id?: string
           is_free_preview?: boolean
+          is_required?: boolean
+          knowledge_check?: string | null
           notes?: string | null
           position?: number
+          practice_task?: string | null
+          start_seconds?: number | null
           title?: string
           updated_at?: string
+          video_id?: string | null
           video_url?: string | null
         }
         Relationships: [
