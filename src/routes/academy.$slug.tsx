@@ -97,6 +97,17 @@ function CoursePage() {
               </header>
             </Reveal>
 
+            {course.overview && (
+              <Reveal>
+                <section className="course-section">
+                  <h2>About this course</h2>
+                  {course.overview.split('\n').filter(Boolean).map((p) => (
+                    <p key={p}>{p}</p>
+                  ))}
+                </section>
+              </Reveal>
+            )}
+
             {objectives.length > 0 && (
               <Reveal>
                 <section className="course-section">
@@ -108,6 +119,17 @@ function CoursePage() {
                       </li>
                     ))}
                   </ul>
+                </section>
+              </Reveal>
+            )}
+
+            {course.preparation && (
+              <Reveal>
+                <section className="course-section">
+                  <h2>Before you start</h2>
+                  {course.preparation.split('\n').filter(Boolean).map((p) => (
+                    <p key={p}>{p}</p>
+                  ))}
                 </section>
               </Reveal>
             )}
