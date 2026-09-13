@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from '@tanstack/react-router';
-import { useEffect, useState } from 'react';
-import { BookOpen, CheckCircle2, LockKeyhole } from 'lucide-react';
+import { useEffect, useMemo, useState } from 'react';
+import { BookOpen, CheckCircle2, ClipboardList, LockKeyhole } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { PortalFrame } from '@/components/PortalShell';
 import { RequireRole } from '@/components/RequireRole';
@@ -15,6 +15,22 @@ export const Route = createFileRoute('/_authenticated/learning/$slug')({
   ),
 });
 
+function formatClock(total: number | null | undefined) {
+  if (total === null || total === undefined) return null;
+  const m = Math.floor(total / 60);
+  const s = total % 60;
+  return `${m}:${String(s).padStart(2, '0')}`;
+}
+
+function embedUrl(lesson: any) {
+  const id = lesson.video_id || String(lesson.video_url || '').match(/[?&]v=([A-Za-z0-9_-]+)/)?.[1];
+  if (!id) return null;
+  const params = new URLSearchParams({ rel: '0', modestbranding: '1' });
+  if (lesson.start_seconds != null) params.set('start', String(lesson.start_seconds));
+  if (lesson.end_seconds != null) params.set('end', String(lesson.end_seconds));
+  return `https://www.youtube-nocookie.com/embed/${id}?${params.toString()}`;
+}
+
 function LearningPage() {
   const { slug } = Route.useParams();
   const { user } = useAuth();
@@ -22,6 +38,7 @@ function LearningPage() {
   const [lessons, setLessons] = useState<any[]>([]);
   const [done, setDone] = useState<string[]>([]);
   const [openId, setOpenId] = useState<string | null>(null);
+  const [guide, setGuide] = useState<'preparation' | 'checklist' | 'mistakes' | null>(null);
 
   useEffect(() => {
     if (!user) return;
@@ -70,7 +87,13 @@ function LearningPage() {
   }
 
   const percent = lessons.length ? Math.round((done.length / lessons.length) * 100) : 0;
-  const complete100 = lessons.length > 0 && percent === 100;
+  const requiredDone = useMemo(
+    () => lessons.filter((l) => l.is_required !== false).every((l) => done.includes(l.id)),
+    [lessons, done],
+  );
+  const unlocked = lessons.length > 0 && requiredDone;
+  const guideText =
+    guide === 'preparation' ? course?.preparation : guide === 'checklist' ? course?.checklist : course?.common_mistakes;
 
   return (
     <PortalFrame>
@@ -83,6 +106,41 @@ function LearningPage() {
           </div>
           <BookOpen size={42} />
         </div>
+
+        {(course?.preparation || course?.checklist || course?.common_mistakes) && (
+          <section className="portal-section">
+            <div className="catalog-filters">
+              {course?.preparation && (
+                <button
+                  type="button"
+                  className={guide === 'preparation' ? 'chip is-active' : 'chip'}
+                  onClick={() => setGuide(guide === 'preparation' ? null : 'preparation')}
+                >
+                  Before you start
+                </button>
+              )}
+              {course?.checklist && (
+                <button
+                  type="button"
+                  className={guide === 'checklist' ? 'chip is-active' : 'chip'}
+                  onClick={() => setGuide(guide === 'checklist' ? null : 'checklist')}
+                >
+                  Reference checklist
+                </button>
+              )}
+              {course?.common_mistakes && (
+                <button
+                  type="button"
+                  className={guide === 'mistakes' ? 'chip is-active' : 'chip'}
+                  onClick={() => setGuide(guide === 'mistakes' ? null : 'mistakes')}
+                >
+                  Common mistakes
+                </button>
+              )}
+            </div>
+            {guideText && <LessonContent text={guideText} />}
+          </section>
+        )}
 
         <Reveal>
           <section className="portal-section">
@@ -105,6 +163,9 @@ function LearningPage() {
                 {lessons.map((l) => {
                   const isOpen = openId === l.id;
                   const isDone = done.includes(l.id);
+                  const from = formatClock(l.start_seconds);
+                  const to = formatClock(l.end_seconds);
+                  const src = embedUrl(l);
                   return (
                     <article className={`lesson-item${isOpen ? ' is-open' : ''}`} key={l.id}>
                       <button
@@ -114,21 +175,42 @@ function LearningPage() {
                       >
                         <span className="lesson-number">{String(l.position).padStart(2, '0')}</span>
                         <strong>{l.title}</strong>
+                        {from && (
+                          <em className="lesson-time">
+                            {from}
+                            {to ? `–${to}` : ''}
+                          </em>
+                        )}
                         {isDone && <CheckCircle2 size={18} className="lesson-done" />}
                       </button>
 
                       {isOpen && (
                         <div className="lesson-body">
-                          {l.video_url && (
+                          {src && (
                             <div className="video-frame">
                               <iframe
-                                src={String(l.video_url).replace('watch?v=', 'embed/')}
+                                src={src}
                                 title={l.title}
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; picture-in-picture"
                                 allowFullScreen
                               />
                             </div>
                           )}
                           {l.content && <LessonContent text={l.content} />}
+                          {l.practice_task && (
+                            <div className="lesson-task">
+                              <h4>
+                                <ClipboardList size={16} /> Follow-along task
+                              </h4>
+                              <p>{l.practice_task}</p>
+                            </div>
+                          )}
+                          {l.knowledge_check && (
+                            <div className="lesson-task">
+                              <h4>Check your understanding</h4>
+                              <p>{l.knowledge_check}</p>
+                            </div>
+                          )}
                           {l.notes && <p className="lesson-note">{l.notes}</p>}
                           <button className="button" onClick={() => void complete(l.id)} disabled={isDone}>
                             {isDone ? 'Completed' : 'Mark as complete'}
@@ -145,9 +227,9 @@ function LearningPage() {
 
         <section className="portal-section locked-tabs">
           <div>
-            {complete100 ? <CheckCircle2 size={20} /> : <LockKeyhole size={20} />}
+            {unlocked ? <CheckCircle2 size={20} /> : <LockKeyhole size={20} />}
             <h2>Final assessment</h2>
-            {complete100 ? (
+            {unlocked ? (
               <>
                 <p>All lessons complete. You can sit the assessment now.</p>
                 <Link className="button" to="/exam/$slug" params={{ slug }}>
@@ -162,7 +244,7 @@ function LearningPage() {
             <LockKeyhole size={20} />
             <h2>Practical project</h2>
             <p>Pass the assessment to unlock your project brief.</p>
-            {complete100 && (
+            {unlocked && (
               <Link className="button button-secondary" to="/project/$slug" params={{ slug }}>
                 Go to project
               </Link>
@@ -182,7 +264,8 @@ function LessonContent({ text }: { text: string }) {
       {blocks.map((line, i) => {
         const trimmed = line.trim();
         if (trimmed.startsWith('## ')) return <h3 key={i}>{trimmed.slice(3)}</h3>;
-        if (trimmed.startsWith('- ')) return <p className="lesson-bullet" key={i}>• {inline(trimmed.slice(2))}</p>;
+        if (trimmed.startsWith('- ') || trimmed.startsWith('• '))
+          return <p className="lesson-bullet" key={i}>• {inline(trimmed.slice(2))}</p>;
         if (/^\d+\.\s/.test(trimmed)) return <p className="lesson-bullet" key={i}>{inline(trimmed)}</p>;
         return <p key={i}>{inline(trimmed)}</p>;
       })}
