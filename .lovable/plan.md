@@ -1,60 +1,74 @@
-# Integrate the final NDH Academy curriculum
+# Academy: paywall, precise video segments, pre-project quiz, ratings, testimonials
 
-## Goal
+Five features, built on the curriculum already imported (30 courses, 195 lessons with start/end times).
 
-Turn the uploaded **NDH Master Course Packs & Curriculum** into the Academy’s real learning experience. The existing 30 course records and prices remain, while the current 240 generic lessons are replaced by the document’s 196 verified, non-overlapping video lessons.
+## 1. Content paywall and public teasers
 
-## What will be built
+Today the public course page shows the full syllabus, preparation, checklist, project brief and grading rubric. That is the product given away for free.
 
-### 1. Import the complete curriculum accurately
-- Extract all 30 course packs from the 113-page document, not only the first 50 pages shown in the preview.
-- Match each pack to its existing Academy course by title/slug.
-- Preserve existing course IDs, prices, publication state, enrolments, and certificates.
-- Store each course’s exact overview, learning objectives, preparation steps, terminology, tools/resources, final project brief, required deliverables, checklist, common mistakes, and weighted grading rubric.
-- Replace generic lesson rows with the 196 verified lesson segments from the document, including title, description, follow-along task, source video, start time, end time, position, and required/free-preview status.
-- Make the import repeatable without creating duplicate courses or lessons.
+Public visitors will see only the hook:
+- Title, school, short summary and a 2-3 sentence intro (first part of the introduction only)
+- Up to 4 headline outcomes ("what you'll be able to do")
+- Course facts: number of lessons, total watch time, certificate, self-paced
+- Only the free preview lesson title, plus locked, blurred placeholders for the rest ("Lesson 4 — unlocks on enrolment")
+- Price and the enrol button, plus the rating and student testimonials
 
-### 2. Improve public course details
-- Show the real course-specific overview and objectives instead of generic copy.
-- Add useful course facts such as lesson count and curriculum structure.
-- Present the exact project outcome and requirements clearly before enrolment.
-- Keep the current catalogue, pricing, checkout, and signed-in redirect behavior unchanged.
+Everything else — full objective list, lesson titles beyond the preview, preparation, checklist, common mistakes, project brief, rubric, video links, practice tasks — is only returned after an active enrolment is verified on the server.
 
-### 3. Build a proper learner experience
-- Replace the basic video iframe with a course player that opens each YouTube lesson at its verified start point and stops at its verified end point.
-- Organize the learning page into a compact lesson navigator and focused lesson area.
-- For each lesson, show its purpose, during-video guidance, follow-along task, notes, and completion control.
-- Add course preparation, reference checklist, and common-mistakes views without overcrowding the lesson player.
-- Preserve progress tracking and unlock the final assessment only when all required lessons are complete.
-- Support phone portrait, phone landscape, tablet, and desktop layouts, plus reduced-motion preferences.
+How it is enforced: the public path keeps using the read-only public reader and a restricted database view that exposes only teaser columns, so even a crafted request cannot read the paid fields. Full content moves to a signed-in server call that checks an active enrolment (or admin) before returning anything. Access rules on the lessons table stay locked to enrolled students.
 
-### 4. Use the authored assessment and project material
-- Ground each generated final assessment in the actual course objectives and lesson content rather than the current generic objective text.
-- Use the document’s authored final project brief instead of generating a random brief.
-- Show required deliverables and the weighted rubric to the learner before submission.
-- Let the reviewer score against the same rubric and record criterion-level results, feedback, total score, and approval decision.
-- Keep certificate issuance behind passed assessment and approved project review.
+## 2. Video start/stop and automatic completion
 
-### 5. Upgrade Academy administration
-- Expand Admin > Courses so an administrator can review and edit course details, lessons, timestamps, preparation, project requirements, and rubric entries.
-- Show curriculum completeness and lesson counts per course.
-- Keep publishing controls and prevent malformed timestamps or incomplete rubric weights.
+Each lesson already stores its video and exact start/end seconds.
 
-### 6. Verification and safety
-- Validate that there are exactly 30 matched courses and 196 imported lessons.
-- Validate every YouTube ID and start/end range, and confirm no segment overlaps within a source video where the curriculum says it should not.
-- Confirm prices remain NGN 15,000/18,000/20,000/25,000 and USD 25/29/32/39 as authored.
-- Test one course from public details through learner playback, progress, assessment, project submission, admin review, certificate issuance, and public verification.
-- Check the Academy on portrait mobile, landscape mobile, tablet, and desktop.
+- Load the YouTube IFrame Player API once, play from `start_seconds`, and poll playback; when the time reaches `end_seconds` the player pauses on the final frame and shows "Lesson complete".
+- Guard against skipping: the lesson is marked complete only when the watched time inside the segment covers at least ~90% of its length, tracked in small increments so scrubbing to the end does not count.
+- On completion, record it once on the server (enrolment verified), update the course progress percentage, and auto-advance to the next lesson after a short confirmation.
+- Manual "Mark as complete" stays available as a fallback, and re-watching never double-counts.
+- Works on phones (lower-resolution playback, no autoplay with sound) and respects reduced-motion.
 
-## Technical details
+## 3. AI pre-project quiz
 
-- Add structured curriculum fields to the existing authoritative `courses` and `lessons` tables, plus rubric storage tied to each course.
-- Use an additive, duplicate-safe migration and explicit permissions/access rules for every new table or field.
-- Do not import the PDF itself as the learning interface; the document becomes structured Academy content.
-- Keep YouTube as the video host and use the IFrame Player API for segment boundaries.
-- Existing learner completion rows will be reconciled safely if a replaced placeholder lesson no longer exists.
+Before the final project unlocks, the student sits a short readiness quiz generated from that course's real lesson content.
 
-## Scope boundary
+Workflow:
+1. Student finishes all required lessons; "Start readiness quiz" unlocks.
+2. Server generates 8 questions (6 multiple choice, 2 short answer) from the course objectives plus the actual lesson titles, practice tasks and knowledge checks. Questions and answers are stored server-side; the student's browser never receives the answer key.
+3. Multiple choice is graded instantly in the database. Short answers are graded by AI against the lesson material, returning a score and one line of coaching per answer.
+4. Pass mark 70%. Passing unlocks the authored final project brief and rubric. Failing shows which topics to revisit, links back to those exact lessons, and allows a retake after a short cooldown with a freshly generated set.
+5. Attempts, scores and feedback are stored for admin review.
 
-This work covers the Academy curriculum, learner experience, assessments, projects, and course administration. Agency workflow/payments, email repair, and other previously listed work remain queued until this Academy upgrade is complete.
+Reliability: strict structured output so the quiz shape is always valid, one retry on a transient AI failure, and a clear message (never a silent generic answer) if the AI service is unavailable or out of credit.
+
+## 4. Course rating system
+
+- A rating belongs to one student and one course, with one row maximum, so no one can pad a score.
+- A rating can only be created when the student has an active enrolment and has completed the course (all required lessons, or a certificate issued). Enforced in the database, not only in the interface.
+- Fields: stars 1-5, optional written review, created and edited timestamps. Editing is allowed; each edit replaces the previous value.
+- The public course page shows the average, the count and a star breakdown, read from a small aggregate view so no personal data is exposed. Courses with fewer than 3 ratings show "New course" instead of a misleading average.
+- Admin can hide an abusive review; hidden reviews keep counting or not according to an admin flag.
+
+## 5. Testimonials engine
+
+- Students who completed a course can submit a testimonial from their portal: quote, optional role, permission-to-publish checkbox. The course is attached automatically.
+- Submissions arrive as pending. Admin > Content gets a review queue: approve, edit lightly for typos, feature, or reject. Approving marks it published with a "Verified student" badge; only approved ones are ever public.
+- The Academy landing page shows a rotating selection of featured testimonials in the existing horizontal rail, preferring featured, then most recent approved; the course page shows testimonials for that course.
+- The existing agency testimonials stay untouched — student testimonials are separated by type so the two sets never mix.
+
+## Technical notes
+
+- New tables: `course_ratings` (unique per student+course, completion-gated by a security-definer check), `student_testimonials` (status pending/approved/rejected, featured flag, course reference), `quiz_attempts` (questions, answer key, student answers, score, passed, feedback). All additive, with explicit permissions and access rules; answer keys and pending rows are never readable by the public role.
+- New public teaser view over `courses` plus a `course_teaser(slug)` function returning only free-preview lesson titles and locked counts; the existing `course_outline` function is narrowed to teaser data.
+- Paid content served by new authenticated server functions in `src/lib/academy.functions.ts` guarded by enrolment checks; `src/lib/catalog.functions.ts` keeps only teaser reads.
+- Player logic extracted into a `LessonPlayer` component using the YouTube IFrame API with a watched-seconds accumulator; completion posted through an authenticated server function.
+- AI calls go through the existing Lovable AI gateway helper, server-side only, with structured JSON output and status-aware error handling.
+- Ratings aggregate exposed through a view with average, count and distribution only.
+
+## Verification
+
+- Signed-out course page exposes no syllabus, brief or rubric — checked in the browser and by calling the public read path directly.
+- Enrolled student sees full content; segment starts and stops at the stored seconds; skipping to the end does not complete the lesson; completing updates progress and unlocks the quiz at 100%.
+- Quiz generates, grades, blocks the project below 70% and unlocks it above.
+- Rating blocked before completion, allowed once after, average and count correct on the public page.
+- Testimonial stays invisible until approved, then appears on the Academy page.
+- Checked on phone portrait, phone landscape, tablet and desktop.
