@@ -263,6 +263,47 @@ export type Database = {
           },
         ]
       }
+      course_ratings: {
+        Row: {
+          course_id: string
+          created_at: string
+          id: string
+          is_hidden: boolean
+          review: string | null
+          stars: number
+          student_id: string
+          updated_at: string
+        }
+        Insert: {
+          course_id: string
+          created_at?: string
+          id?: string
+          is_hidden?: boolean
+          review?: string | null
+          stars: number
+          student_id?: string
+          updated_at?: string
+        }
+        Update: {
+          course_id?: string
+          created_at?: string
+          id?: string
+          is_hidden?: boolean
+          review?: string | null
+          stars?: number
+          student_id?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "course_ratings_course_id_fkey"
+            columns: ["course_id"]
+            isOneToOne: false
+            referencedRelation: "courses"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       courses: {
         Row: {
           checklist: string | null
@@ -1085,6 +1126,56 @@ export type Database = {
         }
         Relationships: []
       }
+      quiz_attempts: {
+        Row: {
+          answer_key: Json
+          answers: Json
+          course_id: string
+          created_at: string
+          feedback: Json
+          id: string
+          passed: boolean | null
+          questions: Json
+          score: number | null
+          student_id: string
+          submitted_at: string | null
+        }
+        Insert: {
+          answer_key?: Json
+          answers?: Json
+          course_id: string
+          created_at?: string
+          feedback?: Json
+          id?: string
+          passed?: boolean | null
+          questions?: Json
+          score?: number | null
+          student_id?: string
+          submitted_at?: string | null
+        }
+        Update: {
+          answer_key?: Json
+          answers?: Json
+          course_id?: string
+          created_at?: string
+          feedback?: Json
+          id?: string
+          passed?: boolean | null
+          questions?: Json
+          score?: number | null
+          student_id?: string
+          submitted_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "quiz_attempts_course_id_fkey"
+            columns: ["course_id"]
+            isOneToOne: false
+            referencedRelation: "courses"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       stage_courses: {
         Row: {
           checklist: string | null
@@ -1212,6 +1303,59 @@ export type Database = {
         Relationships: [
           {
             foreignKeyName: "student_projects_course_id_fkey"
+            columns: ["course_id"]
+            isOneToOne: false
+            referencedRelation: "courses"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      student_testimonials: {
+        Row: {
+          consent: boolean
+          course_id: string | null
+          created_at: string
+          display_name: string
+          id: string
+          is_featured: boolean
+          quote: string
+          reviewer_note: string | null
+          role_label: string | null
+          status: string
+          student_id: string
+          updated_at: string
+        }
+        Insert: {
+          consent?: boolean
+          course_id?: string | null
+          created_at?: string
+          display_name: string
+          id?: string
+          is_featured?: boolean
+          quote: string
+          reviewer_note?: string | null
+          role_label?: string | null
+          status?: string
+          student_id?: string
+          updated_at?: string
+        }
+        Update: {
+          consent?: boolean
+          course_id?: string | null
+          created_at?: string
+          display_name?: string
+          id?: string
+          is_featured?: boolean
+          quote?: string
+          reviewer_note?: string | null
+          role_label?: string | null
+          status?: string
+          student_id?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "student_testimonials_course_id_fkey"
             columns: ["course_id"]
             isOneToOne: false
             referencedRelation: "courses"
@@ -1473,8 +1617,14 @@ export type Database = {
         Args: { _reference: string }
         Returns: boolean
       }
+      admin_courses: { Args: never; Returns: Json[] }
+      admin_update_course: {
+        Args: { _id: string; _payload: Json }
+        Returns: Json
+      }
       can_review_submissions: { Args: never; Returns: boolean }
       can_see_project: { Args: { _project_id: string }; Returns: boolean }
+      course_content: { Args: { _slug: string }; Returns: Json }
       course_outline: {
         Args: { _slug: string }
         Returns: {
@@ -1483,6 +1633,8 @@ export type Database = {
           lesson_title: string
         }[]
       }
+      course_rating_stats: { Args: { _course_id: string }; Returns: Json }
+      course_teaser: { Args: { _slug: string }; Returns: Json }
       delete_email: {
         Args: { message_id: number; queue_name: string }
         Returns: boolean
@@ -1492,6 +1644,7 @@ export type Database = {
         Args: { payload: Json; queue_name: string }
         Returns: number
       }
+      has_completed_course: { Args: { _course_id: string }; Returns: boolean }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
@@ -1510,6 +1663,10 @@ export type Database = {
           source_queue: string
         }
         Returns: number
+      }
+      public_student_testimonials: {
+        Args: { _course_id?: string; _limit?: number }
+        Returns: Json
       }
       read_email_batch: {
         Args: { batch_size: number; queue_name: string; vt: number }
