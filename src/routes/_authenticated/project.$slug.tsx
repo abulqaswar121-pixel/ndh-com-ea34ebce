@@ -1,8 +1,8 @@
-import { createFileRoute } from '@tanstack/react-router';
+import { createFileRoute, Link } from '@tanstack/react-router';
 import { useEffect, useState } from 'react';
-import { FolderKanban, Send } from 'lucide-react';
+import { FolderKanban, LockKeyhole, Send } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
-import { generateProjectBrief } from '@/lib/academy.functions';
+import { generateProjectBrief, getCourseContent } from '@/lib/academy.functions';
 import { PortalFrame } from '@/components/PortalShell';
 import { RequireRole } from '@/components/RequireRole';
 import { useAuth } from '@/lib/auth';
@@ -20,6 +20,8 @@ function ProjectPage() {
   const { slug } = Route.useParams();
   const { user } = useAuth();
   const [course, setCourse] = useState<any>();
+  const [content, setContent] = useState<any>();
+  const [quizPassed, setQuizPassed] = useState<boolean | null>(null);
   const [project, setProject] = useState<any>();
   const [url, setUrl] = useState('');
   const [text, setText] = useState('');
@@ -30,14 +32,26 @@ function ProjectPage() {
     if (!user) return;
     void (supabase as any)
       .from('courses')
-      .select('*')
+      .select('id,slug,title,summary')
       .eq('slug', slug)
       .maybeSingle()
       .then(({ data }: any) => setCourse(data));
+    void getCourseContent({ data: { slug } })
+      .then(setContent)
+      .catch(() => setContent(null));
   }, [slug, user]);
 
   useEffect(() => {
     if (!user || !course) return;
+    void (supabase as any)
+      .from('quiz_attempts')
+      .select('id')
+      .eq('student_id', user.id)
+      .eq('course_id', course.id)
+      .eq('passed', true)
+      .limit(1)
+      .maybeSingle()
+      .then(({ data }: any) => setQuizPassed(Boolean(data)));
     void (supabase as any)
       .from('student_projects')
       .select('*')
@@ -51,8 +65,8 @@ function ProjectPage() {
       });
   }, [user, course]);
 
-  const rubric: { criterion: string; weight: number; standard: string }[] = Array.isArray(course?.rubric)
-    ? course.rubric
+  const rubric: { criterion: string; weight: number; standard: string }[] = Array.isArray(content?.rubric)
+    ? content.rubric
     : [];
 
   async function create() {
@@ -62,7 +76,10 @@ function ProjectPage() {
     try {
       setProject(
         await generateProjectBrief({
-          data: { courseId: course.id, theme: course.project_brief || course.project_theme || course.title },
+          data: {
+            courseId: course.id,
+            theme: content?.project_brief || content?.project_theme || course.title,
+          },
         }),
       );
     } catch (e) {
@@ -88,6 +105,32 @@ function ProjectPage() {
     setBusy(false);
   }
 
+  if (quizPassed === false && !project) {
+    return (
+      <PortalFrame>
+        <main className="portal">
+          <div className="portal-head">
+            <div>
+              <p className="eyebrow">PROJECT</p>
+              <h1>{course?.title || 'Course project'}</h1>
+              <p>Your project brief unlocks after the readiness quiz.</p>
+            </div>
+            <LockKeyhole size={42} />
+          </div>
+          <section className="portal-section">
+            <div className="empty-card">
+              <h2>Take the readiness quiz first</h2>
+              <p>Score 70% or more and your project brief is released straight away.</p>
+              <Link className="button" to="/exam/$slug" params={{ slug }}>
+                Go to the quiz
+              </Link>
+            </div>
+          </section>
+        </main>
+      </PortalFrame>
+    );
+  }
+
   return (
     <PortalFrame>
       <main className="portal">
@@ -100,13 +143,13 @@ function ProjectPage() {
           <FolderKanban size={42} />
         </div>
 
-        {course?.project_brief && (
+        {content?.project_brief && (
           <Reveal>
             <section className="portal-section">
               <div className="portal-section-title">
                 <h2>Course project brief</h2>
               </div>
-              <BriefText text={course.project_brief} />
+              <BriefText text={content.project_brief} />
             </section>
           </Reveal>
         )}
@@ -158,7 +201,9 @@ function ProjectPage() {
                       <textarea rows={7} value={text} onChange={(e) => setText(e.target.value)} />
                     </label>
                     <button className="button" disabled={busy}>
-                      {busy ? 'Submitting…' : (
+                      {busy ? (
+                        'Submitting…'
+                      ) : (
                         <>
                           Submit project <Send size={16} />
                         </>
@@ -169,6 +214,7 @@ function ProjectPage() {
                 {error && <p className="error-text">{error}</p>}
               </div>
             )}
+            {error && !project && <p className="error-text">{error}</p>}
           </section>
         </Reveal>
       </main>
@@ -184,8 +230,18 @@ function BriefText({ text }: { text: string }) {
         .filter((l) => l.trim())
         .map((line, i) => {
           const t = line.trim();
-          if (t.startsWith('•') || t.startsWith('- ')) return <p className="lesson-bullet" key={i}>• {t.replace(/^[•-]\s*/, '')}</p>;
-          if (/^\d+\.\s/.test(t)) return <p className="lesson-bullet" key={i}>{t}</p>;
+          if (t.startsWith('•') || t.startsWith('- '))
+            return (
+              <p className="lesson-bullet" key={i}>
+                • {t.replace(/^[•-]\s*/, '')}
+              </p>
+            );
+          if (/^\d+\.\s/.test(t))
+            return (
+              <p className="lesson-bullet" key={i}>
+                {t}
+              </p>
+            );
           return <p key={i}>{t}</p>;
         })}
     </div>

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { FileText, Inbox, Quote, Star } from 'lucide-react';
+import { FileText, GraduationCap, Inbox, Quote, Star } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 
 type Row = Record<string, any>;
