@@ -16,13 +16,15 @@ function CoursesAdmin() {
   const [selected, setSelected] = useState<any>();
   const [lessons, setLessons] = useState<any[]>([]);
   const [saved, setSaved] = useState(false);
+  const [error, setError] = useState('');
 
   useEffect(() => {
     void (supabase as any)
-      .from('courses')
-      .select('*')
-      .order('title')
-      .then(({ data }: any) => setCourses(data ?? []));
+      .rpc('admin_courses')
+      .then(({ data, error: e }: any) => {
+        if (e) setError(e.message);
+        setCourses(data ?? []);
+      });
     void (supabase as any)
       .from('lessons')
       .select('course_id')
@@ -49,9 +51,10 @@ function CoursesAdmin() {
     e.preventDefault();
     if (!selected) return;
     setSaved(false);
-    const { data } = await (supabase as any)
-      .from('courses')
-      .update({
+    setError('');
+    const { data, error: e2 } = await (supabase as any).rpc('admin_update_course', {
+      _id: selected.id,
+      _payload: {
         title: selected.title,
         summary: selected.summary,
         overview: selected.overview,
@@ -60,12 +63,10 @@ function CoursesAdmin() {
         checklist: selected.checklist,
         common_mistakes: selected.common_mistakes,
         project_brief: selected.project_brief,
-        project_theme: selected.project_theme,
         is_published: selected.is_published,
-      })
-      .eq('id', selected.id)
-      .select('*')
-      .single();
+      },
+    });
+    if (e2) return setError(e2.message);
     if (data) {
       setCourses((x) => x.map((c) => (c.id === data.id ? data : c)));
       setSelected(data);
@@ -91,6 +92,7 @@ function CoursesAdmin() {
             {courses.length} courses · {Object.values(counts).reduce((a, b) => a + b, 0)} lessons
           </span>
         </div>
+        {error && <p className="form-error">{error}</p>}
         {incomplete.length === 0 ? (
           <p className="form-success">Every course has lessons and a project brief.</p>
         ) : (

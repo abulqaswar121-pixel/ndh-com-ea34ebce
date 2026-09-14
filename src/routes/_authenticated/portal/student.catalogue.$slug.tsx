@@ -36,10 +36,7 @@ function PortalCourse() {
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState('');
 
-  const objectives = (course.learning_objectives ?? '')
-    .split('\n')
-    .map((s) => s.trim())
-    .filter(Boolean);
+  const objectives = course.outcomes;
   const intl = course.prices.find((p) => p.region !== 'NG');
 
   useEffect(() => {
@@ -144,14 +141,15 @@ function PortalCourse() {
       <section className="portal-section">
         <div className="portal-section-title">
           <h2>Course outline</h2>
+          <span>{course.lesson_count} lessons</span>
         </div>
         {course.outline.length > 0 ? (
           <ol className="outline-list">
             {course.outline.map((l) => (
-              <li key={l.lesson_position}>
-                <span>{String(l.lesson_position).padStart(2, '0')}</span>
-                <strong>{l.lesson_title}</strong>
-                {l.free_preview && <em>Free preview</em>}
+              <li key={l.position} className={l.free_preview ? '' : 'is-locked'}>
+                <span>{String(l.position).padStart(2, '0')}</span>
+                <strong>{l.free_preview ? l.title : <i className="locked-bar" aria-hidden />}</strong>
+                <em>{l.free_preview ? 'Free preview' : 'Locked'}</em>
               </li>
             ))}
           </ol>
@@ -160,16 +158,15 @@ function PortalCourse() {
         )}
       </section>
 
-      {course.project_theme && (
-        <section className="portal-section">
-          <div className="portal-section-title">
-            <h2>Assessment and certificate</h2>
-          </div>
-          <p>
-            After the lessons you sit a final assessment, then submit a practical project: {course.project_theme}
-          </p>
-        </section>
-      )}
+      <section className="portal-section">
+        <div className="portal-section-title">
+          <h2>Assessment and certificate</h2>
+        </div>
+        <p>
+          After the lessons you take a readiness quiz. Pass it and your practical project brief is released and
+          graded by the Academy team before your certificate is issued.
+        </p>
+      </section>
     </PortalPage>
   );
 }
