@@ -1,13 +1,12 @@
 import { createFileRoute, Link, notFound, useNavigate } from '@tanstack/react-router';
 import { useState } from 'react';
-import { BadgeCheck, CheckCircle2, Clock, GraduationCap, ListChecks } from 'lucide-react';
+import { BadgeCheck, CheckCircle2, Clock, GraduationCap, ListChecks, Lock, PlayCircle, Star } from 'lucide-react';
 import { PageShell } from '@/components/PageShell';
 import { Reveal } from '@/components/Reveal';
 import { getCourse } from '@/lib/catalog.functions';
 import { startCourseCheckout } from '@/lib/payment.functions';
 import { useAuth } from '@/lib/auth';
 import { formatPrice } from '@/lib/format';
-
 
 export const Route = createFileRoute('/academy/$slug')({
   loader: async ({ params }) => {
@@ -59,13 +58,20 @@ export const Route = createFileRoute('/academy/$slug')({
   component: CoursePage,
 });
 
+function watchTime(seconds: number) {
+  if (!seconds) return null;
+  const minutes = Math.round(seconds / 60);
+  if (minutes < 60) return `${minutes} min of video`;
+  const hours = Math.floor(minutes / 60);
+  const rest = minutes % 60;
+  return `${hours}h ${rest ? `${rest}m` : ''} of video`.trim();
+}
+
 function CoursePage() {
   const course = Route.useLoaderData();
-  const objectives = (course.learning_objectives ?? '')
-    .split('\n')
-    .map((s) => s.trim())
-    .filter(Boolean);
   const intl = course.prices.find((p) => p.region !== 'NG');
+  const duration = watchTime(course.total_seconds);
+  const lockedCount = course.outline.filter((l) => !l.free_preview).length;
 
   return (
     <PageShell>
@@ -83,12 +89,26 @@ function CoursePage() {
                 <span className="tag">{course.school}</span>
                 <h1>{course.title}</h1>
                 <p className="lede">{course.summary}</p>
+                {course.rating.count >= 3 ? (
+                  <p className="course-rating">
+                    <Star size={16} /> {Number(course.rating.average).toFixed(1)} from {course.rating.count} students
+                  </p>
+                ) : (
+                  <p className="course-rating">
+                    <Star size={16} /> New course
+                  </p>
+                )}
                 <ul className="course-meta">
                   <li>
-                    <Clock size={16} /> Self-paced
+                    <ListChecks size={16} /> {course.lesson_count} lessons
                   </li>
+                  {duration && (
+                    <li>
+                      <PlayCircle size={16} /> {duration}
+                    </li>
+                  )}
                   <li>
-                    <ListChecks size={16} /> Final assessment
+                    <Clock size={16} /> Self-paced
                   </li>
                   <li>
                     <BadgeCheck size={16} /> Signed certificate
@@ -97,23 +117,26 @@ function CoursePage() {
               </header>
             </Reveal>
 
-            {course.overview && (
+            {course.intro && (
               <Reveal>
                 <section className="course-section">
                   <h2>About this course</h2>
-                  {course.overview.split('\n').filter(Boolean).map((p) => (
-                    <p key={p}>{p}</p>
-                  ))}
+                  {course.intro
+                    .split('\n')
+                    .filter(Boolean)
+                    .map((p) => (
+                      <p key={p}>{p}</p>
+                    ))}
                 </section>
               </Reveal>
             )}
 
-            {objectives.length > 0 && (
+            {course.outcomes.length > 0 && (
               <Reveal>
                 <section className="course-section">
-                  <h2>What you will learn</h2>
+                  <h2>What you will be able to do</h2>
                   <ul className="tick-list">
-                    {objectives.map((o) => (
+                    {course.outcomes.map((o) => (
                       <li key={o}>
                         <CheckCircle2 size={18} /> {o}
                       </li>
@@ -123,35 +146,32 @@ function CoursePage() {
               </Reveal>
             )}
 
-            {course.preparation && (
-              <Reveal>
-                <section className="course-section">
-                  <h2>Before you start</h2>
-                  {course.preparation.split('\n').filter(Boolean).map((p) => (
-                    <p key={p}>{p}</p>
-                  ))}
-                </section>
-              </Reveal>
-            )}
-
             <Reveal>
               <section className="course-section">
                 <h2>Course outline</h2>
                 {course.outline.length > 0 ? (
-                  <ol className="outline-list">
-                    {course.outline.map((l) => (
-                      <li key={l.lesson_position}>
-                        <span>{String(l.lesson_position).padStart(2, '0')}</span>
-                        <strong>{l.lesson_title}</strong>
-                        {l.free_preview && <em>Free preview</em>}
-                      </li>
-                    ))}
-                  </ol>
+                  <>
+                    <ol className="outline-list">
+                      {course.outline.map((l) => (
+                        <li key={l.position} className={l.free_preview ? '' : 'is-locked'}>
+                          <span>{String(l.position).padStart(2, '0')}</span>
+                          <strong>{l.free_preview ? l.title : <i className="locked-bar" aria-hidden />}</strong>
+                          {l.free_preview ? (
+                            <em>Free preview</em>
+                          ) : (
+                            <em>
+                              <Lock size={13} /> Locked
+                            </em>
+                          )}
+                        </li>
+                      ))}
+                    </ol>
+                    <p className="muted-note">
+                      {lockedCount} lessons, the full project brief and the grading rubric unlock when you enrol.
+                    </p>
+                  </>
                 ) : (
-                  <p>
-                    Lessons for this course are being finalised. Enrol now to get access the moment they are
-                    published.
-                  </p>
+                  <p>Lessons for this course are being finalised. Enrol to get access as soon as they publish.</p>
                 )}
               </section>
             </Reveal>
@@ -160,34 +180,35 @@ function CoursePage() {
               <section className="course-section">
                 <h2>Assessment and certificate</h2>
                 <p>
-                  When you finish the lessons you sit a final assessment covering the material, then submit the
-                  practical project for this course.
+                  After the lessons you take a readiness quiz on the material. Pass it and your practical project brief
+                  is released, graded against {course.rubric_count || 'a'} clear criteria by the Academy team.
                 </p>
-                {course.project_brief
-                  ? course.project_brief
-                      .split('\n')
-                      .filter(Boolean)
-                      .slice(0, 6)
-                      .map((p) => <p key={p}>{p}</p>)
-                  : course.project_theme && <p>{course.project_theme}</p>}
-                {course.rubric.length > 0 && (
-                  <ul className="rubric-list">
-                    {course.rubric.map((r) => (
-                      <li key={r.criterion}>
-                        <strong>{r.criterion}</strong>
-                        <em>{r.weight}%</em>
-                        <span>{r.standard}</span>
-                      </li>
-                    ))}
-                  </ul>
-                )}
                 <p>
-                  Your project is reviewed by the Academy team. Once it is approved, a signed certificate with a
-                  unique verification number is issued to your account.
+                  Once your project is approved, a signed certificate with a unique verification number is issued to
+                  your account.
                 </p>
               </section>
             </Reveal>
 
+            {course.testimonials.length > 0 && (
+              <Reveal>
+                <section className="course-section">
+                  <h2>What students say</h2>
+                  <div className="voice-grid">
+                    {course.testimonials.map((t) => (
+                      <figure className="voice-card" key={t.id}>
+                        <blockquote>{t.quote}</blockquote>
+                        <figcaption>
+                          <strong>{t.display_name}</strong>
+                          {t.role_label && <span>{t.role_label}</span>}
+                          <em>Verified student</em>
+                        </figcaption>
+                      </figure>
+                    ))}
+                  </div>
+                </section>
+              </Reveal>
+            )}
 
             <Reveal>
               <section className="course-section">
@@ -212,9 +233,9 @@ function CoursePage() {
               <EnrolActions slug={course.slug} hasIntlPrice={Boolean(intl)} />
               <ul className="plain-list">
                 <li>
-                  <GraduationCap size={15} /> Lifetime access to the lessons
+                  <GraduationCap size={15} /> Lifetime access to {course.lesson_count} lessons
                 </li>
-                <li>Final assessment and reviewed project included</li>
+                <li>Readiness quiz and reviewed project included</li>
                 <li>Certificate issued after review</li>
               </ul>
             </div>
@@ -273,18 +294,10 @@ function EnrolActions({ slug, hasIntlPrice }: { slug: string; hasIntlPrice: bool
     <>
       {hasIntlPrice && (
         <div className="region-toggle">
-          <button
-            type="button"
-            className={region === 'NG' ? 'is-active' : ''}
-            onClick={() => setRegion('NG')}
-          >
+          <button type="button" className={region === 'NG' ? 'is-active' : ''} onClick={() => setRegion('NG')}>
             Pay in Nigeria
           </button>
-          <button
-            type="button"
-            className={region === 'INTL' ? 'is-active' : ''}
-            onClick={() => setRegion('INTL')}
-          >
+          <button type="button" className={region === 'INTL' ? 'is-active' : ''} onClick={() => setRegion('INTL')}>
             Pay internationally
           </button>
         </div>
@@ -299,4 +312,3 @@ function EnrolActions({ slug, hasIntlPrice }: { slug: string; hasIntlPrice: bool
     </>
   );
 }
-
