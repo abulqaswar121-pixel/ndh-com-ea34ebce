@@ -77,45 +77,73 @@ export const listCourses = createServerFn({ method: 'GET' }).handler(async (): P
   }));
 });
 
-export type CourseDetail = CourseSummary & {
-  learning_objectives: string | null;
-  project_theme: string | null;
-  cover_image_url: string | null;
-  overview: string | null;
-  preparation: string | null;
-  checklist: string | null;
-  project_brief: string | null;
-  rubric: { criterion: string; weight: number; standard: string }[];
-  outline: { lesson_position: number; lesson_title: string; free_preview: boolean }[];
+export type CourseRating = { count: number; average: number; distribution: Record<string, number> };
+export type StudentVoice = {
+  id: string;
+  display_name: string;
+  role_label: string | null;
+  quote: string;
+  course_title: string | null;
+  is_featured?: boolean;
 };
+
+/** Only the "hook": everything paid lives behind course_content() for enrolled students. */
+export type CourseTeaser = CourseSummary & {
+  cover_image_url: string | null;
+  intro: string | null;
+  outcomes: string[];
+  lesson_count: number;
+  total_seconds: number;
+  rubric_count: number;
+  outline: { position: number; title: string | null; free_preview: boolean }[];
+  rating: CourseRating;
+  testimonials: StudentVoice[];
+};
+
+const emptyRating: CourseRating = { count: 0, average: 0, distribution: {} };
 
 export const getCourse = createServerFn({ method: 'GET' })
   .inputValidator((data: { slug: string }) => data)
-  .handler(async ({ data }): Promise<CourseDetail | null> => {
-    const db = publicDataClient();
-    const { data: course, error: courseError } = await db
-      .from('courses')
-      .select(
-        'id, slug, title, summary, school, learning_objectives, project_theme, cover_image_url, overview, preparation, checklist, project_brief, rubric',
-      )
-      .eq('slug', data.slug)
-      .eq('is_published', true)
-      .maybeSingle();
-    assertQuery(courseError, 'course detail');
-    if (!course) return null;
-    const [{ data: pricing, error: pricingError }, { data: outline, error: outlineError }] = await Promise.all([
-      db.from('course_pricing').select('region, currency, amount').eq('course_id', course.id),
-      db.rpc('course_outline', { _slug: data.slug }),
+  .handler(async ({ data }): Promise<CourseTeaser | null> => {
+    const db = publicDataClient() as any;
+    const { data: teaser, error: teaserError } = await db.rpc('course_teaser', { _slug: data.slug });
+    assertQuery(teaserError, 'course teaser');
+    if (!teaser) return null;
+    const [{ data: pricing, error: pricingError }, { data: rating }, { data: voices }] = await Promise.all([
+      db.from('course_pricing').select('region, currency, amount').eq('course_id', teaser.id),
+      db.rpc('course_rating_stats', { _course_id: teaser.id }),
+      db.rpc('public_student_testimonials', { _limit: 4, _course_id: teaser.id }),
     ]);
     assertQuery(pricingError, 'course pricing');
-    assertQuery(outlineError, 'course outline');
     return {
-      ...course,
-      rubric: (Array.isArray(course.rubric) ? course.rubric : []) as CourseDetail['rubric'],
-      prices: (pricing ?? []).map((p) => ({ region: p.region, currency: p.currency, amount: Number(p.amount) })),
-      outline: (outline ?? []) as CourseDetail['outline'],
+      id: teaser.id,
+      slug: teaser.slug,
+      title: teaser.title,
+      summary: teaser.summary,
+      school: teaser.school,
+      cover_image_url: teaser.cover_image_url ?? null,
+      intro: teaser.intro ?? null,
+      outcomes: Array.isArray(teaser.outcomes) ? teaser.outcomes : [],
+      lesson_count: Number(teaser.lesson_count ?? 0),
+      total_seconds: Number(teaser.total_seconds ?? 0),
+      rubric_count: Number(teaser.rubric_count ?? 0),
+      outline: Array.isArray(teaser.outline) ? teaser.outline : [],
+      prices: ((pricing ?? []) as any[]).map((p) => ({
+        region: p.region,
+        currency: p.currency,
+        amount: Number(p.amount),
+      })),
+      rating: (rating as CourseRating) ?? emptyRating,
+      testimonials: (Array.isArray(voices) ? voices : []) as StudentVoice[],
     };
   });
+
+export const listStudentVoices = createServerFn({ method: 'GET' }).handler(async (): Promise<StudentVoice[]> => {
+  const db = publicDataClient() as any;
+  const { data, error } = await db.rpc('public_student_testimonials', { _limit: 9, _course_id: null });
+  assertQuery(error, 'student testimonials');
+  return (Array.isArray(data) ? data : []) as StudentVoice[];
+});
 
 export const listPosts = createServerFn({ method: 'GET' }).handler(async () => {
   const db = publicDataClient();
