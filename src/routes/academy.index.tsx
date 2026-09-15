@@ -3,7 +3,8 @@ import { useMemo, useState } from 'react';
 import { ArrowUpRight, Search } from 'lucide-react';
 import { PageShell, PageIntro } from '@/components/PageShell';
 import { Reveal } from '@/components/Reveal';
-import { listCourses } from '@/lib/catalog.functions';
+import { Rail } from '@/components/Rail';
+import { listCourses, listStudentVoices } from '@/lib/catalog.functions';
 import { formatPrice } from '@/lib/format';
 import academyLearning from '@/assets/academy-learning.jpg';
 
