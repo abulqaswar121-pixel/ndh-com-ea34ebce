@@ -13,7 +13,7 @@ export default defineTool({
     const supabase = supabaseForUser(ctx);
     const { data: course, error } = await supabase
       .from("courses")
-      .select("id,title,slug,school,summary,learning_objectives,project_theme,price_amount,currency")
+      .select("id,title,slug,school,summary,price_amount,currency")
       .eq("slug", slug)
       .eq("is_published", true)
       .maybeSingle();
