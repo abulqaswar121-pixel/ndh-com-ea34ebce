@@ -295,3 +295,49 @@ export function EnquiriesInbox() {
     </div>
   );
 }
+
+export function StudentTestimonialsQueue() {
+  const s = useTable('student_testimonials');
+  const [filter, setFilter] = useState<'pending' | 'approved' | 'rejected'>('pending');
+  const rows = s.rows.filter((r) => r.status === filter);
+
+  return (
+    <div className="cms-block">
+      <div className="catalog-filters">
+        {(['pending', 'approved', 'rejected'] as const).map((f) => (
+          <button key={f} type="button" className={f === filter ? 'chip is-active' : 'chip'} onClick={() => setFilter(f)}>
+            {f === 'pending' ? 'Waiting for review' : f === 'approved' ? 'Published' : 'Rejected'}
+          </button>
+        ))}
+      </div>
+      {s.error && <p className="form-error">{s.error}</p>}
+      {rows.length === 0 ? (
+        <div className="empty-card">Nothing here yet.</div>
+      ) : (
+        <div className="portal-grid">
+          {rows.map((r) => (
+            <article className="portal-card" key={r.id}>
+              <GraduationCap size={18} />
+              <h3>{r.display_name}</h3>
+              {r.role_label && <p className="admin-note">{r.role_label}</p>}
+              <p>{r.quote}</p>
+              <div className="project-actions">
+                {r.status !== 'approved' && (
+                  <button onClick={() => s.update(r.id, { status: 'approved' })}>Approve</button>
+                )}
+                {r.status === 'approved' && (
+                  <button onClick={() => s.update(r.id, { is_featured: !r.is_featured })}>
+                    {r.is_featured ? 'Unfeature' : 'Feature'}
+                  </button>
+                )}
+                {r.status !== 'rejected' && (
+                  <button onClick={() => s.update(r.id, { status: 'rejected' })}>Reject</button>
+                )}
+              </div>
+            </article>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}

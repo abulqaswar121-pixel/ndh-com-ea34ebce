@@ -1,19 +1,31 @@
 import { createFileRoute } from '@tanstack/react-router';
 import { FileText } from 'lucide-react';
 import { PortalPage } from '@/components/PortalShell';
-import { CaseStudiesManager, PostsManager, TestimonialsManager } from '@/components/admin/ContentManager';
+import {
+  CaseStudiesManager,
+  PostsManager,
+  StudentTestimonialsQueue,
+  TestimonialsManager,
+} from '@/components/admin/ContentManager';
 
 export const Route = createFileRoute('/_authenticated/portal/admin/content')({
   component: () => (
     <PortalPage
       eyebrow="ADMIN PORTAL"
       title="Content"
-      intro="Testimonials, case studies and blog articles."
+      intro="Student testimonials, client testimonials, case studies and blog articles."
       icon={FileText}
     >
       <section className="portal-section">
         <div className="portal-section-title">
-          <h2>Testimonials</h2>
+          <h2>Student testimonials</h2>
+          <span>Only approved ones appear on the Academy</span>
+        </div>
+        <StudentTestimonialsQueue />
+      </section>
+      <section className="portal-section">
+        <div className="portal-section-title">
+          <h2>Client testimonials</h2>
         </div>
         <TestimonialsManager />
       </section>

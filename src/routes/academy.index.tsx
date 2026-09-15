@@ -3,7 +3,8 @@ import { useMemo, useState } from 'react';
 import { ArrowUpRight, Search } from 'lucide-react';
 import { PageShell, PageIntro } from '@/components/PageShell';
 import { Reveal } from '@/components/Reveal';
-import { listCourses } from '@/lib/catalog.functions';
+import { Rail } from '@/components/Rail';
+import { listCourses, listStudentVoices } from '@/lib/catalog.functions';
 import { formatPrice } from '@/lib/format';
 import academyLearning from '@/assets/academy-learning.jpg';
 
@@ -24,7 +25,10 @@ export const Route = createFileRoute('/academy/')({
       { name: 'twitter:image', content: 'https://ndh.com.ng/og-image.png' },
     ],
   }),
-  loader: () => listCourses(),
+  loader: async () => {
+    const [courses, voices] = await Promise.all([listCourses(), listStudentVoices()]);
+    return { courses, voices };
+  },
   errorComponent: () => (
     <PageShell>
       <main className="content">
@@ -37,7 +41,7 @@ export const Route = createFileRoute('/academy/')({
 });
 
 function Academy() {
-  const courses = Route.useLoaderData();
+  const { courses, voices } = Route.useLoaderData();
   const [query, setQuery] = useState('');
   const [school, setSchool] = useState('All');
 
@@ -128,6 +132,26 @@ function Academy() {
               </Reveal>
             ))}
           </div>
+        )}
+
+        {voices.length > 0 && (
+          <Reveal>
+            <section className="course-section">
+              <h2>What our students say</h2>
+              <Rail label="Student testimonials" autoPlay>
+                {voices.map((v) => (
+                  <figure className="voice-card" key={v.id}>
+                    <blockquote>{v.quote}</blockquote>
+                    <figcaption>
+                      <strong>{v.display_name}</strong>
+                      {v.course_title && <span>{v.course_title}</span>}
+                      <em>Verified student</em>
+                    </figcaption>
+                  </figure>
+                ))}
+              </Rail>
+            </section>
+          </Reveal>
         )}
       </main>
     </PageShell>
