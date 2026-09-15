@@ -133,6 +133,26 @@ function Academy() {
             ))}
           </div>
         )}
+
+        {voices.length > 0 && (
+          <Reveal>
+            <section className="course-section">
+              <h2>What our students say</h2>
+              <Rail label="Student testimonials" autoPlay>
+                {voices.map((v) => (
+                  <figure className="voice-card" key={v.id}>
+                    <blockquote>{v.quote}</blockquote>
+                    <figcaption>
+                      <strong>{v.display_name}</strong>
+                      {v.course_title && <span>{v.course_title}</span>}
+                      <em>Verified student</em>
+                    </figcaption>
+                  </figure>
+                ))}
+              </Rail>
+            </section>
+          </Reveal>
+        )}
       </main>
     </PageShell>
   );
