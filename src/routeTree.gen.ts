@@ -9,6 +9,7 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as WorkRouteImport } from './routes/work'
 import { Route as TermsRouteImport } from './routes/terms'
 import { Route as TalentApplicationRouteImport } from './routes/talent-application'
 import { Route as SignupRouteImport } from './routes/signup'
@@ -27,6 +28,7 @@ import { Route as VerifyIndexRouteImport } from './routes/verify.index'
 import { Route as BlogIndexRouteImport } from './routes/blog.index'
 import { Route as AgencyIndexRouteImport } from './routes/agency.index'
 import { Route as AcademyIndexRouteImport } from './routes/academy.index'
+import { Route as WorkSlugRouteImport } from './routes/work.$slug'
 import { Route as VerifyCodeRouteImport } from './routes/verify.$code'
 import { Route as InviteTokenRouteImport } from './routes/invite.$token'
 import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
@@ -85,6 +87,11 @@ import { Route as AuthenticatedPortalAdminAccessRouteImport } from './routes/_au
 import { Route as AuthenticatedPortalStudentCatalogueIndexRouteImport } from './routes/_authenticated/portal/student.catalogue.index'
 import { Route as AuthenticatedPortalStudentCatalogueSlugRouteImport } from './routes/_authenticated/portal/student.catalogue.$slug'
 
+const WorkRoute = WorkRouteImport.update({
+  id: '/work',
+  path: '/work',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const TermsRoute = TermsRouteImport.update({
   id: '/terms',
   path: '/terms',
@@ -150,9 +157,9 @@ const IndexRoute = IndexRouteImport.update({
   getParentRoute: () => rootRouteImport,
 } as any)
 const WorkIndexRoute = WorkIndexRouteImport.update({
-  id: '/work/',
-  path: '/work/',
-  getParentRoute: () => rootRouteImport,
+  id: '/',
+  path: '/',
+  getParentRoute: () => WorkRoute,
 } as any)
 const VerifyIndexRoute = VerifyIndexRouteImport.update({
   id: '/verify/',
@@ -173,6 +180,11 @@ const AcademyIndexRoute = AcademyIndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => AcademyRoute,
+} as any)
+const WorkSlugRoute = WorkSlugRouteImport.update({
+  id: '/$slug',
+  path: '/$slug',
+  getParentRoute: () => WorkRoute,
 } as any)
 const VerifyCodeRoute = VerifyCodeRouteImport.update({
   id: '/verify/$code',
@@ -520,11 +532,13 @@ export interface FileRoutesByFullPath {
   '/signup': typeof SignupRoute
   '/talent-application': typeof TalentApplicationRoute
   '/terms': typeof TermsRoute
+  '/work': typeof WorkRouteWithChildren
   '/academy/$slug': typeof AcademySlugRoute
   '/agency/$slug': typeof AgencySlugRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/invite/$token': typeof InviteTokenRoute
   '/verify/$code': typeof VerifyCodeRoute
+  '/work/$slug': typeof WorkSlugRoute
   '/academy/': typeof AcademyIndexRoute
   '/agency/': typeof AgencyIndexRoute
   '/blog/': typeof BlogIndexRoute
@@ -598,6 +612,7 @@ export interface FileRoutesByTo {
   '/blog/$slug': typeof BlogSlugRoute
   '/invite/$token': typeof InviteTokenRoute
   '/verify/$code': typeof VerifyCodeRoute
+  '/work/$slug': typeof WorkSlugRoute
   '/academy': typeof AcademyIndexRoute
   '/agency': typeof AgencyIndexRoute
   '/blog': typeof BlogIndexRoute
@@ -665,11 +680,13 @@ export interface FileRoutesById {
   '/signup': typeof SignupRoute
   '/talent-application': typeof TalentApplicationRoute
   '/terms': typeof TermsRoute
+  '/work': typeof WorkRouteWithChildren
   '/academy/$slug': typeof AcademySlugRoute
   '/agency/$slug': typeof AgencySlugRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/invite/$token': typeof InviteTokenRoute
   '/verify/$code': typeof VerifyCodeRoute
+  '/work/$slug': typeof WorkSlugRoute
   '/academy/': typeof AcademyIndexRoute
   '/agency/': typeof AgencyIndexRoute
   '/blog/': typeof BlogIndexRoute
@@ -743,11 +760,13 @@ export interface FileRouteTypes {
     | '/signup'
     | '/talent-application'
     | '/terms'
+    | '/work'
     | '/academy/$slug'
     | '/agency/$slug'
     | '/blog/$slug'
     | '/invite/$token'
     | '/verify/$code'
+    | '/work/$slug'
     | '/academy/'
     | '/agency/'
     | '/blog/'
@@ -821,6 +840,7 @@ export interface FileRouteTypes {
     | '/blog/$slug'
     | '/invite/$token'
     | '/verify/$code'
+    | '/work/$slug'
     | '/academy'
     | '/agency'
     | '/blog'
@@ -887,11 +907,13 @@ export interface FileRouteTypes {
     | '/signup'
     | '/talent-application'
     | '/terms'
+    | '/work'
     | '/academy/$slug'
     | '/agency/$slug'
     | '/blog/$slug'
     | '/invite/$token'
     | '/verify/$code'
+    | '/work/$slug'
     | '/academy/'
     | '/agency/'
     | '/blog/'
@@ -965,10 +987,10 @@ export interface RootRouteChildren {
   SignupRoute: typeof SignupRoute
   TalentApplicationRoute: typeof TalentApplicationRoute
   TermsRoute: typeof TermsRoute
+  WorkRoute: typeof WorkRouteWithChildren
   InviteTokenRoute: typeof InviteTokenRoute
   VerifyCodeRoute: typeof VerifyCodeRoute
   VerifyIndexRoute: typeof VerifyIndexRoute
-  WorkIndexRoute: typeof WorkIndexRoute
   ApiPublicPaystackWebhookRoute: typeof ApiPublicPaystackWebhookRoute
   ApiPublicSupportChatRoute: typeof ApiPublicSupportChatRoute
   LovableEmailAuthPreviewRoute: typeof LovableEmailAuthPreviewRoute
@@ -978,6 +1000,13 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/work': {
+      id: '/work'
+      path: '/work'
+      fullPath: '/work'
+      preLoaderRoute: typeof WorkRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/terms': {
       id: '/terms'
       path: '/terms'
@@ -1071,10 +1100,10 @@ declare module '@tanstack/react-router' {
     }
     '/work/': {
       id: '/work/'
-      path: '/work'
+      path: '/'
       fullPath: '/work/'
       preLoaderRoute: typeof WorkIndexRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof WorkRoute
     }
     '/verify/': {
       id: '/verify/'
@@ -1103,6 +1132,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/academy/'
       preLoaderRoute: typeof AcademyIndexRouteImport
       parentRoute: typeof AcademyRoute
+    }
+    '/work/$slug': {
+      id: '/work/$slug'
+      path: '/$slug'
+      fullPath: '/work/$slug'
+      preLoaderRoute: typeof WorkSlugRouteImport
+      parentRoute: typeof WorkRoute
     }
     '/verify/$code': {
       id: '/verify/$code'
@@ -1733,6 +1769,18 @@ const BlogRouteChildren: BlogRouteChildren = {
 
 const BlogRouteWithChildren = BlogRoute._addFileChildren(BlogRouteChildren)
 
+interface WorkRouteChildren {
+  WorkSlugRoute: typeof WorkSlugRoute
+  WorkIndexRoute: typeof WorkIndexRoute
+}
+
+const WorkRouteChildren: WorkRouteChildren = {
+  WorkSlugRoute: WorkSlugRoute,
+  WorkIndexRoute: WorkIndexRoute,
+}
+
+const WorkRouteWithChildren = WorkRoute._addFileChildren(WorkRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
@@ -1747,10 +1795,10 @@ const rootRouteChildren: RootRouteChildren = {
   SignupRoute: SignupRoute,
   TalentApplicationRoute: TalentApplicationRoute,
   TermsRoute: TermsRoute,
+  WorkRoute: WorkRouteWithChildren,
   InviteTokenRoute: InviteTokenRoute,
   VerifyCodeRoute: VerifyCodeRoute,
   VerifyIndexRoute: VerifyIndexRoute,
-  WorkIndexRoute: WorkIndexRoute,
   ApiPublicPaystackWebhookRoute: ApiPublicPaystackWebhookRoute,
   ApiPublicSupportChatRoute: ApiPublicSupportChatRoute,
   LovableEmailAuthPreviewRoute: LovableEmailAuthPreviewRoute,
