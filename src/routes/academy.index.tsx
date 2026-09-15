@@ -25,7 +25,10 @@ export const Route = createFileRoute('/academy/')({
       { name: 'twitter:image', content: 'https://ndh.com.ng/og-image.png' },
     ],
   }),
-  loader: () => listCourses(),
+  loader: async () => {
+    const [courses, voices] = await Promise.all([listCourses(), listStudentVoices()]);
+    return { courses, voices };
+  },
   errorComponent: () => (
     <PageShell>
       <main className="content">
@@ -38,7 +41,7 @@ export const Route = createFileRoute('/academy/')({
 });
 
 function Academy() {
-  const courses = Route.useLoaderData();
+  const { courses, voices } = Route.useLoaderData();
   const [query, setQuery] = useState('');
   const [school, setSchool] = useState('All');
 
