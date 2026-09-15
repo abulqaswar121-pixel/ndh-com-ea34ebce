@@ -8,7 +8,7 @@ import projectDelivery from '@/assets/project-delivery.jpg';
 const title = 'Selected work — Case studies | Najeeb Digital Hub';
 const description = 'Projects delivered by Najeeb Digital Hub: the brief, the approach and the outcome.';
 
-export const Route = createFileRoute('/work')({
+export const Route = createFileRoute('/work/')({
   head: () => ({
     meta: [
       { title },
