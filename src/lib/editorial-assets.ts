@@ -18,7 +18,7 @@ export const caseStudyImages: Record<string, string> = {
 };
 
 export function caseStudyImage(slug: string, storedUrl?: string | null) {
-  return storedUrl || caseStudyImages[slug] || null;
+  return caseStudyImages[slug] || storedUrl || null;
 }
 
 export const blogImages: Record<string, string> = {
@@ -28,5 +28,5 @@ export const blogImages: Record<string, string> = {
 };
 
 export function blogImage(slug: string, storedUrl?: string | null) {
-  return storedUrl || blogImages[slug] || null;
+  return blogImages[slug] || storedUrl || null;
 }
