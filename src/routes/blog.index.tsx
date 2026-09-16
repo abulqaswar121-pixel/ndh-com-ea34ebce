@@ -1,7 +1,9 @@
+import { ArrowRight } from 'lucide-react';
 import { createFileRoute, Link } from '@tanstack/react-router';
 import { PageShell, PageIntro } from '@/components/PageShell';
 import { Reveal } from '@/components/Reveal';
 import { listPosts } from '@/lib/catalog.functions';
+import { blogImage } from '@/lib/editorial-assets';
 
 const title = 'Blog — Notes on digital delivery and AI skills | NDH';
 const description =
@@ -34,6 +36,7 @@ export const Route = createFileRoute('/blog/')({
 
 function Blog() {
   const posts = Route.useLoaderData();
+  const [featured, ...supporting] = posts;
   return (
     <PageShell>
       <PageIntro
@@ -41,25 +44,41 @@ function Blog() {
         title="Notes from the work."
         body="Short, practical writing on digital delivery, AI tools and building skills that hold up."
       />
-      <main className="content">
+      <main className="content journal-page">
         {posts.length === 0 ? (
           <div className="empty-card">The first articles are on the way. Check back shortly.</div>
         ) : (
-          <div className="post-grid">
-            {posts.map((p, i) => (
-              <Reveal key={p.slug} delay={(i % 3) * 60}>
-                <Link to="/blog/$slug" params={{ slug: p.slug }} className="post-card">
-                  {p.cover_image_url && <img src={p.cover_image_url} alt={`Cover for ${p.title}`} width={1200} height={675} loading="lazy" decoding="async" />}
-                  <h2>{p.title}</h2>
-                  <p>{p.excerpt}</p>
-                  <span className="post-meta">
-                    {p.author_name ?? 'NDH'}
-                    {p.published_at ? ` · ${new Date(p.published_at).toLocaleDateString()}` : ''}
-                  </span>
+          <>
+            {featured && (
+              <Reveal>
+                <Link to="/blog/$slug" params={{ slug: featured.slug }} className="journal-feature">
+                  <img src={blogImage(featured.slug, featured.cover_image_url) ?? ''} alt={`Editorial photograph for ${featured.title}`} width={1400} height={900} fetchPriority="high" decoding="async" />
+                  <div>
+                    <p className="case-kicker">Featured note</p>
+                    <h2>{featured.title}</h2>
+                    <p>{featured.excerpt}</p>
+                    <span className="post-meta">{featured.author_name ?? 'NDH'}{featured.published_at ? ` · ${new Date(featured.published_at).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}` : ''}</span>
+                    <span className="editorial-link">Read article <ArrowRight size={16} /></span>
+                  </div>
                 </Link>
               </Reveal>
-            ))}
-          </div>
+            )}
+            <div className="journal-grid">
+              {supporting.map((post, index) => (
+                <Reveal key={post.slug} delay={(index % 2) * 70}>
+                  <Link to="/blog/$slug" params={{ slug: post.slug }} className="journal-card">
+                    <img src={blogImage(post.slug, post.cover_image_url) ?? ''} alt={`Editorial photograph for ${post.title}`} width={900} height={600} loading="lazy" decoding="async" />
+                    <div>
+                      <p className="case-kicker">NDH journal</p>
+                      <h2>{post.title}</h2>
+                      <p>{post.excerpt}</p>
+                      <span className="editorial-link">Read article <ArrowRight size={16} /></span>
+                    </div>
+                  </Link>
+                </Reveal>
+              ))}
+            </div>
+          </>
         )}
       </main>
     </PageShell>
