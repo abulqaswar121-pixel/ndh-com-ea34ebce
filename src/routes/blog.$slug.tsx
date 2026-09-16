@@ -1,6 +1,7 @@
 import { createFileRoute, Link, notFound } from '@tanstack/react-router';
 import { PageShell } from '@/components/PageShell';
 import { getPost } from '@/lib/catalog.functions';
+import { blogImage } from '@/lib/editorial-assets';
 
 export const Route = createFileRoute('/blog/$slug')({
   loader: async ({ params }) => {
@@ -56,9 +57,10 @@ export const Route = createFileRoute('/blog/$slug')({
 
 function Post() {
   const post = Route.useLoaderData();
+  const image = blogImage(post.slug, post.cover_image_url);
   return (
     <PageShell>
-      <main className="content article">
+      <main className="content article editorial-article">
         <nav className="crumbs">
           <Link to="/blog">Blog</Link>
           <span>/</span>
@@ -69,7 +71,7 @@ function Post() {
           {post.author_name ?? 'NDH'}
           {post.published_at ? ` · ${new Date(post.published_at).toLocaleDateString()}` : ''}
         </p>
-        {post.cover_image_url && <img className="article-cover" src={post.cover_image_url} alt={`Cover for ${post.title}`} width={1200} height={675} loading="eager" fetchPriority="high" decoding="async" />}
+        {image && <img className="article-cover" src={image} alt={`Editorial photograph for ${post.title}`} width={1400} height={900} loading="eager" fetchPriority="high" decoding="async" />}
         <div className="article-body">
           {(post.body ?? '')
             .split('\n')

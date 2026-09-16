@@ -1,9 +1,9 @@
-import { createFileRoute } from '@tanstack/react-router';
-import { ArrowUpRight } from 'lucide-react';
+import { createFileRoute, Link } from '@tanstack/react-router';
+import { ArrowRight } from 'lucide-react';
 import { PageShell, PageIntro, Button } from '@/components/PageShell';
 import { Reveal } from '@/components/Reveal';
 import { listCaseStudies } from '@/lib/catalog.functions';
-import projectDelivery from '@/assets/project-delivery.jpg';
+import { caseStudyImage } from '@/lib/editorial-assets';
 
 const title = 'Selected work — Case studies | Najeeb Digital Hub';
 const description = 'Projects delivered by Najeeb Digital Hub: the brief, the approach and the outcome.';
@@ -35,6 +35,7 @@ export const Route = createFileRoute('/work/')({
 
 function Work() {
   const studies = Route.useLoaderData();
+  const [featured, ...supporting] = studies;
   return (
     <PageShell>
       <PageIntro
@@ -42,63 +43,50 @@ function Work() {
         title="What we have delivered."
         body="A closer look at briefs we have taken on: the problem, the route we chose and the result."
       />
-      <main className="content">
-        <Reveal>
-          <figure className="work-editorial-visual">
-            <img
-              src={projectDelivery}
-              alt="Interface planning materials used to represent the digital delivery process"
-              width={1600}
-              height={1008}
-              loading="lazy"
-              decoding="async"
-            />
-            <figcaption>Editorial view of the planning and delivery process.</figcaption>
-          </figure>
-        </Reveal>
+      <main className="content work-page">
         {studies.length === 0 ? (
           <div className="empty-card">
             <p>Case studies are being prepared for publication.</p>
             <Button to="/contact">Talk to us about your project</Button>
           </div>
         ) : (
-          <div className="case-list">
-            {studies.map((s, i) => (
-              <Reveal key={s.slug} delay={(i % 2) * 80}>
-                <article className="case-card">
-                  {s.cover_image_url && <img src={s.cover_image_url} alt={`Project cover for ${s.title}`} width={1200} height={800} loading="lazy" decoding="async" />}
-                  <div>
-                    {s.category && <p className="tag-pill">{s.category}</p>}
-                    <p className="eyebrow">{s.client_name}</p>
-                    <h2>{s.title}</h2>
-                    <p>{s.summary}</p>
-                    {s.challenge && (
-                      <p className="case-detail">
-                        <strong>Challenge.</strong> {s.challenge}
-                      </p>
-                    )}
-                    {s.approach && (
-                      <p className="case-detail">
-                        <strong>Approach.</strong> {s.approach}
-                      </p>
-                    )}
-                    {s.result && (
-                      <p className="case-detail">
-                        <strong>Result.</strong> {s.result}
-                      </p>
-                    )}
-                    {s.live_url && (
-                      <p>
-                        <a className="text-link" href={s.live_url} target="_blank" rel="noopener noreferrer">
-                          View live project <ArrowUpRight size={15} />
-                        </a>
-                      </p>
-                    )}
+          <>
+            {featured && (
+              <Reveal>
+                <Link className="case-feature" to="/work/$slug" params={{ slug: featured.slug }}>
+                  {caseStudyImage(featured.slug, featured.cover_image_url) && (
+                    <img src={caseStudyImage(featured.slug, featured.cover_image_url) ?? ''} alt={`Relevant visual for ${featured.title}`} width={1400} height={900} fetchPriority="high" decoding="async" />
+                  )}
+                  <div className="case-feature-copy">
+                    <p className="case-kicker">{featured.category ?? 'Case study'} <span>Featured work</span></p>
+                    <p className="case-client">{featured.client_name}</p>
+                    <h2>{featured.title}</h2>
+                    <p>{featured.summary}</p>
+                    <span className="editorial-link">Read the case study <ArrowRight size={17} /></span>
                   </div>
-                </article>
+                </Link>
               </Reveal>
-            ))}
-          </div>
+            )}
+            <div className="case-card-grid">
+              {supporting.map((study, index) => {
+                const image = caseStudyImage(study.slug, study.cover_image_url);
+                return (
+                  <Reveal key={study.slug} delay={(index % 2) * 70}>
+                    <Link className="case-editorial-card" to="/work/$slug" params={{ slug: study.slug }}>
+                      {image && <img src={image} alt={`Relevant visual for ${study.title}`} width={900} height={600} loading="lazy" decoding="async" />}
+                      <div className="case-editorial-copy">
+                        <p className="case-kicker">{study.category ?? 'Case study'}</p>
+                        <p className="case-client">{study.client_name}</p>
+                        <h2>{study.title}</h2>
+                        <p>{study.summary}</p>
+                        <span className="editorial-link">View case study <ArrowRight size={16} /></span>
+                      </div>
+                    </Link>
+                  </Reveal>
+                );
+              })}
+            </div>
+          </>
         )}
       </main>
     </PageShell>

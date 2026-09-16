@@ -6,6 +6,7 @@ import { Rail } from '@/components/Rail';
 import { listCaseStudies, listTestimonials } from '@/lib/catalog.functions';
 import agencyCollaboration from '@/assets/agency-collaboration.jpg';
 import projectDelivery from '@/assets/project-delivery.jpg';
+import { caseStudyImage } from '@/lib/editorial-assets';
 
 const title = 'Agency — Digital delivery managed end to end | NDH';
 const description =
@@ -134,9 +135,10 @@ function Agency() {
               />
               <div className="featured-work-list">
                 {studies.slice(0, 6).map((s) => (
-                  <Link className="featured-work-item" key={s.slug} to="/work">
-                    <BadgeCheck size={22} />
+                  <Link className="featured-work-item" key={s.slug} to="/work/$slug" params={{ slug: s.slug }}>
+                    {caseStudyImage(s.slug, s.cover_image_url) && <img src={caseStudyImage(s.slug, s.cover_image_url) ?? ''} alt="" width={160} height={110} loading="lazy" decoding="async" />}
                     <div>
+                      <span className="featured-work-verified"><BadgeCheck size={14} /> Verified project</span>
                       <h3>{s.title}</h3>
                       <p>{s.category ?? s.summary}</p>
                     </div>
@@ -152,11 +154,12 @@ function Agency() {
                   <Rail label="Client testimonials" className="testimonial-rail" autoPlay>
                     {testimonials.slice(0, 3).map((t) => (
                       <blockquote className="testimonial-card" key={t.id}>
-                        {t.badge && <p className="badge-pill">{t.badge}</p>}
-                        <p>&ldquo;{t.quote}&rdquo;</p>
-                        <footer>
-                          {t.author_name}
-                          {t.company ? ` — ${t.company}` : ''}
+                        <span className="testimonial-quote-mark" aria-hidden="true">“</span>
+                        <p>{t.quote}</p>
+                        <footer className="testimonial-person">
+                          {t.avatar_url ? <img className="testimonial-avatar" src={t.avatar_url} alt={`${t.author_name} portrait`} width={48} height={48} loading="lazy" decoding="async" /> : <span className="testimonial-avatar testimonial-initials" aria-hidden="true">{t.author_name.split(/\s+/).map((part) => part[0]).join('').slice(0, 2).toUpperCase()}</span>}
+                          <span><strong>{t.author_name}</strong><small>{[t.author_role, t.company].filter(Boolean).join(' · ') || 'NDH client'}</small></span>
+                          {t.badge && <span className="testimonial-badge"><BadgeCheck size={14} /> {t.badge}</span>}
                         </footer>
                       </blockquote>
                     ))}
