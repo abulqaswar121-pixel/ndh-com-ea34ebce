@@ -86,6 +86,17 @@ function CoursePage() {
           <div>
             <Reveal>
               <header className="course-hero">
+                {schoolImage(course.school) && (
+                  <img
+                    className="course-hero-media"
+                    src={schoolImage(course.school)!.url}
+                    alt={schoolImage(course.school)!.alt}
+                    width={1400}
+                    height={933}
+                    fetchPriority="high"
+                    decoding="async"
+                  />
+                )}
                 <span className="tag">{course.school}</span>
                 <h1>{course.title}</h1>
                 <p className="lede">{course.summary}</p>
