@@ -7,6 +7,7 @@
 - [x] Portal amendments: real pages per nav item, no route back to the public site while signed in, in-portal course catalogue, phone rotation layout.
 - [x] Talent profile page, admin people & roles page, admin talent-application review.
 - [x] Publish real case studies, testimonials and blog posts with editorial images and full detail pages.
+- [x] Topic photography on every course card, course page, service card and service page (licensed Pexels photos).
 - [ ] Certificate verification page, FAQ, service detail pages, real Privacy/Terms.
 - [ ] Security findings, live Paystack test, analytics.
 
