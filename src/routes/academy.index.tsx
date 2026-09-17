@@ -7,7 +7,7 @@ import { Rail } from '@/components/Rail';
 import { listCourses, listStudentVoices } from '@/lib/catalog.functions';
 import { formatPrice } from '@/lib/format';
 import academyLearning from '@/assets/academy-learning.jpg';
-import { schoolImage } from '@/lib/topic-images';
+import { courseImage, schoolImage } from '@/lib/topic-images';
 
 const title = 'Academy — Practical AI courses and certification | NDH';
 const description =
@@ -119,11 +119,11 @@ function Academy() {
             {filtered.map((c, i) => (
               <Reveal key={c.id} delay={(i % 3) * 60}>
                 <Link to="/academy/$slug" params={{ slug: c.slug }} className="course-card course-card-link">
-                  {schoolImage(c.school) && (
+                  {(courseImage(c.slug) ?? schoolImage(c.school)) && (
                     <img
                       className="course-card-media"
-                      src={schoolImage(c.school)!.url}
-                      alt={schoolImage(c.school)!.alt}
+                      src={(courseImage(c.slug) ?? schoolImage(c.school))!.url}
+                      alt={(courseImage(c.slug) ?? schoolImage(c.school))!.alt}
                       width={1400}
                       height={933}
                       loading="lazy"
