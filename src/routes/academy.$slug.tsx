@@ -7,6 +7,7 @@ import { getCourse } from '@/lib/catalog.functions';
 import { startCourseCheckout } from '@/lib/payment.functions';
 import { useAuth } from '@/lib/auth';
 import { formatPrice } from '@/lib/format';
+import { schoolImage } from '@/lib/topic-images';
 
 export const Route = createFileRoute('/academy/$slug')({
   loader: async ({ params }) => {
@@ -86,6 +87,17 @@ function CoursePage() {
           <div>
             <Reveal>
               <header className="course-hero">
+                {schoolImage(course.school) && (
+                  <img
+                    className="course-hero-media"
+                    src={schoolImage(course.school)!.url}
+                    alt={schoolImage(course.school)!.alt}
+                    width={1400}
+                    height={933}
+                    fetchPriority="high"
+                    decoding="async"
+                  />
+                )}
                 <span className="tag">{course.school}</span>
                 <h1>{course.title}</h1>
                 <p className="lede">{course.summary}</p>
