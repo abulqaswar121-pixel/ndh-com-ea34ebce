@@ -2,6 +2,7 @@ import { createFileRoute, notFound } from '@tanstack/react-router';
 import { ArrowUpRight } from 'lucide-react';
 import { PageShell, PageIntro, Button } from '@/components/PageShell';
 import { Reveal } from '@/components/Reveal';
+import { serviceImage } from '@/lib/topic-images';
 
 const services: Record<
   string,
@@ -156,11 +157,26 @@ export const Route = createFileRoute('/agency/$slug')({
 
 function ServiceDetail() {
   const { service } = Route.useLoaderData();
+  const { slug } = Route.useParams();
+  const image = serviceImage(slug);
 
   return (
     <PageShell>
       <PageIntro eyebrow="Agency service" title={service.name} body={service.tagline} />
       <main className="content prose service-detail">
+        {image && (
+          <Reveal>
+            <img
+              className="service-detail-media"
+              src={image.url}
+              alt={image.alt}
+              width={1400}
+              height={933}
+              fetchPriority="high"
+              decoding="async"
+            />
+          </Reveal>
+        )}
         <Reveal>
           {service.body.map((p) => (
             <p key={p.slice(0, 24)}>{p}</p>

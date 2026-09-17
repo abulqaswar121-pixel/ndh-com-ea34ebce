@@ -7,6 +7,7 @@ import { getCourse } from '@/lib/catalog.functions';
 import { startCourseCheckout } from '@/lib/payment.functions';
 import { useAuth } from '@/lib/auth';
 import { formatPrice } from '@/lib/format';
+import { schoolImage } from '@/lib/topic-images';
 
 export const Route = createFileRoute('/academy/$slug')({
   loader: async ({ params }) => {

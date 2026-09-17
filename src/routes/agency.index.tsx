@@ -7,6 +7,7 @@ import { listCaseStudies, listTestimonials } from '@/lib/catalog.functions';
 import agencyCollaboration from '@/assets/agency-collaboration.jpg';
 import projectDelivery from '@/assets/project-delivery.jpg';
 import { caseStudyImage } from '@/lib/editorial-assets';
+import { serviceImage } from '@/lib/topic-images';
 
 const title = 'Agency — Digital delivery managed end to end | NDH';
 const description =
@@ -88,6 +89,17 @@ function Agency() {
             <div className="service-grid">
               {services.map(([slug, name, text, Icon]) => (
                 <Link className="service-card" key={slug} to="/agency/$slug" params={{ slug }}>
+                  {serviceImage(slug) && (
+                    <img
+                      className="service-card-media"
+                      src={serviceImage(slug)!.url}
+                      alt={serviceImage(slug)!.alt}
+                      width={1400}
+                      height={933}
+                      loading="lazy"
+                      decoding="async"
+                    />
+                  )}
                   <Icon size={22} />
                   <h3>{name}</h3>
                   <p>{text}</p>
