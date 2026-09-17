@@ -3407,3 +3407,14 @@ html { -webkit-text-size-adjust: 100%; }
     height: 158px;
   }
 }
+
+.service-grid .service-card > svg {
+  grid-row: 1 / span 3;
+}
+
+.service-grid .service-card-media {
+  grid-column: 2;
+  grid-row: 1;
+  height: 140px;
+  margin-bottom: 14px;
+}
