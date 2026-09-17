@@ -3367,3 +3367,47 @@ html { -webkit-text-size-adjust: 100%; }
     padding: 34px 20px;
   }
 }
+
+/* ============ 17. Topic imagery on service + course cards ============ */
+.service-card-media,
+.course-card-media {
+  display: block;
+  width: calc(100% + 48px);
+  margin: -24px -24px 18px;
+  height: 148px;
+  object-fit: cover;
+  border-radius: 14px 14px 0 0;
+  background: var(--accent-soft);
+}
+
+.course-card-media {
+  width: calc(100% + 44px);
+  margin: -22px -22px 18px;
+}
+
+.service-card:hover .service-card-media,
+.course-card-link:hover .course-card-media {
+  filter: saturate(1.05);
+}
+
+.course-hero-media,
+.service-detail-media {
+  display: block;
+  width: 100%;
+  aspect-ratio: 3 / 2;
+  object-fit: cover;
+  border-radius: 16px;
+  margin-bottom: 24px;
+  border: 1px solid var(--line);
+}
+
+.service-detail-media {
+  margin-bottom: 32px;
+}
+
+@media (max-width: 760px) {
+  .service-card-media,
+  .course-card-media {
+    height: 168px;
+  }
+}
