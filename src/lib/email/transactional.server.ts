@@ -57,6 +57,8 @@ export async function sendTransactionalEmail(args: SendArgs): Promise<{ queued: 
         text,
         purpose: 'transactional',
         label,
+        // Required by the email API for app emails (no run_id on this path)
+        idempotency_key: `${label}:${messageId}`,
         queued_at: new Date().toISOString(),
       },
     })

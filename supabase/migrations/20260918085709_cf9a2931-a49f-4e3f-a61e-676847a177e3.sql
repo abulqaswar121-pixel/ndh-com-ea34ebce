@@ -1,0 +1,2 @@
+drop policy if exists "tasks staff write" on public.tasks;
+create policy "tasks staff write" on public.tasks for insert to authenticated with check (public.is_staff() and public.can_see_project(project_id));
