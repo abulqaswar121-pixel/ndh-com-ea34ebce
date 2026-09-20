@@ -1571,6 +1571,7 @@ export type Database = {
           id: string
           is_published: boolean
           quote: string
+          service_area: string | null
           sort_order: number
           updated_at: string
         }
@@ -1584,6 +1585,7 @@ export type Database = {
           id?: string
           is_published?: boolean
           quote: string
+          service_area?: string | null
           sort_order?: number
           updated_at?: string
         }
@@ -1597,6 +1599,7 @@ export type Database = {
           id?: string
           is_published?: boolean
           quote?: string
+          service_area?: string | null
           sort_order?: number
           updated_at?: string
         }
