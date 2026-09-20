@@ -27,6 +27,7 @@ function PmTasks() {
                 <h3>{t.title}</h3>
                 <span className="status-pill">{t.status}</span>
                 <p>Deadline: {t.due_date || 'Not set'}</p>
+                {t.talent_fee != null && <p>Agreed fee: ₦{Number(t.talent_fee).toLocaleString()}</p>}
               </article>
             ))}
           </div>
