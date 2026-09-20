@@ -199,7 +199,7 @@ export const listTestimonials = createServerFn({ method: 'GET' }).handler(async 
   const db = publicDataClient();
   const { data, error } = await db
     .from('testimonials')
-    .select('id, author_name, author_role, company, quote, badge, avatar_url')
+    .select('id, author_name, author_role, company, quote, badge, avatar_url, service_area')
     .eq('is_published', true)
     .order('sort_order');
   assertQuery(error, 'testimonials');

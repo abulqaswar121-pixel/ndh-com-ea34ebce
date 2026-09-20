@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { FileText, GraduationCap, Inbox, Quote, Star } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
+import { SERVICE_AREAS } from '@/lib/service-areas';
 
 type Row = Record<string, any>;
 
@@ -50,7 +51,7 @@ function useTable(table: string, order = 'created_at') {
 
 export function TestimonialsManager() {
   const t = useTable('testimonials');
-  const [form, setForm] = useState({ author_name: '', author_role: '', company: '', quote: '', badge: '', avatar_url: '' });
+  const [form, setForm] = useState({ author_name: '', author_role: '', company: '', quote: '', badge: '', avatar_url: '', service_area: '' });
 
   return (
     <div className="cms-block">
@@ -59,7 +60,7 @@ export function TestimonialsManager() {
         onSubmit={async (e) => {
           e.preventDefault();
           await t.insert({ ...form, is_published: true });
-          setForm({ author_name: '', author_role: '', company: '', quote: '', badge: '', avatar_url: '' });
+          setForm({ author_name: '', author_role: '', company: '', quote: '', badge: '', avatar_url: '', service_area: '' });
         }}
       >
         <label>
@@ -73,6 +74,13 @@ export function TestimonialsManager() {
         <label>
           Company
           <input value={form.company} onChange={(e) => setForm({ ...form, company: e.target.value })} />
+        </label>
+        <label>
+          Service delivered
+          <select required value={form.service_area} onChange={(e) => setForm({ ...form, service_area: e.target.value })}>
+            <option value="">Select a service</option>
+            {SERVICE_AREAS.map((area) => <option key={area} value={area}>{area}</option>)}
+          </select>
         </label>
         <label>
           Testimonial
@@ -97,6 +105,7 @@ export function TestimonialsManager() {
             <article className="portal-card" key={r.id}>
               <Quote size={18} />
               <h3>{r.author_name}</h3>
+              {r.service_area && <p className="tag-pill">{r.service_area}</p>}
               <p>{r.quote}</p>
               <div className="project-actions">
                 {r.badge && <p className="badge-pill">{r.badge}</p>}
