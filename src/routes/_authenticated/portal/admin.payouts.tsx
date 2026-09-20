@@ -36,8 +36,8 @@ function Payouts() {
           (supabase as any).from('profiles').select('id, full_name, email').in('id', ids),
           (supabase as any).from('talent_earnings').select('talent_id, available_amount').in('talent_id', ids),
         ]);
-        const nameOf = new Map((profiles ?? []).map((p: any) => [p.id, p.full_name || p.email]));
-        const availOf = new Map((earnings ?? []).map((e: any) => [e.talent_id, Number(e.available_amount)]));
+        const nameOf = new Map<string, string>((profiles ?? []).map((p: any) => [p.id as string, (p.full_name || p.email) as string]));
+        const availOf = new Map<string, number>((earnings ?? []).map((e: any) => [e.talent_id as string, Number(e.available_amount)]));
         for (const r of list) {
           r.name = nameOf.get(r.talent_id);
           r.available = availOf.get(r.talent_id) ?? 0;
