@@ -2,6 +2,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { ClipboardCheck, Download, MessageSquare, Paperclip, Send, Trash2 } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/lib/auth';
+import { assignTask, listAssignableTalents } from '@/lib/pm.functions';
 
 type Message = { id: string; project_id: string; sender_id: string; body: string; created_at: string };
 type ProjectFile = {
@@ -13,7 +14,7 @@ type ProjectFile = {
   size_bytes: number | null;
   created_at: string;
 };
-type Task = { id: string; title: string; description: string | null; status: string; due_date: string | null; assignee_id: string | null };
+type Task = { id: string; title: string; description: string | null; status: string; due_date: string | null; assignee_id: string | null; talent_fee: number | null };
 
 const TASK_STATUSES = ['todo', 'in_progress', 'in_review', 'done'] as const;
 
@@ -222,8 +223,18 @@ export function ProjectTasks({ projectId, canManage }: { projectId: string; canM
   const [tasks, setTasks] = useState<Task[]>([]);
   const [title, setTitle] = useState('');
   const [due, setDue] = useState('');
+  const [assignee, setAssignee] = useState('');
+  const [fee, setFee] = useState('');
+  const [talents, setTalents] = useState<{ id: string; name: string }[]>([]);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState('');
+
+  useEffect(() => {
+    if (!canManage) return;
+    void listAssignableTalents()
+      .then(setTalents)
+      .catch(() => setTalents([]));
+  }, [canManage]);
 
   const load = useCallback(async () => {
     const { data } = await (supabase as any)
@@ -243,14 +254,23 @@ export function ProjectTasks({ projectId, canManage }: { projectId: string; canM
     if (!title.trim()) return;
     setBusy(true);
     setError('');
-    const { error: addError } = await (supabase as any)
-      .from('tasks')
-      .insert({ project_id: projectId, title: title.trim(), due_date: due || null, status: 'todo' });
-    if (addError) setError('Task could not be added.');
-    else {
+    try {
+      await assignTask({
+        data: {
+          projectId,
+          title: title.trim(),
+          dueDate: due || undefined,
+          assigneeId: assignee || undefined,
+          fee: assignee && fee ? Number(fee) : undefined,
+        },
+      });
       setTitle('');
       setDue('');
+      setAssignee('');
+      setFee('');
       await load();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Task could not be added.');
     }
     setBusy(false);
   }
@@ -270,6 +290,24 @@ export function ProjectTasks({ projectId, canManage }: { projectId: string; canM
         <form className="auth-form inline-form" onSubmit={add}>
           <input placeholder="New task" value={title} onChange={(e) => setTitle(e.target.value)} />
           <input type="date" value={due} onChange={(e) => setDue(e.target.value)} />
+          <select value={assignee} onChange={(e) => setAssignee(e.target.value)} aria-label="Assign to talent">
+            <option value="">Assign to…</option>
+            {talents.map((t) => (
+              <option key={t.id} value={t.id}>
+                {t.name}
+              </option>
+            ))}
+          </select>
+          {assignee && (
+            <input
+              type="number"
+              min="0"
+              placeholder="Agreed fee (₦)"
+              value={fee}
+              onChange={(e) => setFee(e.target.value)}
+              aria-label="Agreed fee in naira"
+            />
+          )}
           <button className="button" disabled={busy}>
             Add task
           </button>
@@ -284,6 +322,7 @@ export function ProjectTasks({ projectId, canManage }: { projectId: string; canM
               <span>
                 <b>{t.title}</b>
                 <small>Due {t.due_date || 'not set'}</small>
+                {t.talent_fee != null && <small>Fee ₦{Number(t.talent_fee).toLocaleString()}</small>}
               </span>
               {canManage ? (
                 <select value={t.status} onChange={(e) => setStatus(t.id, e.target.value)}>

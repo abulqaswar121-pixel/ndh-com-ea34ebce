@@ -984,6 +984,7 @@ export type Database = {
           full_name: string | null
           id: string
           phone: string | null
+          service_areas: string[]
           updated_at: string
         }
         Insert: {
@@ -994,6 +995,7 @@ export type Database = {
           full_name?: string | null
           id: string
           phone?: string | null
+          service_areas?: string[]
           updated_at?: string
         }
         Update: {
@@ -1004,6 +1006,7 @@ export type Database = {
           full_name?: string | null
           id?: string
           phone?: string | null
+          service_areas?: string[]
           updated_at?: string
         }
         Relationships: []
@@ -1091,6 +1094,7 @@ export type Database = {
           due_date: string | null
           id: string
           pm_id: string | null
+          service_area: string | null
           start_date: string | null
           status: Database["public"]["Enums"]["project_status"]
           title: string
@@ -1105,6 +1109,7 @@ export type Database = {
           due_date?: string | null
           id?: string
           pm_id?: string | null
+          service_area?: string | null
           start_date?: string | null
           status?: Database["public"]["Enums"]["project_status"]
           title: string
@@ -1119,6 +1124,7 @@ export type Database = {
           due_date?: string | null
           id?: string
           pm_id?: string | null
+          service_area?: string | null
           start_date?: string | null
           status?: Database["public"]["Enums"]["project_status"]
           title?: string
@@ -1507,9 +1513,12 @@ export type Database = {
           created_at: string
           description: string | null
           due_date: string | null
+          fee_credited: boolean
+          fee_released: boolean
           id: string
           project_id: string
           status: Database["public"]["Enums"]["task_status"]
+          talent_fee: number | null
           title: string
           updated_at: string
         }
@@ -1518,9 +1527,12 @@ export type Database = {
           created_at?: string
           description?: string | null
           due_date?: string | null
+          fee_credited?: boolean
+          fee_released?: boolean
           id?: string
           project_id: string
           status?: Database["public"]["Enums"]["task_status"]
+          talent_fee?: number | null
           title: string
           updated_at?: string
         }
@@ -1529,9 +1541,12 @@ export type Database = {
           created_at?: string
           description?: string | null
           due_date?: string | null
+          fee_credited?: boolean
+          fee_released?: boolean
           id?: string
           project_id?: string
           status?: Database["public"]["Enums"]["task_status"]
+          talent_fee?: number | null
           title?: string
           updated_at?: string
         }
