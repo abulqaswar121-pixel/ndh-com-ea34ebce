@@ -50,7 +50,7 @@ function useTable(table: string, order = 'created_at') {
 
 export function TestimonialsManager() {
   const t = useTable('testimonials');
-  const [form, setForm] = useState({ author_name: '', author_role: '', company: '', quote: '', badge: '' });
+  const [form, setForm] = useState({ author_name: '', author_role: '', company: '', quote: '', badge: '', avatar_url: '' });
 
   return (
     <div className="cms-block">
@@ -59,7 +59,7 @@ export function TestimonialsManager() {
         onSubmit={async (e) => {
           e.preventDefault();
           await t.insert({ ...form, is_published: true });
-          setForm({ author_name: '', author_role: '', company: '', quote: '', badge: '' });
+          setForm({ author_name: '', author_role: '', company: '', quote: '', badge: '', avatar_url: '' });
         }}
       >
         <label>
@@ -81,6 +81,10 @@ export function TestimonialsManager() {
         <label>
           Verification badge (optional)
           <input placeholder="e.g. Verified Project Delivery" value={form.badge} onChange={(e) => setForm({ ...form, badge: e.target.value })} />
+        </label>
+        <label>
+          Genuine portrait URL (optional)
+          <input type="url" placeholder="https://..." value={form.avatar_url} onChange={(e) => setForm({ ...form, avatar_url: e.target.value })} />
         </label>
         <button className="button">Publish testimonial</button>
       </form>

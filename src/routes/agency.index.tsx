@@ -163,8 +163,8 @@ function Agency() {
                     <p className="eyebrow">Client &amp; stakeholder verification</p>
                     <h2>What our clients say.</h2>
                   </div>
-                  <Rail label="Client testimonials" className="testimonial-rail" autoPlay>
-                    {testimonials.slice(0, 3).map((t) => (
+                  <Rail label="Client testimonials" className="testimonial-rail" autoPlay autoPlayInterval={4000}>
+                    {testimonials.slice(0, 10).map((t) => (
                       <blockquote className="testimonial-card" key={t.id}>
                         <span className="testimonial-quote-mark" aria-hidden="true">“</span>
                         <p>{t.quote}</p>
