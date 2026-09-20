@@ -6,11 +6,13 @@ export function Rail({
   label,
   className = '',
   autoPlay = false,
+  autoPlayInterval = 5200,
 }: {
   children: ReactNode;
   label: string;
   className?: string;
   autoPlay?: boolean;
+  autoPlayInterval?: number;
 }) {
   const trackRef = useRef<HTMLDivElement>(null);
   const railRef = useRef<HTMLDivElement>(null);
@@ -57,9 +59,9 @@ export function Rail({
       } else {
         el.scrollBy({ left: Math.max(260, el.clientWidth * 0.72), behavior: 'smooth' });
       }
-    }, 5200);
+    }, Math.max(3000, autoPlayInterval));
     return () => window.clearInterval(interval);
-  }, [autoPlay, isPaused, isVisible]);
+  }, [autoPlay, autoPlayInterval, isPaused, isVisible]);
 
   const nudge = (dir: 1 | -1) => {
     const el = trackRef.current;

@@ -8,6 +8,8 @@
 - [x] Talent profile page, admin people & roles page, admin talent-application review.
 - [x] Publish real case studies, testimonials and blog posts with editorial images and full detail pages.
 - [x] Topic photography on every course card, course page, service card and service page (licensed Pexels photos).
+- [x] Replace Apex, Miftah, Inheritance of Shadows and Markazussalaf case-study covers with project-specific visuals.
+- [ ] Add seven genuine client testimonials across the service areas (blocked on client-approved names, roles, quotes and portraits).
 - [ ] Certificate verification page, FAQ, service detail pages, real Privacy/Terms.
 - [ ] Security findings, live Paystack test, analytics.
 
