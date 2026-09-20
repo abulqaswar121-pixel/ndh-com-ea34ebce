@@ -322,6 +322,7 @@ export function ProjectTasks({ projectId, canManage }: { projectId: string; canM
               <span>
                 <b>{t.title}</b>
                 <small>Due {t.due_date || 'not set'}</small>
+                {t.talent_fee != null && <small>Fee ₦{Number(t.talent_fee).toLocaleString()}</small>}
               </span>
               {canManage ? (
                 <select value={t.status} onChange={(e) => setStatus(t.id, e.target.value)}>
