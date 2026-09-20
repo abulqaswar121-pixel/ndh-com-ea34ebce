@@ -3078,6 +3078,19 @@ html { -webkit-text-size-adjust: 100%; }
   line-height: 0.9;
 }
 
+.testimonial-service {
+  width: fit-content;
+  margin: 2px 0 14px;
+  color: var(--accent);
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.testimonial-rail .testimonial-card:nth-child(odd) .testimonial-service {
+  color: var(--accent-line);
+}
+
 .testimonial-person {
   display: grid !important;
   grid-template-columns: 48px minmax(0, 1fr);

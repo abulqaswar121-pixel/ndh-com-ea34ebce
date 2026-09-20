@@ -167,6 +167,7 @@ function Agency() {
                     {testimonials.slice(0, 10).map((t) => (
                       <blockquote className="testimonial-card" key={t.id}>
                         <span className="testimonial-quote-mark" aria-hidden="true">“</span>
+                        {t.service_area && <span className="testimonial-service">{t.service_area}</span>}
                         <p>{t.quote}</p>
                         <div className="testimonial-person">
                           {t.avatar_url ? <img className="testimonial-avatar" src={t.avatar_url} alt={`${t.author_name} portrait`} width={48} height={48} loading="lazy" decoding="async" /> : <span className="testimonial-avatar testimonial-initials" aria-hidden="true">{t.author_name.split(/\s+/).map((part) => part[0]).join('').slice(0, 2).toUpperCase()}</span>}
