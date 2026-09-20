@@ -13,7 +13,7 @@ type ProjectFile = {
   size_bytes: number | null;
   created_at: string;
 };
-type Task = { id: string; title: string; description: string | null; status: string; due_date: string | null; assignee_id: string | null };
+type Task = { id: string; title: string; description: string | null; status: string; due_date: string | null; assignee_id: string | null; talent_fee: number | null };
 
 const TASK_STATUSES = ['todo', 'in_progress', 'in_review', 'done'] as const;
 
@@ -222,8 +222,18 @@ export function ProjectTasks({ projectId, canManage }: { projectId: string; canM
   const [tasks, setTasks] = useState<Task[]>([]);
   const [title, setTitle] = useState('');
   const [due, setDue] = useState('');
+  const [assignee, setAssignee] = useState('');
+  const [fee, setFee] = useState('');
+  const [talents, setTalents] = useState<{ id: string; name: string }[]>([]);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState('');
+
+  useEffect(() => {
+    if (!canManage) return;
+    void listAssignableTalents()
+      .then(setTalents)
+      .catch(() => setTalents([]));
+  }, [canManage]);
 
   const load = useCallback(async () => {
     const { data } = await (supabase as any)
@@ -243,14 +253,23 @@ export function ProjectTasks({ projectId, canManage }: { projectId: string; canM
     if (!title.trim()) return;
     setBusy(true);
     setError('');
-    const { error: addError } = await (supabase as any)
-      .from('tasks')
-      .insert({ project_id: projectId, title: title.trim(), due_date: due || null, status: 'todo' });
-    if (addError) setError('Task could not be added.');
-    else {
+    try {
+      await assignTask({
+        data: {
+          projectId,
+          title: title.trim(),
+          dueDate: due || undefined,
+          assigneeId: assignee || undefined,
+          fee: assignee && fee ? Number(fee) : undefined,
+        },
+      });
       setTitle('');
       setDue('');
+      setAssignee('');
+      setFee('');
       await load();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Task could not be added.');
     }
     setBusy(false);
   }
