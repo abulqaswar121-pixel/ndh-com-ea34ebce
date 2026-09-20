@@ -2,6 +2,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { ClipboardCheck, Download, MessageSquare, Paperclip, Send, Trash2 } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/lib/auth';
+import { assignTask, listAssignableTalents } from '@/lib/pm.functions';
 
 type Message = { id: string; project_id: string; sender_id: string; body: string; created_at: string };
 type ProjectFile = {
@@ -289,6 +290,24 @@ export function ProjectTasks({ projectId, canManage }: { projectId: string; canM
         <form className="auth-form inline-form" onSubmit={add}>
           <input placeholder="New task" value={title} onChange={(e) => setTitle(e.target.value)} />
           <input type="date" value={due} onChange={(e) => setDue(e.target.value)} />
+          <select value={assignee} onChange={(e) => setAssignee(e.target.value)} aria-label="Assign to talent">
+            <option value="">Assign to…</option>
+            {talents.map((t) => (
+              <option key={t.id} value={t.id}>
+                {t.name}
+              </option>
+            ))}
+          </select>
+          {assignee && (
+            <input
+              type="number"
+              min="0"
+              placeholder="Agreed fee (₦)"
+              value={fee}
+              onChange={(e) => setFee(e.target.value)}
+              aria-label="Agreed fee in naira"
+            />
+          )}
           <button className="button" disabled={busy}>
             Add task
           </button>
