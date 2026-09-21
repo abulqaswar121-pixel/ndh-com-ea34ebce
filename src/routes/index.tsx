@@ -20,6 +20,29 @@ export const Route = createFileRoute('/')({
       { name: 'twitter:card', content: 'summary_large_image' },
       { name: 'twitter:image', content: 'https://ndh.com.ng/og-image.png' },
     ],
+    links: [
+      { rel: 'canonical', href: 'https://ndh.com.ng/' },
+      { rel: 'preload', as: 'image', href: '/images/ndh-hero-640.avif', fetchPriority: 'high' },
+    ],
+    scripts: [
+      {
+        type: 'application/ld+json',
+        children: JSON.stringify({
+          '@context': 'https://schema.org',
+          '@type': 'Organization',
+          name: 'Najeeb Digital Hub',
+          alternateName: 'NDH',
+          url: 'https://ndh.com.ng/',
+          logo: 'https://ndh.com.ng/ndh-logo.png',
+          description,
+          areaServed: ['Nigeria', 'Worldwide'],
+          sameAs: [
+            'https://www.facebook.com/share/1Be6HN8zjS/',
+            'https://www.instagram.com/njb_digital_hub',
+          ],
+        }),
+      },
+    ],
   }),
   component: Home,
 });
@@ -36,18 +59,18 @@ function Home() {
       <main>
         <section className="hero home-hero">
           <div className="hero-copy">
-            <p className="eyebrow">Najeeb Digital Hub</p>
+            <p className="eyebrow">Digital agency · AI academy</p>
             <h1>
-              Build with clarity.
+              Digital work,
               <br />
-              <em>Move with intent.</em>
+              <em>sharply delivered.</em>
             </h1>
             <p className="lede">
-              A digital agency and AI skills academy for people building useful things.
+              NDH scopes, manages and reviews digital projects for ambitious businesses — with practical AI skills for people ready to grow.
             </p>
             <div className="actions">
               <Button to="/agency">
-                Hire a team <ArrowUpRight size={16} />
+                Explore the agency <ArrowUpRight size={16} />
               </Button>
               <Button to="/academy" secondary>
                 Learn AI skills

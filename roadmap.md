@@ -10,6 +10,7 @@
 - [x] Topic photography on every course card, course page, service card and service page (licensed Pexels photos).
 - [x] Replace Apex, Miftah, Inheritance of Shadows and Markazussalaf case-study covers with project-specific visuals.
 - [x] Add seven client-approved testimonials across all service areas; use initials until genuine portraits are supplied.
+- [x] Apply the sharp tech theme, make Agency the leading public path, and optimise first-view images and core search metadata.
 - [ ] Certificate verification page, FAQ, service detail pages, real Privacy/Terms.
 - [ ] Security findings, live Paystack test, analytics.
 
