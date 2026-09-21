@@ -215,7 +215,12 @@ export function CaseStudiesManager() {
           Cover image URL
           <input value={form.cover_image_url} onChange={(e) => setForm({ ...form, cover_image_url: e.target.value })} />
         </label>
-        <button className="button">Publish case study</button>
+        <div className="project-actions">
+          <button className="button">{editingId ? 'Save changes' : 'Publish case study'}</button>
+          {editingId && (
+            <button type="button" onClick={() => { setEditingId(null); setForm(emptyCaseStudy); }}>Cancel edit</button>
+          )}
+        </div>
       </form>
       {cs.error && <p className="form-error">{cs.error}</p>}
       {cs.rows.length === 0 ? (
