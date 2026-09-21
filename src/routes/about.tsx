@@ -51,7 +51,7 @@ function About() {
           <Reveal delay={100}>
             <img
               className="founder-photo"
-              src="/ndh-about-new.png"
+              src="/ndh-about-new.webp"
               alt="A minimal studio workspace for digital delivery and AI skills certification"
               loading="lazy"
               width={1280}

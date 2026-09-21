@@ -26,6 +26,7 @@ export const Route = createFileRoute('/agency/')({
       { name: 'twitter:card', content: 'summary_large_image' },
       { name: 'twitter:image', content: 'https://ndh.com.ng/og-image.png' },
     ],
+    links: [{ rel: 'canonical', href: 'https://ndh.com.ng/agency' }],
   }),
   loader: async () => {
     const [studies, testimonials] = await Promise.all([listCaseStudies(), listTestimonials()]);
@@ -72,7 +73,7 @@ function Agency() {
       <main className="content agency-content">
         <Reveal>
           <div className="agency-banner">
-            <img src={agencyCollaboration} alt="A creative team reviewing digital work together" width={1600} height={1008} loading="lazy" decoding="async" />
+            <img src={agencyCollaboration} alt="A creative team reviewing digital work together" width={1600} height={1008} loading="eager" fetchPriority="high" decoding="async" />
             <div>
               <p className="eyebrow">The NDH method</p>
               <h2>Good work needs a clear path.</h2>

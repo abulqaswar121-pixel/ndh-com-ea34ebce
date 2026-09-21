@@ -25,6 +25,7 @@ export const Route = createFileRoute('/academy/')({
       { name: 'twitter:card', content: 'summary_large_image' },
       { name: 'twitter:image', content: 'https://ndh.com.ng/og-image.png' },
     ],
+    links: [{ rel: 'canonical', href: 'https://ndh.com.ng/academy' }],
   }),
   loader: async () => {
     const [courses, voices] = await Promise.all([listCourses(), listStudentVoices()]);
@@ -76,7 +77,8 @@ function Academy() {
             alt="A learner taking notes during an online course"
             width={1600}
             height={1008}
-            loading="lazy"
+            loading="eager"
+            fetchPriority="high"
             decoding="async"
           />
         </div>

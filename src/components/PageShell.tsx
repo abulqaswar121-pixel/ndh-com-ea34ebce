@@ -48,6 +48,7 @@ export function PageShell({
       <header className={scrolled ? 'site-header is-scrolled' : 'site-header'}>
         <Link to="/" className="brand" onClick={() => setOpen(false)}>
           <img src="/ndh-logo.png" alt="Najeeb Digital Hub" width={42} height={42} />
+          <span>NDH</span>
         </Link>
         <nav className="desktop-nav">
           {links.map(([to, label]) => (
@@ -57,7 +58,7 @@ export function PageShell({
           ))}
         </nav>
         <Link to="/signup" className="nav-action desktop-action">
-          Get started
+          Start a project
         </Link>
         <button
           className="menu-button"
@@ -84,7 +85,7 @@ export function PageShell({
               </Link>
             ))}
             <Link to="/signup" className="button" onClick={() => setOpen(false)}>
-              Get started
+              Start a project
             </Link>
           </aside>
         </div>

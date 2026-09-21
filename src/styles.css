@@ -3431,3 +3431,359 @@ html { -webkit-text-size-adjust: 100%; }
   height: 140px;
   margin-bottom: 14px;
 }
+
+/* ============================================================
+   18. SHARP TECH DIRECTION
+   ============================================================ */
+
+:root {
+  color-scheme: dark;
+  --paper: #050505;
+  --surface: #0d0d0f;
+  --surface-2: #17171a;
+  --ink: #f7f7f8;
+  --ink-soft: #c5c5ca;
+  --muted: #8d8d95;
+  --line: #29292e;
+  --line-strong: #56565f;
+  --accent: #f7f7f8;
+  --accent-hover: #d7d7dc;
+  --accent-soft: #19191c;
+  --accent-line: #777780;
+  --radius-sm: 2px;
+  --radius: 2px;
+  --radius-lg: 2px;
+  --shadow-hairline: 0 1px 0 rgba(255, 255, 255, 0.04);
+  --shadow-soft: 0 14px 36px rgba(0, 0, 0, 0.28);
+  --shadow-lift: 0 22px 54px rgba(0, 0, 0, 0.42);
+  --shadow-deep: 0 36px 90px rgba(0, 0, 0, 0.56);
+  --primary-foreground: #050505;
+  --destructive-foreground: #f7f7f8;
+}
+
+@theme inline {
+  --font-display: "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
+}
+
+body,
+h1,
+h2,
+h3,
+h4,
+.eyebrow,
+.mobile-panel a,
+.pillar-card h3,
+.service-card h3,
+.course-card h3,
+.step-card b,
+.process-row > div h3,
+.process-row > div b,
+.step-card .step-number,
+.step-card h3 {
+  font-family: "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
+}
+
+h1,
+h2 {
+  font-weight: 800;
+}
+
+h1 {
+  text-transform: uppercase;
+}
+
+.eyebrow {
+  color: var(--muted);
+  font-weight: 800;
+  letter-spacing: 0.16em;
+}
+
+.site-header {
+  height: 76px;
+  background: color-mix(in srgb, var(--paper) 88%, transparent);
+  border-bottom-color: var(--line);
+}
+
+.brand {
+  gap: 11px;
+  color: var(--ink);
+}
+
+.brand img,
+footer img {
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.brand span {
+  font-size: 20px;
+  font-weight: 800;
+  font-style: italic;
+  line-height: 1;
+}
+
+.desktop-nav a {
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.desktop-nav a:first-child {
+  color: var(--ink);
+}
+
+.button,
+.nav-action {
+  border-radius: 0;
+  background: var(--ink);
+  border-color: var(--ink);
+  color: var(--paper) !important;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.button:hover,
+.nav-action:hover {
+  background: var(--accent-hover);
+  border-color: var(--accent-hover);
+  box-shadow: none;
+}
+
+.button-secondary {
+  background: transparent;
+  color: var(--ink) !important;
+  border-color: var(--line-strong);
+}
+
+.button-secondary:hover {
+  background: var(--surface-2);
+  color: var(--ink) !important;
+}
+
+.home-hero {
+  min-height: calc(100svh - 76px);
+  grid-template-columns: minmax(0, 0.82fr) minmax(0, 1.18fr);
+  gap: 56px;
+}
+
+.hero-copy h1 {
+  max-width: 12ch;
+  font-size: clamp(46px, 6.2vw, 84px);
+  line-height: 0.94;
+  font-style: italic;
+}
+
+.hero-copy h1 em {
+  color: var(--muted);
+  font-weight: 800;
+}
+
+.hero-copy h1 em::after {
+  display: none;
+}
+
+.hero-stage {
+  overflow: hidden;
+  border: 1px solid var(--line);
+}
+
+.hero-stage::after {
+  content: "AGENCY / DIGITAL DELIVERY";
+  position: absolute;
+  top: 18px;
+  left: 18px;
+  z-index: 1;
+  padding: 7px 10px;
+  background: var(--paper);
+  color: var(--ink);
+  border: 1px solid var(--line-strong);
+  font-size: 10px;
+  font-weight: 800;
+}
+
+.hero-stage img,
+.hero-graphic img,
+.split-visual img,
+.agency-banner img,
+.agency-image,
+.academy-visual img,
+.founder-photo,
+.selected-work-visual,
+.work-editorial-visual img,
+.service-card-media,
+.course-card-media,
+.course-hero-media,
+.service-detail-media {
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.hero-stage img {
+  min-height: 560px;
+  object-fit: cover;
+  filter: saturate(0.78) contrast(1.08);
+}
+
+.stage-note {
+  right: 18px;
+  left: auto;
+  bottom: 18px;
+  background: var(--ink);
+  border-color: var(--ink);
+  border-radius: 0;
+  color: var(--paper);
+  text-transform: uppercase;
+}
+
+.home-section,
+.split-section,
+.page-intro,
+.content section {
+  border-top-color: var(--line);
+}
+
+.pillar-card,
+.service-card,
+.course-card,
+.step-card,
+.portal-card,
+.stat-card,
+.empty-card,
+.certificate-card,
+.exam-card,
+.auth-card,
+.success-card,
+.process-row > div,
+.agency-banner,
+.cta-panel,
+.card-panel {
+  background: var(--surface);
+  border-color: var(--line);
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.pillar-card::before,
+.service-card::before,
+.course-card::before {
+  background: var(--ink);
+}
+
+.pillar-card svg,
+.service-card svg,
+.step-card svg,
+.course-card svg,
+.card-icon {
+  color: var(--ink);
+}
+
+.split-section:nth-of-type(even) .split-copy,
+.cta-panel {
+  border-left: 2px solid var(--ink);
+}
+
+.cta-panel {
+  text-align: left;
+}
+
+.cta-panel h2,
+.cta-panel p {
+  margin-inline: 0;
+}
+
+.cta-panel .actions {
+  justify-content: flex-start;
+}
+
+.agency-banner {
+  border-left: 2px solid var(--ink);
+}
+
+.service-grid .service-card:hover {
+  border-color: var(--line-strong);
+}
+
+.catalog-search,
+.chip,
+.portal-topbar,
+.portal-drawer,
+.portal-account-trigger,
+.portal-account-menu,
+.social-links a {
+  background: var(--surface);
+  color: var(--ink);
+}
+
+.chip.is-active,
+.role-chip.active {
+  background: var(--ink);
+  color: var(--paper);
+}
+
+footer {
+  background: var(--surface);
+}
+
+.case-feature,
+.journal-feature {
+  background: var(--surface-2);
+  border-color: var(--line);
+}
+
+.case-feature h2,
+.journal-feature h2,
+.case-feature p,
+.journal-feature p {
+  color: var(--ink);
+}
+
+.rail::after {
+  background: linear-gradient(to right, transparent, var(--paper));
+}
+
+@media (max-width: 860px) {
+  .site-header {
+    height: 64px;
+  }
+
+  .brand span {
+    font-size: 18px;
+  }
+
+  .home-hero {
+    min-height: auto;
+    gap: 28px;
+    padding-top: 38px;
+  }
+
+  .hero-copy h1 {
+    font-size: 42px;
+  }
+
+  .hero-stage img {
+    min-height: 300px;
+    max-height: 420px;
+  }
+
+  .mobile-panel {
+    background: var(--paper);
+    border-left: 1px solid var(--line);
+  }
+}
+
+@media (max-width: 560px) {
+  .hero-copy .actions .button {
+    width: 100%;
+  }
+
+  .home-hero {
+    padding-top: 32px;
+  }
+
+  .hero-stage::after {
+    top: 12px;
+    left: 12px;
+  }
+}
