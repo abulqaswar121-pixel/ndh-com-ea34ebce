@@ -117,10 +117,28 @@ export function TestimonialsManager() {
               <h3>{r.author_name}</h3>
               {r.service_area && <p className="tag-pill">{r.service_area}</p>}
               <p>{r.quote}</p>
+              <p className="admin-note">{r.is_published ? 'Visible on the website' : 'Hidden from the website'}</p>
               <div className="project-actions">
                 {r.badge && <p className="badge-pill">{r.badge}</p>}
+                <button
+                  onClick={() => {
+                    setEditingId(r.id);
+                    setForm({
+                      author_name: r.author_name ?? '',
+                      author_role: r.author_role ?? '',
+                      company: r.company ?? '',
+                      quote: r.quote ?? '',
+                      badge: r.badge ?? '',
+                      avatar_url: r.avatar_url ?? '',
+                      service_area: r.service_area ?? '',
+                    });
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                  }}
+                >
+                  Edit
+                </button>
                 <button onClick={() => t.update(r.id, { is_published: !r.is_published })}>
-                  {r.is_published ? 'Unpublish' : 'Publish'}
+                  {r.is_published ? 'Hide' : 'Show'}
                 </button>
                 <button onClick={() => t.remove(r.id)}>Delete</button>
               </div>
