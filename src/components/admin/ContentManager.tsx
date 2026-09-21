@@ -49,9 +49,12 @@ function useTable(table: string, order = 'created_at') {
   };
 }
 
+const emptyTestimonial = { author_name: '', author_role: '', company: '', quote: '', badge: '', avatar_url: '', service_area: '' };
+
 export function TestimonialsManager() {
   const t = useTable('testimonials');
-  const [form, setForm] = useState({ author_name: '', author_role: '', company: '', quote: '', badge: '', avatar_url: '', service_area: '' });
+  const [form, setForm] = useState(emptyTestimonial);
+  const [editingId, setEditingId] = useState<string | null>(null);
 
   return (
     <div className="cms-block">
@@ -59,8 +62,10 @@ export function TestimonialsManager() {
         className="auth-form"
         onSubmit={async (e) => {
           e.preventDefault();
-          await t.insert({ ...form, is_published: true });
-          setForm({ author_name: '', author_role: '', company: '', quote: '', badge: '', avatar_url: '', service_area: '' });
+          if (editingId) await t.update(editingId, form);
+          else await t.insert({ ...form, is_published: true });
+          setEditingId(null);
+          setForm(emptyTestimonial);
         }}
       >
         <label>
@@ -94,7 +99,12 @@ export function TestimonialsManager() {
           Genuine portrait URL (optional)
           <input type="url" placeholder="https://..." value={form.avatar_url} onChange={(e) => setForm({ ...form, avatar_url: e.target.value })} />
         </label>
-        <button className="button">Publish testimonial</button>
+        <div className="project-actions">
+          <button className="button">{editingId ? 'Save changes' : 'Publish testimonial'}</button>
+          {editingId && (
+            <button type="button" onClick={() => { setEditingId(null); setForm(emptyTestimonial); }}>Cancel edit</button>
+          )}
+        </div>
       </form>
       {t.error && <p className="form-error">{t.error}</p>}
       {t.rows.length === 0 ? (
@@ -107,10 +117,28 @@ export function TestimonialsManager() {
               <h3>{r.author_name}</h3>
               {r.service_area && <p className="tag-pill">{r.service_area}</p>}
               <p>{r.quote}</p>
+              <p className="admin-note">{r.is_published ? 'Visible on the website' : 'Hidden from the website'}</p>
               <div className="project-actions">
                 {r.badge && <p className="badge-pill">{r.badge}</p>}
+                <button
+                  onClick={() => {
+                    setEditingId(r.id);
+                    setForm({
+                      author_name: r.author_name ?? '',
+                      author_role: r.author_role ?? '',
+                      company: r.company ?? '',
+                      quote: r.quote ?? '',
+                      badge: r.badge ?? '',
+                      avatar_url: r.avatar_url ?? '',
+                      service_area: r.service_area ?? '',
+                    });
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                  }}
+                >
+                  Edit
+                </button>
                 <button onClick={() => t.update(r.id, { is_published: !r.is_published })}>
-                  {r.is_published ? 'Unpublish' : 'Publish'}
+                  {r.is_published ? 'Hide' : 'Show'}
                 </button>
                 <button onClick={() => t.remove(r.id)}>Delete</button>
               </div>
@@ -122,19 +150,22 @@ export function TestimonialsManager() {
   );
 }
 
+const emptyCaseStudy = {
+  title: '',
+  client_name: '',
+  category: '',
+  live_url: '',
+  summary: '',
+  challenge: '',
+  approach: '',
+  result: '',
+  cover_image_url: '',
+};
+
 export function CaseStudiesManager() {
   const cs = useTable('case_studies');
-  const [form, setForm] = useState({
-    title: '',
-    client_name: '',
-    category: '',
-    live_url: '',
-    summary: '',
-    challenge: '',
-    approach: '',
-    result: '',
-    cover_image_url: '',
-  });
+  const [form, setForm] = useState(emptyCaseStudy);
+  const [editingId, setEditingId] = useState<string | null>(null);
 
   return (
     <div className="cms-block">
@@ -142,8 +173,10 @@ export function CaseStudiesManager() {
         className="auth-form"
         onSubmit={async (e) => {
           e.preventDefault();
-          await cs.insert({ ...form, slug: slugify(form.title), is_published: true });
-          setForm({ title: '', client_name: '', category: '', live_url: '', summary: '', challenge: '', approach: '', result: '', cover_image_url: '' });
+          if (editingId) await cs.update(editingId, form);
+          else await cs.insert({ ...form, slug: slugify(form.title), is_published: true });
+          setEditingId(null);
+          setForm(emptyCaseStudy);
         }}
       >
         <label>
@@ -182,7 +215,12 @@ export function CaseStudiesManager() {
           Cover image URL
           <input value={form.cover_image_url} onChange={(e) => setForm({ ...form, cover_image_url: e.target.value })} />
         </label>
-        <button className="button">Publish case study</button>
+        <div className="project-actions">
+          <button className="button">{editingId ? 'Save changes' : 'Publish case study'}</button>
+          {editingId && (
+            <button type="button" onClick={() => { setEditingId(null); setForm(emptyCaseStudy); }}>Cancel edit</button>
+          )}
+        </div>
       </form>
       {cs.error && <p className="form-error">{cs.error}</p>}
       {cs.rows.length === 0 ? (
@@ -195,9 +233,29 @@ export function CaseStudiesManager() {
               <h3>{r.title}</h3>
               {r.category && <p className="tag-pill">{r.category}</p>}
               <p>{r.summary}</p>
+              <p className="admin-note">{r.is_published ? 'Visible on the website' : 'Hidden from the website'}</p>
               <div className="project-actions">
+                <button
+                  onClick={() => {
+                    setEditingId(r.id);
+                    setForm({
+                      title: r.title ?? '',
+                      client_name: r.client_name ?? '',
+                      category: r.category ?? '',
+                      live_url: r.live_url ?? '',
+                      summary: r.summary ?? '',
+                      challenge: r.challenge ?? '',
+                      approach: r.approach ?? '',
+                      result: r.result ?? '',
+                      cover_image_url: r.cover_image_url ?? '',
+                    });
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                  }}
+                >
+                  Edit
+                </button>
                 <button onClick={() => cs.update(r.id, { is_published: !r.is_published })}>
-                  {r.is_published ? 'Unpublish' : 'Publish'}
+                  {r.is_published ? 'Hide' : 'Show'}
                 </button>
                 <button onClick={() => cs.remove(r.id)}>Delete</button>
               </div>
@@ -209,9 +267,12 @@ export function CaseStudiesManager() {
   );
 }
 
+const emptyPost = { title: '', excerpt: '', body: '', cover_image_url: '', author_name: '' };
+
 export function PostsManager() {
   const p = useTable('posts');
-  const [form, setForm] = useState({ title: '', excerpt: '', body: '', cover_image_url: '', author_name: '' });
+  const [form, setForm] = useState(emptyPost);
+  const [editingId, setEditingId] = useState<string | null>(null);
 
   return (
     <div className="cms-block">
@@ -219,13 +280,18 @@ export function PostsManager() {
         className="auth-form"
         onSubmit={async (e) => {
           e.preventDefault();
-          await p.insert({
-            ...form,
-            slug: slugify(form.title),
-            is_published: true,
-            published_at: new Date().toISOString(),
-          });
-          setForm({ title: '', excerpt: '', body: '', cover_image_url: '', author_name: '' });
+          if (editingId) {
+            await p.update(editingId, form);
+          } else {
+            await p.insert({
+              ...form,
+              slug: slugify(form.title),
+              is_published: true,
+              published_at: new Date().toISOString(),
+            });
+          }
+          setEditingId(null);
+          setForm(emptyPost);
         }}
       >
         <label>
@@ -248,7 +314,12 @@ export function PostsManager() {
           Author
           <input value={form.author_name} onChange={(e) => setForm({ ...form, author_name: e.target.value })} />
         </label>
-        <button className="button">Publish article</button>
+        <div className="project-actions">
+          <button className="button">{editingId ? 'Save changes' : 'Publish article'}</button>
+          {editingId && (
+            <button type="button" onClick={() => { setEditingId(null); setForm(emptyPost); }}>Cancel edit</button>
+          )}
+        </div>
       </form>
       {p.error && <p className="form-error">{p.error}</p>}
       {p.rows.length === 0 ? (
@@ -260,9 +331,25 @@ export function PostsManager() {
               <FileText size={18} />
               <h3>{r.title}</h3>
               <p>{r.excerpt}</p>
+              <p className="admin-note">{r.is_published ? 'Visible on the website' : 'Hidden from the website'}</p>
               <div className="project-actions">
+                <button
+                  onClick={() => {
+                    setEditingId(r.id);
+                    setForm({
+                      title: r.title ?? '',
+                      excerpt: r.excerpt ?? '',
+                      body: r.body ?? '',
+                      cover_image_url: r.cover_image_url ?? '',
+                      author_name: r.author_name ?? '',
+                    });
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                  }}
+                >
+                  Edit
+                </button>
                 <button onClick={() => p.update(r.id, { is_published: !r.is_published })}>
-                  {r.is_published ? 'Unpublish' : 'Publish'}
+                  {r.is_published ? 'Hide' : 'Show'}
                 </button>
                 <button onClick={() => p.remove(r.id)}>Delete</button>
               </div>
