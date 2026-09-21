@@ -150,19 +150,22 @@ export function TestimonialsManager() {
   );
 }
 
+const emptyCaseStudy = {
+  title: '',
+  client_name: '',
+  category: '',
+  live_url: '',
+  summary: '',
+  challenge: '',
+  approach: '',
+  result: '',
+  cover_image_url: '',
+};
+
 export function CaseStudiesManager() {
   const cs = useTable('case_studies');
-  const [form, setForm] = useState({
-    title: '',
-    client_name: '',
-    category: '',
-    live_url: '',
-    summary: '',
-    challenge: '',
-    approach: '',
-    result: '',
-    cover_image_url: '',
-  });
+  const [form, setForm] = useState(emptyCaseStudy);
+  const [editingId, setEditingId] = useState<string | null>(null);
 
   return (
     <div className="cms-block">
@@ -170,8 +173,10 @@ export function CaseStudiesManager() {
         className="auth-form"
         onSubmit={async (e) => {
           e.preventDefault();
-          await cs.insert({ ...form, slug: slugify(form.title), is_published: true });
-          setForm({ title: '', client_name: '', category: '', live_url: '', summary: '', challenge: '', approach: '', result: '', cover_image_url: '' });
+          if (editingId) await cs.update(editingId, form);
+          else await cs.insert({ ...form, slug: slugify(form.title), is_published: true });
+          setEditingId(null);
+          setForm(emptyCaseStudy);
         }}
       >
         <label>
