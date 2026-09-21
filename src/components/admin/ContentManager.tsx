@@ -49,9 +49,12 @@ function useTable(table: string, order = 'created_at') {
   };
 }
 
+const emptyTestimonial = { author_name: '', author_role: '', company: '', quote: '', badge: '', avatar_url: '', service_area: '' };
+
 export function TestimonialsManager() {
   const t = useTable('testimonials');
-  const [form, setForm] = useState({ author_name: '', author_role: '', company: '', quote: '', badge: '', avatar_url: '', service_area: '' });
+  const [form, setForm] = useState(emptyTestimonial);
+  const [editingId, setEditingId] = useState<string | null>(null);
 
   return (
     <div className="cms-block">
@@ -59,8 +62,10 @@ export function TestimonialsManager() {
         className="auth-form"
         onSubmit={async (e) => {
           e.preventDefault();
-          await t.insert({ ...form, is_published: true });
-          setForm({ author_name: '', author_role: '', company: '', quote: '', badge: '', avatar_url: '', service_area: '' });
+          if (editingId) await t.update(editingId, form);
+          else await t.insert({ ...form, is_published: true });
+          setEditingId(null);
+          setForm(emptyTestimonial);
         }}
       >
         <label>
