@@ -233,9 +233,29 @@ export function CaseStudiesManager() {
               <h3>{r.title}</h3>
               {r.category && <p className="tag-pill">{r.category}</p>}
               <p>{r.summary}</p>
+              <p className="admin-note">{r.is_published ? 'Visible on the website' : 'Hidden from the website'}</p>
               <div className="project-actions">
+                <button
+                  onClick={() => {
+                    setEditingId(r.id);
+                    setForm({
+                      title: r.title ?? '',
+                      client_name: r.client_name ?? '',
+                      category: r.category ?? '',
+                      live_url: r.live_url ?? '',
+                      summary: r.summary ?? '',
+                      challenge: r.challenge ?? '',
+                      approach: r.approach ?? '',
+                      result: r.result ?? '',
+                      cover_image_url: r.cover_image_url ?? '',
+                    });
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                  }}
+                >
+                  Edit
+                </button>
                 <button onClick={() => cs.update(r.id, { is_published: !r.is_published })}>
-                  {r.is_published ? 'Unpublish' : 'Publish'}
+                  {r.is_published ? 'Hide' : 'Show'}
                 </button>
                 <button onClick={() => cs.remove(r.id)}>Delete</button>
               </div>
