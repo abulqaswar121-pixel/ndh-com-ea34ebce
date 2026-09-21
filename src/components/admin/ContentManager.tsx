@@ -267,9 +267,12 @@ export function CaseStudiesManager() {
   );
 }
 
+const emptyPost = { title: '', excerpt: '', body: '', cover_image_url: '', author_name: '' };
+
 export function PostsManager() {
   const p = useTable('posts');
-  const [form, setForm] = useState({ title: '', excerpt: '', body: '', cover_image_url: '', author_name: '' });
+  const [form, setForm] = useState(emptyPost);
+  const [editingId, setEditingId] = useState<string | null>(null);
 
   return (
     <div className="cms-block">
@@ -277,13 +280,18 @@ export function PostsManager() {
         className="auth-form"
         onSubmit={async (e) => {
           e.preventDefault();
-          await p.insert({
-            ...form,
-            slug: slugify(form.title),
-            is_published: true,
-            published_at: new Date().toISOString(),
-          });
-          setForm({ title: '', excerpt: '', body: '', cover_image_url: '', author_name: '' });
+          if (editingId) {
+            await p.update(editingId, form);
+          } else {
+            await p.insert({
+              ...form,
+              slug: slugify(form.title),
+              is_published: true,
+              published_at: new Date().toISOString(),
+            });
+          }
+          setEditingId(null);
+          setForm(emptyPost);
         }}
       >
         <label>
