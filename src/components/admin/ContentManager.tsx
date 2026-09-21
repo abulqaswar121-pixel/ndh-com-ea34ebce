@@ -331,9 +331,25 @@ export function PostsManager() {
               <FileText size={18} />
               <h3>{r.title}</h3>
               <p>{r.excerpt}</p>
+              <p className="admin-note">{r.is_published ? 'Visible on the website' : 'Hidden from the website'}</p>
               <div className="project-actions">
+                <button
+                  onClick={() => {
+                    setEditingId(r.id);
+                    setForm({
+                      title: r.title ?? '',
+                      excerpt: r.excerpt ?? '',
+                      body: r.body ?? '',
+                      cover_image_url: r.cover_image_url ?? '',
+                      author_name: r.author_name ?? '',
+                    });
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                  }}
+                >
+                  Edit
+                </button>
                 <button onClick={() => p.update(r.id, { is_published: !r.is_published })}>
-                  {r.is_published ? 'Unpublish' : 'Publish'}
+                  {r.is_published ? 'Hide' : 'Show'}
                 </button>
                 <button onClick={() => p.remove(r.id)}>Delete</button>
               </div>
