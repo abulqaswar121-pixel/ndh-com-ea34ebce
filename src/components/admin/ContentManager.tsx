@@ -99,7 +99,12 @@ export function TestimonialsManager() {
           Genuine portrait URL (optional)
           <input type="url" placeholder="https://..." value={form.avatar_url} onChange={(e) => setForm({ ...form, avatar_url: e.target.value })} />
         </label>
-        <button className="button">Publish testimonial</button>
+        <div className="project-actions">
+          <button className="button">{editingId ? 'Save changes' : 'Publish testimonial'}</button>
+          {editingId && (
+            <button type="button" onClick={() => { setEditingId(null); setForm(emptyTestimonial); }}>Cancel edit</button>
+          )}
+        </div>
       </form>
       {t.error && <p className="form-error">{t.error}</p>}
       {t.rows.length === 0 ? (
