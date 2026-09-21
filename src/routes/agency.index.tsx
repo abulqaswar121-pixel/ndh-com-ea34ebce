@@ -4,6 +4,7 @@ import { PageShell, PageIntro, Button } from '@/components/PageShell';
 import { Reveal } from '@/components/Reveal';
 import { Rail } from '@/components/Rail';
 import { listCaseStudies, listTestimonials } from '@/lib/catalog.functions';
+import { testimonialPortrait } from '@/lib/testimonial-portraits';
 import agencyCollaboration from '@/assets/agency-collaboration.jpg';
 import projectDelivery from '@/assets/project-delivery.jpg';
 import { caseStudyImage } from '@/lib/editorial-assets';
@@ -177,7 +178,8 @@ function Agency() {
                           {t.badge && <span className="testimonial-badge"><BadgeCheck size={14} /> {t.badge}</span>}
                         </div>
                       </blockquote>
-                    ))}
+                      );
+                    })}
                   </Rail>
                 </div>
               )}
