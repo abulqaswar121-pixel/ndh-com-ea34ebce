@@ -314,7 +314,12 @@ export function PostsManager() {
           Author
           <input value={form.author_name} onChange={(e) => setForm({ ...form, author_name: e.target.value })} />
         </label>
-        <button className="button">Publish article</button>
+        <div className="project-actions">
+          <button className="button">{editingId ? 'Save changes' : 'Publish article'}</button>
+          {editingId && (
+            <button type="button" onClick={() => { setEditingId(null); setForm(emptyPost); }}>Cancel edit</button>
+          )}
+        </div>
       </form>
       {p.error && <p className="form-error">{p.error}</p>}
       {p.rows.length === 0 ? (
