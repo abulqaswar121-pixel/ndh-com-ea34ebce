@@ -1,4 +1,23 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
+import { Minus, X } from "lucide-react";
+import {
+  Conversation,
+  ConversationContent,
+  ConversationScrollButton,
+} from "@/components/ai-elements/conversation";
+import {
+  Message,
+  MessageContent,
+  MessageResponse,
+} from "@/components/ai-elements/message";
+import {
+  PromptInput,
+  PromptInputFooter,
+  PromptInputSubmit,
+  PromptInputTextarea,
+} from "@/components/ai-elements/prompt-input";
+import { Shimmer } from "@/components/ai-elements/shimmer";
+import { Button } from "@/components/ui/button";
 
 type Msg = { role: "user" | "assistant"; content: string };
 
@@ -23,8 +42,6 @@ export function SupportChat() {
   const [input, setInput] = useState("");
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const listRef = useRef<HTMLDivElement>(null);
-  const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     try {
@@ -45,15 +62,6 @@ export function SupportChat() {
       /* ignore */
     }
   }, [messages]);
-
-  useEffect(() => {
-    if (!open) return;
-    listRef.current?.scrollTo({ top: listRef.current.scrollHeight, behavior: "smooth" });
-  }, [messages, open, busy]);
-
-  useEffect(() => {
-    if (open) inputRef.current?.focus();
-  }, [open]);
 
   useEffect(() => {
     if (!open) return;
@@ -142,128 +150,94 @@ export function SupportChat() {
 
   return (
     <>
-      <button
+      <Button
         type="button"
         onClick={() => setOpen((o) => !o)}
         aria-label={open ? "Close support chat" : "Open support chat"}
         aria-expanded={open}
-        className="fixed bottom-5 right-5 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-lg shadow-primary/25 transition-transform hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+        className="ai-assistant-launcher"
       >
         {open ? (
-          <svg viewBox="0 0 24 24" className="h-6 w-6" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
-            <path d="M18 6 6 18M6 6l12 12" />
-          </svg>
+          <X aria-hidden="true" />
         ) : (
-          <svg viewBox="0 0 24 24" className="h-6 w-6" fill="none" stroke="currentColor" strokeWidth="2" strokeLinejoin="round">
-            <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5Z" />
-          </svg>
+          <>
+            <span className="ai-assistant-orbit" aria-hidden="true" />
+            <img src="/ndh-logo.png" alt="" width={38} height={38} />
+            <span className="ai-assistant-status" aria-hidden="true" />
+          </>
         )}
-      </button>
+      </Button>
 
       {open && (
         <div
           role="dialog"
           aria-label="Najeeb Digital Hub support chat"
-          className="fixed bottom-24 right-4 z-50 flex h-[min(560px,calc(100dvh-8rem))] w-[min(24rem,calc(100vw-2rem))] flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-2xl"
+          className="ai-assistant-dialog"
         >
-          <header className="flex items-center justify-between border-b border-border px-4 py-3">
-            <div>
-              <p className="font-display text-sm font-semibold text-foreground">NDH Assistant</p>
-              <p className="text-xs text-muted-foreground">Typically replies instantly</p>
+          <header className="ai-assistant-header">
+            <img src="/ndh-logo.png" alt="" width={38} height={38} />
+            <div className="ai-assistant-title">
+              <p>NDH AI Assistant</p>
+              <span><i aria-hidden="true" /> Online now</span>
             </div>
-            <button
+            <Button
               type="button"
               onClick={() => setOpen(false)}
               aria-label="Minimise chat"
-              className="rounded-md p-1.5 text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
+              variant="ghost"
+              size="icon-sm"
             >
-              <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
-                <path d="M5 12h14" />
-              </svg>
-            </button>
+              <Minus aria-hidden="true" />
+            </Button>
           </header>
 
-          <div ref={listRef} className="flex-1 space-y-3 overflow-y-auto px-4 py-4">
-            {messages.map((m, i) => (
-              <div
-                key={i}
-                className={m.role === "user" ? "flex justify-end" : "flex justify-start"}
-              >
-                <div
-                  className={
-                    m.role === "user"
-                      ? "max-w-[85%] whitespace-pre-wrap rounded-2xl rounded-br-sm bg-primary px-3.5 py-2 text-sm text-primary-foreground"
-                      : "max-w-[90%] whitespace-pre-wrap rounded-2xl rounded-bl-sm bg-muted px-3.5 py-2 text-sm text-foreground"
-                  }
-                >
-                  {m.content}
+          <Conversation className="ai-assistant-conversation">
+            <ConversationContent className="ai-assistant-messages">
+              {messages.map((m, i) => (
+                <Message from={m.role} key={`${m.role}-${i}`}>
+                  <MessageContent>
+                    <MessageResponse>{m.content}</MessageResponse>
+                  </MessageContent>
+                </Message>
+              ))}
+
+              {busy && <Shimmer className="text-sm">Thinking...</Shimmer>}
+
+              {error && (
+                <p className="ai-assistant-error">
+                  {error} <a href="/contact">Contact the team</a>.
+                </p>
+              )}
+
+              {messages.length <= 1 && !busy && (
+                <div className="ai-assistant-chips">
+                  {CHIPS.map((c) => (
+                    <Button key={c} type="button" onClick={() => void send(c)} variant="outline" size="sm">
+                      {c}
+                    </Button>
+                  ))}
                 </div>
-              </div>
-            ))}
+              )}
+            </ConversationContent>
+            <ConversationScrollButton />
+          </Conversation>
 
-            {busy && (
-              <div className="flex justify-start">
-                <div className="flex items-center gap-1 rounded-2xl rounded-bl-sm bg-muted px-3.5 py-3">
-                  <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-muted-foreground [animation-delay:-0.3s]" />
-                  <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-muted-foreground [animation-delay:-0.15s]" />
-                  <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-muted-foreground" />
-                </div>
-              </div>
-            )}
-
-            {error && (
-              <p className="text-xs text-destructive">
-                {error}{" "}
-                <a href="/contact" className="underline">
-                  Contact the team
-                </a>
-                .
-              </p>
-            )}
-
-            {messages.length <= 1 && !busy && (
-              <div className="flex flex-wrap gap-2 pt-1">
-                {CHIPS.map((c) => (
-                  <button
-                    key={c}
-                    type="button"
-                    onClick={() => void send(c)}
-                    className="rounded-full border border-border px-3 py-1.5 text-xs text-foreground transition-colors hover:bg-accent"
-                  >
-                    {c}
-                  </button>
-                ))}
-              </div>
-            )}
-          </div>
-
-          <form
-            onSubmit={(e) => {
-              e.preventDefault();
-              void send(input);
-            }}
-            className="flex items-center gap-2 border-t border-border p-3"
-          >
-            <input
-              ref={inputRef}
+          <div className="ai-assistant-composer">
+            <PromptInput
+              onSubmit={(message) => void send(message.text)}
+            >
+              <PromptInputTextarea
               value={input}
               onChange={(e) => setInput(e.target.value)}
               maxLength={1000}
               placeholder="Ask a question…"
               aria-label="Message"
-              className="h-10 flex-1 rounded-lg border border-input bg-background px-3 text-sm text-foreground outline-none placeholder:text-muted-foreground focus-visible:ring-2 focus-visible:ring-ring"
-            />
-            <button
-              type="submit"
-              disabled={busy || input.trim().length === 0}
-              aria-label="Send message"
-              className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary text-primary-foreground transition-opacity disabled:opacity-40"
-            >
-              <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="m22 2-7 20-4-9-9-4Z" />
-              </svg>
-            </button>
-          </form>
+              />
+              <PromptInputFooter className="justify-end">
+                <PromptInputSubmit status={busy ? "streaming" : "ready"} disabled={busy || input.trim().length === 0} />
+              </PromptInputFooter>
+            </PromptInput>
+          </div>
         </div>
       )}
     </>

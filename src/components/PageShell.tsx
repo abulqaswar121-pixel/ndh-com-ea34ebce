@@ -74,7 +74,6 @@ export function PageShell({
         <div className="nav-backdrop" onClick={() => setOpen(false)}>
           <aside className="mobile-panel" onClick={(e) => e.stopPropagation()}>
             <div className="panel-head">
-              <span>Navigate</span>
               <button className="close-button" aria-label="Close navigation" onClick={() => setOpen(false)}>
                 <X size={22} />
               </button>
