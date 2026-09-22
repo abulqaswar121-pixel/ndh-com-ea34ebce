@@ -3754,9 +3754,11 @@ footer {
 
   .home-hero {
     min-height: auto;
+    grid-template-columns: 1fr;
     gap: 28px;
     padding-top: 38px;
   }
+
 
   .hero-copy h1 {
     font-size: clamp(30px, 8.6vw, 42px);
