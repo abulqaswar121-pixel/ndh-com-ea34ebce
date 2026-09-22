@@ -3563,22 +3563,24 @@ footer img {
 }
 
 .home-hero {
-  min-height: calc(100svh - 76px);
-  grid-template-columns: minmax(0, 0.82fr) minmax(0, 1.18fr);
+  min-height: calc(82svh - 76px);
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
   gap: 56px;
 }
 
 .hero-copy h1 {
-  max-width: 12ch;
-  font-size: clamp(46px, 6.2vw, 84px);
-  line-height: 0.94;
+  max-width: 14ch;
+  font-size: clamp(42px, 4.4vw, 66px);
+  line-height: 0.96;
   font-style: italic;
 }
 
 .hero-copy h1 em {
   color: var(--muted);
   font-weight: 800;
+  white-space: normal;
 }
+
 
 .hero-copy h1 em::after {
   display: none;
