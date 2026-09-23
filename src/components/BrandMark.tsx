@@ -1,4 +1,4 @@
-import { useId } from 'react';
+import { useId, type CSSProperties } from 'react';
 
 type BrandMarkProps = {
   className?: string;
@@ -46,13 +46,21 @@ export function BrandMark({ className = '', staticMark = false, title }: BrandMa
           <stop offset="52%" stopColor="var(--ndh-grad-start)" />
           <stop offset="100%" stopColor="var(--ndh-grad-end)" />
         </linearGradient>
+        <linearGradient id={`${gradientId}-shift`} x1="20%" y1="0%" x2="80%" y2="100%">
+          <stop offset="0%" stopColor="var(--ndh-grad-end)" />
+          <stop offset="48%" stopColor="var(--ndh-grad-start)" />
+          <stop offset="100%" stopColor="var(--ndh-grad-end)" />
+        </linearGradient>
       </defs>
       <g className="ndh-mark-links" fill="none" stroke={`url(#${gradientId})`} strokeLinecap="round" strokeLinejoin="round">
         {links.map((path) => <path key={path} d={path} />)}
       </g>
+      <g className="ndh-mark-links ndh-mark-links-shift" fill="none" stroke={`url(#${gradientId}-shift)`} strokeLinecap="round" strokeLinejoin="round">
+        {links.map((path) => <path key={`shift-${path}`} d={path} />)}
+      </g>
       <g className="ndh-mark-nodes">
         {nodes.map(([cx, cy], index) => (
-          <circle key={`${cx}-${cy}`} cx={cx} cy={cy} r="4.2" style={{ '--node-index': index } as React.CSSProperties} />
+          <circle key={`${cx}-${cy}`} cx={cx} cy={cy} r="4.2" style={{ '--node-index': index } as CSSProperties} />
         ))}
       </g>
     </svg>
