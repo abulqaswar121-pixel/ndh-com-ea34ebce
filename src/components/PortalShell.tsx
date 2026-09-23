@@ -121,7 +121,7 @@ export function PortalShell({ role, children }: { role: AppRole; children?: Reac
           <Menu size={22} />
         </button>
         <Link to={roleHome(role) as never} className="portal-brand">
-          <BrandMark title="Najeeb Digital Hub" />
+          <BrandMark compact title="Najeeb Digital Hub" />
           <span>{nav.name}</span>
         </Link>
         <AccountMenu role={role} />
@@ -136,7 +136,7 @@ export function PortalShell({ role, children }: { role: AppRole; children?: Reac
           <div className="portal-drawer-backdrop" onClick={() => setOpen(false)}>
             <aside className="portal-drawer" onClick={(e) => e.stopPropagation()}>
               <div className="portal-drawer-head">
-                <span className="portal-drawer-brand"><BrandMark /> {nav.name}</span>
+                <span className="portal-drawer-brand"><BrandMark compact /> {nav.name}</span>
                 <button aria-label="Close menu" onClick={() => setOpen(false)}>
                   <X size={20} />
                 </button>
@@ -294,7 +294,7 @@ export function PortalFrame({ children }: { children: ReactNode }) {
     <div className="portal-shell">
       <header className="portal-topbar">
         <Link to={roleHome(active) as never} className="portal-brand">
-          <BrandMark title="Najeeb Digital Hub" />
+          <BrandMark compact title="Najeeb Digital Hub" />
           <span>{PORTAL_NAV[active].name}</span>
         </Link>
         <AccountMenu role={active} />

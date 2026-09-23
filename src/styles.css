@@ -323,6 +323,12 @@ img {
   align-items: center;
 }
 
+.mobile-brand {
+  display: inline-flex;
+  border: 0 !important;
+  padding: 0 !important;
+}
+
 .brand img {
   width: 40px;
   height: 40px;
@@ -3518,76 +3524,91 @@ h1 {
 }
 
 .site-header {
-  height: 76px;
-  background: color-mix(in srgb, var(--paper) 88%, transparent);
-  border-bottom-color: var(--line);
+  height: 88px;
+  gap: 30px;
+  background: color-mix(in srgb, var(--ndh-bg) 94%, transparent);
+  border-bottom-color: color-mix(in srgb, var(--line) 72%, transparent);
+  box-shadow: 0 10px 36px color-mix(in srgb, var(--ndh-bg) 72%, transparent);
 }
 
 .brand {
-  gap: 11px;
+  min-width: 154px;
   color: var(--ink);
 }
 
 .brand .ndh-mark {
-  width: 46px;
-  height: 46px;
+  width: 76px;
+  height: 64px;
 }
 
 .ndh-mark {
   display: block;
   flex: 0 0 auto;
-  overflow: visible;
-}
-
-.ndh-mark-links {
-  stroke-width: 7;
-}
-
-.ndh-mark-links-shift {
-  opacity: 0;
-  animation: ndh-gradient-shift 10s ease-in-out infinite alternate;
-}
-
-.ndh-mark-nodes circle {
-  fill: var(--ndh-accent-cyan);
-  filter: drop-shadow(0 0 5px color-mix(in srgb, var(--ndh-accent-cyan) 88%, transparent));
-  animation: ndh-node-pulse 3.6s ease-in-out infinite;
-  animation-delay: calc(var(--node-index) * -0.47s);
-  transform-box: fill-box;
-  transform-origin: center;
-}
-
-.ndh-mark-static .ndh-mark-links-shift,
-.ndh-mark-static .ndh-mark-nodes circle {
-  animation: none;
+  object-fit: contain;
+  object-position: center;
+  filter: drop-shadow(0 0 10px color-mix(in srgb, var(--ndh-grad-start) 26%, transparent));
 }
 
 footer .ndh-mark {
-  width: 54px;
-  height: 54px;
+  width: 176px;
+  height: 190px;
+  margin: -24px 0 -18px;
 }
 
 .portal-brand .ndh-mark {
-  width: 36px;
-  height: 36px;
-}
-
-.brand span {
-  font-size: 20px;
-  font-weight: 800;
-  font-style: italic;
-  line-height: 1;
+  width: 76px;
+  height: 52px;
 }
 
 .desktop-nav a {
-  color: var(--muted);
-  font-size: 13px;
-  font-weight: 700;
-  text-transform: uppercase;
+  color: var(--ink-soft);
+  font-size: 13.5px;
+  font-weight: 600;
+  text-transform: none;
 }
 
-.desktop-nav a:first-child {
+.desktop-nav a:first-child,
+.desktop-nav a[aria-current="page"] {
   color: var(--accent);
+}
+
+.desktop-nav {
+  gap: 26px;
+}
+
+.nav-action {
+  padding: 12px 17px;
+  font-size: 12px;
+  letter-spacing: 0.06em;
+}
+
+.mobile-brand .ndh-mark {
+  width: 104px;
+  height: 76px;
+}
+
+.panel-head {
+  min-height: 78px;
+}
+
+.auth-card .auth-brand-logo {
+  width: 150px;
+  height: 162px;
+  margin: -34px 0 -24px;
+  border-radius: 0;
+  object-fit: contain;
+  box-shadow: none;
+}
+
+.portal-drawer-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.portal-drawer-brand .ndh-mark {
+  width: 54px;
+  height: 50px;
 }
 
 .button,
@@ -3826,9 +3847,12 @@ body.nav-is-open .ai-assistant-launcher {
   pointer-events: none;
 }
 
-.ai-assistant-launcher .ndh-mark {
-  width: 40px;
-  height: 40px;
+.ai-assistant-avatar {
+  width: 54px;
+  height: 54px;
+  object-fit: cover;
+  object-position: 50% 9%;
+  border-radius: 50%;
   animation: ai-assistant-greet 5s ease-in-out infinite;
 }
 
@@ -3880,9 +3904,14 @@ body.nav-is-open .ai-assistant-launcher {
   background: var(--surface-2);
 }
 
-.ai-assistant-header > .ndh-mark {
+.ai-assistant-header-avatar {
   width: 38px;
   height: 38px;
+  object-fit: cover;
+  object-position: 50% 8%;
+  border: 1px solid var(--accent-line);
+  border-radius: 50%;
+  background: var(--ndh-bg);
 }
 
 .ai-assistant-title p {
@@ -4000,11 +4029,16 @@ body.nav-is-open .ai-assistant-launcher {
 
 @media (max-width: 860px) {
   .site-header {
-    height: 64px;
+    height: 72px;
   }
 
-  .brand span {
-    font-size: 18px;
+  .brand {
+    min-width: 0;
+  }
+
+  .brand .ndh-mark {
+    width: 72px;
+    height: 60px;
   }
 
   .home-hero {
@@ -4043,8 +4077,8 @@ body.nav-is-open .ai-assistant-launcher {
   }
 
   .panel-head {
-    min-height: 44px;
-    justify-content: flex-end;
+    min-height: 76px;
+    justify-content: space-between;
   }
 
   .mobile-panel .button {
@@ -4080,20 +4114,9 @@ body.nav-is-open .ai-assistant-launcher {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .ai-assistant-launcher .ndh-mark,
+  .ai-assistant-avatar,
   .ai-assistant-orbit,
-  .ai-assistant-status,
-  .ndh-mark-links-shift,
-  .ndh-mark-nodes circle {
+  .ai-assistant-status {
     animation: none;
-  }
-
-  .ndh-mark-links-shift {
-    opacity: 0;
-  }
-
-  .ndh-mark-nodes circle {
-    opacity: 1;
-    filter: drop-shadow(0 0 5px color-mix(in srgb, var(--ndh-accent-cyan) 82%, transparent));
   }
 }

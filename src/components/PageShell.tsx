@@ -50,7 +50,7 @@ export function PageShell({
     <>
       <header className={scrolled ? 'site-header is-scrolled' : 'site-header'}>
         <Link to="/" className="brand" onClick={() => setOpen(false)}>
-          <BrandMark title="Najeeb Digital Hub" />
+          <BrandMark compact title="Najeeb Digital Hub" />
         </Link>
         <nav className="desktop-nav">
           {links.map(([to, label]) => (
