@@ -35,8 +35,10 @@ export function PageShell({
 
   useEffect(() => {
     document.body.style.overflow = open ? 'hidden' : '';
+    document.body.classList.toggle('nav-is-open', open);
     return () => {
       document.body.style.overflow = '';
+      document.body.classList.remove('nav-is-open');
     };
   }, [open]);
 
