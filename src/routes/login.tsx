@@ -6,7 +6,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { lovable } from "@/integrations/lovable";
 import { useAuth, roleHome } from "@/lib/auth";
 import { Button } from "@/components/ui/button";
-import logo from "@/assets/ndh-logo-new.jpg";
+import { BrandMark } from "@/components/BrandMark";
 
 export const Route = createFileRoute("/login")({
   head: () => ({
@@ -75,7 +75,7 @@ function LoginPage() {
         <Link to="/" className="auth-close" aria-label="Back to homepage">
           <ArrowLeft size={18} />
         </Link>
-        <img src={logo} alt="Najeeb Digital Hub" width={48} height={48}  />
+        <BrandMark className="auth-brand-logo" title="Najeeb Digital Hub" />
         <h1>Sign in</h1>
 
         <Button type="button" variant="outline" className="auth-oauth" onClick={handleGoogle} disabled={loading !== null}>

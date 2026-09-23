@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Minus, X } from "lucide-react";
-import { BrandMark } from "@/components/BrandMark";
+import assistantAvatar from "@/assets/ndh-ai-assistant.png";
 import {
   Conversation,
   ConversationContent,
@@ -163,7 +163,7 @@ export function SupportChat() {
         ) : (
           <>
             <span className="ai-assistant-orbit" aria-hidden="true" />
-            <BrandMark />
+            <img className="ai-assistant-avatar" src={assistantAvatar} alt="" width={816} height={816} />
             <span className="ai-assistant-status" aria-hidden="true" />
           </>
         )}
@@ -176,7 +176,7 @@ export function SupportChat() {
           className="ai-assistant-dialog"
         >
           <header className="ai-assistant-header">
-            <BrandMark />
+            <img className="ai-assistant-header-avatar" src={assistantAvatar} alt="NDH AI assistant" width={816} height={816} />
             <div className="ai-assistant-title">
               <p>NDH AI Assistant</p>
               <span><i aria-hidden="true" /> Online now</span>

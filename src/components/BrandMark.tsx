@@ -1,4 +1,4 @@
-import { useId, type CSSProperties } from 'react';
+import logo from '@/assets/ndh-master-logo.png';
 
 type BrandMarkProps = {
   className?: string;
@@ -27,42 +27,16 @@ const nodes = [
 ] as const;
 
 export function BrandMark({ className = '', staticMark = false, title }: BrandMarkProps) {
-  const gradientId = useId().replace(/:/g, '');
   const label = title ?? 'Najeeb Digital Hub';
 
   return (
-    <svg
+    <img
+      src={logo}
       className={`ndh-mark${staticMark ? ' ndh-mark-static' : ''}${className ? ` ${className}` : ''}`}
-      viewBox="0 0 100 100"
-      role={title ? 'img' : undefined}
-      aria-label={title ? label : undefined}
+      alt={title ? label : ''}
       aria-hidden={title ? undefined : true}
-      focusable="false"
-    >
-      {title ? <title>{label}</title> : null}
-      <defs>
-        <linearGradient id={gradientId} x1="0%" y1="18%" x2="100%" y2="82%">
-          <stop offset="0%" stopColor="var(--ndh-grad-start)" />
-          <stop offset="52%" stopColor="var(--ndh-grad-start)" />
-          <stop offset="100%" stopColor="var(--ndh-grad-end)" />
-        </linearGradient>
-        <linearGradient id={`${gradientId}-shift`} x1="20%" y1="0%" x2="80%" y2="100%">
-          <stop offset="0%" stopColor="var(--ndh-grad-end)" />
-          <stop offset="48%" stopColor="var(--ndh-grad-start)" />
-          <stop offset="100%" stopColor="var(--ndh-grad-end)" />
-        </linearGradient>
-      </defs>
-      <g className="ndh-mark-links" fill="none" stroke={`url(#${gradientId})`} strokeLinecap="round" strokeLinejoin="round">
-        {links.map((path) => <path key={path} d={path} />)}
-      </g>
-      <g className="ndh-mark-links ndh-mark-links-shift" fill="none" stroke={`url(#${gradientId}-shift)`} strokeLinecap="round" strokeLinejoin="round">
-        {links.map((path) => <path key={`shift-${path}`} d={path} />)}
-      </g>
-      <g className="ndh-mark-nodes">
-        {nodes.map(([cx, cy], index) => (
-          <circle key={`${cx}-${cy}`} cx={cx} cy={cy} r="4.2" style={{ '--node-index': index } as CSSProperties} />
-        ))}
-      </g>
-    </svg>
+      width={720}
+      height={760}
+    />
   );
 }

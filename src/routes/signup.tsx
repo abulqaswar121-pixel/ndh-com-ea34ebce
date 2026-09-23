@@ -6,7 +6,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { lovable } from "@/integrations/lovable";
 import { useAuth, roleHome } from "@/lib/auth";
 import { Button } from "@/components/ui/button";
-import logo from "@/assets/ndh-logo-new.jpg";
+import { BrandMark } from "@/components/BrandMark";
 
 export const Route = createFileRoute("/signup")({
   head: () => ({
@@ -99,7 +99,7 @@ function SignupPage() {
         <Link to="/" className="auth-close" aria-label="Back to homepage">
           <ArrowLeft size={18} />
         </Link>
-        <img src={logo} alt="Najeeb Digital Hub" width={48} height={48}  />
+        <BrandMark className="auth-brand-logo" title="Najeeb Digital Hub" />
         {confirmationEmail ? (
           <div className="auth-confirmation" role="status">
             <MailCheck size={28} />
