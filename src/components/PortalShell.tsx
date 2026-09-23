@@ -136,7 +136,7 @@ export function PortalShell({ role, children }: { role: AppRole; children?: Reac
           <div className="portal-drawer-backdrop" onClick={() => setOpen(false)}>
             <aside className="portal-drawer" onClick={(e) => e.stopPropagation()}>
               <div className="portal-drawer-head">
-                <span>{nav.name}</span>
+                <span className="portal-drawer-brand"><BrandMark /> {nav.name}</span>
                 <button aria-label="Close menu" onClick={() => setOpen(false)}>
                   <X size={20} />
                 </button>

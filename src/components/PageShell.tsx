@@ -51,7 +51,6 @@ export function PageShell({
       <header className={scrolled ? 'site-header is-scrolled' : 'site-header'}>
         <Link to="/" className="brand" onClick={() => setOpen(false)}>
           <BrandMark title="Najeeb Digital Hub" />
-          <span>NDH</span>
         </Link>
         <nav className="desktop-nav">
           {links.map(([to, label]) => (
@@ -77,6 +76,9 @@ export function PageShell({
         <div className="nav-backdrop" onClick={() => setOpen(false)}>
           <aside className="mobile-panel" onClick={(e) => e.stopPropagation()}>
             <div className="panel-head">
+              <Link to="/" className="mobile-brand" onClick={() => setOpen(false)} aria-label="Najeeb Digital Hub home">
+                <BrandMark title="Najeeb Digital Hub" />
+              </Link>
               <button className="close-button" aria-label="Close navigation" onClick={() => setOpen(false)}>
                 <X size={22} />
               </button>
