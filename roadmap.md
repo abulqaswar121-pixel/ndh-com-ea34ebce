@@ -11,6 +11,7 @@
 - [x] Replace Apex, Miftah, Inheritance of Shadows and Markazussalaf case-study covers with project-specific visuals.
 - [x] Add seven client-approved testimonials across all service areas; use initials until genuine portraits are supplied.
 - [x] Apply the sharp tech theme, make Agency the leading public path, and optimise first-view images and core search metadata.
+- [x] Apply the connected-node NDH master brand, exact navy/purple/magenta/cyan tokens, Inter typography, animation and static fallbacks.
 - [ ] Certificate verification page, FAQ, service detail pages, real Privacy/Terms.
 - [ ] Security findings, live Paystack test, analytics.
 

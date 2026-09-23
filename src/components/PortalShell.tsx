@@ -25,6 +25,7 @@ import {
 } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth, roleHome, type AppRole } from '@/lib/auth';
+import { BrandMark } from '@/components/BrandMark';
 
 type NavItem = { to: string; label: string; icon: typeof LayoutDashboard };
 
@@ -120,7 +121,7 @@ export function PortalShell({ role, children }: { role: AppRole; children?: Reac
           <Menu size={22} />
         </button>
         <Link to={roleHome(role) as never} className="portal-brand">
-          <img src="/ndh-logo.png" alt="Najeeb Digital Hub" width={34} height={34} />
+          <BrandMark title="Najeeb Digital Hub" />
           <span>{nav.name}</span>
         </Link>
         <AccountMenu role={role} />
@@ -293,7 +294,7 @@ export function PortalFrame({ children }: { children: ReactNode }) {
     <div className="portal-shell">
       <header className="portal-topbar">
         <Link to={roleHome(active) as never} className="portal-brand">
-          <img src="/ndh-logo.png" alt="Najeeb Digital Hub" width={34} height={34} />
+          <BrandMark title="Najeeb Digital Hub" />
           <span>{PORTAL_NAV[active].name}</span>
         </Link>
         <AccountMenu role={active} />

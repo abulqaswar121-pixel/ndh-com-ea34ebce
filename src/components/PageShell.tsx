@@ -2,6 +2,7 @@ import { Link, Navigate } from '@tanstack/react-router';
 import { useEffect, useState, type ReactNode } from 'react';
 import { Menu, X, MessageCircle, Facebook, Instagram } from 'lucide-react';
 import { roleHome, useAuth } from '@/lib/auth';
+import { BrandMark } from '@/components/BrandMark';
 
 const links: [string, string][] = [
   ['/agency', 'Agency'],
@@ -47,7 +48,7 @@ export function PageShell({
     <>
       <header className={scrolled ? 'site-header is-scrolled' : 'site-header'}>
         <Link to="/" className="brand" onClick={() => setOpen(false)}>
-          <img src="/ndh-logo.png" alt="Najeeb Digital Hub" width={42} height={42} />
+          <BrandMark title="Najeeb Digital Hub" />
           <span>NDH</span>
         </Link>
         <nav className="desktop-nav">
@@ -100,7 +101,7 @@ export function PageShell({
 
       <footer>
         <div className="footer-brand">
-          <img src="/ndh-logo.png" alt="Najeeb Digital Hub" width={44} height={44} />
+          <BrandMark title="Najeeb Digital Hub" staticMark />
           <p>Digital delivery and AI skills certification, run through one clear process.</p>
           <div className="social-links">
             <a href="https://wa.me/2349029932794" aria-label="WhatsApp">
