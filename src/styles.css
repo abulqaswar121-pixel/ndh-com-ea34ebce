@@ -3821,6 +3821,11 @@ footer {
   background: var(--accent-soft);
 }
 
+body.nav-is-open .ai-assistant-launcher {
+  opacity: 0;
+  pointer-events: none;
+}
+
 .ai-assistant-launcher .ndh-mark {
   width: 40px;
   height: 40px;
