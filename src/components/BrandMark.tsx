@@ -1,5 +1,5 @@
-import logo from '@/assets/ndh-monogram-logo.png';
-import symbol from '@/assets/ndh-monogram-symbol.png';
+import logo from '@/assets/ndh-hub-logo.png';
+import symbol from '@/assets/ndh-hub-symbol.png';
 
 type BrandMarkProps = {
   className?: string;
@@ -17,8 +17,8 @@ export function BrandMark({ className = '', compact = false, staticMark = false,
       className={`ndh-mark${staticMark ? ' ndh-mark-static' : ''}${className ? ` ${className}` : ''}`}
       alt={title ? label : ''}
       aria-hidden={title ? undefined : true}
-      width={compact ? 585 : 1024}
-      height={compact ? 370 : 1024}
+      width={compact ? 478 : 1024}
+      height={compact ? 420 : 1024}
     />
   );
 }
