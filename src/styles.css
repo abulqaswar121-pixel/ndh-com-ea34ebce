@@ -3678,12 +3678,15 @@ footer .ndh-mark {
   top: 18px;
   left: 18px;
   z-index: 1;
-  padding: 7px 10px;
-  background: var(--paper);
+  padding: 7px 12px;
+  background: rgba(255, 255, 255, 0.92);
   color: var(--ink);
-  border: 1px solid var(--line-strong);
+  border: 1px solid var(--line);
+  border-radius: 999px;
   font-size: 10px;
   font-weight: 800;
+  letter-spacing: 0.08em;
+  box-shadow: var(--shadow-soft);
 }
 
 .hero-stage img,
@@ -3699,14 +3702,13 @@ footer .ndh-mark {
 .course-card-media,
 .course-hero-media,
 .service-detail-media {
-  border-radius: 0;
-  box-shadow: none;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-soft);
 }
 
 .hero-stage img {
   min-height: 560px;
   object-fit: cover;
-  filter: saturate(0.78) contrast(1.08);
 }
 
 .stage-note {
@@ -3715,8 +3717,8 @@ footer .ndh-mark {
   bottom: 18px;
   background: var(--ink);
   border-color: var(--ink);
-  border-radius: 0;
-  color: var(--paper);
+  border-radius: 999px;
+  color: #ffffff;
   text-transform: uppercase;
 }
 
@@ -3742,10 +3744,10 @@ footer .ndh-mark {
 .agency-banner,
 .cta-panel,
 .card-panel {
-  background: var(--surface);
+  background: var(--paper);
   border-color: var(--line);
-  border-radius: 0;
-  box-shadow: none;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-soft);
 }
 
 .pillar-card::before,
