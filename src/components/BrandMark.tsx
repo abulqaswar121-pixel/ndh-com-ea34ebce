@@ -1,5 +1,5 @@
-import logo from '@/assets/ndh-monogram-logo.png';
-import symbol from '@/assets/ndh-monogram-symbol.png';
+import logo from '@/assets/ndh-hub-logo.png';
+import symbol from '@/assets/ndh-hub-symbol.png';
 
 type BrandMarkProps = {
   className?: string;
