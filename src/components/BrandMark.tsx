@@ -17,8 +17,8 @@ export function BrandMark({ className = '', compact = false, staticMark = false,
       className={`ndh-mark${staticMark ? ' ndh-mark-static' : ''}${className ? ` ${className}` : ''}`}
       alt={title ? label : ''}
       aria-hidden={title ? undefined : true}
-      width={compact ? 585 : 1024}
-      height={compact ? 370 : 1024}
+      width={compact ? 478 : 1024}
+      height={compact ? 420 : 1024}
     />
   );
 }
