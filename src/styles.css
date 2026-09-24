@@ -3537,8 +3537,8 @@ h1 {
 }
 
 .brand .ndh-mark {
-  width: 76px;
-  height: 64px;
+  height: 40px;
+  width: auto;
 }
 
 .ndh-mark {
@@ -3550,14 +3550,14 @@ h1 {
 }
 
 footer .ndh-mark {
-  width: 176px;
-  height: 190px;
-  margin: -24px 0 -18px;
+  height: 150px;
+  width: auto;
+  margin: -30px 0 -26px;
 }
 
 .portal-brand .ndh-mark {
-  width: 76px;
-  height: 52px;
+  height: 32px;
+  width: auto;
 }
 
 .desktop-nav a {
@@ -3583,8 +3583,8 @@ footer .ndh-mark {
 }
 
 .mobile-brand .ndh-mark {
-  width: 104px;
-  height: 76px;
+  height: 64px;
+  width: auto;
 }
 
 .panel-head {
@@ -3592,9 +3592,9 @@ footer .ndh-mark {
 }
 
 .auth-card .auth-brand-logo {
-  width: 150px;
-  height: 162px;
-  margin: -34px 0 -24px;
+  height: 120px;
+  width: auto;
+  margin: -20px 0 -12px;
   border-radius: 0;
   object-fit: contain;
   box-shadow: none;
@@ -3607,8 +3607,8 @@ footer .ndh-mark {
 }
 
 .portal-drawer-brand .ndh-mark {
-  width: 54px;
-  height: 50px;
+  height: 32px;
+  width: auto;
 }
 
 .button,
@@ -4037,8 +4037,8 @@ body.nav-is-open .ai-assistant-launcher {
   }
 
   .brand .ndh-mark {
-    width: 72px;
-    height: 60px;
+    height: 34px;
+    width: auto;
   }
 
   .home-hero {
