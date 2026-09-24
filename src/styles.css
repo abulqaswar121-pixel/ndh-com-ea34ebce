@@ -1394,7 +1394,8 @@ footer {
   margin: 14px 0 18px;
 }
 
-footer img {
+footer .social-links img,
+footer .social-links svg {
   width: 40px;
   height: 40px;
   border-radius: 50%;
