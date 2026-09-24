@@ -75,8 +75,10 @@ function LoginPage() {
         <Link to="/" className="auth-close" aria-label="Back to homepage">
           <ArrowLeft size={18} />
         </Link>
-        <BrandMark className="auth-brand-logo" title="Najeeb Digital Hub" />
-        <h1>Sign in</h1>
+        <div className="auth-heading">
+          <BrandMark className="auth-brand-logo" title="Najeeb Digital Hub" />
+          <h1>Sign in</h1>
+        </div>
 
         <Button type="button" variant="outline" className="auth-oauth" onClick={handleGoogle} disabled={loading !== null}>
           {loading === "google" ? <Loader2 className="h-4 w-4 animate-spin" /> : "Continue with Google"}

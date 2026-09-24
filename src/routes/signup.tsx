@@ -99,7 +99,10 @@ function SignupPage() {
         <Link to="/" className="auth-close" aria-label="Back to homepage">
           <ArrowLeft size={18} />
         </Link>
-        <BrandMark className="auth-brand-logo" title="Najeeb Digital Hub" />
+        <div className="auth-heading">
+          <BrandMark className="auth-brand-logo" title="Najeeb Digital Hub" />
+          {!confirmationEmail ? <h1>Create your account</h1> : null}
+        </div>
         {confirmationEmail ? (
           <div className="auth-confirmation" role="status">
             <MailCheck size={28} />
@@ -109,7 +112,6 @@ function SignupPage() {
           </div>
         ) : (
           <>
-          <h1>Create your account</h1>
 
         <div className="auth-toggle">
           {(["client", "student"] as const).map((t) => (
