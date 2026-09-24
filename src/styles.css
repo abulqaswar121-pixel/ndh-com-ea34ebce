@@ -3917,7 +3917,7 @@ body.nav-is-open .ai-assistant-launcher {
   object-position: 50% 8%;
   border: 1px solid var(--accent-line);
   border-radius: 50%;
-  background: var(--ndh-bg);
+  background: var(--ink);
 }
 
 .ai-assistant-title p {
