@@ -3444,32 +3444,32 @@ html { -webkit-text-size-adjust: 100%; }
    ============================================================ */
 
 :root {
-  color-scheme: dark;
-  --ndh-bg: #0a1a30;
-  --ndh-grad-start: #8a2be2;
-  --ndh-grad-end: #ff007f;
-  --ndh-accent-cyan: #22d3ee;
-  --ndh-text: #ffffff;
-  --paper: var(--ndh-bg);
-  --surface: #102640;
-  --surface-2: #162f4d;
-  --ink: var(--ndh-text);
-  --ink-soft: #cfdaea;
-  --muted: #95a8bf;
-  --line: #27435f;
-  --line-strong: #426785;
+  color-scheme: light;
+  --ndh-bg: #ffffff;
+  --ndh-grad-start: #38bdf8;
+  --ndh-grad-end: #6366f1;
+  --ndh-accent-cyan: #0ea5e9;
+  --ndh-text: #0a1a30;
+  --paper: #ffffff;
+  --surface: #f8fafc;
+  --surface-2: #f1f5f9;
+  --ink: #0a1a30;
+  --ink-soft: #1e293b;
+  --muted: #64748b;
+  --line: #e2e8f0;
+  --line-strong: #cbd5e1;
   --accent: var(--ndh-accent-cyan);
-  --accent-hover: #67e8f9;
-  --accent-soft: #10394c;
-  --accent-line: #1689a1;
-  --radius-sm: 2px;
-  --radius: 2px;
-  --radius-lg: 2px;
-  --shadow-hairline: 0 1px 0 rgba(255, 255, 255, 0.04);
-  --shadow-soft: 0 14px 36px rgba(0, 0, 0, 0.28);
-  --shadow-lift: 0 22px 54px rgba(0, 0, 0, 0.42);
-  --shadow-deep: 0 36px 90px rgba(0, 0, 0, 0.56);
-  --primary-foreground: var(--ndh-bg);
+  --accent-hover: #0284c7;
+  --accent-soft: #e0f2fe;
+  --accent-line: #7dd3fc;
+  --radius-sm: 8px;
+  --radius: 12px;
+  --radius-lg: 14px;
+  --shadow-hairline: 0 1px 0 rgba(15, 23, 42, 0.04);
+  --shadow-soft: 0 4px 20px -2px rgba(15, 23, 42, 0.06);
+  --shadow-lift: 0 12px 32px -6px rgba(15, 23, 42, 0.1);
+  --shadow-deep: 0 24px 60px -12px rgba(15, 23, 42, 0.16);
+  --primary-foreground: #ffffff;
   --destructive-foreground: #f7f7f8;
 }
 
@@ -3527,9 +3527,11 @@ h1 {
 .site-header {
   height: 88px;
   gap: 30px;
-  background: color-mix(in srgb, var(--ndh-bg) 94%, transparent);
-  border-bottom-color: color-mix(in srgb, var(--line) 72%, transparent);
-  box-shadow: 0 10px 36px color-mix(in srgb, var(--ndh-bg) 72%, transparent);
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom-color: var(--line);
+  box-shadow: 0 1px 0 rgba(15, 23, 42, 0.03);
 }
 
 .brand {
@@ -3547,7 +3549,7 @@ h1 {
   flex: 0 0 auto;
   object-fit: contain;
   object-position: center;
-  filter: drop-shadow(0 0 10px color-mix(in srgb, var(--ndh-grad-start) 26%, transparent));
+  filter: drop-shadow(0 2px 8px rgba(15, 23, 42, 0.08));
 }
 
 footer .ndh-mark {
@@ -3614,19 +3616,20 @@ footer .ndh-mark {
 
 .button,
 .nav-action {
-  border-radius: 0;
+  border-radius: 10px;
   background: linear-gradient(110deg, var(--ndh-grad-start), var(--ndh-grad-end));
-  border-color: color-mix(in srgb, var(--ndh-grad-end) 70%, var(--line));
-  color: var(--ndh-text) !important;
+  border-color: transparent;
+  color: #ffffff !important;
   font-weight: 800;
   text-transform: uppercase;
+  box-shadow: 0 6px 18px -6px color-mix(in srgb, var(--ndh-grad-end) 45%, transparent);
 }
 
 .button:hover,
 .nav-action:hover {
   background: linear-gradient(110deg, var(--ndh-grad-end), var(--ndh-grad-start));
-  border-color: var(--ndh-accent-cyan);
-  box-shadow: 0 0 0 1px color-mix(in srgb, var(--ndh-accent-cyan) 40%, transparent);
+  border-color: transparent;
+  box-shadow: 0 10px 24px -8px color-mix(in srgb, var(--ndh-grad-end) 55%, transparent);
 }
 
 .button-secondary {
