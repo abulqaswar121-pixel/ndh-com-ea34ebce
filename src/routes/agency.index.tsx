@@ -69,6 +69,8 @@ function Agency() {
         eyebrow="Agency"
         title="Digital work, with a better route through it."
         body="NDH brings digital services, project management and review into one considered delivery process."
+        image={agencyCollaboration}
+        imageAlt="Creative team reviewing a digital project together"
       />
       <main className="content agency-content">
         <Reveal>

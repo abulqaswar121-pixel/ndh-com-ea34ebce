@@ -43,6 +43,8 @@ function Blog() {
         eyebrow="Blog"
         title="Notes from the work."
         body="Short, practical writing on digital delivery, AI tools and building skills that hold up."
+        image="/images/ndh-hero-960.webp"
+        imageAlt="Digital work in progress at a desk"
       />
       <main className="content journal-page">
         {posts.length === 0 ? (

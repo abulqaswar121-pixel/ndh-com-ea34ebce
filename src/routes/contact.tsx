@@ -55,6 +55,8 @@ function Contact() {
         eyebrow="Contact"
         title="Start with a clear brief."
         body="Tell us what you are building and what support you need. We reply within one business day."
+        image="/images/ndh-agency-work-960.webp"
+        imageAlt="Team planning digital project delivery"
       />
       <main className="content">
         <div className="contact-layout">
