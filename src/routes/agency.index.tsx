@@ -69,11 +69,13 @@ function Agency() {
         eyebrow="Agency"
         title="Digital work, with a better route through it."
         body="NDH brings digital services, project management and review into one considered delivery process."
+        image={agencyCollaboration}
+        imageAlt="Creative team reviewing a digital project together"
       />
       <main className="content agency-content">
         <Reveal>
           <div className="agency-banner">
-            <img src={agencyCollaboration} alt="A creative team reviewing digital work together" width={1600} height={1008} loading="eager" fetchPriority="high" decoding="async" />
+            <img src={projectDelivery} alt="Digital project planning across laptop and mobile" width={1600} height={1008} loading="lazy" decoding="async" />
             <div>
               <p className="eyebrow">The NDH method</p>
               <h2>Good work needs a clear path.</h2>

@@ -1,6 +1,6 @@
 import { Link, Navigate } from '@tanstack/react-router';
 import { useEffect, useState, type ReactNode } from 'react';
-import { Menu, X, MessageCircle, Facebook, Instagram } from 'lucide-react';
+import { Menu, X, MessageCircle, Facebook, Instagram, ArrowUpRight } from 'lucide-react';
 import { roleHome, useAuth } from '@/lib/auth';
 import { BrandMark } from '@/components/BrandMark';
 
@@ -146,12 +146,17 @@ export function PageShell({
   );
 }
 
-export function PageIntro({ eyebrow, title, body }: { eyebrow: string; title: string; body: string }) {
+export function PageIntro({ eyebrow, title, body, image, imageAlt }: { eyebrow: string; title: string; body: string; image?: string; imageAlt?: string }) {
   return (
-    <section className="page-intro">
-      <p className="eyebrow">{eyebrow}</p>
-      <h1>{title}</h1>
-      <p className="lede">{body}</p>
+    <section className={image ? 'page-intro page-intro-image' : 'page-intro'}>
+      <div className="page-intro-inner">
+        <p className="eyebrow">{eyebrow}</p>
+        <h1>{title}</h1>
+        <p className="lede">{body}</p>
+        {eyebrow === 'Agency' && <Link className="intro-link" to="/contact">Start a project <ArrowUpRight size={17} /></Link>}
+        {eyebrow === 'Academy' && <a className="intro-link" href="#courses">Explore courses <ArrowUpRight size={17} /></a>}
+      </div>
+      {image && <img className="page-intro-media" src={image} alt={imageAlt ?? ''} loading="eager" decoding="async" />}
     </section>
   );
 }

@@ -69,21 +69,10 @@ function Academy() {
         eyebrow="Academy"
         title="Learn a practical AI skill, then prove it."
         body="Short, self-serve courses across six schools. Finish the lessons, sit the final assessment, submit a practical project and receive a signed certificate."
+        image={academyLearning}
+        imageAlt="Learner working through an online course"
       />
-      <Reveal>
-        <div className="academy-visual">
-          <img
-            src={academyLearning}
-            alt="A learner taking notes during an online course"
-            width={1600}
-            height={1008}
-            loading="eager"
-            fetchPriority="high"
-            decoding="async"
-          />
-        </div>
-      </Reveal>
-      <main className="content">
+      <main className="content" id="courses">
         <Reveal>
           <div className="catalog-controls">
             <div className="catalog-search">

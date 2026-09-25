@@ -1,8 +1,9 @@
 import { createFileRoute } from '@tanstack/react-router';
-import { ArrowUpRight, Boxes, BrainCircuit, CheckCircle2, Sparkles } from 'lucide-react';
+import { ArrowUpRight, Boxes, BrainCircuit, CheckCircle2 } from 'lucide-react';
 import { PageShell, Button } from '@/components/PageShell';
 import { Reveal } from '@/components/Reveal';
 import { ResponsiveImage } from '@/components/ResponsiveImage';
+import agencyCollaboration from '@/assets/agency-collaboration.jpg';
 
 const title = 'Najeeb Digital Hub — Digital delivery and AI skills';
 const description =
@@ -58,15 +59,14 @@ function Home() {
     <PageShell>
       <main>
         <section className="hero home-hero">
+          <img className="home-hero-image" src={agencyCollaboration} alt="Creative team reviewing a digital project together" width={1600} height={1008} fetchPriority="high" decoding="async" />
           <div className="hero-copy">
             <p className="eyebrow">Digital agency · AI academy</p>
             <h1>
-              Digital work,
-              <br />
-              <em>sharply delivered.</em>
+              Najeeb Digital Hub
             </h1>
             <p className="lede">
-              NDH scopes, manages and reviews digital projects for ambitious businesses — with practical AI skills for people ready to grow.
+              Digital work, sharply delivered. We scope, manage and review projects for businesses — and teach practical AI skills for people ready to grow.
             </p>
             <div className="actions">
               <Button to="/agency">
@@ -77,16 +77,13 @@ function Home() {
               </Button>
             </div>
           </div>
-          <Reveal delay={120}>
-            <div className="hero-stage">
-              <ResponsiveImage name="ndh-hero" alt="A designer's desk with a website layout in progress" width={1280} height={960} priority sizes="(max-width: 760px) 100vw, 52vw" />
-              <div className="stage-note">
-                <Sparkles size={16} />
-                <span>Ideas into useful work</span>
-              </div>
-            </div>
-          </Reveal>
         </section>
+
+        <nav className="home-paths" aria-label="Explore Najeeb Digital Hub">
+          <Button to="/agency">Agency <ArrowUpRight size={17} /></Button>
+          <Button to="/work" secondary>Selected work <ArrowUpRight size={17} /></Button>
+          <Button to="/academy" secondary>Academy <ArrowUpRight size={17} /></Button>
+        </nav>
 
         <section className="home-section">
           <Reveal>
