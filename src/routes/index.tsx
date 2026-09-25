@@ -1,5 +1,5 @@
 import { createFileRoute } from '@tanstack/react-router';
-import { ArrowUpRight, Boxes, BrainCircuit, CheckCircle2, Sparkles } from 'lucide-react';
+import { ArrowUpRight, Boxes, BrainCircuit, CheckCircle2 } from 'lucide-react';
 import { PageShell, Button } from '@/components/PageShell';
 import { Reveal } from '@/components/Reveal';
 import { ResponsiveImage } from '@/components/ResponsiveImage';
@@ -59,6 +59,7 @@ function Home() {
     <PageShell>
       <main>
         <section className="hero home-hero">
+          <img className="home-hero-image" src={agencyCollaboration} alt="Creative team reviewing a digital project together" width={1600} height={1008} fetchPriority="high" decoding="async" />
           <div className="hero-copy">
             <p className="eyebrow">Digital agency · AI academy</p>
             <h1>
@@ -75,9 +76,6 @@ function Home() {
                 Learn AI skills
               </Button>
             </div>
-          </div>
-          <div className="hero-stage">
-            <img src={agencyCollaboration} alt="Creative team reviewing a digital project together" width={1600} height={1008} fetchPriority="high" decoding="async" />
           </div>
         </section>
 

@@ -72,19 +72,6 @@ function Academy() {
         image={academyLearning}
         imageAlt="Learner working through an online course"
       />
-      <Reveal>
-        <div className="academy-visual">
-          <img
-            src={academyLearning}
-            alt="A learner taking notes during an online course"
-            width={1600}
-            height={1008}
-            loading="eager"
-            fetchPriority="high"
-            decoding="async"
-          />
-        </div>
-      </Reveal>
       <main className="content" id="courses">
         <Reveal>
           <div className="catalog-controls">

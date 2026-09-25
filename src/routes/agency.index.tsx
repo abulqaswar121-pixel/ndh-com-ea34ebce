@@ -75,7 +75,7 @@ function Agency() {
       <main className="content agency-content">
         <Reveal>
           <div className="agency-banner">
-            <img src={agencyCollaboration} alt="A creative team reviewing digital work together" width={1600} height={1008} loading="eager" fetchPriority="high" decoding="async" />
+            <img src={projectDelivery} alt="Digital project planning across laptop and mobile" width={1600} height={1008} loading="lazy" decoding="async" />
             <div>
               <p className="eyebrow">The NDH method</p>
               <h2>Good work needs a clear path.</h2>
