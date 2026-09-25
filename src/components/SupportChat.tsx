@@ -1,23 +1,6 @@
-import { useEffect, useState } from "react";
-import { Minus, X } from "lucide-react";
+import { useEffect, useRef, useState, type FormEvent } from "react";
+import { LoaderCircle, Minus, Send, X } from "lucide-react";
 import assistantAvatar from "@/assets/ndh-ai-assistant.png";
-import {
-  Conversation,
-  ConversationContent,
-  ConversationScrollButton,
-} from "@/components/ai-elements/conversation";
-import {
-  Message,
-  MessageContent,
-  MessageResponse,
-} from "@/components/ai-elements/message";
-import {
-  PromptInput,
-  PromptInputFooter,
-  PromptInputSubmit,
-  PromptInputTextarea,
-} from "@/components/ai-elements/prompt-input";
-import { Shimmer } from "@/components/ai-elements/shimmer";
 import { Button } from "@/components/ui/button";
 
 type Msg = { role: "user" | "assistant"; content: string };
@@ -43,6 +26,7 @@ export function SupportChat() {
   const [input, setInput] = useState("");
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const messagesRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     try {
@@ -72,6 +56,16 @@ export function SupportChat() {
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
   }, [open]);
+
+  useEffect(() => {
+    const node = messagesRef.current;
+    if (node) node.scrollTop = node.scrollHeight;
+  }, [messages, busy, open]);
+
+  function submit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    void send(input);
+  }
 
   async function send(text: string) {
     const trimmed = text.trim();
@@ -192,17 +186,23 @@ export function SupportChat() {
             </Button>
           </header>
 
-          <Conversation className="ai-assistant-conversation">
-            <ConversationContent className="ai-assistant-messages">
+          <div
+            ref={messagesRef}
+            role="log"
+            aria-live="polite"
+            className="ai-assistant-conversation ai-assistant-messages"
+          >
               {messages.map((m, i) => (
-                <Message from={m.role} key={`${m.role}-${i}`}>
-                  <MessageContent>
-                    <MessageResponse>{m.content}</MessageResponse>
-                  </MessageContent>
-                </Message>
+                <div className={`ai-assistant-message is-${m.role}`} key={`${m.role}-${i}`}>
+                  <p>{m.content}</p>
+                </div>
               ))}
 
-              {busy && <Shimmer className="text-sm">Thinking...</Shimmer>}
+              {busy && (
+                <p className="ai-assistant-thinking">
+                  <LoaderCircle aria-hidden="true" /> Thinking…
+                </p>
+              )}
 
               {error && (
                 <p className="ai-assistant-error">
@@ -219,25 +219,26 @@ export function SupportChat() {
                   ))}
                 </div>
               )}
-            </ConversationContent>
-            <ConversationScrollButton />
-          </Conversation>
+          </div>
 
           <div className="ai-assistant-composer">
-            <PromptInput
-              onSubmit={(message) => void send(message.text)}
-            >
-              <PromptInputTextarea
+            <form onSubmit={submit}>
+              <textarea
               value={input}
               onChange={(e) => setInput(e.target.value)}
               maxLength={1000}
               placeholder="Ask a question…"
               aria-label="Message"
               />
-              <PromptInputFooter className="justify-end">
-                <PromptInputSubmit status={busy ? "streaming" : "ready"} disabled={busy || input.trim().length === 0} />
-              </PromptInputFooter>
-            </PromptInput>
+              <Button
+                type="submit"
+                size="icon-sm"
+                aria-label="Send message"
+                disabled={busy || input.trim().length === 0}
+              >
+                {busy ? <LoaderCircle className="animate-spin" aria-hidden="true" /> : <Send aria-hidden="true" />}
+              </Button>
+            </form>
           </div>
         </div>
       )}
