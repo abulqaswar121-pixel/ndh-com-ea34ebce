@@ -3621,7 +3621,7 @@ footer .ndh-mark {
 
 .auth-heading h1 {
   margin: 0;
-  font-size: clamp(24px, 6vw, 32px);
+  font-size: clamp(17px, 5.6vw, 32px);
   line-height: 1.05;
   white-space: nowrap;
 }
@@ -3802,6 +3802,10 @@ footer .social-links svg {
 .split-section:nth-of-type(even) .split-copy,
 .cta-panel {
   border-left: 2px solid var(--ndh-accent-cyan);
+}
+
+.split-section:nth-of-type(even) .split-copy {
+  padding-left: 18px;
 }
 
 .cta-panel {
