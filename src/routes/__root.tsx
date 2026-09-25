@@ -8,13 +8,15 @@ import {
   Scripts,
   ClientOnly,
 } from "@tanstack/react-router";
-import { useEffect, type ReactNode } from "react";
+import { Suspense, lazy, useEffect, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { AuthProvider } from "../lib/auth";
 import { Toaster } from "sonner";
-import { SupportChat } from "@/components/SupportChat";
+const SupportChat = lazy(() =>
+  import("@/components/SupportChat").then((m) => ({ default: m.SupportChat })),
+);
 
 function NotFoundComponent() {
   return (
@@ -128,7 +130,9 @@ function RootComponent() {
         {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
         <Outlet />
         <ClientOnly fallback={null}>
-          <SupportChat />
+          <Suspense fallback={null}>
+            <SupportChat />
+          </Suspense>
         </ClientOnly>
         <Toaster position="top-right" richColors />
       </AuthProvider>
