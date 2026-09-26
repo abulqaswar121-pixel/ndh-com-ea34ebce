@@ -4313,6 +4313,8 @@ body.nav-is-open .ai-assistant-launcher {
 .home-paths { max-width: var(--page); margin: 0 auto; display: flex; gap: 12px; flex-wrap: wrap; padding: 20px var(--gutter); border-bottom: 1px solid var(--line); }
 .home-paths .button { display: inline-flex; align-items: center; gap: 12px; white-space: nowrap; }
 .home-section:nth-of-type(even) { max-width: none; padding-inline: max(var(--gutter), calc((100% - var(--page)) / 2 + var(--gutter))); background: var(--surface); border-block: 1px solid var(--line); }
+.faq-content > section { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 28px; margin-bottom: 20px; }
+.faq-content > section:nth-of-type(even) { background: var(--paper); }
 .portal-head { gap: 18px; padding-bottom: 18px; margin-bottom: 24px; }
 .portal-card, .stat-card { padding: 19px; }
 .portal-card p { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden; }
@@ -4338,4 +4340,9 @@ body.nav-is-open .ai-assistant-launcher {
   .portal-grid { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(245px, 82%); grid-template-columns: none; overflow-x: auto; scroll-snap-type: x mandatory; padding: 2px 2px 14px; }
   .portal-grid > * { scroll-snap-align: start; }
   .portal-head { margin-bottom: 20px; padding-bottom: 16px; }
+  .portal-stats { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 7px; }
+  .portal-stat { padding: 12px 9px; min-height: 100px; align-content: center; }
+  .portal-stat small { font-size: 10px; line-height: 1.25; overflow-wrap: anywhere; }
+  .portal-stat strong { font-size: 1.35rem; }
+  .faq-content > section { padding: 20px; }
 }
