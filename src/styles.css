@@ -4442,6 +4442,8 @@ body.nav-is-open .ai-assistant-launcher {
   .home-work-grid { grid-auto-flow: column; grid-auto-columns: minmax(245px, 78%); grid-template-columns: none; overflow-x: auto; scroll-snap-type: x mandatory; padding: 2px 2px 12px; }
   .home-work-item { scroll-snap-align: start; }
   .course-card-media { height: 158px; }
+  .home-hero { height: auto; min-height: 0; padding-block: 32px 30px; }
+  .home-hero .actions { margin-top: 22px; }
 }
 @media (max-width: 380px) {
   .service-grid { grid-template-columns: minmax(0, 1fr); }
