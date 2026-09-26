@@ -150,6 +150,24 @@ export const Route = createFileRoute('/agency/$slug')({
         { name: 'twitter:card', content: 'summary' },
         ...(s ? [] : [{ name: 'robots', content: 'noindex' }]),
       ],
+      ...(s
+        ? {
+            links: [{ rel: 'canonical', href: `https://ndh.com.ng/agency/${params.slug}` }],
+            scripts: [
+              {
+                type: 'application/ld+json',
+                children: JSON.stringify({
+                  '@context': 'https://schema.org',
+                  '@type': 'BreadcrumbList',
+                  itemListElement: [
+                    { '@type': 'ListItem', position: 1, name: 'Agency', item: 'https://ndh.com.ng/agency' },
+                    { '@type': 'ListItem', position: 2, name: s.name, item: `https://ndh.com.ng/agency/${params.slug}` },
+                  ],
+                }),
+              },
+            ],
+          }
+        : {}),
     };
   },
   component: ServiceDetail,

@@ -1,5 +1,5 @@
-import logo from '@/assets/ndh-master-logo.png';
-import symbol from '@/assets/ndh-master-symbol.png';
+import logo from '@/assets/ndh-lockup-transparent.png';
+import symbol from '@/assets/ndh-symbol-transparent.png';
 
 type BrandMarkProps = {
   className?: string;
@@ -8,6 +8,8 @@ type BrandMarkProps = {
   title?: string;
 };
 
+// Both assets are true alpha-transparent PNGs (no baked-in background box) so the
+// mark can float directly on any header/footer surface, light or dark.
 export function BrandMark({ className = '', compact = false, staticMark = false, title }: BrandMarkProps) {
   const label = title ?? 'Najeeb Digital Hub';
 
@@ -17,8 +19,8 @@ export function BrandMark({ className = '', compact = false, staticMark = false,
       className={`ndh-mark${staticMark ? ' ndh-mark-static' : ''}${className ? ` ${className}` : ''}`}
       alt={title ? label : ''}
       aria-hidden={title ? undefined : true}
-      width={720}
-      height={760}
+      width={compact ? 680 : 1068}
+      height={compact ? 310 : 124}
     />
   );
 }

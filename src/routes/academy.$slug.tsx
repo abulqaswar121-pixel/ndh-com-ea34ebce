@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { BadgeCheck, CheckCircle2, Clock, GraduationCap, ListChecks, Lock, PlayCircle, Star } from 'lucide-react';
 import { PageShell } from '@/components/PageShell';
 import { Reveal } from '@/components/Reveal';
+import { RouteSkeleton } from '@/components/RouteSkeleton';
 import { getCourse } from '@/lib/catalog.functions';
 import { startCourseCheckout } from '@/lib/payment.functions';
 import { useAuth } from '@/lib/auth';
@@ -21,6 +22,7 @@ export const Route = createFileRoute('/academy/$slug')({
     }
     const t = `${loaderData.title} — NDH Academy`;
     const d = loaderData.summary ?? 'A practical AI course with a final assessment, project and certificate.';
+    const ngPrice = loaderData.prices.find((p) => p.region === 'NG');
     return {
       meta: [
         { title: t },
@@ -28,9 +30,53 @@ export const Route = createFileRoute('/academy/$slug')({
         { property: 'og:title', content: t },
         { property: 'og:description', content: d },
         { property: 'og:type', content: 'article' },
-        { property: 'og:image', content: 'https://ndh.com.ng/og-image.png' },
+        { property: 'og:image', content: loaderData.cover_image_url || 'https://ndh.com.ng/og-image.png' },
         { name: 'twitter:card', content: 'summary_large_image' },
-        { name: 'twitter:image', content: 'https://ndh.com.ng/og-image.png' },
+        { name: 'twitter:image', content: loaderData.cover_image_url || 'https://ndh.com.ng/og-image.png' },
+      ],
+      links: [{ rel: 'canonical', href: `https://ndh.com.ng/academy/${loaderData.slug}` }],
+      scripts: [
+        {
+          type: 'application/ld+json',
+          children: JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'Course',
+            name: loaderData.title,
+            description: d,
+            provider: { '@type': 'Organization', name: 'Najeeb Digital Hub', sameAs: 'https://ndh.com.ng/' },
+            ...(loaderData.rating?.count
+              ? {
+                  aggregateRating: {
+                    '@type': 'AggregateRating',
+                    ratingValue: loaderData.rating.average,
+                    reviewCount: loaderData.rating.count,
+                  },
+                }
+              : {}),
+            ...(ngPrice
+              ? {
+                  offers: {
+                    '@type': 'Offer',
+                    price: ngPrice.amount,
+                    priceCurrency: ngPrice.currency,
+                    availability: 'https://schema.org/InStock',
+                    url: `https://ndh.com.ng/academy/${loaderData.slug}`,
+                  },
+                }
+              : {}),
+          }),
+        },
+        {
+          type: 'application/ld+json',
+          children: JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'BreadcrumbList',
+            itemListElement: [
+              { '@type': 'ListItem', position: 1, name: 'Academy', item: 'https://ndh.com.ng/academy' },
+              { '@type': 'ListItem', position: 2, name: loaderData.title, item: `https://ndh.com.ng/academy/${loaderData.slug}` },
+            ],
+          }),
+        },
       ],
     };
   },
@@ -56,6 +102,7 @@ export const Route = createFileRoute('/academy/$slug')({
       </main>
     </PageShell>
   ),
+  pendingComponent: () => <RouteSkeleton rows={2} />,
   component: CoursePage,
 });
 

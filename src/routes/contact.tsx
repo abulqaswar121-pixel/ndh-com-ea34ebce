@@ -20,6 +20,7 @@ export const Route = createFileRoute('/contact')({
       { name: 'twitter:card', content: 'summary_large_image' },
       { name: 'twitter:image', content: 'https://ndh.com.ng/og-image.png' },
     ],
+    links: [{ rel: 'canonical', href: 'https://ndh.com.ng/contact' }],
   }),
   component: Contact,
 });
@@ -55,6 +56,8 @@ function Contact() {
         eyebrow="Contact"
         title="Start with a clear brief."
         body="Tell us what you are building and what support you need. We reply within one business day."
+        image="/images/ndh-agency-work-960.webp"
+        imageAlt="Creative team reviewing a digital project"
       />
       <main className="content">
         <div className="contact-layout">

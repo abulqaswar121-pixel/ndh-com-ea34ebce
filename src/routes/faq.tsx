@@ -90,6 +90,23 @@ export const Route = createFileRoute('/faq')({
       { property: 'og:type', content: 'website' },
       { name: 'twitter:card', content: 'summary' },
     ],
+    links: [{ rel: 'canonical', href: 'https://ndh.com.ng/faq' }],
+    scripts: [
+      {
+        type: 'application/ld+json',
+        children: JSON.stringify({
+          '@context': 'https://schema.org',
+          '@type': 'FAQPage',
+          mainEntity: faqs.flatMap((group) =>
+            group.items.map(([question, answer]) => ({
+              '@type': 'Question',
+              name: question,
+              acceptedAnswer: { '@type': 'Answer', text: answer },
+            })),
+          ),
+        }),
+      },
+    ],
   }),
   component: Faq,
 });

@@ -18,6 +18,7 @@ export const Route = createFileRoute('/about')({
       { name: 'twitter:card', content: 'summary_large_image' },
       { name: 'twitter:image', content: 'https://ndh.com.ng/og-image.png' },
     ],
+    links: [{ rel: 'canonical', href: 'https://ndh.com.ng/about' }],
   }),
   component: About,
 });
@@ -29,6 +30,8 @@ function About() {
         eyebrow="About"
         title="A digital agency and an AI skills academy."
         body="Najeeb Digital Hub helps businesses access digital delivery, and helps learners develop practical AI skills they can prove."
+        image="/ndh-about-new.webp"
+        imageAlt="Bright modern workspace with desks and a laptop"
       />
       <main className="content">
         <div className="about-grid">
@@ -51,7 +54,7 @@ function About() {
           <Reveal delay={100}>
             <img
               className="founder-photo"
-              src="/ndh-about-new.webp"
+              src="/images/ndh-agency-work-960.webp"
               alt="A minimal studio workspace for digital delivery and AI skills certification"
               loading="lazy"
               width={1280}

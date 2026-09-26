@@ -1,6 +1,7 @@
 import { ArrowLeft, ArrowUpRight } from 'lucide-react';
 import { createFileRoute, Link, notFound } from '@tanstack/react-router';
 import { PageShell, Button } from '@/components/PageShell';
+import { RouteSkeleton } from '@/components/RouteSkeleton';
 import { getCaseStudy } from '@/lib/catalog.functions';
 import { caseStudyImage } from '@/lib/editorial-assets';
 
@@ -17,9 +18,39 @@ export const Route = createFileRoute('/work/$slug')({
       { title }, { name: 'description', content: description },
       { property: 'og:title', content: title }, { property: 'og:description', content: description },
       { property: 'og:type', content: 'article' }, { name: 'twitter:card', content: 'summary_large_image' },
-    ] };
+      ...(loaderData?.cover_image_url ? [{ property: 'og:image', content: loaderData.cover_image_url }] : [{ property: 'og:image', content: 'https://ndh.com.ng/og-image.png' }]),
+    ],
+    ...(loaderData ? { links: [{ rel: 'canonical', href: `https://ndh.com.ng/work/${loaderData.slug}` }] } : {}),
+    ...(loaderData
+      ? {
+          scripts: [
+            {
+              type: 'application/ld+json',
+              children: JSON.stringify({
+                '@context': 'https://schema.org',
+                '@type': 'BreadcrumbList',
+                itemListElement: [
+                  { '@type': 'ListItem', position: 1, name: 'Selected work', item: 'https://ndh.com.ng/work' },
+                  { '@type': 'ListItem', position: 2, name: loaderData.title, item: `https://ndh.com.ng/work/${loaderData.slug}` },
+                ],
+              }),
+            },
+          ],
+        }
+      : {}),
+    };
   },
   notFoundComponent: () => <PageShell><main className="content editorial-empty"><h1>Case study not found</h1><Button to="/work">View all work</Button></main></PageShell>,
+  errorComponent: () => (
+    <PageShell>
+      <main className="content editorial-empty">
+        <h1>Case study unavailable</h1>
+        <p>We could not load this case study just now. Please refresh the page.</p>
+        <Button to="/work">View all work</Button>
+      </main>
+    </PageShell>
+  ),
+  pendingComponent: () => <RouteSkeleton rows={1} />,
   component: CaseStudy,
 });
 

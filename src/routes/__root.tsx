@@ -8,13 +8,15 @@ import {
   Scripts,
   ClientOnly,
 } from "@tanstack/react-router";
-import { useEffect, type ReactNode } from "react";
+import { Suspense, lazy, useEffect, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { AuthProvider } from "../lib/auth";
 import { Toaster } from "sonner";
-import { SupportChat } from "@/components/SupportChat";
+const SupportChat = lazy(() =>
+  import("@/components/SupportChat").then((m) => ({ default: m.SupportChat })),
+);
 
 function NotFoundComponent() {
   return (
@@ -86,16 +88,19 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { property: "og:type", content: "website" },
       { property: "og:site_name", content: "Najeeb Digital Hub" },
       { name: "twitter:card", content: "summary" },
+      { name: "theme-color", content: "#05060a" },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
       { rel: "icon", type: "image/png", href: "/favicon.png" },
+      { rel: "icon", href: "/favicon.ico", sizes: "any" },
       { rel: "apple-touch-icon", href: "/apple-touch-icon.png" },
+      { rel: "manifest", href: "/site.webmanifest" },
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
       {
         rel: "stylesheet",
-        href: "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap",
+        href: "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Sora:wght@400;500;600;700;800&display=swap",
       },
     ],
   }),
@@ -128,7 +133,9 @@ function RootComponent() {
         {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
         <Outlet />
         <ClientOnly fallback={null}>
-          <SupportChat />
+          <Suspense fallback={null}>
+            <SupportChat />
+          </Suspense>
         </ClientOnly>
         <Toaster position="top-right" richColors />
       </AuthProvider>

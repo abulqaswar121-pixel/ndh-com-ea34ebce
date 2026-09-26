@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as WorkRouteImport } from './routes/work'
 import { Route as TermsRouteImport } from './routes/terms'
 import { Route as TalentApplicationRouteImport } from './routes/talent-application'
+import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as SignupRouteImport } from './routes/signup'
 import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as LoginRouteImport } from './routes/login'
@@ -100,6 +101,11 @@ const TermsRoute = TermsRouteImport.update({
 const TalentApplicationRoute = TalentApplicationRouteImport.update({
   id: '/talent-application',
   path: '/talent-application',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
+  id: '/sitemap.xml',
+  path: '/sitemap.xml',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SignupRoute = SignupRouteImport.update({
@@ -530,6 +536,7 @@ export interface FileRoutesByFullPath {
   '/login': typeof LoginRoute
   '/privacy': typeof PrivacyRoute
   '/signup': typeof SignupRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/talent-application': typeof TalentApplicationRoute
   '/terms': typeof TermsRoute
   '/work': typeof WorkRouteWithChildren
@@ -605,6 +612,7 @@ export interface FileRoutesByTo {
   '/login': typeof LoginRoute
   '/privacy': typeof PrivacyRoute
   '/signup': typeof SignupRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/talent-application': typeof TalentApplicationRoute
   '/terms': typeof TermsRoute
   '/academy/$slug': typeof AcademySlugRoute
@@ -678,6 +686,7 @@ export interface FileRoutesById {
   '/login': typeof LoginRoute
   '/privacy': typeof PrivacyRoute
   '/signup': typeof SignupRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/talent-application': typeof TalentApplicationRoute
   '/terms': typeof TermsRoute
   '/work': typeof WorkRouteWithChildren
@@ -758,6 +767,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/privacy'
     | '/signup'
+    | '/sitemap.xml'
     | '/talent-application'
     | '/terms'
     | '/work'
@@ -833,6 +843,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/privacy'
     | '/signup'
+    | '/sitemap.xml'
     | '/talent-application'
     | '/terms'
     | '/academy/$slug'
@@ -905,6 +916,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/privacy'
     | '/signup'
+    | '/sitemap.xml'
     | '/talent-application'
     | '/terms'
     | '/work'
@@ -985,6 +997,7 @@ export interface RootRouteChildren {
   LoginRoute: typeof LoginRoute
   PrivacyRoute: typeof PrivacyRoute
   SignupRoute: typeof SignupRoute
+  SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   TalentApplicationRoute: typeof TalentApplicationRoute
   TermsRoute: typeof TermsRoute
   WorkRoute: typeof WorkRouteWithChildren
@@ -1019,6 +1032,13 @@ declare module '@tanstack/react-router' {
       path: '/talent-application'
       fullPath: '/talent-application'
       preLoaderRoute: typeof TalentApplicationRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sitemap.xml': {
+      id: '/sitemap.xml'
+      path: '/sitemap.xml'
+      fullPath: '/sitemap.xml'
+      preLoaderRoute: typeof SitemapDotxmlRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/signup': {
@@ -1793,6 +1813,7 @@ const rootRouteChildren: RootRouteChildren = {
   LoginRoute: LoginRoute,
   PrivacyRoute: PrivacyRoute,
   SignupRoute: SignupRoute,
+  SitemapDotxmlRoute: SitemapDotxmlRoute,
   TalentApplicationRoute: TalentApplicationRoute,
   TermsRoute: TermsRoute,
   WorkRoute: WorkRouteWithChildren,

@@ -17,6 +17,7 @@ export const Route = createFileRoute('/talent-application')({
       { property: 'og:title', content: title },
       { property: 'og:description', content: description },
     ],
+    links: [{ rel: 'canonical', href: 'https://ndh.com.ng/talent-application' }],
   }),
   component: TalentApplication,
 });

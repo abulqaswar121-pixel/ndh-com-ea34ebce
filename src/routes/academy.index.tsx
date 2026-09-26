@@ -1,19 +1,23 @@
 import { createFileRoute, Link } from '@tanstack/react-router';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { ArrowUpRight, Search } from 'lucide-react';
-import { PageShell, PageIntro } from '@/components/PageShell';
+import { PageShell, PageIntro, Button } from '@/components/PageShell';
 import { Reveal } from '@/components/Reveal';
 import { Rail } from '@/components/Rail';
+import { RouteSkeleton } from '@/components/RouteSkeleton';
 import { listCourses, listStudentVoices } from '@/lib/catalog.functions';
 import { formatPrice } from '@/lib/format';
 import academyLearning from '@/assets/academy-learning.jpg';
 import { courseImage, schoolImage } from '@/lib/topic-images';
+import { academyMenu } from '@/lib/nav-data';
 
 const title = 'Academy — Practical AI courses and certification | NDH';
 const description =
   'Short, self-serve AI courses across six schools. Each course ends with a final assessment, a practical project and a signed certificate.';
 
 export const Route = createFileRoute('/academy/')({
+  validateSearch: (search: Record<string, unknown>): { school?: string } =>
+    typeof search.school === 'string' ? { school: search.school } : {},
   head: () => ({
     meta: [
       { title },
@@ -28,7 +32,10 @@ export const Route = createFileRoute('/academy/')({
     links: [{ rel: 'canonical', href: 'https://ndh.com.ng/academy' }],
   }),
   loader: async () => {
-    const [courses, voices] = await Promise.all([listCourses(), listStudentVoices()]);
+    const [courses, voices] = await Promise.all([
+      listCourses().catch(() => []),
+      listStudentVoices().catch(() => []),
+    ]);
     return { courses, voices };
   },
   errorComponent: () => (
@@ -39,13 +46,27 @@ export const Route = createFileRoute('/academy/')({
       </main>
     </PageShell>
   ),
+  pendingComponent: () => <RouteSkeleton rows={6} />,
   component: Academy,
 });
 
+const certificationSteps = [
+  ['01', 'Enrol', 'Pick a course and get instant access to the lessons.'],
+  ['02', 'Learn', 'Work through short, practical video lessons at your own pace.'],
+  ['03', 'Assess', 'Sit the final assessment and submit a practical project.'],
+  ['04', 'Certify', 'Pass and receive a signed, verifiable certificate.'],
+] as const;
+
 function Academy() {
   const { courses, voices } = Route.useLoaderData();
+  const { school: schoolParam } = Route.useSearch();
   const [query, setQuery] = useState('');
-  const [school, setSchool] = useState('All');
+  const [school, setSchool] = useState(schoolParam || 'All');
+
+  // Keep the filter in sync if a deep link (mega-menu, site search, browser back/forward) changes the ?school= param.
+  useEffect(() => {
+    if (schoolParam) setSchool(schoolParam);
+  }, [schoolParam]);
 
   const schools = useMemo(
     () => ['All', ...Array.from(new Set(courses.map((c) => c.school).filter(Boolean) as string[]))],
@@ -69,21 +90,49 @@ function Academy() {
         eyebrow="Academy"
         title="Learn a practical AI skill, then prove it."
         body="Short, self-serve courses across six schools. Finish the lessons, sit the final assessment, submit a practical project and receive a signed certificate."
+        image={academyLearning}
+        imageAlt="Learner working through an online course"
       />
-      <Reveal>
-        <div className="academy-visual">
-          <img
-            src={academyLearning}
-            alt="A learner taking notes during an online course"
-            width={1600}
-            height={1008}
-            loading="eager"
-            fetchPriority="high"
-            decoding="async"
-          />
-        </div>
-      </Reveal>
       <main className="content">
+        <Reveal>
+          <section className="school-section">
+            <div className="section-heading">
+              <p className="eyebrow">Six schools</p>
+              <h2>Browse the Academy by school.</h2>
+              <p>Every course sits inside one of six schools. Jump straight to the one that matches what you want to learn.</p>
+            </div>
+            <div className="service-grid school-grid">
+              {academyMenu.map((item) => {
+                const image = schoolImage(item.school);
+                return (
+                  <Link
+                    key={item.school}
+                    to="/academy"
+                    search={{ school: item.school }}
+                    className="service-card"
+                  >
+                    {image && (
+                      <img
+                        className="service-card-media"
+                        src={image.url}
+                        alt={image.alt}
+                        width={1400}
+                        height={933}
+                        loading="lazy"
+                        decoding="async"
+                      />
+                    )}
+                    <h3>{item.school}</h3>
+                    <p>{item.blurb}</p>
+                    <ArrowUpRight size={18} className="card-arrow" />
+                  </Link>
+                );
+              })}
+            </div>
+          </section>
+        </Reveal>
+
+        <section id="courses" className="catalog-section">
         <Reveal>
           <div className="catalog-controls">
             <div className="catalog-search">
@@ -147,6 +196,25 @@ function Academy() {
             ))}
           </div>
         )}
+        </section>
+
+        <Reveal>
+          <section className="process-section">
+            <div className="section-heading">
+              <p className="eyebrow">How certification works</p>
+              <h2>Four steps to a signed certificate.</h2>
+            </div>
+            <Rail label="How certification works" className="process-row-rail" autoPlay>
+              {certificationSteps.map(([n, heading, text]) => (
+                <div className="step-card" key={n}>
+                  <span className="step-number">{n}</span>
+                  <h3>{heading}</h3>
+                  <p>{text}</p>
+                </div>
+              ))}
+            </Rail>
+          </section>
+        </Reveal>
 
         {voices.length > 0 && (
           <Reveal>
@@ -167,6 +235,22 @@ function Academy() {
             </section>
           </Reveal>
         )}
+
+        <Reveal>
+          <div className="cta-panel">
+            <p className="eyebrow">Ready when you are</p>
+            <h2>Start a course today, get certified in weeks.</h2>
+            <p>Every course ends with a real assessment, a practical project and a certificate you can verify.</p>
+            <div className="actions">
+              <a className="button" href="#courses">
+                Browse all courses <ArrowUpRight size={16} />
+              </a>
+              <Button to="/verify" secondary>
+                Verify a certificate
+              </Button>
+            </div>
+          </div>
+        </Reveal>
       </main>
     </PageShell>
   );

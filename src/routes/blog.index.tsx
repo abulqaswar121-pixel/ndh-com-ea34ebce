@@ -4,6 +4,7 @@ import { PageShell, PageIntro } from '@/components/PageShell';
 import { Reveal } from '@/components/Reveal';
 import { listPosts } from '@/lib/catalog.functions';
 import { blogImage } from '@/lib/editorial-assets';
+import { RouteSkeleton } from '@/components/RouteSkeleton';
 
 const title = 'Blog — Notes on digital delivery and AI skills | NDH';
 const description =
@@ -21,8 +22,9 @@ export const Route = createFileRoute('/blog/')({
       { name: 'twitter:card', content: 'summary_large_image' },
       { name: 'twitter:image', content: 'https://ndh.com.ng/og-image.png' },
     ],
+    links: [{ rel: 'canonical', href: 'https://ndh.com.ng/blog' }],
   }),
-  loader: () => listPosts(),
+  loader: () => listPosts().catch(() => []),
   errorComponent: () => (
     <PageShell>
       <main className="content">
@@ -31,6 +33,7 @@ export const Route = createFileRoute('/blog/')({
       </main>
     </PageShell>
   ),
+  pendingComponent: () => <RouteSkeleton rows={4} />,
   component: Blog,
 });
 
@@ -43,6 +46,8 @@ function Blog() {
         eyebrow="Blog"
         title="Notes from the work."
         body="Short, practical writing on digital delivery, AI tools and building skills that hold up."
+        image="/images/ndh-hero-960.webp"
+        imageAlt="Digital work in progress at a desk"
       />
       <main className="content journal-page">
         {posts.length === 0 ? (

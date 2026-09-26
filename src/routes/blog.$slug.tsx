@@ -1,5 +1,6 @@
 import { createFileRoute, Link, notFound } from '@tanstack/react-router';
 import { PageShell } from '@/components/PageShell';
+import { RouteSkeleton } from '@/components/RouteSkeleton';
 import { getPost } from '@/lib/catalog.functions';
 import { blogImage } from '@/lib/editorial-assets';
 
@@ -30,7 +31,37 @@ export const Route = createFileRoute('/blog/$slug')({
       meta.push({ property: 'og:image', content: 'https://ndh.com.ng/og-image.png' });
       meta.push({ name: 'twitter:image', content: 'https://ndh.com.ng/og-image.png' });
     }
-    return { meta };
+    return {
+      meta,
+      links: [{ rel: 'canonical', href: `https://ndh.com.ng/blog/${loaderData.slug}` }],
+      scripts: [
+        {
+          type: 'application/ld+json',
+          children: JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'Article',
+            headline: loaderData.title,
+            description: d,
+            image: loaderData.cover_image_url?.startsWith('https://') ? loaderData.cover_image_url : 'https://ndh.com.ng/og-image.png',
+            author: { '@type': 'Person', name: loaderData.author_name || 'Najeeb Digital Hub' },
+            publisher: { '@type': 'Organization', name: 'Najeeb Digital Hub', logo: { '@type': 'ImageObject', url: 'https://ndh.com.ng/apple-touch-icon.png' } },
+            datePublished: loaderData.published_at || undefined,
+            mainEntityOfPage: `https://ndh.com.ng/blog/${loaderData.slug}`,
+          }),
+        },
+        {
+          type: 'application/ld+json',
+          children: JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'BreadcrumbList',
+            itemListElement: [
+              { '@type': 'ListItem', position: 1, name: 'Blog', item: 'https://ndh.com.ng/blog' },
+              { '@type': 'ListItem', position: 2, name: loaderData.title, item: `https://ndh.com.ng/blog/${loaderData.slug}` },
+            ],
+          }),
+        },
+      ],
+    };
   },
   errorComponent: () => (
     <PageShell>
@@ -52,6 +83,7 @@ export const Route = createFileRoute('/blog/$slug')({
       </main>
     </PageShell>
   ),
+  pendingComponent: () => <RouteSkeleton rows={1} />,
   component: Post,
 });
 

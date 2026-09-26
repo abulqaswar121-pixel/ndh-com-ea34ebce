@@ -3,6 +3,7 @@ import { ArrowUpRight, BarChart3, BadgeCheck, Bot, Code2, Megaphone, Palette, Pe
 import { PageShell, PageIntro, Button } from '@/components/PageShell';
 import { Reveal } from '@/components/Reveal';
 import { Rail } from '@/components/Rail';
+import { RouteSkeleton } from '@/components/RouteSkeleton';
 import { listCaseStudies, listTestimonials } from '@/lib/catalog.functions';
 import { testimonialPortrait } from '@/lib/testimonial-portraits';
 import agencyCollaboration from '@/assets/agency-collaboration.jpg';
@@ -29,7 +30,10 @@ export const Route = createFileRoute('/agency/')({
     links: [{ rel: 'canonical', href: 'https://ndh.com.ng/agency' }],
   }),
   loader: async () => {
-    const [studies, testimonials] = await Promise.all([listCaseStudies(), listTestimonials()]);
+    const [studies, testimonials] = await Promise.all([
+      listCaseStudies().catch(() => []),
+      listTestimonials().catch(() => []),
+    ]);
     return { studies, testimonials };
   },
   errorComponent: () => (
@@ -40,6 +44,7 @@ export const Route = createFileRoute('/agency/')({
       </main>
     </PageShell>
   ),
+  pendingComponent: () => <RouteSkeleton rows={6} />,
   component: Agency,
 });
 
@@ -69,11 +74,13 @@ function Agency() {
         eyebrow="Agency"
         title="Digital work, with a better route through it."
         body="NDH brings digital services, project management and review into one considered delivery process."
+        image={agencyCollaboration}
+        imageAlt="Creative team reviewing a digital project together"
       />
       <main className="content agency-content">
         <Reveal>
           <div className="agency-banner">
-            <img src={agencyCollaboration} alt="A creative team reviewing digital work together" width={1600} height={1008} loading="eager" fetchPriority="high" decoding="async" />
+            <img src={projectDelivery} alt="Digital project planning across laptop and mobile" width={1600} height={1008} loading="lazy" decoding="async" />
             <div>
               <p className="eyebrow">The NDH method</p>
               <h2>Good work needs a clear path.</h2>
@@ -159,31 +166,62 @@ function Agency() {
                   </Link>
                 ))}
               </div>
-              {testimonials.length > 0 && (
-                <div className="testimonial-block">
-                  <div className="section-heading">
-                    <p className="eyebrow">Client &amp; stakeholder verification</p>
-                    <h2>What our clients say.</h2>
-                  </div>
-                  <Rail label="Client testimonials" className="testimonial-rail" autoPlay autoPlayInterval={4000}>
-                    {testimonials.slice(0, 10).map((t) => {
-                      const portrait = testimonialPortrait(t.author_name, t.avatar_url);
-                      return (
-                      <blockquote className="testimonial-card" key={t.id}>
-                        <span className="testimonial-quote-mark" aria-hidden="true">“</span>
-                        {t.service_area && <span className="testimonial-service">{t.service_area}</span>}
-                        <p>{t.quote}</p>
-                        <div className="testimonial-person">
-                          {portrait ? <img className="testimonial-avatar" src={portrait} alt={`${t.author_name} portrait`} width={48} height={48} loading="lazy" decoding="async" /> : <span className="testimonial-avatar testimonial-initials" aria-hidden="true">{t.author_name.split(/\s+/).map((part) => part[0]).join('').slice(0, 2).toUpperCase()}</span>}
-                          <span><strong>{t.author_name}</strong><small>{[t.author_role !== t.author_name ? t.author_role : null, t.company].filter(Boolean).join(' · ') || 'NDH client'}</small></span>
-                          {t.badge && <span className="testimonial-badge"><BadgeCheck size={14} /> {t.badge}</span>}
-                        </div>
-                      </blockquote>
-                      );
-                    })}
-                  </Rail>
+              <div className="actions" style={{ marginTop: 24 }}>
+                <Button to="/work">
+                  See all case studies <ArrowUpRight size={16} />
+                </Button>
+              </div>
+            </section>
+          </Reveal>
+        )}
+
+        {testimonials.length > 0 && (
+          <Reveal>
+            <section>
+              <div className="testimonial-block">
+                <div className="section-heading">
+                  <p className="eyebrow">Client &amp; stakeholder verification</p>
+                  <h2>What our clients say.</h2>
                 </div>
-              )}
+                <Rail label="Client testimonials" className="testimonial-rail" autoPlay autoPlayInterval={4000}>
+                  {testimonials.slice(0, 10).map((t) => {
+                    const portrait = testimonialPortrait(t.author_name, t.avatar_url);
+                    return (
+                    <blockquote className="testimonial-card" key={t.id}>
+                      <span className="testimonial-quote-mark" aria-hidden="true">“</span>
+                      {t.service_area && <span className="testimonial-service">{t.service_area}</span>}
+                      <p>{t.quote}</p>
+                      <div className="testimonial-person">
+                        {portrait ? <img className="testimonial-avatar" src={portrait} alt={`${t.author_name} portrait`} width={48} height={48} loading="lazy" decoding="async" /> : <span className="testimonial-avatar testimonial-initials" aria-hidden="true">{t.author_name.split(/\s+/).map((part) => part[0]).join('').slice(0, 2).toUpperCase()}</span>}
+                        <span><strong>{t.author_name}</strong><small>{[t.author_role !== t.author_name ? t.author_role : null, t.company].filter(Boolean).join(' · ') || 'NDH client'}</small></span>
+                        {t.badge && <span className="testimonial-badge"><BadgeCheck size={14} /> {t.badge}</span>}
+                      </div>
+                    </blockquote>
+                    );
+                  })}
+                </Rail>
+              </div>
+            </section>
+          </Reveal>
+        )}
+
+        {studies.length === 0 && (
+          <Reveal>
+            <section>
+              <div className="section-heading">
+                <p className="eyebrow">Selected work</p>
+                <h2>Case studies are being prepared.</h2>
+                <p>We&rsquo;re publishing verified project write-ups. In the meantime, book a scoping call and we&rsquo;ll walk you through recent work directly.</p>
+              </div>
+              <img
+                className="selected-work-visual"
+                src={projectDelivery}
+                alt="An editorial view of interface planning and digital project delivery"
+                width={1600}
+                height={1008}
+                loading="lazy"
+                decoding="async"
+              />
             </section>
           </Reveal>
         )}

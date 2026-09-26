@@ -4,6 +4,7 @@ import { PageShell, PageIntro, Button } from '@/components/PageShell';
 import { Reveal } from '@/components/Reveal';
 import { listCaseStudies } from '@/lib/catalog.functions';
 import { caseStudyImage } from '@/lib/editorial-assets';
+import { RouteSkeleton } from '@/components/RouteSkeleton';
 
 const title = 'Selected work — Case studies | Najeeb Digital Hub';
 const description = 'Projects delivered by Najeeb Digital Hub: the brief, the approach and the outcome.';
@@ -20,8 +21,9 @@ export const Route = createFileRoute('/work/')({
       { name: 'twitter:card', content: 'summary_large_image' },
       { name: 'twitter:image', content: 'https://ndh.com.ng/og-image.png' },
     ],
+    links: [{ rel: 'canonical', href: 'https://ndh.com.ng/work' }],
   }),
-  loader: () => listCaseStudies(),
+  loader: () => listCaseStudies().catch(() => []),
   errorComponent: () => (
     <PageShell>
       <main className="content">
@@ -30,6 +32,7 @@ export const Route = createFileRoute('/work/')({
       </main>
     </PageShell>
   ),
+  pendingComponent: () => <RouteSkeleton rows={4} />,
   component: Work,
 });
 
@@ -42,6 +45,8 @@ function Work() {
         eyebrow="Selected work"
         title="What we have delivered."
         body="A closer look at briefs we have taken on: the problem, the route we chose and the result."
+        image="/images/ndh-agency-work-960.webp"
+        imageAlt="Creative team reviewing a digital project"
       />
       <main className="content work-page">
         {studies.length === 0 ? (

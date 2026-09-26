@@ -15,6 +15,7 @@ export const Route = createFileRoute('/terms')({
       { property: 'og:type', content: 'website' },
       { name: 'twitter:card', content: 'summary' },
     ],
+    links: [{ rel: 'canonical', href: 'https://ndh.com.ng/terms' }],
   }),
   component: () => (
     <PageShell>
