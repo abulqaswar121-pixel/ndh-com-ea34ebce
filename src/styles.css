@@ -4239,3 +4239,110 @@ body.nav-is-open .ai-assistant-launcher {
     animation: none;
   }
 }
+
+/* Editorial density: alternating surfaces, visible sections, and useful first screens. */
+:root { --section-y: 68px; }
+
+.reveal { opacity: 1; transform: none; transition: none; }
+.page-intro {
+  max-width: none;
+  margin: 0;
+  padding: 52px max(var(--gutter), calc((100% - var(--page)) / 2 + var(--gutter))) 56px;
+  background: var(--surface);
+  border-bottom: 1px solid var(--line);
+}
+.page-intro:not(.page-intro-image) {
+  background: linear-gradient(115deg, var(--surface) 65%, var(--accent-soft));
+}
+.page-intro-image {
+  display: grid;
+  grid-template-columns: minmax(0, .88fr) minmax(0, 1.12fr);
+  gap: clamp(24px, 4vw, 60px);
+  align-items: center;
+  min-height: 380px;
+}
+.page-intro-inner { min-width: 0; }
+.page-intro h1 { max-width: 20ch; }
+.page-intro-media {
+  display: block;
+  width: 100%;
+  height: clamp(260px, 31vw, 420px);
+  object-fit: cover;
+  border-radius: var(--radius);
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow-lift);
+}
+.intro-link { display: inline-flex; align-items: center; gap: 8px; margin-top: 18px; color: var(--ink); font-weight: 700; text-underline-offset: 5px; }
+.content { padding-top: 42px; padding-bottom: 68px; }
+.content section { padding-bottom: 56px; }
+.content > section:nth-of-type(even) { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 28px; margin-bottom: 42px; }
+.section-heading { margin-bottom: 26px; }
+.home-section { padding-block: 60px; }
+.split-section { padding-bottom: 64px; }
+.agency-banner { margin-bottom: 60px; }
+.cta-panel { margin-bottom: 64px; padding: 44px; }
+.about-grid .prose, .contact-aside, .content.prose { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: clamp(22px, 3vw, 38px); }
+.content.prose { margin-block: 32px 64px; }
+.faq-group { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: clamp(18px, 3vw, 32px); }
+.pillar-card, .service-card, .course-card, .step-card, .portal-card, .portal-stat, .stat-card, .process-row > div { background: var(--paper); border: 1px solid var(--line-strong); box-shadow: var(--shadow-soft); }
+.portal-shell { background: var(--surface); }
+.portal-main { padding-bottom: 44px; }
+.portal-section { margin-block: 36px; }
+.portal-section-title { margin-bottom: 18px; }
+.portal-stat { min-width: 0; }
+
+.home-hero {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  align-items: center;
+  max-width: none;
+  min-height: 0;
+  height: min(650px, 74svh);
+  padding: 64px max(var(--gutter), calc((100% - var(--page)) / 2 + var(--gutter)));
+  background: var(--ink);
+  overflow: hidden;
+}
+.home-hero-image { position: absolute; z-index: -2; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center 44%; }
+.home-hero::before { content: ""; position: absolute; z-index: -1; inset: 0; background: linear-gradient(90deg, color-mix(in srgb, var(--ink) 94%, transparent), color-mix(in srgb, var(--ink) 73%, transparent) 46%, color-mix(in srgb, var(--ink) 12%, transparent)); }
+.home-hero .hero-copy { max-width: 600px; }
+.home-hero .eyebrow { color: var(--accent-line); }
+.home-hero h1 { color: var(--paper); max-width: 13ch; font-style: normal; line-height: 1.05; letter-spacing: 0; }
+.home-hero .lede { color: var(--paper); max-width: 53ch; }
+.home-hero .button-secondary { color: var(--paper) !important; border-color: var(--paper); }
+.home-paths { max-width: var(--page); margin: 0 auto; display: flex; gap: 12px; flex-wrap: wrap; padding: 20px var(--gutter); border-bottom: 1px solid var(--line); }
+.home-paths .button { display: inline-flex; align-items: center; gap: 12px; white-space: nowrap; }
+.home-section:nth-of-type(even) { max-width: none; padding-inline: max(var(--gutter), calc((100% - var(--page)) / 2 + var(--gutter))); background: var(--surface); border-block: 1px solid var(--line); }
+.faq-content > section { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 28px; margin-bottom: 20px; }
+.faq-content > section:nth-of-type(even) { background: var(--paper); }
+.portal-head { gap: 18px; padding-bottom: 18px; margin-bottom: 24px; }
+.portal-card, .stat-card { padding: 19px; }
+.portal-card p { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden; }
+.portal-section-title svg { color: var(--accent); }
+
+@media (max-width: 760px) {
+  :root { --section-y: 48px; }
+  .page-intro { padding: 32px var(--gutter) 38px; }
+  .page-intro-image { display: flex; flex-direction: column; align-items: stretch; min-height: 0; gap: 22px; }
+  .page-intro-media { height: 210px; }
+  .content { padding-top: 32px; padding-bottom: 50px; }
+  .content section { padding-bottom: 40px; }
+  .content > section:nth-of-type(even) { padding: 20px; margin-bottom: 30px; }
+  .home-section { padding-block: 44px; }
+  .split-section { padding-bottom: 48px; }
+  .cta-panel { padding: 28px; margin-bottom: 48px; }
+  .home-hero { height: auto; min-height: 540px; padding: 54px var(--gutter); }
+  .home-hero::before { background: linear-gradient(90deg, color-mix(in srgb, var(--ink) 92%, transparent), color-mix(in srgb, var(--ink) 63%, transparent)); }
+  .home-hero h1 { font-size: clamp(36px, 9vw, 52px); }
+  .home-paths { padding-block: 16px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 7px; }
+  .home-paths .button { min-width: 0; padding: 10px 6px; justify-content: center; font-size: 10px; gap: 3px; }
+  .home-paths .button svg { width: 12px; flex: none; }
+  .portal-grid { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(245px, 82%); grid-template-columns: none; overflow-x: auto; scroll-snap-type: x mandatory; padding: 2px 2px 14px; }
+  .portal-grid > * { scroll-snap-align: start; }
+  .portal-head { margin-bottom: 20px; padding-bottom: 16px; }
+  .portal-stats { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 7px; }
+  .portal-stat { padding: 12px 9px; min-height: 100px; align-content: center; }
+  .portal-stat small { font-size: 10px; line-height: 1.25; overflow-wrap: anywhere; }
+  .portal-stat strong { font-size: 1.35rem; }
+  .faq-content > section { padding: 20px; }
+}

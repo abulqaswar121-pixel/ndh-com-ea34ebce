@@ -23,7 +23,6 @@ export const Route = createFileRoute('/')({
     ],
     links: [
       { rel: 'canonical', href: 'https://ndh.com.ng/' },
-      { rel: 'preload', as: 'image', href: '/images/ndh-hero-640.avif', fetchPriority: 'high' },
     ],
     scripts: [
       {

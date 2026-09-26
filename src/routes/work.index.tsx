@@ -43,7 +43,7 @@ function Work() {
         title="What we have delivered."
         body="A closer look at briefs we have taken on: the problem, the route we chose and the result."
         image="/images/ndh-agency-work-960.webp"
-        imageAlt="A project team reviewing work together"
+        imageAlt="Creative team reviewing a digital project"
       />
       <main className="content work-page">
         {studies.length === 0 ? (

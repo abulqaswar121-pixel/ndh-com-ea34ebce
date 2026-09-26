@@ -30,7 +30,7 @@ function About() {
         title="A digital agency and an AI skills academy."
         body="Najeeb Digital Hub helps businesses access digital delivery, and helps learners develop practical AI skills they can prove."
         image="/ndh-about-new.webp"
-        imageAlt="Digital workspace at Najeeb Digital Hub"
+        imageAlt="Bright modern workspace with desks and a laptop"
       />
       <main className="content">
         <div className="about-grid">

@@ -1,7 +1,7 @@
 # Roadmap
 
-- [ ] Tighten empty public and portal sections; restore first-screen visual density across desktop and phone.
-- [ ] Verify updated pages and share the exact changed sections.
+- [x] Tighten empty public and portal sections; restore first-screen visual density across desktop and phone.
+- [x] Verify updated pages and share the exact changed sections.
 - [x] Fix all current preview typecheck/build errors.
 - [x] Transactional email: enquiry ack + admin alert, payment receipt, certificate issued, invitation.
 - [x] Client/PM portals: project messaging, file sharing, project + task creation.
