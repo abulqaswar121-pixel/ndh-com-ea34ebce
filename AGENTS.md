@@ -8,3 +8,5 @@
 > Commits you push to the connected branch sync back to Lovable and show up in
 > the editor, so keep the branch in a working state.
 <!-- LOVABLE:END -->
+
+Public homepage work previews read the same published case-study catalogue as the Work page, but fail open to the existing static homepage when that catalogue is unavailable; this keeps the first screen usable during content-service outages.

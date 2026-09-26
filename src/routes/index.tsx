@@ -1,15 +1,24 @@
-import { createFileRoute } from '@tanstack/react-router';
+import { createFileRoute, Link } from '@tanstack/react-router';
 import { ArrowUpRight, Boxes, BrainCircuit, CheckCircle2 } from 'lucide-react';
 import { PageShell, Button } from '@/components/PageShell';
 import { Reveal } from '@/components/Reveal';
 import { ResponsiveImage } from '@/components/ResponsiveImage';
 import agencyCollaboration from '@/assets/agency-collaboration.jpg';
+import { listCaseStudies } from '@/lib/catalog.functions';
+import { caseStudyImage } from '@/lib/editorial-assets';
 
 const title = 'Najeeb Digital Hub — Digital delivery and AI skills';
 const description =
   'A digital agency and AI skills academy. Brief the work, get it scoped, reviewed and delivered — or learn a practical AI skill and get certified.';
 
 export const Route = createFileRoute('/')({
+  loader: async () => {
+    try {
+      return (await listCaseStudies()).slice(0, 3);
+    } catch {
+      return [];
+    }
+  },
   head: () => ({
     meta: [
       { title },
@@ -54,6 +63,7 @@ const pillars = [
 ] as const;
 
 function Home() {
+  const studies = Route.useLoaderData();
   return (
     <PageShell>
       <main>
@@ -103,6 +113,35 @@ function Home() {
             ))}
           </div>
         </section>
+
+        {studies.length > 0 && (
+          <section className="home-work-section" aria-labelledby="home-work-title">
+            <div className="home-work-inner">
+              <div className="home-work-heading">
+                <div>
+                  <p className="eyebrow">Selected work</p>
+                  <h2 id="home-work-title">Built for real use.</h2>
+                </div>
+                <Button to="/work" secondary>See all work <ArrowUpRight size={16} /></Button>
+              </div>
+              <div className="home-work-grid">
+                {studies.map((study) => {
+                  const image = caseStudyImage(study.slug, study.cover_image_url);
+                  return (
+                    <Link key={study.slug} className="home-work-item" to="/work/$slug" params={{ slug: study.slug }}>
+                      {image && <img src={image} alt={`Cover for ${study.title}`} width={800} height={530} loading="lazy" decoding="async" />}
+                      <div className="home-work-item-copy">
+                        <span className="eyebrow">{study.category ?? 'Case study'}</span>
+                        <h3>{study.title}</h3>
+                        <ArrowUpRight size={20} aria-hidden="true" />
+                      </div>
+                    </Link>
+                  );
+                })}
+              </div>
+            </div>
+          </section>
+        )}
 
         <section className="split-section">
           <Reveal>
