@@ -2,6 +2,12 @@ name: Capture Hague Export walkthrough
 
 on:
   workflow_dispatch:
+  push:
+    branches:
+      - arena/01a0e537-ndh-com-ea34ebce
+    paths:
+      - .github/workflows/capture-hague.yml
+      - scripts/capture-hague.mjs
 
 jobs:
   capture:
