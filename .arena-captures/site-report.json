@@ -1,5 +1,5 @@
 {
-  "capturedAt": "2026-09-27T23:46:41.867Z",
+  "capturedAt": "2026-09-27T23:50:38.122Z",
   "publicPages": [
     {
       "route": "/marketplace",
@@ -3504,8 +3504,45 @@
   "homeFullPage": "images/00-home-full.jpg",
   "kemiAssistant": "images/14-kemi-ai-assistant-open.jpg",
   "marketplaceControls": "images/28-marketplace-search-filter-controls.jpg",
-  "rfqDialog": {
-    "image": "images/60-buyer-structured-rfq-form.png",
-    "text": "REQUEST FORMAL QUOTATION\nSesame Seeds HS 1207.40\n\nIndicative FOB market: \n$1,620\n/MT\n · Your RFQ goes only to badge-verified suppliers of this commodity.\n\n1\n\nVolume & Timeline\n\nStep 1 of 3\n\n2\n\nTerms & Destination\n\nStep 2 of 3\n\n3\n\nPricing & Inspection\n\nStep 3 of 3\n\nQuantity required — Metric Tons (MT) *\n19 MT\n25 MT\n50 MT\n100 MT\nMOQ for this listing: 19 MT\nTarget delivery timeline\nImmediate (≤ 30 days)\n30 – 60 days\n60 – 90 days\nFlexible\n19 MT · 30 – 60 days\nContinue\nClose"
-  }
+  "exporterFeatures": [
+    {
+      "label": "Add Commodity",
+      "image": "images/65-exporter-add-commodity-form.png",
+      "text": "Add New Commodity\n\nListing publishes instantly to your storefront and the public marketplace (Phase 1 preview).\n\nCommodity name *\nCategory\nOilseeds & Legumes\nQuality grade\nGrade A\nOrigin state\nKano\nPackaging\n50kg PP bags\nMOQ (MT)\nFOB price — USD/MT *\nProduct brief (optional)\nCancel\nPublish Listing\nClose"
+    },
+    {
+      "label": "Send Quote",
+      "image": "images/66-exporter-send-quote-form.png",
+      "text": "Send Quote\nRFQ-2026-00131\n\n50 MT of Raw Cashew Nuts → Ho Chi Minh City (Cat Lai), Vietnam · buyer target $1,050–$1,180/MT\n\nUnit price — USD per MT *\n\nContract value ≈ $55,750\n\nIncoterm basis\nCIF Ho Chi Minh City (Cat Lai)\nLead time (days)\nQuote validity (days)\nTerms & notes to buyer\nCancel\nSend Quote to Buyer\nClose"
+    }
+  ],
+  "buyerFeatures": [
+    {
+      "label": "New RFQ",
+      "image": "images/67-buyer-new-rfq-commodity-picker.png",
+      "text": "Start a new RFQ\n\nPick the commodity line you want to source — the RFQ wizard opens next.\n\nSesame Seeds\nOilseeds & Legumes · MOQ 19 MT\nRaw Cashew Nuts\nNuts & Kernels · MOQ 25 MT\nPremium Cocoa Beans\nCocoa & Beverages · MOQ 25 MT\nSplit Ginger\nSpices & Botanicals · MOQ 13 MT\nDried Hibiscus Flowers\nSpices & Botanicals · MOQ 9 MT\nRaw Shea Butter\nNut Butters & Extracts · MOQ 10 MT\nPalm Kernel Shell\nIndustrial Biomass · MOQ 100 MT\nNon-GMO Soybeans\nOilseeds & Legumes · MOQ 25 MT\nDried Mango Slices\nFresh & Dried Fruits · MOQ 5 MT\nKolanut\nTraditional & Specialty Crops · MOQ 13 MT\nClose"
+    },
+    {
+      "label": "Compare supplier quotes",
+      "image": "images/68-buyer-compare-supplier-quotes.png",
+      "text": "RECEIVED QUOTES · COMPARISON\n\nPremium Cocoa Beans\n\nRFQ-2026-00098\n\nVOLUME\n\n25 MT\n\nYOUR TARGET\n\n$7,300–8,000\n\nQUOTES\n\n3\n\nBid spread: $230/MT between highest and lowest — worth ≈ $5,750 on total contract value.\n\nSahel Prime Exports Ltd\n\nPlatinum Verified\nBest price\nQT-8227\n\n$7,680/MT\n\n≈ $192,000 total · CIF Hamburg\n\n28d lead\nvalid 7d\n\n\"Ondo-origin lot, atrazine-free. Price firm for 2 containers.\"\n\nAccept Quote\nDecline\nChat on WhatsApp\n\nCross River Cocoa Commodities\n\nGold Verified\nQT-8204\n\n$7,720/MT\n\n≈ $193,000 total · CIF Hamburg\n\n21d lead\nvalid 14d\n\n\"Main-crop, cut-test ≥ 85% brown. SGS at loading included.\"\n\nAccept Quote\nDecline\nChat on WhatsApp\n\nLagos Gateway Commodities Plc\n\nPlatinum Verified\nQT-8211\n\n$7,910/MT\n\n≈ $197,750 total · CIF Hamburg\n\n14d lead\nvalid 10d\n\n\"Ex-warehouse Apapa, immediate allocation. LC at sight preferred.\"\n\nAccept Quote\nDecline\nChat on WhatsApp\n\nQuotes sorted by price. Accepting a quote locks the lane and starts contract drafting with Hague's trade desk.\n\nClose"
+    }
+  ],
+  "rfqDialog": [
+    {
+      "step": 1,
+      "image": "images/60-buyer-structured-rfq-step-1.png",
+      "text": "REQUEST FORMAL QUOTATION\nSesame Seeds HS 1207.40\n\nIndicative FOB market: \n$1,620\n/MT\n · Your RFQ goes only to badge-verified suppliers of this commodity.\n\n1\n\nVolume & Timeline\n\nStep 1 of 3\n\n2\n\nTerms & Destination\n\nStep 2 of 3\n\n3\n\nPricing & Inspection\n\nStep 3 of 3\n\nQuantity required — Metric Tons (MT) *\n19 MT\n25 MT\n50 MT\n100 MT\nMOQ for this listing: 19 MT\nTarget delivery timeline\nImmediate (≤ 30 days)\n30 – 60 days\n60 – 90 days\nFlexible\n19 MT · 30 – 60 days\nContinue\nClose"
+    },
+    {
+      "step": 2,
+      "image": "images/61-buyer-structured-rfq-step-2.png",
+      "text": "REQUEST FORMAL QUOTATION\nSesame Seeds HS 1207.40\n\nIndicative FOB market: \n$1,620\n/MT\n · Your RFQ goes only to badge-verified suppliers of this commodity.\n\nVolume & Timeline\n\nStep 1 of 3\n\n2\n\nTerms & Destination\n\nStep 2 of 3\n\n3\n\nPricing & Inspection\n\nStep 3 of 3\n\nDesired Incoterm *\n\nFOB — Lagos Apapa\n\nBuyer arranges main freight\n\nFOB — Tin Can Island\n\nBuyer arranges main freight\n\nCIF — Destination Port\n\nSupplier covers freight & insurance\n\nCFR — Destination Port\n\nSupplier covers freight\n\nDestination country\nGermany\nDestination port\nHamburg\nCIF Hamburg, Germany\nBack\nContinue\nClose"
+    },
+    {
+      "step": 3,
+      "image": "images/62-buyer-structured-rfq-step-3.png",
+      "text": "REQUEST FORMAL QUOTATION\nSesame Seeds HS 1207.40\n\nIndicative FOB market: \n$1,620\n/MT\n · Your RFQ goes only to badge-verified suppliers of this commodity.\n\nVolume & Timeline\n\nStep 1 of 3\n\nTerms & Destination\n\nStep 2 of 3\n\n3\n\nPricing & Inspection\n\nStep 3 of 3\n\nTarget price range per MT (USD) *\nMIN\nMAX\n\nIndicative FOB band for this grade: $1,480 – $1,750 /MT\n\nPackaging requirement\n50kg PP bags\nCargo inspection specification\nSGS\nBureau Veritas\nCotecna\nIntertek\nNo third-party inspection\nAdditional notes to suppliers (optional)\nTarget $1K–$2K/MT\nBack\nSubmit RFQ to Suppliers\nClose"
+    }
+  ]
 }
