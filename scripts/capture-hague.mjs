@@ -170,7 +170,76 @@ const buyerStart = Math.max(45, exporterResult.nextIndex);
 const buyerResult = await captureWorkspace('buyer', String(buyerStart));
 report.workspaces.buyer = buyerResult.workspace;
 
-// Capture the structured RFQ modal while authenticated as the buyer.
+// Exporter dashboard tabs and working dialogs.
+report.exporterFeatures = [];
+await openDemo('exporter');
+for (const [label, name] of [
+  ['My Listed Products (3)', '61-exporter-my-listed-products'],
+  ['Sent Quotes (1)', '62-exporter-sent-quotes'],
+  ['Verification Status', '63-exporter-verification-status'],
+  ['Incoming RFQs', '64-exporter-incoming-rfqs'],
+]) {
+  const tab = page.getByRole('button', { name: label, exact: false }).first();
+  if (await tab.count()) {
+    await tab.click();
+    await page.waitForTimeout(350);
+    report.exporterFeatures.push({ label, image: await fullPage(name), text: await page.locator('main').innerText().catch(() => page.locator('body').innerText()) });
+  }
+}
+const addCommodity = page.getByRole('button', { name: /Add Commodity/i }).first();
+if (await addCommodity.count()) {
+  await addCommodity.click();
+  await page.waitForTimeout(450);
+  const dialog = page.getByRole('dialog');
+  if (await dialog.count()) {
+    const file = path.join(IMG, '65-exporter-add-commodity-form.png');
+    await dialog.screenshot({ path: file, animations: 'disabled' });
+    report.exporterFeatures.push({ label: 'Add Commodity', image: path.relative(OUT, file), text: await dialog.innerText() });
+  }
+  await page.keyboard.press('Escape');
+}
+const sendQuote = page.getByRole('button', { name: /Send Quote/i }).first();
+if (await sendQuote.count()) {
+  await sendQuote.click();
+  await page.waitForTimeout(450);
+  const dialog = page.getByRole('dialog');
+  if (await dialog.count()) {
+    const file = path.join(IMG, '66-exporter-send-quote-form.png');
+    await dialog.screenshot({ path: file, animations: 'disabled' });
+    report.exporterFeatures.push({ label: 'Send Quote', image: path.relative(OUT, file), text: await dialog.innerText() });
+  }
+  await page.keyboard.press('Escape');
+}
+
+// Buyer dashboard actions.
+report.buyerFeatures = [];
+await openDemo('buyer');
+const newRfq = page.getByRole('button', { name: /^New RFQ$/i }).first();
+if (await newRfq.count()) {
+  await newRfq.click();
+  await page.waitForTimeout(450);
+  const dialog = page.getByRole('dialog');
+  if (await dialog.count()) {
+    const file = path.join(IMG, '67-buyer-new-rfq-commodity-picker.png');
+    await dialog.screenshot({ path: file, animations: 'disabled' });
+    report.buyerFeatures.push({ label: 'New RFQ', image: path.relative(OUT, file), text: await dialog.innerText() });
+  }
+  await page.keyboard.press('Escape');
+}
+const compareQuotes = page.getByRole('button', { name: /Compare 3 Quotes/i }).first();
+if (await compareQuotes.count()) {
+  await compareQuotes.click();
+  await page.waitForTimeout(450);
+  const dialog = page.getByRole('dialog');
+  if (await dialog.count()) {
+    const file = path.join(IMG, '68-buyer-compare-supplier-quotes.png');
+    await dialog.screenshot({ path: file, animations: 'disabled' });
+    report.buyerFeatures.push({ label: 'Compare supplier quotes', image: path.relative(OUT, file), text: await dialog.innerText() });
+  }
+  await page.keyboard.press('Escape');
+}
+
+// Capture each available step of the structured RFQ wizard while authenticated.
 await page.goto(`${BASE}/product/sesame-seeds`, { waitUntil: 'domcontentloaded', timeout: 60000 });
 await settle();
 const rfq = page.getByRole('button', { name: /Request Formal Quotation|Request Quote/i }).first();
@@ -179,9 +248,17 @@ if (await rfq.count()) {
   await page.waitForTimeout(700);
   const dialog = page.getByRole('dialog');
   if (await dialog.count()) {
-    const file = path.join(IMG, '60-buyer-structured-rfq-form.png');
-    await dialog.screenshot({ path: file, animations: 'disabled' });
-    report.rfqDialog = { image: path.relative(OUT, file), text: await dialog.innerText() };
+    report.rfqDialog = [];
+    for (let step = 1; step <= 3; step += 1) {
+      const file = path.join(IMG, `${59 + step}-buyer-structured-rfq-step-${step}.png`);
+      await dialog.screenshot({ path: file, animations: 'disabled' });
+      report.rfqDialog.push({ step, image: path.relative(OUT, file), text: await dialog.innerText() });
+      if (step === 3) break;
+      const next = dialog.getByRole('button', { name: /Continue/i }).first();
+      if (!(await next.count()) || await next.isDisabled()) break;
+      await next.click();
+      await page.waitForTimeout(350);
+    }
   } else {
     report.rfqAfterClick = { url: page.url(), image: await viewportShot('60-buyer-rfq-after-click') };
   }
