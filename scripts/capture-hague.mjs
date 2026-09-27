@@ -174,12 +174,12 @@ report.workspaces.buyer = buyerResult.workspace;
 report.exporterFeatures = [];
 await openDemo('exporter');
 for (const [label, name] of [
-  ['My Listed Products (3)', '61-exporter-my-listed-products'],
-  ['Sent Quotes (1)', '62-exporter-sent-quotes'],
-  ['Verification Status', '63-exporter-verification-status'],
-  ['Incoming RFQs', '64-exporter-incoming-rfqs'],
+  ['My Listed Products', '69-exporter-my-listed-products'],
+  ['Sent Quotes', '70-exporter-sent-quotes'],
+  ['Verification Status', '71-exporter-verification-status'],
+  ['Incoming RFQs', '72-exporter-incoming-rfqs'],
 ]) {
-  const tab = page.getByRole('button', { name: label, exact: false }).first();
+  const tab = page.locator('button', { hasText: label }).first();
   if (await tab.count()) {
     await tab.click();
     await page.waitForTimeout(350);
