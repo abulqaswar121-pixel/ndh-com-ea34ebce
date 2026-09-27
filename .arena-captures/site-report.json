@@ -1,5 +1,5 @@
 {
-  "capturedAt": "2026-09-27T23:50:38.122Z",
+  "capturedAt": "2026-09-27T23:54:17.632Z",
   "publicPages": [
     {
       "route": "/marketplace",
@@ -3505,6 +3505,26 @@
   "kemiAssistant": "images/14-kemi-ai-assistant-open.jpg",
   "marketplaceControls": "images/28-marketplace-search-filter-controls.jpg",
   "exporterFeatures": [
+    {
+      "label": "My Listed Products",
+      "image": "images/69-exporter-my-listed-products.jpg",
+      "text": "EXPORTER COMMAND CENTER\n\nSahel Prime Exports Ltd\nGold Verified\nCorporate plan\nRC-1284756\nTrade Desk\nAdd Commodity\n\nACTIVE INQUIRIES\n\n6\nGlobal feed\n\nSENT QUOTES\n\n1\n3 views\n\nPROFILE VIEWS\n\n1,284\n12% w/w\n\nCURRENT TIER\n\nCorporate\n\nVERIFICATION\n\nGold\nIncoming RFQs\n6\nMy Listed Products (3)\nSent Quotes (1)\nVerification Status\nMy Listed Products\n\nLive storefront inventory — changes reflect instantly in the public marketplace.\n\nAdd New Commodity\nPRODUCT\tCATEGORY\tMOQ\tFOB $/MT\tORIGIN\tSTATUS\tACTIONS\nSesame Seeds\nGrade A — Natural / Hulled\n\tOilseeds & Legumes\t19 MT\t$1,620\tKano, Nasarawa, Jigawa, Benue\tActive\t\nView\n\nDried Hibiscus Flowers\nGrade A — whole dark red calyces\n\tSpices & Botanicals\t9 MT\t$2,150\tJigawa, Kano, Katsina, Borno\tActive\t\nView\n\nDried Mango Slices\nGrade A — unsulphured slices & cheeks\n\tFresh & Dried Fruits\t5 MT\t$2,950\tKano, Katsina, Niger, Benue\tActive\t\nView"
+    },
+    {
+      "label": "Sent Quotes",
+      "image": "images/70-exporter-sent-quotes.jpg",
+      "text": "EXPORTER COMMAND CENTER\n\nSahel Prime Exports Ltd\nGold Verified\nCorporate plan\nRC-1284756\nTrade Desk\nAdd Commodity\n\nACTIVE INQUIRIES\n\n6\nGlobal feed\n\nSENT QUOTES\n\n1\n3 views\n\nPROFILE VIEWS\n\n1,284\n12% w/w\n\nCURRENT TIER\n\nCorporate\n\nVERIFICATION\n\nGold\nIncoming RFQs\n6\nMy Listed Products (3)\nSent Quotes (1)\nVerification Status\nSent Quotes\n\nTrack every commercial offer you've transmitted to buyers.\n\nQUOTE\tRFQ\tPRICE /MT\tTERMS\tLEAD TIME\tVALIDITY\tSTATUS\nQT-8227\tRFQ-2026-00098 · Premium Cocoa Beans\t$7,680\tCIF Hamburg\t28 days\t7 days\tWith buyer"
+    },
+    {
+      "label": "Verification Status",
+      "image": "images/71-exporter-verification-status.jpg",
+      "text": "EXPORTER COMMAND CENTER\n\nSahel Prime Exports Ltd\nGold Verified\nCorporate plan\nRC-1284756\nTrade Desk\nAdd Commodity\n\nACTIVE INQUIRIES\n\n6\nGlobal feed\n\nSENT QUOTES\n\n1\n3 views\n\nPROFILE VIEWS\n\n1,284\n12% w/w\n\nCURRENT TIER\n\nCorporate\n\nVERIFICATION\n\nGold\nIncoming RFQs\n6\nMy Listed Products (3)\nSent Quotes (1)\nVerification Status\nVerification Journey\n\nEach tier unlocks more buyer trust, better placement and bigger tickets.\n\nTier 3 of 4 — Gold\n75% complete\n\nBronze — Basic Verification\n\nCompleted\nRegistered account with verified email & phone\nCompany profile with physical address\nOne trade reference on file\n\nSilver — Document Verified — CAC / NEPC\n\nCompleted\nCAC certificate of incorporation (RC number validated)\nValid NEPC exporter registration certificate\nTax Identification Number (TIN) matched\n\nGold — Site Inspection Verified\n\nCurrent\nPhysical warehouse / processing facility inspection\nQuality control process audit (HACCP-aligned)\nMinimum 3 completed trade references\nVerified export track record (≥ 12 months)\n4\n\nPlatinum — International Trade Certified\n\nAnnual compliance re-audit by third-party surveyor\nInternational certification (ISO 22000 / Organic / FairTrade)\nClean 24-month dispute record\nBank trade-instrument readiness (LC / CAD verified)\nCompleted checks\nIdentity & contact verification\nDone\nCAC certificate of incorporation\nDone\nNEPC exporter license\nDone\nPhysical site inspection\nDone\nInternational trade certification\nPending\n\nNext: Platinum tier\n\nAnnual compliance re-audit by third-party surveyor — complete the remaining requirements to upgrade.\n\nStart Platinum Audit\n\nIncluded free with your Corporate plan"
+    },
+    {
+      "label": "Incoming RFQs",
+      "image": "images/72-exporter-incoming-rfqs.jpg",
+      "text": "EXPORTER COMMAND CENTER\n\nSahel Prime Exports Ltd\nGold Verified\nCorporate plan\nRC-1284756\nTrade Desk\nAdd Commodity\n\nACTIVE INQUIRIES\n\n6\nGlobal feed\n\nSENT QUOTES\n\n1\n3 views\n\nPROFILE VIEWS\n\n1,284\n12% w/w\n\nCURRENT TIER\n\nCorporate\n\nVERIFICATION\n\nGold\nIncoming RFQs\n6\nMy Listed Products (3)\nSent Quotes (1)\nVerification Status\nGlobal Buyer RFQ Feed\n\nStructured demand from buyers in 5 countries — quote early to win the lane.\n\nUpdated 9 hrs ago\nRFQ\tCOMMODITY\tVOLUME\tBUYER\tTARGET BAND\tTIMELINE\tSTATUS\tACTION\nRFQ-2026-00098\n6 days ago\n\tPremium Cocoa Beans\nHS 1801.00\n\t25 MT\tWhitfield Commodities GmbH\nGermany\n\t$7,300–$8,000\t30 – 60 days\t\n3 Quotes Received\t\nQuoted\nRFQ-2026-00131\n1 day ago\n\tRaw Cashew Nuts\nHS 0801.31\n\t50 MT\tWhitfield Commodities GmbH\nGermany\n\t$1,050–$1,180\t30 – 60 days\t\nAwaiting Supplier Quotes\t\nSend Quote\nRFQ-2026-00117\n9 hrs ago\n\tSplit Ginger\nHS 0910.11\n\t54 MT\tAl-Rashid Trading LLC\nUnited Arab Emirates\n\t$2,400–$2,650\tImmediate (≤ 30 days)\t\nAwaiting Supplier Quotes\t\nSend Quote\nRFQ-2026-00122\n2 days ago\n\tRaw Cashew Nuts\nHS 0801.31\n\t200 MT\tThanh Nguyen Foods Co.\nVietnam\n\t$1,000–$1,120\t60 – 90 days\t\n2 Quotes Received\t\nSend Quote\nRFQ-2026-00128\n5 days ago\n\tDried Hibiscus Flowers\nHS 1211.90\n\t12 MT\tAndina Botanicals S.A.\nMexico\n\t$2,000–$2,300\t30 – 60 days\t\nAwaiting Supplier Quotes\t\nSend Quote\nRFQ-2026-00135\n4 days ago\n\tNon-GMO Soybeans\nHS 1201.90\n\t250 MT\tShandong Feed Group\nChina\n\t$500–$560\tFlexible\t\nIn Discussion\t\nSend Quote"
+    },
     {
       "label": "Add Commodity",
       "image": "images/65-exporter-add-commodity-form.png",
