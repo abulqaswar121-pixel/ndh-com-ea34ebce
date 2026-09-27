@@ -1,0 +1,33 @@
+name: Capture Hague Export walkthrough
+
+on:
+  workflow_dispatch:
+
+jobs:
+  capture:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: arena/01a0e537-ndh-com-ea34ebce
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Install browser tooling
+        run: |
+          mkdir -p /tmp/hague-capture
+          cd /tmp/hague-capture
+          npm init -y
+          npm install playwright@1.56.1
+          npx playwright install --with-deps chromium
+      - name: Capture the website
+        env:
+          NODE_PATH: /tmp/hague-capture/node_modules
+        run: node scripts/capture-hague.mjs
+      - uses: actions/upload-artifact@v4
+        with:
+          name: hague-export-captures
+          path: .arena-captures
+          retention-days: 3
+          if-no-files-found: error
