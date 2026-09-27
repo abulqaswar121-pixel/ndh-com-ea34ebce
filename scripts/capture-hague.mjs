@@ -68,6 +68,10 @@ const sectionCount = await page.locator('section').count();
 for (let i = 0; i < sectionCount; i += 1) {
   const locator = page.locator('section').nth(i);
   const heading = ((await locator.locator('h1,h2,h3').first().innerText().catch(() => '')) || `Section ${i + 1}`).trim();
+  if (!(await locator.isVisible().catch(() => false))) {
+    report.homeSections.push({ index: i + 1, heading, selector: `section:nth-of-type(${i + 1})`, skipped: 'Not visible at desktop size' });
+    continue;
+  }
   const name = `${String(i + 3).padStart(2, '0')}-home-${cleanName(heading).slice(0, 44)}`;
   const file = path.join(IMG, `${name}.png`);
   await locator.scrollIntoViewIfNeeded();

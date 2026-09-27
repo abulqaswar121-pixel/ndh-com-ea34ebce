@@ -28,7 +28,9 @@ jobs:
           npm install --no-save --ignore-scripts playwright@1.56.1
           npx playwright install --with-deps chromium
       - name: Capture the website
-        run: node scripts/capture-hague.mjs 2>&1 | tee capture.log
+        run: |
+          set -o pipefail
+          node scripts/capture-hague.mjs 2>&1 | tee capture.log
       - uses: actions/upload-artifact@v4
         if: always()
         with:
