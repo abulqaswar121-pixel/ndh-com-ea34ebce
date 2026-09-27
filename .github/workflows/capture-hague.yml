@@ -22,18 +22,16 @@ jobs:
           node-version: 22
       - name: Install browser tooling
         run: |
-          mkdir -p /tmp/hague-capture
-          cd /tmp/hague-capture
-          npm init -y
-          npm install playwright@1.56.1
+          npm install --no-save --ignore-scripts playwright@1.56.1
           npx playwright install --with-deps chromium
       - name: Capture the website
-        env:
-          NODE_PATH: /tmp/hague-capture/node_modules
-        run: node scripts/capture-hague.mjs
+        run: node scripts/capture-hague.mjs 2>&1 | tee capture.log
       - uses: actions/upload-artifact@v4
+        if: always()
         with:
           name: hague-export-captures
-          path: .arena-captures
+          path: |
+            .arena-captures
+            capture.log
           retention-days: 3
-          if-no-files-found: error
+          if-no-files-found: warn
