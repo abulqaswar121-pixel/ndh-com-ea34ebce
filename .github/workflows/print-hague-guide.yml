@@ -1,0 +1,38 @@
+name: Print Hague Export client guide
+
+on:
+  push:
+    branches:
+      - arena/01a0e537-ndh-com-ea34ebce
+    paths:
+      - client-walkthrough/**
+      - scripts/print-guide.mjs
+      - .github/workflows/print-hague-guide.yml
+
+permissions:
+  contents: write
+
+jobs:
+  print:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: arena/01a0e537-ndh-com-ea34ebce
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Install browser tooling
+        run: |
+          npm install --no-save --ignore-scripts playwright@1.56.1
+          npx playwright install --with-deps chromium
+      - name: Print shareable PDF
+        run: node scripts/print-guide.mjs
+      - name: Return PDF to the session branch
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -f client-walkthrough/Hague-Export-Client-Walkthrough.pdf
+          git commit -m "docs: add printable Hague Export client guide"
+          git push origin HEAD:arena/01a0e537-ndh-com-ea34ebce

@@ -1,0 +1,499 @@
+<!doctype html>
+<html lang="en-NG">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Hague Export — Client Website Walkthrough</title>
+  <style>
+    :root {
+      --navy: #071a33;
+      --navy-2: #102945;
+      --orange: #ef4b12;
+      --gold: #f5a40a;
+      --green: #11936a;
+      --ink: #152338;
+      --muted: #64748b;
+      --line: #dce4ed;
+      --paper: #ffffff;
+      --wash: #f4f7fa;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: var(--wash);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.55;
+    }
+    a { color: inherit; }
+    .cover {
+      min-height: 88vh;
+      display: grid;
+      align-items: end;
+      padding: clamp(32px, 7vw, 96px);
+      color: white;
+      background:
+        radial-gradient(circle at 82% 18%, rgba(245,164,10,.28), transparent 25%),
+        linear-gradient(135deg, rgba(7,26,51,.97), rgba(7,26,51,.88)),
+        url("images/02-home-search-hero.png") center / cover;
+    }
+    .cover-inner { max-width: 980px; }
+    .kicker, .eyebrow {
+      color: var(--orange);
+      font-size: 12px;
+      font-weight: 850;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+    }
+    .cover .kicker { color: #ffb18f; }
+    h1 {
+      max-width: 900px;
+      margin: 18px 0;
+      font-size: clamp(42px, 7vw, 88px);
+      line-height: .98;
+      letter-spacing: -.05em;
+    }
+    .cover p {
+      max-width: 760px;
+      margin: 0;
+      color: #dbe7f3;
+      font-size: clamp(17px, 2vw, 23px);
+    }
+    .cover-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 28px;
+    }
+    .pill {
+      padding: 8px 12px;
+      border: 1px solid rgba(255,255,255,.22);
+      border-radius: 999px;
+      color: #eef6ff;
+      background: rgba(255,255,255,.08);
+      font-size: 13px;
+      font-weight: 700;
+    }
+    .intro, .chapter, .note, .closing {
+      width: min(1180px, calc(100% - 36px));
+      margin-inline: auto;
+    }
+    .intro {
+      display: grid;
+      grid-template-columns: 1.3fr .7fr;
+      gap: 28px;
+      padding: 56px 0 24px;
+    }
+    .intro h2, .chapter-head h2, .closing h2 {
+      margin: 7px 0 12px;
+      color: var(--navy);
+      font-size: clamp(30px, 4vw, 50px);
+      line-height: 1.05;
+      letter-spacing: -.035em;
+    }
+    .intro p { margin: 0; color: #4e6074; font-size: 17px; }
+    .quick-list {
+      margin: 0;
+      padding: 22px 24px;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: white;
+      box-shadow: 0 12px 35px rgba(15,35,60,.07);
+    }
+    .quick-list strong { display: block; margin-bottom: 9px; color: var(--navy); }
+    .quick-list ol { margin: 0; padding-left: 20px; color: #52657a; }
+    .chapter { padding-top: 62px; }
+    .chapter-head {
+      display: grid;
+      grid-template-columns: 1fr minmax(260px, 420px);
+      gap: 28px;
+      align-items: end;
+      margin-bottom: 24px;
+      padding-bottom: 20px;
+      border-bottom: 2px solid var(--navy);
+    }
+    .chapter-head p { margin: 0; color: #52657a; }
+    .shot-card {
+      overflow: hidden;
+      margin: 0 0 34px;
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      background: var(--paper);
+      box-shadow: 0 16px 45px rgba(15,35,60,.09);
+    }
+    .image-wrap {
+      display: grid;
+      place-items: center;
+      min-height: 180px;
+      padding: 16px;
+      background:
+        linear-gradient(45deg, #edf2f7 25%, transparent 25%),
+        linear-gradient(-45deg, #edf2f7 25%, transparent 25%),
+        linear-gradient(45deg, transparent 75%, #edf2f7 75%),
+        linear-gradient(-45deg, transparent 75%, #edf2f7 75%), #f8fafc;
+      background-size: 20px 20px;
+      background-position: 0 0, 0 10px, 10px -10px, -10px 0;
+    }
+    .shot-card img {
+      display: block;
+      max-width: 100%;
+      width: auto;
+      height: auto;
+      max-height: 900px;
+      border-radius: 8px;
+      box-shadow: 0 8px 28px rgba(8,26,51,.16);
+    }
+    .shot-card figcaption {
+      display: grid;
+      grid-template-columns: minmax(210px, .42fr) 1fr;
+      gap: 30px;
+      padding: 24px 28px 28px;
+      border-top: 1px solid var(--line);
+    }
+    .shot-card h3 {
+      margin: 5px 0 0;
+      color: var(--navy);
+      font-size: 24px;
+      line-height: 1.15;
+      letter-spacing: -.02em;
+    }
+    .shot-card p { margin: 0; color: #4e6074; font-size: 16px; }
+    .shot-card p strong { color: var(--navy); }
+    .two-up {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 24px;
+    }
+    .two-up .shot-card { margin-bottom: 0; }
+    .two-up .shot-card figcaption { grid-template-columns: 1fr; gap: 12px; }
+    .two-up .shot-card img { max-height: 720px; }
+    .two-up + .shot-card { margin-top: 34px; }
+    .note {
+      margin-top: 58px;
+      padding: 24px 28px;
+      border-left: 5px solid var(--gold);
+      border-radius: 12px;
+      background: #fff8e7;
+      color: #5c4a20;
+    }
+    .note strong { color: #3f3010; }
+    .closing {
+      margin-top: 64px;
+      margin-bottom: 64px;
+      padding: clamp(30px, 5vw, 60px);
+      border-radius: 24px;
+      color: white;
+      background: linear-gradient(135deg, var(--navy), #153a60);
+    }
+    .closing h2 { color: white; }
+    .closing p { max-width: 780px; margin: 0; color: #d7e4f0; font-size: 18px; }
+    .closing .signature { margin-top: 24px; color: #ffb18f; font-weight: 800; }
+    .back-top {
+      position: fixed;
+      right: 18px;
+      bottom: 18px;
+      width: 44px;
+      height: 44px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      color: white;
+      background: var(--orange);
+      text-decoration: none;
+      box-shadow: 0 8px 20px rgba(239,75,18,.35);
+    }
+    @media (max-width: 760px) {
+      .cover { min-height: 72vh; padding: 32px 22px; }
+      .intro, .chapter-head, .shot-card figcaption, .two-up { grid-template-columns: 1fr; }
+      .chapter { padding-top: 42px; }
+      .shot-card figcaption { gap: 12px; padding: 20px; }
+      .image-wrap { padding: 8px; }
+      .back-top { display: none; }
+    }
+    @page { size: A4 landscape; margin: 9mm; }
+    @media print {
+      body { background: white; }
+      .cover { min-height: 185mm; break-after: page; }
+      .intro { min-height: 175mm; break-after: page; align-content: center; }
+      .chapter { width: 100%; padding-top: 0; }
+      .chapter-head { min-height: 175mm; break-before: page; break-after: page; align-content: center; padding: 22mm; border: 0; background: var(--navy); }
+      .chapter-head h2, .chapter-head p { color: white; }
+      .shot-card, .two-up .shot-card {
+        display: grid;
+        grid-template-rows: minmax(0, 1fr) auto;
+        width: 100%;
+        height: 185mm;
+        margin: 0;
+        border: 0;
+        border-radius: 0;
+        box-shadow: none;
+        break-before: page;
+        break-inside: avoid;
+      }
+      .two-up { display: block; }
+      .image-wrap { min-height: 0; overflow: hidden; padding: 3mm; }
+      .shot-card img, .two-up .shot-card img { max-height: 137mm; max-width: 100%; box-shadow: none; }
+      .shot-card figcaption, .two-up .shot-card figcaption { grid-template-columns: .42fr 1fr; gap: 8mm; padding: 4mm 7mm 6mm; }
+      .shot-card h3 { font-size: 18px; }
+      .shot-card p { font-size: 12px; }
+      .note, .closing { break-before: page; min-height: 175mm; margin: 0; width: 100%; display: grid; align-content: center; }
+      .back-top { display: none; }
+    }
+  </style>
+</head>
+<body id="top">
+  <header class="cover">
+    <div class="cover-inner">
+      <div class="kicker">Hague Export · Client handover guide</div>
+      <h1>Every part of the website, explained simply.</h1>
+      <p>We built this platform to connect verified Nigerian exporters with serious global buyers. This visual guide shows what each section does — no long story.</p>
+      <div class="cover-meta">
+        <span class="pill">32 real website screenshots</span>
+        <span class="pill">Buyer + exporter journeys</span>
+        <span class="pill">Prepared 27 September 2026</span>
+      </div>
+    </div>
+  </header>
+
+  <section class="intro">
+    <div>
+      <div class="eyebrow">How to use this guide</div>
+      <h2>One image, one clear explanation.</h2>
+      <p>Each screenshot is from the live Hague Export preview. Under every image, we explain the job of that feature in short Nigerian-style English, so anybody can understand the build sharp-sharp.</p>
+    </div>
+    <aside class="quick-list">
+      <strong>Four areas inside</strong>
+      <ol>
+        <li>Public website and marketplace</li>
+        <li>Buyer sourcing and RFQ tools</li>
+        <li>Exporter selling and verification tools</li>
+        <li>AI and human support</li>
+      </ol>
+    </aside>
+  </section>
+
+  <main>
+    <section class="chapter" id="public-website">
+      <header class="chapter-head">
+        <div>
+          <div class="eyebrow">Part 1</div>
+          <h2>Public website &amp; marketplace</h2>
+        </div>
+        <p>This is the side everybody can see before sign-in. It introduces the business, builds trust and helps people find the right commodity.</p>
+      </header>
+
+      <figure class="shot-card">
+        <div class="image-wrap"><img src="images/01-navigation-and-contact.png" alt="Hague Export navigation and contact header" /></div>
+        <figcaption><div><div class="eyebrow">01 · Navigation</div><h3>Top menu and quick contact</h3></div><p>From here, visitors can move to the <strong>Marketplace, How It Works, Verification, Membership and About</strong> pages. Phone, email, currency and language controls are up there too, so help is never far.</p></figcaption>
+      </figure>
+
+      <figure class="shot-card">
+        <div class="image-wrap"><img src="images/02-home-search-hero.png" alt="Hague Export homepage hero and commodity search" /></div>
+        <figcaption><div><div class="eyebrow">02 · Homepage</div><h3>Clear promise and fast search</h3></div><p>This first section tells people exactly what we do: <strong>verified African commodities for global buyers</strong>. Buyers can search by commodity, category and destination, while exporters can jump straight to listing products.</p></figcaption>
+      </figure>
+
+      <figure class="shot-card">
+        <div class="image-wrap"><img src="images/03-four-tier-trust-system.png" alt="Four tier supplier trust and verification system" /></div>
+        <figcaption><div><div class="eyebrow">03 · Trust</div><h3>Bronze to Platinum verification</h3></div><p>This is the backbone of the platform. Each badge shows the level of checks completed — from basic identity to CAC/NEPC documents, site inspection and international certification. So buyer no dey send money blindly.</p></figcaption>
+      </figure>
+
+      <figure class="shot-card">
+        <div class="image-wrap"><img src="images/04-featured-commodities.png" alt="Featured Nigerian commodity product cards" /></div>
+        <figcaption><div><div class="eyebrow">04 · Stock</div><h3>Featured export commodities</h3></div><p>Live product cards show the <strong>FOB price, price movement, grade, MOQ, origin, badge and packaging</strong>. A buyer can request a quote or use WhatsApp without stress.</p></figcaption>
+      </figure>
+
+      <div class="two-up">
+        <figure class="shot-card">
+          <div class="image-wrap"><img src="images/05-four-step-trade-flow.png" alt="Four step search to shipment process" /></div>
+          <figcaption><div><div class="eyebrow">05 · Process</div><h3>Four-step trade flow</h3></div><p>Search, submit RFQ, negotiate, then inspect and ship. The steps make the process easy to follow, even for a first-time buyer.</p></figcaption>
+        </figure>
+        <figure class="shot-card">
+          <div class="image-wrap"><img src="images/06-trade-testimonials.png" alt="Buyer and exporter testimonials" /></div>
+          <figcaption><div><div class="eyebrow">06 · Proof</div><h3>Real trade voices</h3></div><p>Testimonials from buyers and exporters add social proof. It shows the platform is useful on both sides of the deal.</p></figcaption>
+        </figure>
+      </div>
+
+      <figure class="shot-card">
+        <div class="image-wrap"><img src="images/07-membership-summary.png" alt="Hague Export membership plan summary" /></div>
+        <figcaption><div><div class="eyebrow">07 · Plans</div><h3>Membership at a glance</h3></div><p>Free, Professional, Corporate and Enterprise plans are compared side by side. A trader can quickly see the price, limits, verification level and support included before choosing.</p></figcaption>
+      </figure>
+
+      <div class="two-up">
+        <figure class="shot-card">
+          <div class="image-wrap"><img src="images/08-home-call-to-action.png" alt="Final homepage account call to action" /></div>
+          <figcaption><div><div class="eyebrow">08 · Action</div><h3>Final join prompt</h3></div><p>This gives visitors one last clear choice: create an account or talk to the trade desk.</p></figcaption>
+        </figure>
+        <figure class="shot-card">
+          <div class="image-wrap"><img src="images/09-footer-and-trade-desk.png" alt="Website footer and trade desk information" /></div>
+          <figcaption><div><div class="eyebrow">09 · Footer</div><h3>Links, address and support</h3></div><p>All important links, company details, trade partners and support channels stay together here. Everything dey one place.</p></figcaption>
+        </figure>
+      </div>
+
+      <figure class="shot-card">
+        <div class="image-wrap"><img src="images/10-marketplace-page.jpg" alt="Full Hague Export marketplace" /></div>
+        <figcaption><div><div class="eyebrow">10 · Marketplace</div><h3>All available commodities</h3></div><p>This is the main product catalogue. Buyers can browse verified listings and compare grades, prices, MOQ, origin, packaging and supplier badge before opening a product.</p></figcaption>
+      </figure>
+
+      <figure class="shot-card">
+        <div class="image-wrap"><img src="images/11-marketplace-search-and-filters.jpg" alt="Marketplace search, filters and sorting controls" /></div>
+        <figcaption><div><div class="eyebrow">11 · Discovery</div><h3>Search, filter and sort</h3></div><p>People can narrow the market by keyword, category, origin, badge level, MOQ and price, then sort the result. This one saves time when plenty products dey.</p></figcaption>
+      </figure>
+
+      <figure class="shot-card">
+        <div class="image-wrap"><img src="images/12-product-details.jpg" alt="Detailed sesame seed product page" /></div>
+        <figcaption><div><div class="eyebrow">12 · Product page</div><h3>Full commodity specification</h3></div><p>Each commodity page carries technical specs, season, packaging, loading capacity, verified suppliers, indicative price and trade terms. The buyer gets enough detail to make a serious RFQ, not guesswork.</p></figcaption>
+      </figure>
+
+      <div class="two-up">
+        <figure class="shot-card">
+          <div class="image-wrap"><img src="images/13-how-it-works-page.jpg" alt="How Hague Export works page" /></div>
+          <figcaption><div><div class="eyebrow">13 · Education</div><h3>How It Works page</h3></div><p>Buyer and exporter benefits are explained separately. Anybody can understand the journey before opening an account.</p></figcaption>
+        </figure>
+        <figure class="shot-card">
+          <div class="image-wrap"><img src="images/14-verification-page.jpg" alt="Hague Export verification framework page" /></div>
+          <figcaption><div><div class="eyebrow">14 · Compliance</div><h3>Verification framework</h3></div><p>This page explains every badge requirement, what it unlocks and the six checks behind it. Trust is shown, not just promised.</p></figcaption>
+        </figure>
+      </div>
+
+      <div class="two-up" style="margin-top:34px">
+        <figure class="shot-card">
+          <div class="image-wrap"><img src="images/15-membership-page.jpg" alt="Full Hague Export membership and FAQ page" /></div>
+          <figcaption><div><div class="eyebrow">15 · Pricing</div><h3>Membership and FAQ</h3></div><p>Full pricing sits with common billing questions. The client can see what starts now and what begins at production launch.</p></figcaption>
+        </figure>
+        <figure class="shot-card">
+          <div class="image-wrap"><img src="images/16-about-page.jpg" alt="About Hague Export company and roadmap page" /></div>
+          <figcaption><div><div class="eyebrow">16 · Company</div><h3>About, team and roadmap</h3></div><p>The business story, mission, leadership, partners and roadmap are clear here. It makes Hague Export feel like a real company, not one random marketplace.</p></figcaption>
+        </figure>
+      </div>
+
+      <div class="two-up" style="margin-top:34px">
+        <figure class="shot-card">
+          <div class="image-wrap"><img src="images/17-registration-page.jpg" alt="Buyer and exporter registration screen" /></div>
+          <figcaption><div><div class="eyebrow">17 · Onboarding</div><h3>Create a trade account</h3></div><p>A new user picks Buyer or Exporter, then enters name, email, password, company and country. Simple form — no plenty wahala.</p></figcaption>
+        </figure>
+        <figure class="shot-card">
+          <div class="image-wrap"><img src="images/18-sign-in-page.jpg" alt="Hague Export sign in and demo presets" /></div>
+          <figcaption><div><div class="eyebrow">18 · Access</div><h3>Sign-in with demo presets</h3></div><p>Normal email login is ready, and the preview includes one-click Buyer and Exporter demos. That makes the full platform easy to test.</p></figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section class="chapter" id="buyer-tools">
+      <header class="chapter-head">
+        <div>
+          <div class="eyebrow">Part 2</div>
+          <h2>Buyer sourcing tools</h2>
+        </div>
+        <p>This side helps an international buyer create proper requests, receive supplier offers and compare the deal before accepting.</p>
+      </header>
+
+      <figure class="shot-card">
+        <div class="image-wrap"><img src="images/19-buyer-dashboard.jpg" alt="International buyer command centre dashboard" /></div>
+        <figcaption><div><div class="eyebrow">19 · Buyer dashboard</div><h3>All sourcing activity in one view</h3></div><p>The buyer sees active RFQs, quotes received and contracts in discussion. Every request shows commodity, volume, destination, target band and status. No need to search through old chats.</p></figcaption>
+      </figure>
+
+      <figure class="shot-card">
+        <div class="image-wrap"><img src="images/20-new-rfq-commodity-picker.png" alt="Commodity picker for creating a new RFQ" /></div>
+        <figcaption><div><div class="eyebrow">20 · New RFQ</div><h3>Pick what you want to buy</h3></div><p>The buyer starts by choosing a commodity. Each option shows category and minimum order, so the correct RFQ form opens immediately.</p></figcaption>
+      </figure>
+
+      <div class="two-up">
+        <figure class="shot-card">
+          <div class="image-wrap"><img src="images/21-rfq-step-1.png" alt="RFQ step one for volume and delivery timeline" /></div>
+          <figcaption><div><div class="eyebrow">21 · RFQ step 1</div><h3>Volume and timeline</h3></div><p>Enter required metric tons and when delivery is needed. MOQ guidance stops unserious or invalid requests early.</p></figcaption>
+        </figure>
+        <figure class="shot-card">
+          <div class="image-wrap"><img src="images/22-rfq-step-2.png" alt="RFQ step two for incoterm and destination" /></div>
+          <figcaption><div><div class="eyebrow">22 · RFQ step 2</div><h3>Terms and destination</h3></div><p>Select FOB, CIF or CFR and the destination port. Everybody knows who handles freight and where the cargo is going.</p></figcaption>
+        </figure>
+      </div>
+
+      <figure class="shot-card">
+        <div class="image-wrap"><img src="images/23-rfq-step-3.png" alt="RFQ step three for pricing and inspection" /></div>
+        <figcaption><div><div class="eyebrow">23 · RFQ step 3</div><h3>Price, packaging and inspection</h3></div><p>The final step captures target price, packaging and inspection choice. This gives suppliers one clean brief, so the quotes can be compared properly.</p></figcaption>
+      </figure>
+
+      <figure class="shot-card">
+        <div class="image-wrap"><img src="images/24-compare-quotes.png" alt="Side-by-side supplier quote comparison" /></div>
+        <figcaption><div><div class="eyebrow">24 · Decision tool</div><h3>Compare supplier quotes</h3></div><p>Three offers show price, total value, terms, lead time, validity, badge and notes side by side. The buyer can accept, decline or chat on WhatsApp. This one makes negotiation clean and transparent.</p></figcaption>
+      </figure>
+    </section>
+
+    <section class="chapter" id="exporter-tools">
+      <header class="chapter-head">
+        <div>
+          <div class="eyebrow">Part 3</div>
+          <h2>Exporter selling tools</h2>
+        </div>
+        <p>This side helps Nigerian exporters see global demand, publish products, send professional quotes and grow their verification level.</p>
+      </header>
+
+      <figure class="shot-card">
+        <div class="image-wrap"><img src="images/25-exporter-dashboard.jpg" alt="Nigerian exporter command centre dashboard" /></div>
+        <figcaption><div><div class="eyebrow">25 · Exporter dashboard</div><h3>Business command centre</h3></div><p>At a glance, the exporter sees inquiries, sent quotes, profile views, plan and verification tier. The main RFQ feed brings buyer demand from different countries into one place.</p></figcaption>
+      </figure>
+
+      <figure class="shot-card">
+        <div class="image-wrap"><img src="images/26-incoming-rfq-feed.jpg" alt="Global incoming buyer RFQ feed" /></div>
+        <figcaption><div><div class="eyebrow">26 · Demand feed</div><h3>Incoming buyer RFQs</h3></div><p>Each request shows commodity, volume, buyer, country, target price, timeline and status. Exporters can spot the best opportunity and send a quote sharp-sharp.</p></figcaption>
+      </figure>
+
+      <div class="two-up">
+        <figure class="shot-card">
+          <div class="image-wrap"><img src="images/27-exporter-product-listings.jpg" alt="Exporter live product listing inventory" /></div>
+          <figcaption><div><div class="eyebrow">27 · Inventory</div><h3>My listed products</h3></div><p>The exporter manages live product lines, MOQ, FOB price, origin and status. Changes reflect in the public marketplace.</p></figcaption>
+        </figure>
+        <figure class="shot-card">
+          <div class="image-wrap"><img src="images/28-exporter-sent-quotes.jpg" alt="Exporter sent quotation tracking" /></div>
+          <figcaption><div><div class="eyebrow">28 · Follow-up</div><h3>Sent quote tracking</h3></div><p>Every offer stays recorded with price, terms, lead time, validity and status. Nobody needs to ask, “Which price did we send again?”</p></figcaption>
+        </figure>
+      </div>
+
+      <figure class="shot-card">
+        <div class="image-wrap"><img src="images/29-exporter-verification-progress.jpg" alt="Exporter verification journey and completed checks" /></div>
+        <figcaption><div><div class="eyebrow">29 · Progress</div><h3>Verification journey</h3></div><p>The exporter can see completed checks, current Gold tier and what remains for Platinum. The upgrade path is clear, and stronger verification can unlock bigger buyers.</p></figcaption>
+      </figure>
+
+      <div class="two-up">
+        <figure class="shot-card">
+          <div class="image-wrap"><img src="images/30-add-commodity-form.png" alt="Add a new export commodity listing form" /></div>
+          <figcaption><div><div class="eyebrow">30 · Publish</div><h3>Add a commodity</h3></div><p>Enter product name, category, grade, origin, packaging, MOQ, price and short brief. One form turns stock into a public listing.</p></figcaption>
+        </figure>
+        <figure class="shot-card">
+          <div class="image-wrap"><img src="images/31-send-quote-form.png" alt="Structured supplier quotation form" /></div>
+          <figcaption><div><div class="eyebrow">31 · Sell</div><h3>Send a professional quote</h3></div><p>The form calculates total contract value from the unit price. It also records Incoterm, lead time, validity and notes before sending to the buyer.</p></figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section class="chapter" id="support">
+      <header class="chapter-head">
+        <div>
+          <div class="eyebrow">Part 4</div>
+          <h2>AI &amp; human support</h2>
+        </div>
+        <p>Users can get quick answers from Kemi and still reach the human trade desk by WhatsApp, phone or email.</p>
+      </header>
+
+      <figure class="shot-card">
+        <div class="image-wrap"><img src="images/32-kemi-ai-assistant.jpg" alt="Kemi AI trade assistant opened on the homepage" /></div>
+        <figcaption><div><div class="eyebrow">32 · Kemi AI</div><h3>Trade help on every page</h3></div><p>Kemi answers questions about prices, RFQs and shipping time, with quick prompts to guide the user. WhatsApp support is beside it for any matter that needs a real person.</p></figcaption>
+      </figure>
+    </section>
+
+    <aside class="note">
+      <strong>Important Phase 1 note:</strong> This preview uses illustrative marketplace data. Live payments, escrow, logistics booking and binding contracts are not yet processed inside the demo. Those items are clearly marked as roadmap features, so we no go promise what never launch.
+    </aside>
+
+    <section class="closing">
+      <div class="eyebrow">Build summary</div>
+      <h2>Connect. Trade. Grow.</h2>
+      <p>We built Hague Export as a trust layer for Nigerian agro-export: verified suppliers, structured RFQs, comparable quotes, clear dashboards and support from first search to shipment preparation.</p>
+      <div class="signature">Hague Export product walkthrough · prepared for client handover</div>
+    </section>
+  </main>
+
+  <a class="back-top" href="#top" aria-label="Back to top">↑</a>
+</body>
+</html>
