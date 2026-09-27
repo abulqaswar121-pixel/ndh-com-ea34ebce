@@ -9,6 +9,9 @@ on:
       - .github/workflows/capture-hague.yml
       - scripts/capture-hague.mjs
 
+permissions:
+  contents: write
+
 jobs:
   capture:
     runs-on: ubuntu-latest
@@ -35,3 +38,11 @@ jobs:
             capture.log
           retention-days: 3
           if-no-files-found: warn
+      - name: Return captures to the session branch
+        if: success()
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -f .arena-captures capture.log
+          git commit -m "chore: return Hague Export captures"
+          git push origin HEAD:arena/01a0e537-ndh-com-ea34ebce
