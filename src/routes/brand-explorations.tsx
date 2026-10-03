@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from '@tanstack/react-router';
 import { useState } from 'react';
-import { ArrowLeft, ArrowUpRight, BookOpen, BriefcaseBusiness, HeartPulse, Plane, TrendingUp, Plus } from 'lucide-react';
+import { ArrowLeft, ArrowUpRight, BookOpen, BriefcaseBusiness, HeartPulse, Plane, TrendingUp, Plus, ShoppingBag, School } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 const title = 'NDH Brand Family Explorations — Najeeb Digital Hub';
@@ -19,6 +19,8 @@ const businesses = [
   { name: 'Agency', Icon: BriefcaseBusiness, state: 'Current' },
   { name: 'Academy', Icon: BookOpen, state: 'Current' },
   { name: 'Venture', Icon: TrendingUp, state: 'Planned' },
+  { name: 'eStore', Icon: ShoppingBag, state: 'Planned' },
+  { name: 'SchoolDesk', Icon: School, state: 'Planned' },
   { name: 'Travel', Icon: Plane, state: 'Future' },
   { name: 'iHospital', Icon: HeartPulse, state: 'Future' },
 ] as const;
@@ -87,7 +89,7 @@ function BrandExplorations() {
           <div className="brand-lab-display-meta"><span>01 / Parent identity</span><span>ndh.com.ng</span></div>
           <Identity direction={direction} parent />
         </div>
-        <div className="brand-lab-family-heading"><h3>One system, five expressions</h3><span>Same palette · shared symbol · sector-specific icon</span></div>
+        <div className="brand-lab-family-heading"><h3>One system, seven expressions</h3><span>Same palette · shared symbol · sector-specific icon</span></div>
         <div className="brand-lab-grid">
           {businesses.map((business) => <div className="brand-lab-tile" key={business.name}>
             <div className="brand-lab-tile-meta"><span>{business.state}</span><span>NDH / {business.name}</span></div>
