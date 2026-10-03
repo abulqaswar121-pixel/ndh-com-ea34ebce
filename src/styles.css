@@ -4463,6 +4463,10 @@ body.nav-is-open .ai-assistant-launcher {
   --lab-stroke: #d8e1e7;
   --lab-glint: #c9f6ff;
   --lab-gradient: linear-gradient(135deg, #22d3ee, #68baf7 55%, #a9a1eb);
+  --lab-symbol-light: #9d80c7;
+  --lab-symbol-mid: #624b8e;
+  --lab-symbol-deep: #261c46;
+  --lab-symbol-glint: #e3d3fa;
   min-height: 100vh;
   background: var(--lab-canvas);
   color: var(--lab-ink);
@@ -4474,6 +4478,9 @@ body.nav-is-open .ai-assistant-launcher {
   --lab-ink: #f4f8fb;
   --lab-muted: #b1c3cf;
   --lab-stroke: #2b4559;
+  --lab-symbol-light: #c3a9ec;
+  --lab-symbol-mid: #9678d2;
+  --lab-symbol-deep: #674a9f;
 }
 .brand-lab * { letter-spacing: 0; }
 .brand-lab-container { max-width: 1380px; margin: auto; padding: 0 32px; }
@@ -4524,6 +4531,8 @@ body.nav-is-open .ai-assistant-launcher {
 .brand-lab-identity.integrated { flex-direction: column; text-align: center; gap: 9px; }
 .brand-lab-identity.integrated .brand-lab-symbol-group { position: relative; }
 .brand-lab-identity.integrated .brand-lab-master { width: 60px; height: 60px; border-radius: 0 16px 3px 16px; }
+.brand-lab-identity.integrated .brand-lab-master { background: var(--lab-sheet); border: 1px solid var(--lab-stroke); box-shadow: 0 6px 16px color-mix(in oklab, var(--lab-symbol-deep) 12%, transparent); }
+.brand-lab-identity.integrated .brand-lab-symbol { width: 90%; height: 90%; }
 .brand-lab-identity.integrated .brand-lab-sector { position: absolute; right: -9px; bottom: -6px; width: 26px; height: 26px; border-radius: 3px; background: var(--lab-ink); color: var(--lab-sheet); }
 .brand-lab-identity.integrated .brand-lab-identity-text { gap: 3px; }
 .brand-lab-identity.integrated.parent .brand-lab-master { width: 96px; height: 96px; }
