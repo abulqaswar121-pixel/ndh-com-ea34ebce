@@ -4453,3 +4453,113 @@ body.nav-is-open .ai-assistant-launcher {
   .home-work-item, .service-grid .service-card { transition: none; }
   .home-work-grid { scroll-snap-type: none; }
 }
+
+/* Standalone NDH brand-family study: scoped so the active site stays unchanged. */
+.brand-lab {
+  --lab-canvas: #f2f5f7;
+  --lab-sheet: #ffffff;
+  --lab-ink: #0a1a30;
+  --lab-muted: #596b7c;
+  --lab-stroke: #d8e1e7;
+  --lab-glint: #c9f6ff;
+  --lab-gradient: linear-gradient(135deg, #22d3ee, #68baf7 55%, #a9a1eb);
+  min-height: 100vh;
+  background: var(--lab-canvas);
+  color: var(--lab-ink);
+  font-family: Inter, ui-sans-serif, system-ui, sans-serif;
+}
+.brand-lab-dark {
+  --lab-canvas: #071524;
+  --lab-sheet: #102338;
+  --lab-ink: #f4f8fb;
+  --lab-muted: #b1c3cf;
+  --lab-stroke: #2b4559;
+}
+.brand-lab * { letter-spacing: 0; }
+.brand-lab-container { max-width: 1380px; margin: auto; padding: 0 32px; }
+.brand-lab-header { min-height: 82px; display: flex; align-items: center; gap: 20px; border-bottom: 1px solid var(--lab-stroke); }
+.brand-lab-back, .brand-lab-footer a { display: inline-flex; align-items: center; gap: 8px; color: var(--lab-ink); text-decoration: none; font-weight: 600; font-size: 13px; }
+.brand-lab-back:hover, .brand-lab-footer a:hover { color: var(--accent); }
+.brand-lab-header-label { margin: auto; color: var(--lab-muted); font-size: 12px; text-transform: uppercase; font-weight: 700; }
+.brand-lab-header .bg-background { background: var(--lab-sheet); color: var(--lab-ink); border-color: var(--lab-stroke); }
+.brand-lab-intro { padding: 78px 0 56px; max-width: 780px; }
+.brand-lab-kicker, .brand-lab-number { color: #167d98; font-size: 12px; font-weight: 800; text-transform: uppercase; }
+.brand-lab-intro h1 { margin: 14px 0 22px; font-size: clamp(48px, 6vw, 88px); line-height: 1.02; font-weight: 800; }
+.brand-lab-intro h1 em { font-style: normal; color: #269cbd; }
+.brand-lab-intro > p:last-child { max-width: 610px; color: var(--lab-muted); font-size: 17px; line-height: 1.65; }
+.brand-lab-index { display: flex; border-block: 1px solid var(--lab-stroke); margin-bottom: 62px; }
+.brand-lab-index a { display: flex; justify-content: space-between; align-items: center; gap: 12px; width: 33.333%; padding: 20px 24px; color: var(--lab-ink); font-weight: 700; font-size: 13px; text-decoration: none; }
+.brand-lab-index a + a { border-left: 1px solid var(--lab-stroke); }
+.brand-lab-index a:hover { background: var(--lab-sheet); }
+.brand-lab-direction { scroll-margin-top: 24px; margin-bottom: 92px; }
+.brand-lab-direction-heading { display: flex; align-items: start; gap: 24px; padding-bottom: 24px; }
+.brand-lab-number { padding-top: 10px; }
+.brand-lab-direction-heading h2 { margin: 0 0 6px; font-size: 34px; line-height: 1.2; }
+.brand-lab-direction-heading p { color: var(--lab-muted); margin: 0; font-size: 15px; }
+.brand-lab-master-display, .brand-lab-tile { background: var(--lab-sheet); border: 1px solid var(--lab-stroke); border-radius: 6px; }
+.brand-lab-master-display { padding: 22px 28px 48px; min-height: 312px; display: flex; flex-direction: column; }
+.brand-lab-display-meta, .brand-lab-tile-meta { display: flex; justify-content: space-between; gap: 12px; font-size: 10px; font-weight: 700; text-transform: uppercase; color: var(--lab-muted); }
+.brand-lab-master-display > .brand-lab-identity { margin: auto; }
+.brand-lab-family-heading { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; margin: 34px 0 16px; }
+.brand-lab-family-heading h3 { margin: 0; font-size: 19px; }
+.brand-lab-family-heading span { color: var(--lab-muted); font-size: 12px; }
+.brand-lab-grid { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 12px; }
+.brand-lab-tile { min-width: 0; height: 208px; padding: 17px; display: flex; flex-direction: column; }
+.brand-lab-tile > .brand-lab-identity, .brand-lab-add { margin: auto; }
+.brand-lab-identity { display: flex; align-items: center; gap: 16px; min-width: 0; }
+.brand-lab-symbol-group { display: flex; align-items: center; flex: none; }
+.brand-lab-master, .brand-lab-sector { display: grid; place-items: center; flex: none; }
+.brand-lab-master { width: 60px; height: 60px; background: var(--lab-gradient); border-radius: 5px; color: #0a1a30; }
+.brand-lab-symbol { width: 80%; height: 80%; }
+.brand-lab-sector { width: 34px; height: 34px; color: var(--lab-ink); }
+.brand-lab-sector svg { width: 62%; height: 62%; }
+.brand-lab-identity-text { min-width: 0; display: flex; flex-direction: column; gap: 6px; }
+.brand-lab-identity-text strong { font-size: 15px; font-weight: 800; line-height: 1.15; white-space: nowrap; }
+.brand-lab-identity-text strong span { font-weight: 500; }
+.brand-lab-identity-text small { font-size: 10px; color: var(--lab-muted); font-weight: 800; text-transform: uppercase; }
+.brand-lab-identity.parent .brand-lab-master { width: 96px; height: 96px; }
+.brand-lab-identity.parent .brand-lab-identity-text strong { font-size: 27px; }
+.brand-lab-identity.parent .brand-lab-identity-text small { font-size: 12px; }
+.brand-lab-identity.dual .brand-lab-sector { width: 43px; height: 60px; margin-left: 4px; border: 1px solid var(--lab-stroke); border-radius: 5px; }
+.brand-lab-identity.integrated { flex-direction: column; text-align: center; gap: 9px; }
+.brand-lab-identity.integrated .brand-lab-symbol-group { position: relative; }
+.brand-lab-identity.integrated .brand-lab-master { width: 60px; height: 60px; border-radius: 0 16px 3px 16px; }
+.brand-lab-identity.integrated .brand-lab-sector { position: absolute; right: -9px; bottom: -6px; width: 26px; height: 26px; border-radius: 3px; background: var(--lab-ink); color: var(--lab-sheet); }
+.brand-lab-identity.integrated .brand-lab-identity-text { gap: 3px; }
+.brand-lab-identity.integrated.parent .brand-lab-master { width: 96px; height: 96px; }
+.brand-lab-identity.linear .brand-lab-master { width: 53px; height: 53px; border-radius: 3px; }
+.brand-lab-identity.linear .brand-lab-sector { width: 30px; height: 53px; border-right: 1px solid var(--lab-stroke); margin-right: 2px; }
+.brand-lab-identity.linear .brand-lab-identity-text { flex-direction: row; align-items: baseline; gap: 8px; }
+.brand-lab-identity.linear .brand-lab-identity-text strong { display: flex; flex-direction: column; gap: 2px; font-size: 13px; }
+.brand-lab-identity.linear .brand-lab-identity-text small { color: #167d98; }
+.brand-lab-identity.linear.parent .brand-lab-master { width: 96px; height: 96px; }
+.brand-lab-identity.linear.parent .brand-lab-identity-text strong { font-size: 24px; }
+.brand-lab-add { display: flex; flex-direction: column; align-items: center; gap: 10px; color: var(--lab-muted); font-size: 12px; }
+.brand-lab-add svg { color: #269cbd; }
+.brand-lab-footer { border-top: 1px solid var(--lab-stroke); padding: 32px 0 52px; display: flex; justify-content: space-between; gap: 24px; color: var(--lab-muted); font-size: 12px; }
+@media(max-width: 900px) {
+  .brand-lab-grid { grid-template-columns: repeat(2, minmax(0,1fr)); }
+  .brand-lab-identity-text strong { white-space: normal; }
+}
+@media(max-width: 600px) {
+  .brand-lab-container { padding: 0 18px; }
+  .brand-lab-header { min-height: 66px; gap: 10px; }
+  .brand-lab-header-label { display: none; }
+  .brand-lab-header .bg-background { margin-left: auto; }
+  .brand-lab-intro { padding: 54px 0 34px; }
+  .brand-lab-intro h1 { font-size: 48px; }
+  .brand-lab-intro > p:last-child { font-size: 15px; }
+  .brand-lab-index { margin-bottom: 48px; }
+  .brand-lab-index a { padding: 14px 8px; font-size: 10px; }
+  .brand-lab-index svg { display: none; }
+  .brand-lab-direction { margin-bottom: 70px; }
+  .brand-lab-direction-heading { gap: 16px; }
+  .brand-lab-direction-heading h2 { font-size: 27px; }
+  .brand-lab-master-display { min-height: 260px; padding: 16px 14px 28px; }
+  .brand-lab-identity.parent .brand-lab-master, .brand-lab-identity.linear.parent .brand-lab-master, .brand-lab-identity.integrated.parent .brand-lab-master { width: 66px; height: 66px; }
+  .brand-lab-identity.parent .brand-lab-identity-text strong, .brand-lab-identity.linear.parent .brand-lab-identity-text strong { font-size: 18px; }
+  .brand-lab-family-heading { align-items: start; flex-direction: column; gap: 5px; }
+  .brand-lab-grid { grid-template-columns: 1fr; }
+  .brand-lab-tile { height: 165px; }
+  .brand-lab-footer { flex-direction: column; }
+}
