@@ -1,5 +1,7 @@
 # Roadmap
 
+- [x] Show three side-by-side NDH family identity systems as a separate visual exploration without replacing the current brand.
+- [ ] Await brand direction selection before changing the main site or sibling businesses.
 - [ ] Polish NDH's existing public experience without changing its identity: foreground actual work, refine page openings, and give service/course blocks stronger visual structure.
 - [ ] Check public pages at phone and desktop sizes after the polish; preserve existing portal styling and functional journeys.
 - [x] Tighten empty public and portal sections; restore first-screen visual density across desktop and phone.

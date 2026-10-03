@@ -17,6 +17,7 @@ import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as FaqRouteImport } from './routes/faq'
 import { Route as ContactRouteImport } from './routes/contact'
+import { Route as BrandExplorationsRouteImport } from './routes/brand-explorations'
 import { Route as BlogRouteImport } from './routes/blog'
 import { Route as AgencyRouteImport } from './routes/agency'
 import { Route as AcademyRouteImport } from './routes/academy'
@@ -125,6 +126,11 @@ const FaqRoute = FaqRouteImport.update({
 const ContactRoute = ContactRouteImport.update({
   id: '/contact',
   path: '/contact',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BrandExplorationsRoute = BrandExplorationsRouteImport.update({
+  id: '/brand-explorations',
+  path: '/brand-explorations',
   getParentRoute: () => rootRouteImport,
 } as any)
 const BlogRoute = BlogRouteImport.update({
@@ -525,6 +531,7 @@ export interface FileRoutesByFullPath {
   '/academy': typeof AcademyRouteWithChildren
   '/agency': typeof AgencyRouteWithChildren
   '/blog': typeof BlogRouteWithChildren
+  '/brand-explorations': typeof BrandExplorationsRoute
   '/contact': typeof ContactRoute
   '/faq': typeof FaqRoute
   '/login': typeof LoginRoute
@@ -600,6 +607,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/brand-explorations': typeof BrandExplorationsRoute
   '/contact': typeof ContactRoute
   '/faq': typeof FaqRoute
   '/login': typeof LoginRoute
@@ -673,6 +681,7 @@ export interface FileRoutesById {
   '/academy': typeof AcademyRouteWithChildren
   '/agency': typeof AgencyRouteWithChildren
   '/blog': typeof BlogRouteWithChildren
+  '/brand-explorations': typeof BrandExplorationsRoute
   '/contact': typeof ContactRoute
   '/faq': typeof FaqRoute
   '/login': typeof LoginRoute
@@ -753,6 +762,7 @@ export interface FileRouteTypes {
     | '/academy'
     | '/agency'
     | '/blog'
+    | '/brand-explorations'
     | '/contact'
     | '/faq'
     | '/login'
@@ -828,6 +838,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/about'
+    | '/brand-explorations'
     | '/contact'
     | '/faq'
     | '/login'
@@ -900,6 +911,7 @@ export interface FileRouteTypes {
     | '/academy'
     | '/agency'
     | '/blog'
+    | '/brand-explorations'
     | '/contact'
     | '/faq'
     | '/login'
@@ -980,6 +992,7 @@ export interface RootRouteChildren {
   AcademyRoute: typeof AcademyRouteWithChildren
   AgencyRoute: typeof AgencyRouteWithChildren
   BlogRoute: typeof BlogRouteWithChildren
+  BrandExplorationsRoute: typeof BrandExplorationsRoute
   ContactRoute: typeof ContactRoute
   FaqRoute: typeof FaqRoute
   LoginRoute: typeof LoginRoute
@@ -1054,6 +1067,13 @@ declare module '@tanstack/react-router' {
       path: '/contact'
       fullPath: '/contact'
       preLoaderRoute: typeof ContactRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/brand-explorations': {
+      id: '/brand-explorations'
+      path: '/brand-explorations'
+      fullPath: '/brand-explorations'
+      preLoaderRoute: typeof BrandExplorationsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/blog': {
@@ -1788,6 +1808,7 @@ const rootRouteChildren: RootRouteChildren = {
   AcademyRoute: AcademyRouteWithChildren,
   AgencyRoute: AgencyRouteWithChildren,
   BlogRoute: BlogRouteWithChildren,
+  BrandExplorationsRoute: BrandExplorationsRoute,
   ContactRoute: ContactRoute,
   FaqRoute: FaqRoute,
   LoginRoute: LoginRoute,
