@@ -1,24 +1,12 @@
-import { createFileRoute, Link } from '@tanstack/react-router';
-import { ArrowUpRight, Boxes, BrainCircuit, CheckCircle2 } from 'lucide-react';
-import { PageShell, Button } from '@/components/PageShell';
-import { Reveal } from '@/components/Reveal';
-import { ResponsiveImage } from '@/components/ResponsiveImage';
-import agencyCollaboration from '@/assets/agency-collaboration.jpg';
-import { listCaseStudies } from '@/lib/catalog.functions';
-import { caseStudyImage } from '@/lib/editorial-assets';
+import { createFileRoute } from '@tanstack/react-router';
+import { ArrowDown, ArrowUpRight, BookOpen, BriefcaseBusiness, HeartPulse, Plane, School, ShoppingBag, TrendingUp } from 'lucide-react';
+import { NdhFamilySymbol } from '@/components/NdhFamilySymbol';
 
-const title = 'Najeeb Digital Hub — Digital delivery and AI skills';
+const title = 'Najeeb Digital Hub — One brand, many possibilities';
 const description =
-  'A digital agency and AI skills academy. Brief the work, get it scoped, reviewed and delivered — or learn a practical AI skill and get certified.';
+  'Discover the NDH family of businesses across digital services, education, ventures, commerce, travel, healthcare and more.';
 
 export const Route = createFileRoute('/')({
-  loader: async () => {
-    try {
-      return (await listCaseStudies()).slice(0, 3);
-    } catch {
-      return [];
-    }
-  },
   head: () => ({
     meta: [
       { title },
@@ -56,153 +44,79 @@ export const Route = createFileRoute('/')({
   component: Home,
 });
 
-const pillars = [
-  ['Digital delivery', 'Brand, product, web, media and growth work guided by a project manager.', Boxes],
-  ['AI skills', 'Short courses built around a final assessment, a practical project and a certificate.', BrainCircuit],
-  ['Clear process', 'A defined route from brief to scope, assignment, review and delivery.', CheckCircle2],
+const businesses = [
+  { name: 'Agency', description: 'Digital products, brand, media and growth work delivered through a clear managed process.', Icon: BriefcaseBusiness, href: 'https://ndhagency.lovable.app', state: 'Live' },
+  { name: 'Academy', description: 'Practical AI skills, assessments, projects and certificates for ambitious learners.', Icon: BookOpen, href: 'https://ndhacademy.lovable.app', state: 'Live' },
+  { name: 'Venture', description: 'A home for ideas, investments and businesses built for long-term value.', Icon: TrendingUp, href: 'https://ndhventure.lovable.app', state: 'Live' },
+  { name: 'eStore', description: 'A growing commerce destination for useful products and digital essentials.', Icon: ShoppingBag, href: 'https://ndhestore.lovable.app', state: 'Live' },
+  { name: 'SchoolDesk', description: 'A focused digital workspace for schools, staff, learners and families.', Icon: School, href: 'https://ndhschooldesk.lovable.app', state: 'Live' },
+  { name: 'Travel', description: 'Thoughtful travel planning and experiences, being prepared for what comes next.', Icon: Plane, state: 'Coming soon' },
+  { name: 'iHospital', description: 'A future healthcare platform designed around clearer access and coordination.', Icon: HeartPulse, state: 'Coming soon' },
 ] as const;
 
 function Home() {
-  const studies = Route.useLoaderData();
   return (
-    <PageShell>
-      <main>
-        <section className="hero home-hero">
-          <img className="home-hero-image" src={agencyCollaboration} alt="Creative team reviewing a digital project together" width={1600} height={1008} fetchPriority="high" decoding="async" />
-          <div className="hero-copy">
-            <p className="eyebrow">Digital agency · AI academy</p>
-            <h1>
-              Najeeb Digital Hub
-            </h1>
-            <p className="lede">
-              Digital work, sharply delivered. We scope, manage and review projects for businesses — and teach practical AI skills for people ready to grow.
-            </p>
-            <div className="actions">
-              <Button to="/agency">
-                Explore the agency <ArrowUpRight size={16} />
-              </Button>
-              <Button to="/academy" secondary>
-                Learn AI skills
-              </Button>
-            </div>
-          </div>
-        </section>
-
-        <nav className="home-paths" aria-label="Explore Najeeb Digital Hub">
-          <Button to="/agency">Agency <ArrowUpRight size={17} /></Button>
-          <Button to="/work" secondary>Selected work <ArrowUpRight size={17} /></Button>
-          <Button to="/academy" secondary>Academy <ArrowUpRight size={17} /></Button>
+    <div className="ecosystem-page">
+      <header className="ecosystem-header">
+        <a className="ecosystem-brand" href="#top" aria-label="Najeeb Digital Hub home">
+          <NdhFamilySymbol />
+          <span><strong>NAJEEB</strong><small>DIGITAL HUB</small></span>
+        </a>
+        <nav aria-label="Main navigation">
+          <a href="#businesses">Businesses</a>
+          <a href="#about">Our vision</a>
         </nav>
+        <a className="ecosystem-header-link" href="#businesses">Explore NDH <ArrowDown size={15} /></a>
+      </header>
 
-        <section className="home-section">
-          <Reveal>
-            <div className="section-heading">
-              <p className="eyebrow">One hub, two ways forward</p>
-              <h2>Make the next step easier to see.</h2>
-            </div>
-          </Reveal>
-          <div className="pillar-grid">
-            {pillars.map(([heading, text, Icon], i) => (
-              <Reveal key={heading} delay={i * 90}>
-                <article className="pillar-card">
-                  <Icon size={22} />
-                  <h3>{heading}</h3>
-                  <p>{text}</p>
-                </article>
-              </Reveal>
-            ))}
+      <main id="top">
+        <section className="ecosystem-hero">
+          <div className="ecosystem-hero-copy">
+            <p className="ecosystem-kicker">Najeeb Digital Hub · Nigeria to the world</p>
+            <h1>One brand.<br /><span>Many possibilities.</span></h1>
+            <p>NDH is a growing family of businesses built to help people learn, create, operate and move forward.</p>
+            <a className="ecosystem-primary-link" href="#businesses">Discover our businesses <ArrowDown size={18} /></a>
+          </div>
+          <div className="ecosystem-hero-symbol">
+            <span className="ecosystem-orbit ecosystem-orbit-one" />
+            <span className="ecosystem-orbit ecosystem-orbit-two" />
+            <NdhFamilySymbol />
+            <p>Shared vision<br /><strong>Distinct businesses</strong></p>
           </div>
         </section>
 
-        {studies.length > 0 && (
-          <section className="home-work-section" aria-labelledby="home-work-title">
-            <div className="home-work-inner">
-              <div className="home-work-heading">
-                <div>
-                  <p className="eyebrow">Selected work</p>
-                  <h2 id="home-work-title">Built for real use.</h2>
-                </div>
-                <Button to="/work" secondary>See all work <ArrowUpRight size={16} /></Button>
-              </div>
-              <div className="home-work-grid">
-                {studies.map((study) => {
-                  const image = caseStudyImage(study.slug, study.cover_image_url);
-                  return (
-                    <Link key={study.slug} className="home-work-item" to="/work/$slug" params={{ slug: study.slug }}>
-                      {image && <img src={image} alt={`Cover for ${study.title}`} width={800} height={530} loading="lazy" decoding="async" />}
-                      <div className="home-work-item-copy">
-                        <span className="eyebrow">{study.category ?? 'Case study'}</span>
-                        <h3>{study.title}</h3>
-                        <ArrowUpRight size={20} aria-hidden="true" />
-                      </div>
-                    </Link>
-                  );
-                })}
-              </div>
-            </div>
-          </section>
-        )}
-
-        <section className="split-section">
-          <Reveal>
-            <div className="split-visual">
-              <ResponsiveImage name="ndh-agency-work" alt="A project team reviewing work together in a studio" width={1280} height={960} />
-            </div>
-          </Reveal>
-          <Reveal delay={100}>
-            <div className="split-copy">
-              <p className="eyebrow">For businesses</p>
-              <h2>Brief the work. We’ll shape the route.</h2>
-              <p>
-                From the first conversation to the final review, NDH brings structure to digital delivery —
-                one project manager, one clear scope, one accountable handover.
-              </p>
-              <Button to="/agency">
-                Explore the agency <ArrowUpRight size={16} />
-              </Button>
-            </div>
-          </Reveal>
+        <section className="ecosystem-directory" id="businesses" aria-labelledby="businesses-heading">
+          <div className="ecosystem-section-heading">
+            <div><p className="ecosystem-kicker">The NDH family</p><h2 id="businesses-heading">Built for different parts of life.</h2></div>
+            <p>Each business carries the same foundation, with its own expertise, team and purpose.</p>
+          </div>
+          <div className="ecosystem-grid">
+            {businesses.map(({ name, description: businessDescription, Icon, href, state }) => {
+              const content = <>
+                <div className="ecosystem-card-top"><NdhFamilySymbol SectorIcon={Icon} /><span>{state}</span></div>
+                <div><p className="ecosystem-card-label">NDH</p><h3>{name}</h3><p>{businessDescription}</p></div>
+                <span className="ecosystem-card-action">{href ? 'Visit business' : 'In development'} {href ? <ArrowUpRight size={17} /> : null}</span>
+              </>;
+              return href ? <a className="ecosystem-card" href={href} key={name}>{content}</a> : <article className="ecosystem-card ecosystem-card-muted" key={name}>{content}</article>;
+            })}
+            <article className="ecosystem-card ecosystem-card-next">
+              <span className="ecosystem-plus">+</span>
+              <div><p className="ecosystem-card-label">The next chapter</p><h3>More to come.</h3><p>The system is designed to grow with every new NDH business.</p></div>
+            </article>
+          </div>
         </section>
 
-        <section className="split-section">
-          <Reveal>
-            <div className="split-copy">
-              <p className="eyebrow">For learners</p>
-              <h2>Learn a practical AI skill, then prove it.</h2>
-              <p>
-                Focused courses across six AI schools. Finish the lessons, sit the final assessment, submit a
-                project, and receive a signed certificate.
-              </p>
-              <Button to="/academy" secondary>
-                Browse the academy <ArrowUpRight size={16} />
-              </Button>
-            </div>
-          </Reveal>
-          <Reveal delay={100}>
-            <div className="split-visual">
-              <ResponsiveImage name="ndh-academy" alt="A learner following an online AI course and taking notes" width={1600} height={912} />
-            </div>
-          </Reveal>
-        </section>
-
-        <section className="home-section" style={{ paddingTop: 0 }}>
-          <Reveal>
-            <div className="cta-panel">
-              <p className="eyebrow">Start here</p>
-              <h2>Tell us what needs to move.</h2>
-              <p>Share a brief and we’ll come back with a clear scope and next step.</p>
-              <div className="actions">
-                <Button to="/contact">
-                  Book a scoping call <ArrowUpRight size={16} />
-                </Button>
-                <Button to="/signup" secondary>
-                  Create an account
-                </Button>
-              </div>
-            </div>
-          </Reveal>
+        <section className="ecosystem-about" id="about">
+          <p className="ecosystem-kicker">Our shared foundation</p>
+          <div><h2>Different industries.<br />One standard.</h2><p>Every NDH business is shaped by useful technology, clear service and long-term thinking. The symbol is the link: one identity that remains recognisable wherever the family grows.</p></div>
         </section>
       </main>
-    </PageShell>
+
+      <footer className="ecosystem-footer">
+        <div className="ecosystem-brand"><NdhFamilySymbol /><span><strong>NAJEEB</strong><small>DIGITAL HUB</small></span></div>
+        <p>Building useful businesses for a changing world.</p>
+        <span>© {new Date().getFullYear()} NDH</span>
+      </footer>
+    </div>
   );
 }

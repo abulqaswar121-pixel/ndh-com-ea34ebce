@@ -2,7 +2,8 @@
 
 - [x] Show three side-by-side NDH family identity systems as a separate visual exploration without replacing the current brand.
 - [x] Select integrated-corner direction for the NDH family.
-- [x] Refine the selected sculpted N on the comparison page; live identity stays unchanged pending final approval.
+- [x] Replace the letter N with the selected standalone sculptural symbol across the approved family direction.
+- [x] Turn ndh.com.ng into the NDH parent-brand landing page and business directory.
 - [ ] Polish NDH's existing public experience without changing its identity: foreground actual work, refine page openings, and give service/course blocks stronger visual structure.
 - [ ] Check public pages at phone and desktop sizes after the polish; preserve existing portal styling and functional journeys.
 - [x] Tighten empty public and portal sections; restore first-screen visual density across desktop and phone.
