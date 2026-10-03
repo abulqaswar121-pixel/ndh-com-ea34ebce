@@ -1,10 +1,10 @@
 import { createFileRoute, Link } from '@tanstack/react-router';
-import { useState } from 'react';
+import { useId, useState } from 'react';
 import { ArrowLeft, ArrowUpRight, BookOpen, BriefcaseBusiness, HeartPulse, Plane, TrendingUp, Plus, ShoppingBag, School } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 const title = 'NDH Brand Family Explorations — Najeeb Digital Hub';
-const description = 'Compare three visual logo systems for Najeeb Digital Hub and its expanding family of businesses.';
+const description = 'Preview the selected integrated-corner NDH brand family with a sculpted N inspired by the supplied reference.';
 
 export const Route = createFileRoute('/brand-explorations')({
   head: () => ({ meta: [
@@ -27,17 +27,30 @@ const businesses = [
 
 const directions = [
   { number: '01', name: 'Dual badge', idea: 'The NDH symbol stays untouched; a second, smaller badge identifies the business.', className: 'dual' },
-  { number: '02', name: 'Integrated corner', idea: 'Each business icon sits inside one shared architectural frame.', className: 'integrated' },
+  { number: '02', name: 'Integrated corner', idea: 'Selected direction · a sculpted N anchors the family; each business gets a small sector icon.', className: 'integrated' },
   { number: '03', name: 'Linear signature', idea: 'A compact symbol leads the name; the business identity sits on the same line.', className: 'linear' },
 ] as const;
 
 type Business = (typeof businesses)[number];
 type Direction = (typeof directions)[number];
 
-function MasterSymbol({ className = '' }: { className?: string }) {
-  return <svg className={`brand-lab-symbol ${className}`} viewBox="0 0 96 96" fill="none" aria-hidden="true">
-    <path d="M12 76V20h16l40 40V20h16v56H68L28 36v40H12Z" fill="currentColor" />
-    <path d="M12 20h16l40 40V20" stroke="var(--lab-glint)" strokeWidth="3" strokeLinejoin="round" opacity=".72" />
+function MasterSymbol({ integrated = false }: { integrated?: boolean }) {
+  const gradientId = useId().replace(/:/g, '');
+  return <svg className="brand-lab-symbol" viewBox="0 0 100 100" fill="none" aria-hidden="true">
+    {integrated ? <>
+      <defs><linearGradient id={gradientId} x1="24" y1="18" x2="77" y2="85" gradientUnits="userSpaceOnUse">
+        <stop stopColor="var(--lab-symbol-light)" /><stop offset=".5" stopColor="var(--lab-symbol-mid)" /><stop offset="1" stopColor="var(--lab-symbol-deep)" />
+      </linearGradient></defs>
+      <g fill={`url(#${gradientId})`}>
+        <path d="M34 25 45 17Q50 13 55 17L69 27V61L58 52V35Q58 32 55 30L53 28Q50 26 47 28L44 30Q42 32 42 35V42L31 33V30Q31 27 34 25Z" />
+        <path d="M17 40Q17 33 23 29L28 25 72 62V27L79 32Q84 36 84 43V65Q84 72 78 76L72 80 28 44V73L22 69Q16 65 16 58V40Z" />
+        <path d="M31 55 42 64V69Q42 72 46 75L48 77Q50 79 52 77L56 74Q59 72 59 69V61L69 69V77L55 87Q50 91 45 87L31 77V55Z" />
+      </g>
+      <path d="M21 36 73 78" stroke="var(--lab-symbol-glint)" strokeWidth="1" opacity=".52" />
+    </> : <>
+      <path d="M12 76V20h16l40 40V20h16v56H68L28 36v40H12Z" fill="currentColor" />
+      <path d="M12 20h16l40 40V20" stroke="var(--lab-glint)" strokeWidth="3" strokeLinejoin="round" opacity=".72" />
+    </>}
   </svg>;
 }
 
@@ -45,7 +58,7 @@ function Identity({ direction, business, parent = false }: { direction: Directio
   const Icon = business?.Icon;
   return <div className={`brand-lab-identity ${direction.className}${parent ? ' parent' : ''}`}>
     <div className="brand-lab-symbol-group">
-      <span className="brand-lab-master"><MasterSymbol /></span>
+      <span className="brand-lab-master"><MasterSymbol integrated={direction.className === 'integrated'} /></span>
       {Icon && <span className="brand-lab-sector"><Icon aria-hidden="true" strokeWidth={1.8} /></span>}
     </div>
     <div className="brand-lab-identity-text">
@@ -69,9 +82,9 @@ function BrandExplorations() {
       </header>
 
       <div className="brand-lab-intro">
-        <p className="brand-lab-kicker">Brand family / Exploration 01</p>
+        <p className="brand-lab-kicker">Brand family / Selected direction 02</p>
         <h1>One family.<br /><em>Many futures.</em></h1>
-        <p>Three ways to connect Najeeb Digital Hub to every business it grows into. One colour language across them all; a distinct icon for each sector.</p>
+        <p>The integrated corner now carries an architectural N inspired by your reference. Its sector icon changes for each business; the parent symbol stays consistent.</p>
       </div>
 
       <div className="brand-lab-index" aria-label="The three directions">
@@ -101,7 +114,7 @@ function BrandExplorations() {
           </div>
         </div>
       </section>)}
-      <footer className="brand-lab-footer"><span>Explorations only — the existing NDH logo and live businesses have not been changed.</span><Link to="/">Return to NDH <ArrowUpRight size={16} /></Link></footer>
+      <footer className="brand-lab-footer"><span>Preview only — the current NDH logo and live businesses have not been changed.</span><Link to="/">Return to NDH <ArrowUpRight size={16} /></Link></footer>
     </div>
   </main>;
 }
