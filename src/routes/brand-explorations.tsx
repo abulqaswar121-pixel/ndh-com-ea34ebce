@@ -2,10 +2,10 @@ import { createFileRoute, Link } from '@tanstack/react-router';
 import { useState } from 'react';
 import { ArrowLeft, ArrowUpRight, BookOpen, BriefcaseBusiness, HeartPulse, Plane, TrendingUp, Plus, ShoppingBag, School } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { NdhFamilySymbol } from '@/components/NdhFamilySymbol';
+import gatewayLogo from '@/assets/ndh-logo-gateway-cropped.png';
 
 const title = 'NDH Brand Family Explorations — Najeeb Digital Hub';
-const description = 'Preview the selected integrated monogram badge for the NDH family of businesses.';
+const description = 'Preview a non-letter gateway symbol in the selected integrated badge for the NDH family of businesses.';
 
 export const Route = createFileRoute('/brand-explorations')({
   head: () => ({ meta: [
@@ -26,21 +26,16 @@ const businesses = [
   { name: 'iHospital', Icon: HeartPulse, state: 'Future' },
 ] as const;
 
-const directions = [
-  { number: '01', name: 'Dual badge', idea: 'The NDH symbol stays untouched; a second, smaller badge identifies the business.', className: 'dual' },
-  { number: '02', name: 'Integrated monogram badge', idea: 'Selected direction · N, D and H share one symbol; the business icon is built into its corner.', className: 'integrated' },
-  { number: '03', name: 'Linear signature', idea: 'A compact symbol leads the name; the business identity sits on the same line.', className: 'linear' },
-] as const;
-
 type Business = (typeof businesses)[number];
-type Direction = (typeof directions)[number];
 
-function Identity({ direction, business, parent = false }: { direction: Direction; business?: Business; parent?: boolean }) {
+function Identity({ business, parent = false }: { business?: Business; parent?: boolean }) {
   const Icon = business?.Icon;
-  return <div className={`brand-lab-identity ${direction.className}${parent ? ' parent' : ''}`}>
+  return <div className={`brand-lab-identity integrated${parent ? ' parent' : ''}`}>
     <div className="brand-lab-symbol-group">
-      <span className="brand-lab-master"><NdhFamilySymbol SectorIcon={direction.className === 'integrated' ? Icon : undefined} /></span>
-      {Icon && direction.className !== 'integrated' && <span className="brand-lab-sector"><Icon aria-hidden="true" strokeWidth={1.8} /></span>}
+      <span className="gateway-badge">
+        <img src={gatewayLogo} alt="" width={684} height={679} loading="lazy" />
+        {Icon && <span className="gateway-sector"><Icon aria-hidden="true" strokeWidth={2} /></span>}
+      </span>
     </div>
     <div className="brand-lab-identity-text">
       <strong>NAJEEB <span>DIGITAL HUB</span></strong>
@@ -63,38 +58,32 @@ function BrandExplorations() {
       </header>
 
       <div className="brand-lab-intro">
-        <p className="brand-lab-kicker">Brand family / Selected direction 02</p>
-        <h1>One family.<br /><em>Many futures.</em></h1>
-        <p>The integrated monogram brings N, D and H into one symbol. Each business adds its own icon at the corner, while the parent badge stays unmistakably NDH.</p>
+         <p className="brand-lab-kicker">Brand family / Integrated badge</p>
+         <h1>One family.<br /><em>Many futures.</em></h1>
+         <p>A gateway with an open centre represents possibility without spelling a letter. Each business carries the same symbol with its own icon set into the corner.</p>
       </div>
 
-      <div className="brand-lab-index" aria-label="The three directions">
-        {directions.map((direction) => <a href={`#direction-${direction.number}`} key={direction.number}>
-          <span>{direction.number} / {direction.name}</span><ArrowUpRight size={16} aria-hidden="true" />
-        </a>)}
-      </div>
-
-      {directions.map((direction) => <section className="brand-lab-direction" id={`direction-${direction.number}`} key={direction.number} aria-labelledby={`heading-${direction.number}`}>
+       <section className="brand-lab-direction" id="direction-02" aria-labelledby="heading-02">
         <div className="brand-lab-direction-heading">
-          <span className="brand-lab-number">{direction.number}</span>
-          <div><h2 id={`heading-${direction.number}`}>{direction.name}</h2><p>{direction.idea}</p></div>
+           <span className="brand-lab-number">02</span>
+           <div><h2 id="heading-02">Open Gateway · Integrated badge</h2><p>The master symbol stays consistent; each business icon is fitted into its corner.</p></div>
         </div>
         <div className="brand-lab-master-display">
           <div className="brand-lab-display-meta"><span>01 / Parent identity</span><span>ndh.com.ng</span></div>
-          <Identity direction={direction} parent />
+           <Identity parent />
         </div>
         <div className="brand-lab-family-heading"><h3>One system, seven expressions</h3><span>Same palette · shared symbol · sector-specific icon</span></div>
         <div className="brand-lab-grid">
           {businesses.map((business) => <div className="brand-lab-tile" key={business.name}>
             <div className="brand-lab-tile-meta"><span>{business.state}</span><span>NDH / {business.name}</span></div>
-            <Identity direction={direction} business={business} />
+             <Identity business={business} />
           </div>)}
           <div className="brand-lab-tile brand-lab-tile-future">
             <div className="brand-lab-tile-meta"><span>Expandable</span><span>NDH / Next</span></div>
             <div className="brand-lab-add"><Plus size={22} /><span>Room for what comes next</span></div>
           </div>
         </div>
-      </section>)}
+       </section>
       <footer className="brand-lab-footer"><span>Preview only — the current NDH logo and live businesses have not been changed.</span><Link to="/">Return to NDH <ArrowUpRight size={16} /></Link></footer>
     </div>
   </main>;
