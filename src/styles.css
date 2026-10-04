@@ -4720,3 +4720,25 @@ a.ecosystem-card:hover { transform: translateY(-3px); box-shadow: 0 18px 36px -1
 .ecosystem-page a.ecosystem-header-link,
 .ecosystem-page a.ecosystem-primary-link { color: #fff; }
 .ecosystem-about h2 { color: #f8fafc; }
+
+/* Candidate identity: Open Gateway in the approved integrated-badge arrangement. */
+.brand-lab .gateway-badge {
+  position: relative; display: grid; place-items: center; flex: none;
+  width: 72px; height: 72px; border-radius: 17px;
+  background: var(--family-tile-start); border: 1px solid var(--lab-stroke);
+  box-shadow: 0 10px 20px -12px var(--family-tile-end);
+}
+.brand-lab .gateway-badge img { display: block; width: 92%; height: 92%; object-fit: contain; }
+.brand-lab .gateway-sector {
+  position: absolute; right: -8px; bottom: -7px;
+  display: grid; place-items: center; width: 29px; height: 29px;
+  border-radius: 8px; background: var(--lab-sheet); color: var(--lab-ink);
+  border: 2px solid var(--family-tile-start);
+}
+.brand-lab .gateway-sector svg { width: 16px; height: 16px; }
+.brand-lab .brand-lab-identity.parent .gateway-badge { width: 112px; height: 112px; border-radius: 24px; }
+.brand-lab .brand-lab-intro { padding-bottom: 36px; }
+@media (max-width: 600px) {
+  .brand-lab .brand-lab-identity.parent .gateway-badge { width: 80px; height: 80px; border-radius: 19px; }
+  .brand-lab .gateway-badge { width: 68px; height: 68px; }
+}
