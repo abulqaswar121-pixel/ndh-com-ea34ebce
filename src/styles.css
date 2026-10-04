@@ -4590,11 +4590,12 @@ body.nav-is-open .ai-assistant-launcher {
 .ndh-family-symbol { position: relative; display: inline-flex; align-items: center; gap: 8px; flex: none; }
 .ndh-family-tile {
   display: grid; place-items: center; width: 44px; height: 44px; border-radius: 12px;
-  background: linear-gradient(150deg, #f5f3ff, #ede9fe 55%, #e0f2fe);
-  border: 1px solid #e5e0f5; box-shadow: 0 4px 12px -6px rgb(99 102 241 / 0.35);
+  background: linear-gradient(150deg, #0b1530, #1e1b4b 55%, #312e81);
+  border: 1px solid rgb(255 255 255 / 0.08);
+  box-shadow: 0 6px 16px -6px rgb(30 27 75 / 0.55), inset 0 1px 0 rgb(255 255 255 / 0.12);
   overflow: hidden;
 }
-.ndh-family-tile img { width: 82%; height: 82%; object-fit: contain; display: block; }
+.ndh-family-tile .ndh-family-mark { width: 74%; height: 74%; display: block; }
 .ndh-family-sector {
   display: grid; place-items: center; width: 26px; height: 26px; flex: none;
   border-radius: 8px; background: var(--eco-surface); border: 1px solid var(--eco-line);
