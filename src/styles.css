@@ -4692,3 +4692,8 @@ a.ecosystem-card:hover { transform: translateY(-3px); box-shadow: 0 18px 36px -1
   .ecosystem-hero { grid-template-columns: 1fr; gap: 28px; }
   .ecosystem-hero-symbol .ndh-family-symbol { width: 88px; height: 88px; }
 }
+
+/* contrast fixes */
+.ecosystem-page a.ecosystem-header-link,
+.ecosystem-page a.ecosystem-primary-link { color: #fff; }
+.ecosystem-about h2 { color: #f8fafc; }
