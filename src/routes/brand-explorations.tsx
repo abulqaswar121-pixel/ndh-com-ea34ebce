@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { NdhFamilySymbol } from '@/components/NdhFamilySymbol';
 
 const title = 'NDH Brand Family Explorations — Najeeb Digital Hub';
-const description = 'Preview the selected integrated-corner NDH brand family with the shared sculptural symbol.';
+const description = 'Preview the selected integrated monogram badge for the NDH family of businesses.';
 
 export const Route = createFileRoute('/brand-explorations')({
   head: () => ({ meta: [
@@ -28,7 +28,7 @@ const businesses = [
 
 const directions = [
   { number: '01', name: 'Dual badge', idea: 'The NDH symbol stays untouched; a second, smaller badge identifies the business.', className: 'dual' },
-  { number: '02', name: 'Integrated corner', idea: 'Selected direction · a sculpted N anchors the family; each business gets a small sector icon.', className: 'integrated' },
+  { number: '02', name: 'Integrated monogram badge', idea: 'Selected direction · N, D and H share one symbol; the business icon is built into its corner.', className: 'integrated' },
   { number: '03', name: 'Linear signature', idea: 'A compact symbol leads the name; the business identity sits on the same line.', className: 'linear' },
 ] as const;
 
@@ -39,8 +39,8 @@ function Identity({ direction, business, parent = false }: { direction: Directio
   const Icon = business?.Icon;
   return <div className={`brand-lab-identity ${direction.className}${parent ? ' parent' : ''}`}>
     <div className="brand-lab-symbol-group">
-      <span className="brand-lab-master"><NdhFamilySymbol /></span>
-      {Icon && <span className="brand-lab-sector"><Icon aria-hidden="true" strokeWidth={1.8} /></span>}
+      <span className="brand-lab-master"><NdhFamilySymbol SectorIcon={direction.className === 'integrated' ? Icon : undefined} /></span>
+      {Icon && direction.className !== 'integrated' && <span className="brand-lab-sector"><Icon aria-hidden="true" strokeWidth={1.8} /></span>}
     </div>
     <div className="brand-lab-identity-text">
       <strong>NAJEEB <span>DIGITAL HUB</span></strong>
@@ -65,7 +65,7 @@ function BrandExplorations() {
       <div className="brand-lab-intro">
         <p className="brand-lab-kicker">Brand family / Selected direction 02</p>
         <h1>One family.<br /><em>Many futures.</em></h1>
-        <p>The integrated corner carries the shared sculptural symbol from your reference. Its sector icon changes for each business; the parent symbol stays consistent.</p>
+        <p>The integrated monogram brings N, D and H into one symbol. Each business adds its own icon at the corner, while the parent badge stays unmistakably NDH.</p>
       </div>
 
       <div className="brand-lab-index" aria-label="The three directions">
