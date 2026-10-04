@@ -44,7 +44,9 @@ export const Route = createFileRoute('/')({
   component: Home,
 });
 
-const businesses = [
+type Business = { name: string; description: string; Icon: typeof BriefcaseBusiness; href?: string; state: 'Live' | 'Coming soon' };
+
+const businesses: Business[] = [
   { name: 'Agency', description: 'Digital products, brand, media and growth work delivered through a clear managed process.', Icon: BriefcaseBusiness, href: 'https://ndhagency.lovable.app', state: 'Live' },
   { name: 'Academy', description: 'Practical AI skills, assessments, projects and certificates for ambitious learners.', Icon: BookOpen, href: 'https://ndhacademy.lovable.app', state: 'Live' },
   { name: 'Venture', description: 'A home for ideas, investments and businesses built for long-term value.', Icon: TrendingUp, href: 'https://ndhventure.lovable.app', state: 'Live' },
@@ -52,7 +54,7 @@ const businesses = [
   { name: 'SchoolDesk', description: 'A focused digital workspace for schools, staff, learners and families.', Icon: School, href: 'https://ndhschooldesk.lovable.app', state: 'Live' },
   { name: 'Travel', description: 'Thoughtful travel planning and experiences, being prepared for what comes next.', Icon: Plane, state: 'Coming soon' },
   { name: 'iHospital', description: 'A future healthcare platform designed around clearer access and coordination.', Icon: HeartPulse, state: 'Coming soon' },
-] as const;
+];
 
 function Home() {
   return (
