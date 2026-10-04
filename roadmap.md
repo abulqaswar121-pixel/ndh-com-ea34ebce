@@ -1,5 +1,6 @@
 # Roadmap
 
+- [x] Roll out the approved Open Gateway integrated badge on the parent homepage, align its palette, add useful ecosystem content, and check phone/desktop views.
 - [x] Show three side-by-side NDH family identity systems as a separate visual exploration without replacing the current brand.
 - [x] Select integrated-corner direction for the NDH family.
 - [x] Replace the generic symbol with a combined NDH monogram and integrate subsidiary icons into option two's badge.

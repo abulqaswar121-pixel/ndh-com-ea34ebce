@@ -84,7 +84,7 @@ function BrandExplorations() {
           </div>
         </div>
        </section>
-      <footer className="brand-lab-footer"><span>Preview only — the current NDH logo and live businesses have not been changed.</span><Link to="/">Return to NDH <ArrowUpRight size={16} /></Link></footer>
+       <footer className="brand-lab-footer"><span>The Open Gateway identity is now on the NDH parent homepage. Subsidiary websites remain independent.</span><Link to="/">Return to NDH <ArrowUpRight size={16} /></Link></footer>
     </div>
   </main>;
 }
