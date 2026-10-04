@@ -14,3 +14,5 @@ Public homepage work previews read the same published case-study catalogue as th
 Keep speculative brand-family identity systems on a separate comparison route until a direction is approved; this prevents an exploration from silently replacing the live NDH identity.
 
 The root route is the parent-brand gateway and must remain independent from any one subsidiary's workflow; each business is linked as a sibling destination.
+
+The approved Open Gateway asset is the parent homepage identity, and subsidiaries use that same asset with an integrated corner icon; this keeps the family recognisable as it grows.
