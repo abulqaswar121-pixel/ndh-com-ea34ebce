@@ -14,9 +14,7 @@ export const Route = createFileRoute('/')({
       { property: 'og:title', content: title },
       { property: 'og:description', content: description },
       { property: 'og:type', content: 'website' },
-      { property: 'og:image', content: 'https://ndh.com.ng/og-image.png' },
       { name: 'twitter:card', content: 'summary_large_image' },
-      { name: 'twitter:image', content: 'https://ndh.com.ng/og-image.png' },
     ],
     links: [
       { rel: 'canonical', href: 'https://ndh.com.ng/' },
@@ -30,7 +28,6 @@ export const Route = createFileRoute('/')({
           name: 'Najeeb Digital Hub',
           alternateName: 'NDH',
           url: 'https://ndh.com.ng/',
-          logo: 'https://ndh.com.ng/ndh-logo.png',
           description,
           areaServed: ['Nigeria', 'Worldwide'],
           sameAs: [

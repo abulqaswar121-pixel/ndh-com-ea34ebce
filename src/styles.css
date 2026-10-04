@@ -4851,8 +4851,8 @@ a.ecosystem-card:hover { box-shadow: 0 20px 45px -22px color-mix(in oklab, var(-
   .ecosystem-brand small { font-size: 9px; }
   .ecosystem-header-link { font-size: 11px; padding: 9px 10px; }
   .ecosystem-hero { min-height: 500px; padding: 64px 20px 72px; align-items: flex-end; }
-  .ecosystem-hero::after { background: linear-gradient(0deg, var(--eco-dark) 30%, color-mix(in oklab, var(--eco-dark) 75%, transparent) 62%, transparent 100%); }
-  .ecosystem-hero-art { top: -65px; right: -50px; transform: rotate(-10deg); width: 390px; opacity: .58; }
+  .ecosystem-hero::after { background: linear-gradient(0deg, var(--eco-dark) 44%, color-mix(in oklab, var(--eco-dark) 88%, transparent) 69%, color-mix(in oklab, var(--eco-dark) 20%, transparent) 100%); }
+  .ecosystem-hero-art { top: -65px; right: -50px; transform: rotate(-10deg); width: 390px; opacity: .44; }
   .ecosystem-hero .ecosystem-kicker { font-size: 9px; flex-wrap: wrap; }
   .ecosystem-hero h1 { font-size: clamp(45px, 13vw, 64px); margin: 16px 0; }
   .ecosystem-hero-lead { font-size: 19px; max-width: 26ch; }
