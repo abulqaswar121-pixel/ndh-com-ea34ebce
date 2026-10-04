@@ -54,7 +54,7 @@ const businesses: Business[] = [
   { name: 'SchoolDesk', description: 'A focused digital workspace for schools, staff, learners and families.', Icon: School, href: 'https://ndhschooldesk.lovable.app', state: 'Live' },
   { name: 'Travel', description: 'Thoughtful travel planning and experiences, being prepared for what comes next.', Icon: Plane, state: 'Coming soon' },
   { name: 'iHospital', description: 'A future healthcare platform designed around clearer access and coordination.', Icon: HeartPulse, state: 'Coming soon' },
-] as const;
+];
 
 function Home() {
   return (
