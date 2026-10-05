@@ -207,9 +207,11 @@ function LearningPage() {
                             </div>
                           )}
                           {l.notes && <p className="lesson-note">{l.notes}</p>}
-                          <button className="button" onClick={() => void complete(l.id, false)} disabled={isDone}>
-                            {isDone ? 'Completed' : 'Mark as complete'}
-                          </button>
+                          {!vid ? (
+                            <button className="button" onClick={() => void complete(l.id, false)} disabled={isDone}>
+                              {isDone ? 'Completed' : 'Mark reading complete'}
+                            </button>
+                          ) : null}
                         </div>
                       )}
                     </article>
