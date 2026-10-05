@@ -1,11 +1,6 @@
 import { useEffect, useRef, useState } from "react";
-import { Activity, Globe2, Radio } from "lucide-react";
-import {
-  ECOSYSTEM_METRICS,
-  NETWORK_COUNTRIES,
-  NETWORK_FLAGS,
-  type Metric,
-} from "@/lib/ecosystem";
+import { Activity, Radio } from "lucide-react";
+import { ECOSYSTEM_METRICS, type Metric } from "@/lib/ecosystem";
 import { useI18n } from "@/lib/preferences";
 
 /**
@@ -92,7 +87,11 @@ export function LiveStatusBar() {
   const { t } = useI18n();
 
   return (
-    <section className="ecosystem-status gw-section" id="status" aria-labelledby="gw-status-heading">
+    <section
+      className="ecosystem-status gw-section"
+      id="status"
+      aria-labelledby="gw-status-heading"
+    >
       <div className="gw-panel gw-status">
         <div className="gw-status-head">
           <p className="gw-eyebrow">
@@ -109,18 +108,6 @@ export function LiveStatusBar() {
         </div>
 
         <div className="gw-status-foot">
-          <p className="gw-status-network">
-            <Globe2 size={14} aria-hidden="true" />
-            <b>{t("home.stats.countriesLabel")}</b>
-            <span className="gw-country-list">
-              {NETWORK_COUNTRIES.map((country, index) => (
-                <span className="gw-country" key={country}>
-                  <i aria-hidden="true">{NETWORK_FLAGS[index]}</i>
-                  {country}
-                </span>
-              ))}
-            </span>
-          </p>
           <p className="gw-status-note">
             <Radio size={13} aria-hidden="true" /> {t("home.stats.updated")}
           </p>

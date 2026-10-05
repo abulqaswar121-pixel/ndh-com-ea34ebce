@@ -249,3 +249,39 @@ light-first one and applies the exact hex values from the correction.
   About / Contact and mobile Journal were visually reviewed. Local browser
   console contains the development-only HMR WebSocket warning (the dev server
   expects the HTTPS preview on port 443), not an application render failure.
+
+## Official subsidiary reference alignment (5 October 2026)
+
+- Replaced the earlier speculative descriptions with owner-verified profiles in
+  `business-profiles.ts`, consumed by English cards and the AI system brief.
+  French/Arabic directory, categories, metrics, chat chips and footer summaries
+  are aligned too.
+- Academy: 60 courses, six exact specialized schools and their topic lists;
+  restored signed/cryptographically-verifiable certificate information and
+  `/verify` navigation. Kept the real 30-entry cached catalogue explicitly
+  partial instead of fabricating the remaining courses.
+- Venture renamed NDH AgriCapital with Sprout icon, cooperative farm-cycle
+  investment model, contribution ledger, live equity, operator logs and
+  proportional harvest profit distribution. Legacy name/AgriVest enquiries
+  resolve to AgriCapital; generic startup fundraising does not.
+- eStore now describes multivendor digital/physical storefronts, merchant
+  onboarding, inventory, shipping, Paystack/Flutterwave checkout and payout
+  ledgers, not a boilerplate-only shop.
+- Agency: 10 departments, PM-mediated confidential isolation, QC, milestone
+  verification and escrow payouts. Only the five confirmed department examples
+  are listed; no invented department names.
+- SchoolDesk, Travel and iHospital are all Coming Soon, across cards, menu,
+  About, Contact, footer, journal, legal copy and consultant. No live launch
+  links or promises of booking/onboarding are offered for pipeline businesses.
+- Family snapshot uses verified scope counts [7, 4, 3, 60, 6, 10], replacing
+  unsupported performance/uptime/network placeholders. JSON-LD uses actual
+  names/descriptions and does not present pipeline URLs as active destinations.
+- Supplied official domains used for Agency/Academy/eStore. AgriCapital keeps
+  its existing legacy deployment link pending owner confirmation of a new
+  domain. See `docs/official-business-profiles.md` for handoff decisions.
+- Added repeatable profile/routing regression tests. 28 intent cases and
+  additional assertions pass; SSR smoke checks, TypeScript, targeted ESLint and
+  production build pass. Browser checks pass for EN/FR/AR at 375px and 1440px,
+  including state counts, metrics, destinations and six Academy school cards.
+- Fixed an RTL skip-link overflow revealed by the Arabic browser checks, and
+  bounded the longer family dropdown to the viewport height.

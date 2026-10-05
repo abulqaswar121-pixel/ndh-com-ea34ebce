@@ -2,7 +2,8 @@ import { createFileRoute } from "@tanstack/react-router";
 import { ArrowUpRight, Compass, Layers3, MapPin, Sprout } from "lucide-react";
 import { FamilyPage, FamilyIntro, FamilyCta } from "@/components/ecosystem/FamilyPage";
 import { NdhFamilySymbol } from "@/components/NdhFamilySymbol";
-import { SUBSIDIARIES } from "@/lib/ecosystem";
+import { ACADEMY_SCHOOLS, ACADEMY_SNAPSHOT } from "@/lib/business-profiles";
+import { SUBSIDIARIES, subsidiaryHref } from "@/lib/ecosystem";
 import { SITE_CONTACT } from "@/lib/site-contact";
 import { useI18n } from "@/lib/preferences";
 
@@ -29,7 +30,7 @@ function About() {
       <FamilyIntro
         eyebrow="About the NDH family"
         title="Different doors. One shared purpose."
-        body="Najeeb Digital Hub brings together businesses that help people learn, build, trade and organise everyday work. Each has its own focus. Together, they open more ways forward."
+        body="Najeeb Digital Hub brings together businesses that help people learn, build, trade and participate in cooperative farming. Each has its own focus. Together, they open more ways forward."
       >
         <a className="gw-button gw-button-primary" href="#our-family">
           Meet the family <ArrowUpRight size={17} />
@@ -81,16 +82,17 @@ function About() {
                 <div className="family-card-top">
                   <NdhFamilySymbol SectorIcon={item.icon} />
                   <span className={`family-status ${item.state === "coming" ? "is-coming" : ""}`}>
-                    {item.state === "coming" ? "Coming next" : "Explore now"}
+                    {item.state === "coming" ? t("app.switcher.soon") : t("app.switcher.preview")}
                   </span>
                 </div>
                 <h3>{t(`eco.${item.id}.name` as never)}</h3>
+                <p className="family-kicker">{t(`eco.${item.id}.category` as never)}</p>
+                <p>
+                  <strong>{t(`eco.${item.id}.tagline` as never)}</strong>
+                </p>
                 <p>{t(`eco.${item.id}.description` as never)}</p>
                 {item.state !== "coming" ? (
-                  <a
-                    className="family-text-link"
-                    href={item.external ? (item.previewUrl ?? item.href) : item.href}
-                  >
+                  <a className="family-text-link" href={subsidiaryHref(item)}>
                     Explore {t(`eco.${item.id}.name` as never)} <ArrowUpRight size={15} />
                   </a>
                 ) : (
@@ -148,6 +150,35 @@ function About() {
                 <p>{body}</p>
               </article>
             ))}
+          </div>
+        </div>
+      </section>
+      <section className="family-band" id="academy-schools">
+        <div className="family-wrap">
+          <p className="family-kicker">NDH Academy · Official learning scope</p>
+          <h2>
+            {ACADEMY_SNAPSHOT.courses} practical AI-skills courses. {ACADEMY_SNAPSHOT.schools}{" "}
+            specialized schools.
+          </h2>
+          <p>
+            Structured video lessons, pre-project readiness quizzes and capstone deliverables — with
+            signed, cryptographically verifiable certificates.
+          </p>
+          <div className="family-values">
+            {ACADEMY_SCHOOLS.map((school) => (
+              <article key={school.name} className="family-card">
+                <h3>{school.name}</h3>
+                <p>{school.topics}</p>
+              </article>
+            ))}
+          </div>
+          <div className="official-profile-links">
+            <a href="https://academy.ndh.com.ng" className="family-text-link">
+              Explore the official Academy <ArrowUpRight size={16} />
+            </a>
+            <a href="/verify" className="family-text-link">
+              Verify an Academy certificate <ArrowUpRight size={16} />
+            </a>
           </div>
         </div>
       </section>

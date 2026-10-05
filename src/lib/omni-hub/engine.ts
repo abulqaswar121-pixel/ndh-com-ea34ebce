@@ -13,7 +13,9 @@
  * route that asked it instead of starting over.
  */
 import { STATIC_COURSES, type StaticCourse } from "@/lib/static-catalogue";
-import { SUBSIDIARIES, type SubsidiaryId } from "@/lib/ecosystem";
+import { SUBSIDIARIES, subsidiaryHref, type SubsidiaryId } from "@/lib/ecosystem";
+import { BUSINESS_PROFILES, ACADEMY_SCHOOLS } from "@/lib/business-profiles";
+import { SITE_CONTACT } from "@/lib/site-contact";
 import { en, type TranslationKey } from "@/lib/i18n/dictionary";
 import { regionLabel, type RegionId } from "@/lib/region";
 
@@ -29,7 +31,9 @@ export type OmniIntent =
   | "academy"
   | "estore"
   | "schooldesk"
-  | "venture"
+  | "agricapital"
+  | "travel"
+  | "ihospital"
   | "pricing"
   | "about"
   | "contact"
@@ -39,7 +43,15 @@ export type OmniIntent =
   | "unknown";
 
 /** Intents that name a business in the family and can own a conversation. */
-const BUSINESS_INTENTS = ["agency", "academy", "estore", "schooldesk", "venture"] as const;
+const BUSINESS_INTENTS = [
+  "agency",
+  "academy",
+  "estore",
+  "schooldesk",
+  "agricapital",
+  "travel",
+  "ihospital",
+] as const;
 type BusinessIntent = (typeof BUSINESS_INTENTS)[number];
 
 export type OmniCard = {
@@ -131,15 +143,27 @@ const RULES: IntentRule[] = [
   },
   {
     intent: "estore",
-    weight: 3,
+    weight: 4,
     pattern:
-      /(templates?|boilerplates?|starter kits?|source code|downloads?|licen[cs]es?|themes?|component librar\w+|resell|ready-?made|e-?store|online store|modèles?|gabarits?|boutique|قوالب|متجر|منتجات جاهزة)/i,
+      /(e-?store|multi[- ]?vendor|vendors?|merchants?|storefronts?|online store|inventory|shipping|checkout|cross[- ]border|sell (online|products|goods|clothes)|shop(?:ping)?|buy (products|goods)|physical products|digital products|paystack|flutterwave|templates?|boilerplates?|starter kits?|boutique|vendeur|marchand|livraison|stock|متجر|بائع|تجار|شحن|مخزون|منتجات)/i,
   },
   {
-    intent: "venture",
-    weight: 3,
+    intent: "agricapital",
+    weight: 5,
     pattern:
-      /(invest\w*|startup studio|ventures?|funding|backing|back my|fund my|raise|accelerators?|equity|co-?found\w*|partnerships?|my idea|an idea|investir|financement|mon idée|استثمار|تمويل|فكرتي)/i,
+      /(agri(capital|vest)|\bventure\b|agricultur|\bfarm(?:s|ing|er|ers)?\b|livestock|cattle|poultry|crops?|harvest|feeding|cooperative farming|contribution ledger|farm cycle|invest\w*|equity stake|proportional (profit|payout)|élevage|récolte|ferme|agricole|coopérative|زراع|مزرع|ماشية|مواشي|محصول|حصاد|استثمار|سجل المساهمات)/i,
+  },
+  {
+    intent: "travel",
+    weight: 4,
+    pattern:
+      /(ndh travel|travel concierge|flight|visa|travel booking|book a trip|voyage|vols?\b|billet|سفر|طيران|تأشيرة)/i,
+  },
+  {
+    intent: "ihospital",
+    weight: 4,
+    pattern:
+      /(i-?hospital|telemedicine|telehealth|clinic|medical consultation|doctor|hospital|télémédecine|clinique|médecin|تطبيب|عيادة|طبيب|مستشفى)/i,
   },
   {
     intent: "academy",
@@ -157,7 +181,7 @@ const RULES: IntentRule[] = [
     intent: "agency",
     weight: 2,
     pattern:
-      /(hire|recruit\w*|agenc\w*|build|develop\w*|engineers?|websites?|web apps?|mobile apps?|software|product team|design(er|ers)?|redesign|brands?|logos?|identity|marketing|ads?|campaigns?|seo|social media|video edit\w*|animation|automation|chatbots?|apis?|platforms?|landing pages?|apps? for|agence|développ\w*|créer|موقع|تطبيق|تصميم|تسويق|فريق|تطوير)/i,
+      /(pm isolation|confidential isolation|dedicated pm|project managers?|milestone verification|talent escrow|clients? and talents?|hire|recruit\w*|agenc\w*|build|develop\w*|engineers?|websites?|web apps?|mobile apps?|software|product team|design(er|ers)?|redesign|brands?|logos?|identity|marketing|ads?|campaigns?|seo|social media|video edit\w*|animation|automation|chatbots?|apis?|platforms?|landing pages?|apps? for|agence|développ\w*|créer|موقع|تطبيق|تصميم|تسويق|فريق|تطوير)/i,
   },
   {
     intent: "greeting",
@@ -179,6 +203,22 @@ export function classifyIntent(text: string): {
     }
   }
 
+  for (const entry of NAME_PATTERNS) {
+    if (entry.pattern.test(text)) scores[entry.id] = (scores[entry.id] ?? 0) + 8;
+  }
+  if (/(learn|course|academy|académie|formation|apprendre|دورة|تعلم|شهادة)/i.test(text)) {
+    scores.academy = (scores.academy ?? 0) + 4;
+  }
+  // General startup fundraising is not the agricultural investment business.
+  if (
+    /(startup|app idea|business idea|incubator|accelerator|co-?founder|fund my idea|back my idea|فكرة مشروع|تمويل شركتي)/i.test(
+      text,
+    ) &&
+    !/(farm|agri|livestock|crop|harvest|venture|زراع|مواشي)/i.test(text)
+  ) {
+    delete scores.agricapital;
+    scores.contact = (scores.contact ?? 0) + 7;
+  }
   const entries = Object.entries(scores).sort((a, b) => b[1] - a[1]);
   if (entries.length === 0) return { intent: "unknown", confidence: 0.2, scores };
   const [intent, score] = entries[0];
@@ -236,7 +276,7 @@ const INTEREST_AREAS: { interest: string; pattern: RegExp }[] = [
   },
   { interest: "Design & brand", pattern: /\b(design|brand|logo|identity|figma|تصميم|هوية)\b/i },
   {
-    interest: "Video & media",
+    interest: "Media & Video",
     pattern: /\b(video|youtube|reel|edit|motion|podcast|فيديو|مونتاج)\b/i,
   },
   {
@@ -332,7 +372,7 @@ const QUALIFICATIONS: Record<OmniQualification["id"], OmniQualification> = {
     options: [
       "Writing & content",
       "Design & brand",
-      "Video & media",
+      "Media & Video",
       "AI engineering",
       "Marketing & growth",
       "Business & operations",
@@ -400,7 +440,14 @@ function continuesThread(text: string, messages: OmniMessage[], route?: Business
   }
 
   const lastAssistant = [...messages].reverse().find((message) => message.role === "assistant");
-  if (!lastAssistant?.content.includes("?")) return false;
+  if (!lastAssistant) return false;
+  if (
+    words <= 10 &&
+    /^(what about|how (does|do|is|are)|and |when |is it|can i|tell me more)/i.test(text) &&
+    ["unknown", "pricing"].includes(classifyIntent(text).intent)
+  )
+    return true;
+  if (!lastAssistant.content.includes("?")) return false;
   if (words > 4) return false;
   const { intent, confidence } = classifyIntent(text);
   return intent === "unknown" || confidence < 0.8;
@@ -410,7 +457,7 @@ function continuesThread(text: string, messages: OmniMessage[], route?: Business
 const NAME_PATTERNS: { id: SubsidiaryId; pattern: RegExp }[] = [
   { id: "agency", pattern: /\b(ndh agency|the agency|agence)\b/i },
   { id: "academy", pattern: /(academy|académie)/i },
-  { id: "venture", pattern: /\b(venture)\b/i },
+  { id: "agricapital", pattern: /\b(agricapital|agrivest|venture)\b/i },
   { id: "estore", pattern: /(e-?store)/i },
   { id: "schooldesk", pattern: /(schooldesk|school desk)/i },
   { id: "travel", pattern: /\b(ndh travel|travel platform)\b/i },
@@ -632,66 +679,70 @@ export function recommendCourses(
 /** Courses offered when a request is too general to match against anything. */
 const STARTER_COURSES = ["prompt-engineering", "no-code-ai-apps", "ai-copywriting"];
 
-const AGENCY_PROCESS =
-  "Brief → scope → match → review → handover: a project manager owns the work from start to finish, and every deliverable is reviewed before it reaches you.";
-
 const FAMILY_LINE =
-  "The NDH family runs seven businesses: NDH Agency for managed digital work, NDH Academy for practical courses, NDH eStore for ready-made products, NDH SchoolDesk for schools, NDH Venture for ideas and investment, with NDH Travel and NDH iHospital being built next.";
+  "NDH has seven businesses: four active — Agency for managed digital delivery, Academy for 60 practical AI-skills courses across 6 schools, AgriCapital for cooperative farming investments, and eStore for multi-vendor commerce. SchoolDesk, Travel and iHospital are Coming Soon.";
 
-type RouteCopy = {
-  owner: SubsidiaryId;
-  headline: string;
-  body: string;
-  chips: string[];
-};
+type RouteCopy = { owner: SubsidiaryId; headline: string; body: string; chips: string[] };
 
 const ROUTE_COPY: Record<BusinessIntent, RouteCopy> = {
   agency: {
     owner: "agency",
-    headline: "That is managed digital delivery.",
-    body: `NDH Agency handles brand, product, development, media, marketing and automation work. ${AGENCY_PROCESS}`,
-    chips: ["How does a project work?", "What does the family cover?", "Talk to the team"],
+    headline: "Managed delivery through dedicated PM teams.",
+    body: BUSINESS_PROFILES.agency.description,
+    chips: ["How does PM isolation work?", "How are milestones verified?", "Talk to the team"],
   },
   academy: {
     owner: "academy",
-    headline: "That belongs to NDH Academy.",
-    body: "NDH Academy runs 30 practical courses across six schools, each ending in a real project. The catalogue is open — start where your interest is and build from there.",
-    chips: ["Recommend a course for me", "I am a complete beginner", "How do courses work?"],
+    headline: "60 practical courses across 6 specialized schools.",
+    body: `${BUSINESS_PROFILES.academy.description} Pre-project readiness quizzes prepare learners for capstone deliverables.`,
+    chips: ["What are the 6 schools?", "Recommend a course", "Verify a certificate"],
+  },
+  agricapital: {
+    owner: "agricapital",
+    headline: "Cooperative farming with transparent equity.",
+    body: `${BUSINESS_PROFILES.agricapital.description} NDH AgriCapital was formerly called Venture. Farming carries risk: returns are not guaranteed.`,
+    chips: [
+      "How is farm equity calculated?",
+      "What do farm operators record?",
+      "How are harvest profits distributed?",
+    ],
   },
   estore: {
     owner: "estore",
-    headline: "NDH eStore is the fastest route.",
-    body: "NDH eStore holds ready-made digital products: SaaS boilerplates, app starters, templates and asset kits. Buy once, deploy it yourself, and skip weeks of setup.",
+    headline: "Multi-vendor commerce, locally and across borders.",
+    body: `${BUSINESS_PROFILES.estore.description} Checkout supports Paystack and Flutterwave, with automated vendor payout ledgers.`,
     chips: [
-      "Do you have a SaaS starter?",
-      "Can you customise it for me?",
-      "What licence do I get?",
+      "How do vendors onboard?",
+      "Can I sell physical products?",
+      "How do shipping and payouts work?",
     ],
   },
   schooldesk: {
     owner: "schooldesk",
-    headline: "That is exactly what NDH SchoolDesk is built for.",
-    body: "SchoolDesk puts admissions, attendance, results, fees and parent communication in one workspace, with separate portals for staff, learners and families.",
-    chips: ["Can we migrate our records?", "Do parents get a portal?", "Book a walkthrough"],
+    headline: "SchoolDesk — Coming Soon.",
+    body: BUSINESS_PROFILES.schooldesk.description,
+    chips: ["Ask about SchoolDesk", "What does NDH do?"],
   },
-  venture: {
-    owner: "venture",
-    headline: "NDH Venture handles founder and investment conversations.",
-    body: "NDH Venture is the group studio and investment arm: ideas are validated, then built with the engineering, design and operations already inside the ecosystem.",
-    chips: ["I have an idea to build", "How does backing work?", "How do partnerships work?"],
+  travel: {
+    owner: "travel",
+    headline: "NDH Travel — Coming Soon.",
+    body: BUSINESS_PROFILES.travel.description,
+    chips: ["Ask about NDH Travel", "What does NDH do?"],
+  },
+  ihospital: {
+    owner: "ihospital",
+    headline: "NDH iHospital — Coming Soon.",
+    body: BUSINESS_PROFILES.ihospital.description,
+    chips: ["Ask about iHospital", "What does NDH do?"],
   },
 };
 
-/** One-line introductions for the family, used by the overview answers. */
-const BUSINESS_BLURBS: Record<BusinessIntent | "travel" | "ihospital", string> = {
-  agency: "managed digital delivery, from brand to product to growth",
-  academy: "30 practical courses across six schools",
-  estore: "ready-made products, templates and starter kits",
-  schooldesk: "the operating system for schools and their families",
-  venture: "a studio and investment arm for early ideas",
-  travel: "travel planning and diaspora support, in preparation",
-  ihospital: "clearer healthcare access and coordination, in preparation",
-};
+const BUSINESS_BLURBS = Object.fromEntries(
+  Object.entries(BUSINESS_PROFILES).map(([id, profile]) => [
+    id,
+    `${profile.tagline}${SUBSIDIARIES.find((item) => item.id === id)?.state === "coming" ? " Coming Soon — not available yet." : ""}`,
+  ]),
+) as Record<BusinessIntent, string>;
 
 function chipSet(intent: OmniIntent): string[] {
   if (intent === "pricing") {
@@ -701,16 +752,16 @@ function chipSet(intent: OmniIntent): string[] {
     return [
       "What does NDH do?",
       "Find a course",
-      "Buy a ready-made kit",
+      "Shop or sell online",
       "School software",
-      "Backing for an idea",
+      "Invest in a farm cycle",
     ];
   }
   if (intent === "contact") {
-    return ["Find a course", "School software", "Backing for an idea"];
+    return ["Find a course", "School software", "Invest in a farm cycle"];
   }
   if (intent === "thanks") {
-    return ["Find a course", "Buy a ready-made kit", "What does NDH do?"];
+    return ["Find a course", "Shop or sell online", "What does NDH do?"];
   }
   return (
     ROUTE_COPY[intent as BusinessIntent]?.chips ?? [
@@ -731,11 +782,7 @@ function bandLabel(key: string): string {
  * hands the numbers to the page that owns them.
  */
 function pricingAnswer(): string {
-  return [
-    "Each business in the family publishes its own prices, so nothing is hidden behind a sales call.",
-    "Courses are one-time and priced by region, with the Nigerian price and the global price on every course page. Product and template prices sit on their own product pages in the store. Project work is quoted as a fixed fee after a short written brief.",
-    "Tell me what you are looking for and I will take you to the page that shows the exact figure.",
-  ].join("\n\n");
+  return "Confirm current terms with the business providing the service. Academy lists course details; eStore vendors list their products and checkout terms; Agency confirms a project’s scope and terms through its PM team. AgriCapital contributions fund farm cycles, with equity calculated from the shared ledger and profits distributed after harvest and sale. Investment returns are not guaranteed. SchoolDesk, Travel and iHospital are Coming Soon, not bookable services.";
 }
 
 function aboutAnswer(): string {
@@ -751,9 +798,9 @@ function helpAnswer(): string {
     "Here is what I can route you to:",
     `◦ Learn: ${BUSINESS_BLURBS.academy} — NDH Academy.`,
     `◦ Buy: ${BUSINESS_BLURBS.estore} — NDH eStore.`,
-    `◦ Run a school: ${BUSINESS_BLURBS.schooldesk} — NDH SchoolDesk.`,
+    `◦ Coming Soon for schools: ${BUSINESS_BLURBS.schooldesk} — NDH SchoolDesk.`,
     `◦ Build: ${BUSINESS_BLURBS.agency} — NDH Agency.`,
-    `◦ Back an idea: ${BUSINESS_BLURBS.venture} — NDH Venture.`,
+    `◦ Cooperative farming: ${BUSINESS_BLURBS.agricapital} — NDH AgriCapital.`,
     "Pick one, or describe your situation in your own words.",
   ].join("\n\n");
 }
@@ -765,17 +812,18 @@ function routeCard(
   ctaOverride?: string,
 ): OmniCard {
   const subsidiary = SUBSIDIARIES.find((item) => item.id === owner);
-  const href =
-    hrefOverride ??
-    (subsidiary?.external ? (subsidiary.previewUrl ?? subsidiary.href) : (subsidiary?.href ?? "/"));
+  const coming = subsidiary?.state === "coming";
+  const href = coming
+    ? "/contact"
+    : (hrefOverride ?? (subsidiary ? subsidiaryHref(subsidiary) : "/contact"));
   return {
     kind: "route",
     href,
     title: subsidiary ? bandLabel(`eco.${subsidiary.id}.name`) : "NDH",
     body,
-    meta: subsidiary?.domain,
-    cta: ctaOverride ?? "Open",
-    external: !hrefOverride && Boolean(subsidiary?.external),
+    meta: coming ? "Coming Soon — enquiries only" : subsidiary?.domain,
+    cta: coming ? "Ask about this upcoming business" : (ctaOverride ?? "Explore business"),
+    external: !coming && !hrefOverride && Boolean(subsidiary?.external),
   };
 }
 
@@ -876,7 +924,7 @@ export function respond(input: {
         : intent === "help"
           ? helpAnswer()
           : intent === "greeting"
-            ? "Welcome to Najeeb Digital Hub. I route people across the whole family — learning, commerce, schools, delivery and venture backing. What are you trying to do?"
+            ? "Welcome to Najeeb Digital Hub. I route people across the whole family — learning, commerce, cooperative farming and managed digital delivery, with three platforms Coming Soon. What are you trying to do?"
             : "I can point you to the right business in the family. Tell me what you are trying to do, or pick one of these:";
     cards.push({
       kind: "summary",
@@ -894,8 +942,8 @@ export function respond(input: {
       intent,
       confidence,
       text: [
-        "You can reach the family in two ways: send a written brief through the contact page, or message the team directly on WhatsApp.",
-        "A written brief is best for project work because it keeps the scope and the quote in one place. Anything else — courses, products, school software — the WhatsApp line is fine.",
+        `Visit us at ${SITE_CONTACT.address}. Call ${SITE_CONTACT.phone}, email ${SITE_CONTACT.email} or ${SITE_CONTACT.support}, or use WhatsApp.`,
+        "Use the contact page for general enquiries or to ask about an upcoming platform. AgriCapital is for cooperative farming, not general startup fundraising. SchoolDesk, Travel and iHospital are Coming Soon.",
       ].join("\n\n"),
       cards: [
         {
@@ -925,12 +973,22 @@ export function respond(input: {
    * naming two businesses. When the message joins them explicitly, answer for
    * both instead of dropping one.
    */
-  if (mentioned.length === 0 && /\b(and|plus|also|as well as|&)\b/i.test(text)) {
-    const ranked = Object.entries(scores)
-      .filter(([key, value]) => BUSINESS_INTENT_SET.has(key) && value >= 2)
-      .sort((a, b) => b[1] - a[1])
-      .map(([key]) => key as BusinessIntent);
-    if (ranked.length > 1) mentioned.push(...ranked.slice(0, 2).map((id) => ROUTE_COPY[id].owner));
+  if (mentioned.length === 0 && /\b(and|plus|also|as well as)\b|&/i.test(text)) {
+    const routes = text
+      .split(/\b(?:and|plus|also|as well as)\b|&/i)
+      .map((clause) => ({ clause, intent: classifyIntent(clause).intent }))
+      .filter(
+        ({ intent: candidate, clause }) =>
+          BUSINESS_INTENT_SET.has(candidate) &&
+          !(
+            candidate === "schooldesk" &&
+            intent === "academy" &&
+            !/(schooldesk|management|grading|report cards|records)/i.test(clause)
+          ),
+      )
+      .map(({ intent: candidate }) => candidate as BusinessIntent);
+    const distinct = [...new Set(routes)];
+    if (distinct.length > 1) mentioned.push(...distinct.slice(0, 3));
   }
 
   if (mentioned.length > 1) {
@@ -940,20 +998,12 @@ export function respond(input: {
     for (const id of known.slice(0, 3)) {
       const subsidiary = SUBSIDIARIES.find((item) => item.id === id);
       if (!subsidiary) continue;
-      cards.push({
-        kind: "route",
-        href: subsidiary.external ? (subsidiary.previewUrl ?? subsidiary.href) : subsidiary.href,
-        title: bandLabel(`eco.${subsidiary.id}.name`),
-        body: BUSINESS_BLURBS[id],
-        meta: subsidiary.domain,
-        cta: subsidiary.state === "coming" ? "In development" : "Open",
-        external: subsidiary.external,
-      });
+      cards.push(routeCard(id, BUSINESS_BLURBS[id]));
     }
     return {
       intent,
       confidence,
-      text: `Two different doors, both in the family. ${known
+      text: `Different needs, different businesses in the family. ${known
         .slice(0, 3)
         .map((id) => `${bandLabel(`eco.${id}.name`)} is ${BUSINESS_BLURBS[id]}`)
         .join(", and ")}.`,
@@ -966,9 +1016,33 @@ export function respond(input: {
   /* ---- academy: recommend from the catalogue ---- */
 
   if (intent === "academy") {
-    const certificateQuestion = /\b(certificat\w*|credential\w*|verif\w*|serial|شهاد|تحقق)\b/i.test(
+    const certificateQuestion = /(certificat\w*|credential\w*|verif\w*|serial|شهاد|تحقق)/i.test(
       text,
     );
+    if (certificateQuestion || /(schools?|curriculum|60|six|écoles?|مدارس|ست)/i.test(text)) {
+      return {
+        intent,
+        confidence,
+        profile,
+        owner: "academy",
+        chips,
+        text: `${ROUTE_COPY.academy.body}\n\n${ACADEMY_SCHOOLS.map((school) => `${school.name}: ${school.topics}`).join("\n")}\n\nSigned certificates can be checked at /verify.`,
+        cards: [
+          routeCard("academy", BUSINESS_PROFILES.academy.tagline),
+          ...(certificateQuestion
+            ? [
+                {
+                  kind: "route" as const,
+                  href: "/verify",
+                  title: "Verify an Academy certificate",
+                  body: "Check the signed certificate using its verification details.",
+                  cta: "Verify certificate",
+                },
+              ]
+            : []),
+        ],
+      };
+    }
     let matches = recommendCourses(text, { profile, limit: input.limitCourses ?? 3 });
 
     /**
@@ -990,13 +1064,8 @@ export function respond(input: {
       ...(pricingSignal ? [pricingAnswer()] : []),
       intro.body,
       matches.length > 0
-        ? "Based on what you said, I would start you here. The fee for your region sits on each course page."
+        ? "These are matching courses from the gateway’s cached selection, not the full 60-course Academy catalogue. Confirm current availability on the official Academy site."
         : "Tell me the skill you want and I will pick the exact course from the catalogue.",
-      ...(certificateQuestion
-        ? [
-            "Every Academy certificate carries a code the academy publishes, so it can be checked online at any time.",
-          ]
-        : []),
     ].join("\n\n");
 
     for (const match of matches) {
@@ -1010,15 +1079,7 @@ export function respond(input: {
       });
     }
 
-    if (certificateQuestion) {
-      cards.push({
-        kind: "route",
-        href: "/verify",
-        title: "NDH certificate check",
-        body: "Enter the code on the certificate to see the learner, the course and the status.",
-        cta: "Check a certificate",
-      });
-    }
+    cards.push(routeCard("academy", "Explore the full official 60-course Academy scope."));
 
     return {
       intent,

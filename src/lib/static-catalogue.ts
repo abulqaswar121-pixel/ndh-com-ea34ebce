@@ -9,7 +9,9 @@
  * otherwise render an "unavailable" state and look broken to a first-time
  * visitor.
  *
- * These entries are copied verbatim from the seed migrations
+ * This is a partial cached selection, not the full official 60-course scope.
+ * The official profile lives in business-profiles.ts; do not invent missing rows.
+ * These entries are copied from the seed migrations
  * (supabase/migrations/*courses*, *posts*) so the fallback matches what the
  * database serves. When the live read succeeds it always wins; this module is
  * only ever consulted after an error is caught.
@@ -123,7 +125,7 @@ export const STATIC_COURSES: StaticCourse[] = [
     slug: "ai-video-editing",
     title: "AI Video Editing",
     summary: "Edit, caption and package video content with an AI-assisted workflow.",
-    school: "Video & Media",
+    school: "Media & Video",
     ngn: 18000,
     usd: 29,
     regionPricing: { ng: 18000, global: 29 },
@@ -132,7 +134,7 @@ export const STATIC_COURSES: StaticCourse[] = [
     slug: "ai-video-generation",
     title: "AI Video Generation",
     summary: "Explore AI video generation and shape usable visual sequences.",
-    school: "Video & Media",
+    school: "Media & Video",
     ngn: 18000,
     usd: 29,
     regionPricing: { ng: 18000, global: 29 },
@@ -141,7 +143,7 @@ export const STATIC_COURSES: StaticCourse[] = [
     slug: "ai-podcast-production",
     title: "AI Podcast Production",
     summary: "Plan, edit and package a podcast using AI-assisted production tools.",
-    school: "Video & Media",
+    school: "Media & Video",
     ngn: 18000,
     usd: 29,
     regionPricing: { ng: 18000, global: 29 },
@@ -150,7 +152,7 @@ export const STATIC_COURSES: StaticCourse[] = [
     slug: "ai-photography-and-retouching",
     title: "AI Photography & Retouching",
     summary: "Improve and prepare images with AI-assisted retouching techniques.",
-    school: "Video & Media",
+    school: "Media & Video",
     ngn: 18000,
     usd: 29,
     regionPricing: { ng: 18000, global: 29 },
@@ -285,7 +287,7 @@ export const STATIC_COURSES: StaticCourse[] = [
     slug: "ai-3d-product-animation",
     title: "AI 3D Product Animation",
     summary: "Create a short product turntable from references and prepare delivery files.",
-    school: "Video & Media",
+    school: "Design & Brand",
     ngn: 18000,
     usd: 29,
     regionPricing: { ng: 18000, global: 29 },

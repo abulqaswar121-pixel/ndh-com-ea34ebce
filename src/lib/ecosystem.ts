@@ -13,7 +13,7 @@ import {
   Plane,
   School,
   ShoppingBag,
-  TrendingUp,
+  Sprout,
   type LucideIcon,
 } from "lucide-react";
 
@@ -21,7 +21,7 @@ import {
  * Categories — drive the interactive gateway filter
  * ------------------------------------------------------------------ */
 
-export type CategoryId = "enterprise" | "education" | "ventures" | "infrastructure";
+export type CategoryId = "enterprise" | "education" | "agriculture" | "commerce" | "infrastructure";
 
 export const ECOSYSTEM_CATEGORIES: {
   id: CategoryId;
@@ -30,7 +30,8 @@ export const ECOSYSTEM_CATEGORIES: {
 }[] = [
   { id: "enterprise", icon: BriefcaseBusiness, tone: "sky" },
   { id: "education", icon: BookOpen, tone: "iris" },
-  { id: "ventures", icon: TrendingUp, tone: "violet" },
+  { id: "agriculture", icon: Sprout, tone: "violet" },
+  { id: "commerce", icon: ShoppingBag, tone: "sky" },
   { id: "infrastructure", icon: School, tone: "cyan" },
 ];
 
@@ -39,7 +40,7 @@ export const ECOSYSTEM_CATEGORIES: {
  * ------------------------------------------------------------------ */
 
 export type SubsidiaryId =
-  "agency" | "academy" | "venture" | "estore" | "schooldesk" | "travel" | "ihospital";
+  "agency" | "academy" | "agricapital" | "estore" | "schooldesk" | "travel" | "ihospital";
 
 /** `live` is launched and public, `preview` is a working pre-launch build. */
 export type LaunchState = "live" | "preview" | "coming";
@@ -70,8 +71,8 @@ export const SUBSIDIARIES: Subsidiary[] = [
     categories: ["enterprise"],
     domain: "agency.ndh.com.ng",
     previewUrl: "https://ndhagency.lovable.app",
-    href: "/agency",
-    external: false,
+    href: "https://agency.ndh.com.ng",
+    external: true,
   },
   {
     id: "academy",
@@ -81,15 +82,15 @@ export const SUBSIDIARIES: Subsidiary[] = [
     categories: ["education"],
     domain: "academy.ndh.com.ng",
     previewUrl: "https://ndhacademy.lovable.app",
-    href: "/academy",
-    external: false,
+    href: "https://academy.ndh.com.ng",
+    external: true,
   },
   {
-    id: "venture",
-    icon: TrendingUp,
-    accent: "violet",
+    id: "agricapital",
+    icon: Sprout,
+    accent: "emerald",
     state: "live",
-    categories: ["ventures", "enterprise"],
+    categories: ["agriculture"],
     domain: "venture.ndh.com.ng",
     previewUrl: "https://ndhventure.lovable.app",
     href: "https://ndhventure.lovable.app",
@@ -100,22 +101,22 @@ export const SUBSIDIARIES: Subsidiary[] = [
     icon: ShoppingBag,
     accent: "amber",
     state: "live",
-    categories: ["ventures"],
+    categories: ["commerce"],
     domain: "estore.ndh.com.ng",
     previewUrl: "https://ndhestore.lovable.app",
-    href: "https://ndhestore.lovable.app",
+    href: "https://estore.ndh.com.ng",
     external: true,
   },
   {
     id: "schooldesk",
     icon: School,
     accent: "cyan",
-    state: "live",
-    categories: ["infrastructure", "education"],
+    state: "coming",
+    categories: ["infrastructure"],
     domain: "schooldesk.ndh.com.ng",
-    previewUrl: "https://ndhschooldesk.lovable.app",
-    href: "https://ndhschooldesk.lovable.app",
-    external: true,
+    previewUrl: null,
+    href: "",
+    external: false,
   },
   {
     id: "travel",
@@ -154,63 +155,29 @@ export function filterSubsidiaries(category: CategoryId | "all"): Subsidiary[] {
 
 export const LIVE_SUBSIDIARY_COUNT = SUBSIDIARIES.filter((s) => s.state === "live").length;
 
-/* ------------------------------------------------------------------ *
- * Live status bar metrics
- *
- * Figures mirror the values the business already publishes (homepage_stats
- * seed, Academy catalogue and network coverage). Update this single object to
- * keep every surface in sync — the gateway, the AI consultant and the JSON-LD
- * block all read from here.
- * ------------------------------------------------------------------ */
+/** A destination is only actionable when the business is available.
+ * AgriCapital retains the previously supplied deployment link until the owner
+ * confirms its renamed domain. Do not fabricate agricapital.ndh.com.ng.
+ */
+export function subsidiaryHref(subsidiary: Subsidiary): string {
+  return subsidiary.state === "coming" ? "" : subsidiary.href;
+}
+
+export const COMING_SUBSIDIARY_COUNT = SUBSIDIARIES.filter((s) => s.state === "coming").length;
+
+export { ACADEMY_SNAPSHOT, ACADEMY_SCHOOLS } from "./business-profiles";
+import { ACADEMY_SNAPSHOT, AGENCY_SNAPSHOT } from "./business-profiles";
 
 export type MetricId =
-  | "tasksDelivered"
-  | "specialists"
-  | "graduates"
-  | "activeProjects"
-  | "countriesServed"
-  | "platformUptime"
-  | "clientSatisfaction";
+  "businesses" | "liveBusinesses" | "comingBusinesses" | "courses" | "schools" | "departments";
+export type Metric = { id: MetricId; value: number; suffix: string; precision?: number };
 
-export type Metric = {
-  id: MetricId;
-  value: number;
-  suffix: string;
-  /** Decimal places to render — uptime keeps one decimal. */
-  precision?: number;
-};
-
+/** Owner-confirmed scope counts, NOT analytics or live uptime telemetry. */
 export const ECOSYSTEM_METRICS: Metric[] = [
-  { id: "tasksDelivered", value: 1247, suffix: "+" },
-  { id: "specialists", value: 86, suffix: "+" },
-  { id: "graduates", value: 195, suffix: "+" },
-  { id: "activeProjects", value: 24, suffix: "" },
-  { id: "countriesServed", value: 6, suffix: "" },
-  { id: "clientSatisfaction", value: 98, suffix: "%" },
-  { id: "platformUptime", value: 99.9, suffix: "%", precision: 1 },
+  { id: "businesses", value: SUBSIDIARIES.length, suffix: "" },
+  { id: "liveBusinesses", value: LIVE_SUBSIDIARY_COUNT, suffix: "" },
+  { id: "comingBusinesses", value: COMING_SUBSIDIARY_COUNT, suffix: "" },
+  { id: "courses", value: ACADEMY_SNAPSHOT.courses, suffix: "" },
+  { id: "schools", value: ACADEMY_SNAPSHOT.schools, suffix: "" },
+  { id: "departments", value: AGENCY_SNAPSHOT.departments, suffix: "" },
 ];
-
-/** Where the family's work reaches — shown as a pill list under the status bar. */
-export const NETWORK_COUNTRIES = [
-  "Nigeria",
-  "Ghana",
-  "Kenya",
-  "United Kingdom",
-  "Saudi Arabia",
-  "United States",
-];
-
-export const NETWORK_FLAGS = ["🇳🇬", "🇬🇭", "🇰🇪", "🇬🇧", "🇸🇦", "🇺🇸"];
-
-/* ------------------------------------------------------------------ *
- * Academy snapshot — used by the gateway and the AI consultant
- * ------------------------------------------------------------------ */
-
-export const ACADEMY_SNAPSHOT = {
-  courses: 30,
-  lessons: 195,
-  schools: 6,
-  passMark: 70,
-  quizQuestions: 8,
-} as const;
-

@@ -6928,3 +6928,31 @@ a.ecosystem-card:hover { box-shadow: 0 20px 45px -22px color-mix(in oklab, var(-
 @media (max-width: 520px) {
   .family-page .ecosystem-header-link.gw-header-cta { display: none; }
 }
+
+/* Official profile counts replace the former performance-stat placeholders. */
+.gw-metrics { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.gw-card-label { overflow-wrap: anywhere; }
+.official-profile-links { display: flex; flex-wrap: wrap; gap: 16px 24px; margin-top: 24px; }
+.official-profile-links a { font-weight: 600; text-decoration: underline; text-underline-offset: 4px; }
+.official-academy-scope { margin-bottom: 32px; }
+.official-academy-scope ul { padding-inline-start: 20px; display: grid; gap: 12px; margin-bottom: 24px; }
+@media (max-width: 720px) {
+  .gw-metrics { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 360px) {
+  .gw-metrics { grid-template-columns: 1fr; }
+}
+/* RTL-safe visually hidden skip link: off-canvas left positioning creates a
+   very wide scrollable area in right-to-left documents. Focus restores it. */
+.gw-skip:not(:focus) {
+  left: 0;
+  top: 0;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  padding: 0;
+}
+/* Longer official categories remain reachable on short desktop viewports. */
+.gw-menu-panel { max-height: calc(100dvh - 110px); overflow-y: auto; overscroll-behavior: contain; }

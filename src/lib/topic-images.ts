@@ -88,7 +88,7 @@ const schoolImages: Record<string, { url: string; alt: string }> = {
   'Business & Operations': { url: businessOps.url, alt: 'Colleagues reviewing business reports together' },
   'Design & Brand': { url: designBrand.url, alt: 'A designer working with colour swatches and sketches' },
   'Marketing & Growth': { url: marketingGrowth.url, alt: 'A team planning a marketing campaign on a board' },
-  'Video & Media': { url: videoMedia.url, alt: 'An editor working on video footage at a computer' },
+  'Media & Video': { url: videoMedia.url, alt: 'An editor working on video footage at a computer' },
   'Writing & Content': { url: writingContent.url, alt: 'A writer drafting content on a laptop' },
 };
 

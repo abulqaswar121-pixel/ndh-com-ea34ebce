@@ -1,7 +1,12 @@
 import { useEffect, useId, useRef, useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { ArrowUpRight, Check, ChevronDown, Languages } from "lucide-react";
-import { ECOSYSTEM_CATEGORIES, SUBSIDIARIES, type Subsidiary } from "@/lib/ecosystem";
+import {
+  ECOSYSTEM_CATEGORIES,
+  SUBSIDIARIES,
+  subsidiaryHref,
+  type Subsidiary,
+} from "@/lib/ecosystem";
 import { LOCALES } from "@/lib/i18n/dictionary";
 import { usePreferences } from "@/lib/preferences";
 
@@ -62,7 +67,7 @@ export function FamilyMenu({
 
   function hrefFor(subsidiary: Subsidiary) {
     if (subsidiary.state === "coming") return "";
-    return subsidiary.external ? (subsidiary.previewUrl ?? subsidiary.href) : subsidiary.href;
+    return subsidiaryHref(subsidiary);
   }
 
   return (

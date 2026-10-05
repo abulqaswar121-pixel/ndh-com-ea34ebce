@@ -8,7 +8,7 @@ import {
   Phone,
 } from "lucide-react";
 import { NdhFamilySymbol } from "@/components/NdhFamilySymbol";
-import { SUBSIDIARIES } from "@/lib/ecosystem";
+import { SUBSIDIARIES, subsidiaryHref } from "@/lib/ecosystem";
 import { SITE_CONTACT as contact } from "@/lib/site-contact";
 import { usePreferences } from "@/lib/preferences";
 
@@ -21,7 +21,8 @@ const labels = {
     privacy: "Privacy notice",
     location: "Rooted in Sokoto. Built for possibility.",
     top: "Back to top",
-    soon: "Coming next: Travel & iHospital",
+    soon: "Coming Soon",
+    verify: "Verify a certificate",
     general: "General enquiries",
     support: "Support",
   },
@@ -33,7 +34,8 @@ const labels = {
     privacy: "Confidentialité",
     location: "Ancrés à Sokoto. Ouverts aux possibilités.",
     top: "Haut de page",
-    soon: "À venir : Travel et iHospital",
+    soon: "Bientôt disponible",
+    verify: "Vérifier un certificat",
     general: "Renseignements",
     support: "Assistance",
   },
@@ -45,7 +47,8 @@ const labels = {
     privacy: "إشعار الخصوصية",
     location: "جذورنا في سوكوتو. نبني للمستقبل.",
     top: "العودة للأعلى",
-    soon: "قريباً: Travel و iHospital",
+    soon: "قريباً",
+    verify: "التحقق من شهادة",
     general: "استفسارات عامة",
     support: "الدعم",
   },
@@ -87,16 +90,22 @@ export function FamilyFooter() {
             <a href="/blog">{t("nav.blog")}</a>
             <a href="/contact">{t("nav.contact")}</a>
             <a href="/#status">{t("nav.status")}</a>
+            <a href="/verify">{copy.verify}</a>
           </nav>
           <nav aria-label={copy.family}>
             <h2>{copy.family}</h2>
             {SUBSIDIARIES.filter((item) => item.state !== "coming").map((item) => (
-              <a key={item.id} href={item.external ? (item.previewUrl ?? item.href) : item.href}>
+              <a key={item.id} href={subsidiaryHref(item)}>
                 {t(`eco.${item.id}.name` as never)}
                 <ArrowUpRight size={13} aria-hidden="true" />
               </a>
             ))}
-            <span className="family-footer-note">{copy.soon}</span>
+            <span className="family-footer-note">
+              {copy.soon}:{" "}
+              {SUBSIDIARIES.filter((item) => item.state === "coming")
+                .map((item) => t(`eco.${item.id}.name` as never))
+                .join(" · ")}
+            </span>
           </nav>
           <div className="family-footer-contact">
             <h2>{copy.reach}</h2>

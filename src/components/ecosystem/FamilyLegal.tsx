@@ -20,8 +20,9 @@ export function FamilyTerms() {
         service.
       </p>
       <p>
-        Travel and iHospital are identified as upcoming initiatives. Their inclusion does not mean
-        they are currently accepting bookings, providing care or offering services.
+        SchoolDesk, Travel and iHospital are identified as upcoming initiatives. Their inclusion
+        does not mean they are currently accepting school onboarding or bookings, providing care or
+        offering services.
       </p>
       <h2>3. Responsible use</h2>
       <p>

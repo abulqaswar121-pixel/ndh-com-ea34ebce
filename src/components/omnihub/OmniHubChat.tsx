@@ -33,7 +33,7 @@ const GREETING_ID = "greeting";
 
 /**
  * Quick actions map a short label to the sentence actually sent upstream. They
- * cover the whole family — learning, commerce, schools, delivery and venture
+ * cover the whole family — learning, commerce, schools, delivery and cooperative farming
  * backing — rather than any single business.
  */
 const QUICK_ACTIONS: { labelKey: string; prompt: string }[] = [

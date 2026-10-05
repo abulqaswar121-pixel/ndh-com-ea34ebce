@@ -5,6 +5,7 @@ import {
   ECOSYSTEM_CATEGORIES,
   filterSubsidiaries,
   SUBSIDIARIES,
+  subsidiaryHref,
   type CategoryId,
 } from "@/lib/ecosystem";
 import { useI18n } from "@/lib/preferences";
@@ -90,9 +91,7 @@ export function EcosystemDirectory({
           {visible.map((subsidiary) => {
             const Icon = subsidiary.icon;
             const name = t(`eco.${subsidiary.id}.name` as never);
-            const href = subsidiary.external
-              ? (subsidiary.previewUrl ?? subsidiary.href)
-              : subsidiary.href;
+            const href = subsidiaryHref(subsidiary);
             const hasLink = subsidiary.state !== "coming" && Boolean(href);
 
             const body = (
@@ -109,7 +108,7 @@ export function EcosystemDirectory({
                       : t("app.switcher.preview")}
                   </span>
                 </div>
-                <p className="gw-card-label">{subsidiary.domain}</p>
+                <p className="gw-card-label">{t(`eco.${subsidiary.id}.category` as never)}</p>
                 <h3>{name}</h3>
                 <p className="gw-card-tagline">{t(`eco.${subsidiary.id}.tagline` as never)}</p>
                 <p className="gw-card-body">{t(`eco.${subsidiary.id}.description` as never)}</p>

@@ -7,16 +7,17 @@ import {
   type DirectoryFilter,
 } from "@/components/ecosystem/EcosystemDirectory";
 import { FamilyFooter } from "@/components/ecosystem/FamilyFooter";
+import { BUSINESS_PROFILES } from "@/lib/business-profiles";
 import { SITE_CONTACT } from "@/lib/site-contact";
 import { FamilyMenu } from "@/components/ecosystem/FamilyMenu";
 import { LiveStatusBar } from "@/components/ecosystem/LiveStatusBar";
 import { WhyNdhBento } from "@/components/ecosystem/WhyNdhBento";
 import { useI18n } from "@/lib/preferences";
-import { LIVE_SUBSIDIARY_COUNT, NETWORK_COUNTRIES, SUBSIDIARIES } from "@/lib/ecosystem";
+import { LIVE_SUBSIDIARY_COUNT, COMING_SUBSIDIARY_COUNT, SUBSIDIARIES } from "@/lib/ecosystem";
 
 const title = "Najeeb Digital Hub | The NDH Family of Businesses";
 const description =
-  "A family of Nigerian-born businesses spanning digital services, practical AI education, digital products, school technology, ventures, travel and healthcare.";
+  "A family of Nigerian-born businesses spanning digital services, practical AI education, multi-vendor commerce and cooperative farming, with school technology, travel and healthcare in the pipeline.";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -39,7 +40,6 @@ export const Route = createFileRoute("/")({
           alternateName: "NDH",
           url: "https://ndh.com.ng/",
           description,
-          areaServed: NETWORK_COUNTRIES,
           telephone: SITE_CONTACT.telephone,
           email: SITE_CONTACT.support,
           address: {
@@ -57,8 +57,9 @@ export const Route = createFileRoute("/")({
              discover each business from the parent domain. */
           subOrganization: SUBSIDIARIES.map((subsidiary) => ({
             "@type": "Organization",
-            name: subsidiary.domain,
-            url: `https://${subsidiary.domain}`,
+            name: BUSINESS_PROFILES[subsidiary.id].name,
+            description: BUSINESS_PROFILES[subsidiary.id].description,
+            ...(subsidiary.state === "coming" ? {} : { url: subsidiary.href }),
           })),
         }),
       },
@@ -70,8 +71,8 @@ export const Route = createFileRoute("/")({
 const QUICK_PATHS: { labelKey: string; filter: DirectoryFilter }[] = [
   { labelKey: "home.paths.build", filter: "enterprise" },
   { labelKey: "home.paths.learn", filter: "education" },
-  { labelKey: "home.paths.tools", filter: "ventures" },
-  { labelKey: "home.paths.services", filter: "infrastructure" },
+  { labelKey: "home.paths.tools", filter: "commerce" },
+  { labelKey: "home.paths.services", filter: "agriculture" },
 ];
 
 function Home() {
@@ -158,7 +159,7 @@ function Home() {
                   <b>{SUBSIDIARIES.length}</b> {t("home.hero.badgeBrands")}
                 </span>
                 <span className="gw-hero-badge">
-                  <b>{NETWORK_COUNTRIES.length}</b> {t("home.hero.badgeCountries")}
+                  <b>{COMING_SUBSIDIARY_COUNT}</b> {t("home.hero.badgeComing")}
                 </span>
               </div>
 

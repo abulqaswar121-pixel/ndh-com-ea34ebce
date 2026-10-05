@@ -99,6 +99,7 @@ export const listCourses = createServerFn({ method: "GET" }).handler(
       assertQuery(pricingError, "course pricing");
       return (courses ?? []).map((c) => ({
         ...c,
+        school: c.school === "Video & Media" ? "Media & Video" : c.school,
         prices: (pricing ?? [])
           .filter((p) => p.course_id === c.id)
           .map((p) => ({ region: p.region, currency: p.currency, amount: Number(p.amount) })),
@@ -142,7 +143,10 @@ export const getCourse = createServerFn({ method: "GET" })
   .inputValidator((data: { slug: string }) => data)
   .handler(async ({ data }): Promise<CourseTeaser | null> => {
     try {
-      return await loadCourseTeaser(data.slug);
+      const course = await loadCourseTeaser(data.slug);
+      return course
+        ? { ...course, school: course.school === "Video & Media" ? "Media & Video" : course.school }
+        : null;
     } catch (error) {
       console.warn(
         "Serving the offline course page:",

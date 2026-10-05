@@ -4,7 +4,7 @@ export const FAMILY_ARTICLES = [
     slug: "finding-your-place-in-the-ndh-family",
     title: "One family, different doors: where to start with NDH",
     excerpt:
-      "From learning a skill to organising a school, start with the outcome you need — then find the business built around it.",
+      "From learning a skill to running a storefront or contributing to a farm cycle, start with the outcome you need — then find the business built around it.",
     category: "The NDH family",
     author_name: "NDH Editorial",
     published_at: null,
@@ -12,11 +12,11 @@ export const FAMILY_ARTICLES = [
     sections: [
       {
         heading: "Start with the need, not the name",
-        body: "It is easy to arrive at a digital platform knowing you need help, but not knowing which service to choose. Start with a simple sentence: ‘I want to…’ Learn a useful skill. Build something for my business. Find a digital resource. Organise school operations. That sentence is a better starting point than a list of features.",
+        body: "It is easy to arrive at a digital platform knowing you need help, but not knowing which service to choose. Start with a simple sentence: ‘I want to…’ Learn a useful skill. Build something for my business. Run a storefront. Join a cooperative farm cycle. That sentence is a better starting point than a list of features.",
       },
       {
         heading: "Choose a focused starting point",
-        body: "NDH Academy is the learning door. NDH Agency is the door for digital delivery. NDH eStore focuses on digital products and resources, while SchoolDesk focuses on school technology. NDH Venture is the place to explore venture-related opportunities. They are different businesses in the same family, not interchangeable names for one service.",
+        body: "NDH Academy offers 60 practical AI-skills courses across 6 specialized schools, with readiness quizzes, capstones and signed verifiable certificates. NDH Agency delivers engineering, design and AI services through dedicated PM teams. NDH eStore powers multi-vendor digital and physical storefronts. NDH AgriCapital, formerly Venture, supports cooperative farm-cycle investment using a transparent shared contribution ledger.",
       },
       {
         heading: "A connected need can involve more than one business",
@@ -24,7 +24,7 @@ export const FAMILY_ARTICLES = [
       },
       {
         heading: "Check what is available today",
-        body: "The family directory separates available businesses from those still in the pipeline. NDH Travel and iHospital are upcoming initiatives, not services you should assume are ready to use. Check the destination page and confirm availability directly before making plans or sharing sensitive information.",
+        body: "The family directory separates available businesses from those still in the pipeline. NDH SchoolDesk, Travel and iHospital are Coming Soon, not services you should assume are ready to use. Check the destination page and confirm availability directly before making plans or sharing sensitive information.",
       },
       {
         heading: "Take one useful next step",
@@ -60,7 +60,7 @@ export const FAMILY_ARTICLES = [
       },
       {
         heading: "Evaluate a tool against your needs",
-        body: "Write down the questions your school needs answered before a demonstration. SchoolDesk is the school-technology business in the NDH family; ask its team about current capabilities rather than assuming a particular feature is included. The right decision depends on a practical fit, not the longest feature list.",
+        body: "Write down the questions your school needs answered before a demonstration. SchoolDesk is the NDH family’s upcoming school-management, grading and automated-report-card platform. It is Coming Soon, not available for live onboarding or school operations. Ask about plans without assuming a launch date or feature availability. The right decision depends on a practical fit, not the longest feature list.",
       },
     ],
   },
@@ -92,7 +92,7 @@ export const FAMILY_ARTICLES = [
       },
       {
         heading: "Know when you need a different kind of help",
-        body: "NDH eStore is the family’s destination for digital products and resources. If your challenge is learning how to use a tool, explore Academy. If it needs custom delivery, explore Agency. Choose the level of support that matches the task rather than forcing a ready-made resource to do everything.",
+        body: "NDH eStore is a multi-vendor commerce platform for digital and physical products, with merchant onboarding, custom storefronts, inventory, shipping and vendor payout ledgers. A digital resource may be one product in that wider marketplace; it does not define the platform’s full scope. If your challenge is learning how to use a tool, explore Academy. If it needs custom delivery, explore Agency. Choose the level of support that matches the task rather than forcing a ready-made resource to do everything.",
       },
     ],
   },
