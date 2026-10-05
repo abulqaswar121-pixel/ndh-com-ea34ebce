@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from '@tanstack/react-router';
 import { useState } from 'react';
-import { ArrowLeft, ArrowUpRight, BookOpen, BriefcaseBusiness, HeartPulse, Plane, TrendingUp, Plus, ShoppingBag, School } from 'lucide-react';
+import { ArrowLeft, ArrowUpRight, BookOpen, BriefcaseBusiness, HeartPulse, Plane, Sprout, Plus, ShoppingBag, School } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import gatewayLogo from '@/assets/ndh-logo-gateway-cropped.png';
 
@@ -19,11 +19,11 @@ export const Route = createFileRoute('/brand-explorations')({
 const businesses = [
   { name: 'Agency', Icon: BriefcaseBusiness, state: 'Current' },
   { name: 'Academy', Icon: BookOpen, state: 'Current' },
-  { name: 'Venture', Icon: TrendingUp, state: 'Planned' },
-  { name: 'eStore', Icon: ShoppingBag, state: 'Planned' },
-  { name: 'SchoolDesk', Icon: School, state: 'Planned' },
-  { name: 'Travel', Icon: Plane, state: 'Future' },
-  { name: 'iHospital', Icon: HeartPulse, state: 'Future' },
+  { name: 'AgriCapital', Icon: Sprout, state: 'Current' },
+  { name: 'eStore', Icon: ShoppingBag, state: 'Current' },
+  { name: 'SchoolDesk', Icon: School, state: 'Coming Soon' },
+  { name: 'Travel', Icon: Plane, state: 'Coming Soon' },
+  { name: 'iHospital', Icon: HeartPulse, state: 'Coming Soon' },
 ] as const;
 
 type Business = (typeof businesses)[number];

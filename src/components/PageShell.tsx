@@ -1,17 +1,11 @@
-import { Link, Navigate } from '@tanstack/react-router';
-import { useEffect, useState, type ReactNode } from 'react';
-import { Menu, X, MessageCircle, Facebook, Instagram, ArrowUpRight } from 'lucide-react';
-import { roleHome, useAuth } from '@/lib/auth';
-import { BrandMark } from '@/components/BrandMark';
-
-const links: [string, string][] = [
-  ['/agency', 'Agency'],
-  ['/academy', 'Academy'],
-  ['/work', 'Work'],
-  ['/blog', 'Blog'],
-  ['/about', 'About'],
-  ['/contact', 'Contact'],
-];
+import { Link, Navigate } from "@tanstack/react-router";
+import { useEffect, useState, type ReactNode } from "react";
+import { ArrowUpRight } from "lucide-react";
+import { roleHome, useAuth } from "@/lib/auth";
+import { BrandMark } from "@/components/BrandMark";
+import { FamilyFooter } from "@/components/ecosystem/FamilyFooter";
+import { FamilyMenu } from "@/components/ecosystem/FamilyMenu";
+import { useI18n } from "@/lib/preferences";
 
 export function PageShell({
   children,
@@ -22,25 +16,25 @@ export function PageShell({
   title?: string;
   allowSignedIn?: boolean;
 }) {
-  const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const { user, role, loading } = useAuth();
+  const { t } = useI18n();
+
+  /** Navigation lives in the shared family dropdown — the directory, the
+   *  language switcher and the app links are all in the one panel. */
+  const links = [
+    { label: t("nav.work"), href: "/work" },
+    { label: t("nav.blog"), href: "/blog" },
+    { label: t("nav.about"), href: "/about" },
+    { label: t("nav.contact"), href: "/contact" },
+  ];
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 8);
     onScroll();
-    window.addEventListener('scroll', onScroll, { passive: true });
-    return () => window.removeEventListener('scroll', onScroll);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
   }, []);
-
-  useEffect(() => {
-    document.body.style.overflow = open ? 'hidden' : '';
-    document.body.classList.toggle('nav-is-open', open);
-    return () => {
-      document.body.style.overflow = '';
-      document.body.classList.remove('nav-is-open');
-    };
-  }, [open]);
 
   if (!allowSignedIn && !loading && user && role) {
     return <Navigate to={roleHome(role) as never} replace />;
@@ -48,52 +42,24 @@ export function PageShell({
 
   return (
     <>
-      <header className={scrolled ? 'site-header is-scrolled' : 'site-header'}>
-        <Link to="/" className="brand" onClick={() => setOpen(false)}>
+      <header id="top" className={scrolled ? "site-header is-scrolled" : "site-header"}>
+        <Link to="/" className="brand">
           <BrandMark title="Najeeb Digital Hub" />
         </Link>
         <nav className="desktop-nav">
-          {links.map(([to, label]) => (
-            <Link key={to} to={to}>
-              {label}
+          <FamilyMenu links={links} cta={{ label: t("nav.talkToUs"), href: "/contact" }} />
+          {/* Flat links on desktop; on small screens the same links live in
+              the dropdown, so the header stays uncluttered. */}
+          {links.map((link) => (
+            <Link key={link.href} to={link.href as never} className="nav-flat-link">
+              {link.label}
             </Link>
           ))}
         </nav>
-        <Link to="/signup" className="nav-action desktop-action">
-          Start a project
+        <Link to="/contact" className="nav-action desktop-action">
+          {t("nav.talkToUs")}
         </Link>
-        <button
-          className="menu-button"
-          aria-label="Open navigation"
-          aria-expanded={open}
-          onClick={() => setOpen(true)}
-        >
-          <Menu size={24} />
-        </button>
       </header>
-
-      {open && (
-        <div className="nav-backdrop" onClick={() => setOpen(false)}>
-          <aside className="mobile-panel" onClick={(e) => e.stopPropagation()}>
-            <div className="panel-head">
-              <Link to="/" className="mobile-brand" onClick={() => setOpen(false)} aria-label="Najeeb Digital Hub home">
-                <BrandMark title="Najeeb Digital Hub" />
-              </Link>
-              <button className="close-button" aria-label="Close navigation" onClick={() => setOpen(false)}>
-                <X size={22} />
-              </button>
-            </div>
-            {links.map(([to, label]) => (
-              <Link key={to} to={to} onClick={() => setOpen(false)}>
-                {label}
-              </Link>
-            ))}
-            <Link to="/signup" className="button" onClick={() => setOpen(false)}>
-              Start a project
-            </Link>
-          </aside>
-        </div>
-      )}
 
       {title ? (
         <main className="content">
@@ -103,60 +69,50 @@ export function PageShell({
 
       {children}
 
-      <footer>
-        <div className="footer-brand">
-          <BrandMark title="Najeeb Digital Hub" staticMark />
-          <p>Digital delivery and AI skills certification, run through one clear process.</p>
-          <div className="social-links">
-            <a href="https://wa.me/2349029932794" aria-label="WhatsApp">
-              <MessageCircle size={17} />
-            </a>
-            <a href="https://www.facebook.com/share/1Be6HN8zjS/" aria-label="Facebook">
-              <Facebook size={17} />
-            </a>
-            <a href="https://www.instagram.com/njb_digital_hub" aria-label="Instagram">
-              <Instagram size={17} />
-            </a>
-          </div>
-        </div>
-
-        <div className="footer-links">
-          <strong style={{ fontSize: 13, letterSpacing: '0.1em', textTransform: 'uppercase' }}>Explore</strong>
-          <Link to="/agency">Agency</Link>
-          <Link to="/academy">Academy</Link>
-          <Link to="/about">About</Link>
-          <Link to="/work">Work</Link>
-          <Link to="/blog">Blog</Link>
-          <Link to="/talent-application">Work with us</Link>
-        </div>
-
-        <div className="footer-links">
-          <strong style={{ fontSize: 13, letterSpacing: '0.1em', textTransform: 'uppercase' }}>Company</strong>
-          <Link to="/contact">Contact</Link>
-          <Link to="/faq">FAQ</Link>
-          <Link to="/verify">Verify a certificate</Link>
-          <Link to="/login">Sign in</Link>
-          <Link to="/terms">Terms</Link>
-          <Link to="/privacy">Privacy</Link>
-        </div>
-
-        <div className="footer-base">© {new Date().getFullYear()} Najeeb Digital Hub. Nigeria · Worldwide.</div>
-      </footer>
+      <FamilyFooter />
     </>
   );
 }
 
-export function PageIntro({ eyebrow, title, body, image, imageAlt }: { eyebrow: string; title: string; body: string; image?: string; imageAlt?: string }) {
+export function PageIntro({
+  eyebrow,
+  title,
+  body,
+  image,
+  imageAlt,
+}: {
+  eyebrow: string;
+  title: string;
+  body: string;
+  image?: string;
+  imageAlt?: string;
+}) {
   return (
-    <section className={image ? 'page-intro page-intro-image' : 'page-intro'}>
+    <section className={image ? "page-intro page-intro-image" : "page-intro"}>
       <div className="page-intro-inner">
         <p className="eyebrow">{eyebrow}</p>
         <h1>{title}</h1>
         <p className="lede">{body}</p>
-        {eyebrow === 'Agency' && <Link className="intro-link" to="/contact">Start a project <ArrowUpRight size={17} /></Link>}
-        {eyebrow === 'Academy' && <a className="intro-link" href="#courses">Explore courses <ArrowUpRight size={17} /></a>}
+        {eyebrow === "Agency" && (
+          <Link className="intro-link" to="/contact">
+            Start a project <ArrowUpRight size={17} />
+          </Link>
+        )}
+        {eyebrow === "Academy" && (
+          <a className="intro-link" href="#courses">
+            Explore courses <ArrowUpRight size={17} />
+          </a>
+        )}
       </div>
-      {image && <img className="page-intro-media" src={image} alt={imageAlt ?? ''} loading="eager" decoding="async" />}
+      {image && (
+        <img
+          className="page-intro-media"
+          src={image}
+          alt={imageAlt ?? ""}
+          loading="eager"
+          decoding="async"
+        />
+      )}
     </section>
   );
 }
@@ -171,7 +127,7 @@ export function Button({
   secondary?: boolean;
 }) {
   return (
-    <Link to={to} className={secondary ? 'button button-secondary' : 'button'}>
+    <Link to={to} className={secondary ? "button button-secondary" : "button"}>
       {children}
     </Link>
   );

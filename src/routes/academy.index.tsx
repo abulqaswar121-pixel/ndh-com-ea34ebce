@@ -1,31 +1,31 @@
-import { createFileRoute, Link } from '@tanstack/react-router';
-import { useMemo, useState } from 'react';
-import { ArrowUpRight, Search } from 'lucide-react';
-import { PageShell, PageIntro } from '@/components/PageShell';
-import { Reveal } from '@/components/Reveal';
-import { Rail } from '@/components/Rail';
-import { listCourses, listStudentVoices } from '@/lib/catalog.functions';
-import { formatPrice } from '@/lib/format';
-import academyLearning from '@/assets/academy-learning.jpg';
-import { courseImage, schoolImage } from '@/lib/topic-images';
+import { createFileRoute, Link } from "@tanstack/react-router";
+import { useMemo, useState } from "react";
+import { ArrowUpRight, Search } from "lucide-react";
+import { ACADEMY_SNAPSHOT, ACADEMY_SCHOOLS, BUSINESS_PROFILES } from "@/lib/business-profiles";
+import { PageShell, PageIntro } from "@/components/PageShell";
+import { Reveal } from "@/components/Reveal";
+import { Rail } from "@/components/Rail";
+import { listCourses, listStudentVoices } from "@/lib/catalog.functions";
+import { formatPrice } from "@/lib/format";
+import academyLearning from "@/assets/academy-learning.jpg";
+import { courseImage, schoolImage } from "@/lib/topic-images";
 
-const title = 'Academy — Practical AI courses and certification | NDH';
-const description =
-  'Short, self-serve AI courses across six schools. Each course ends with a final assessment, a practical project and a signed certificate.';
+const title = "Academy — Practical AI courses and certification | NDH";
+const description = BUSINESS_PROFILES.academy.tagline;
 
-export const Route = createFileRoute('/academy/')({
+export const Route = createFileRoute("/academy/")({
   head: () => ({
     meta: [
       { title },
-      { name: 'description', content: description },
-      { property: 'og:title', content: title },
-      { property: 'og:description', content: description },
-      { property: 'og:type', content: 'website' },
-      { property: 'og:image', content: 'https://ndh.com.ng/og-image.png' },
-      { name: 'twitter:card', content: 'summary_large_image' },
-      { name: 'twitter:image', content: 'https://ndh.com.ng/og-image.png' },
+      { name: "description", content: description },
+      { property: "og:title", content: title },
+      { property: "og:description", content: description },
+      { property: "og:type", content: "website" },
+      { property: "og:image", content: "https://ndh.com.ng/og-image.png" },
+      { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:image", content: "https://ndh.com.ng/og-image.png" },
     ],
-    links: [{ rel: 'canonical', href: 'https://ndh.com.ng/academy' }],
+    links: [{ rel: "canonical", href: "https://ndh.com.ng/academy" }],
   }),
   loader: async () => {
     const [courses, voices] = await Promise.all([listCourses(), listStudentVoices()]);
@@ -44,11 +44,11 @@ export const Route = createFileRoute('/academy/')({
 
 function Academy() {
   const { courses, voices } = Route.useLoaderData();
-  const [query, setQuery] = useState('');
-  const [school, setSchool] = useState('All');
+  const [query, setQuery] = useState("");
+  const [school, setSchool] = useState("All");
 
   const schools = useMemo(
-    () => ['All', ...Array.from(new Set(courses.map((c) => c.school).filter(Boolean) as string[]))],
+    () => ["All", ...Array.from(new Set(courses.map((c) => c.school).filter(Boolean) as string[]))],
     [courses],
   );
 
@@ -56,9 +56,9 @@ function Academy() {
     () =>
       courses.filter(
         (c) =>
-          (school === 'All' || c.school === school) &&
-          (query.trim() === '' ||
-            `${c.title} ${c.summary ?? ''}`.toLowerCase().includes(query.trim().toLowerCase())),
+          (school === "All" || c.school === school) &&
+          (query.trim() === "" ||
+            `${c.title} ${c.summary ?? ""}`.toLowerCase().includes(query.trim().toLowerCase())),
       ),
     [courses, school, query],
   );
@@ -68,11 +68,38 @@ function Academy() {
       <PageIntro
         eyebrow="Academy"
         title="Learn a practical AI skill, then prove it."
-        body="Short, self-serve courses across six schools. Finish the lessons, sit the final assessment, submit a practical project and receive a signed certificate."
+        body={BUSINESS_PROFILES.academy.description}
         image={academyLearning}
         imageAlt="Learner working through an online course"
       />
       <main className="content" id="courses">
+        <section className="card-panel official-academy-scope">
+          <p className="eyebrow">Official Academy scope</p>
+          <h2>
+            {ACADEMY_SNAPSHOT.courses} courses across {ACADEMY_SNAPSHOT.schools} specialized
+            schools.
+          </h2>
+          <p>
+            Structured video lessons, pre-project readiness quizzes, capstone deliverables and
+            signed, cryptographically verifiable certificates.
+          </p>
+          <ul>
+            {ACADEMY_SCHOOLS.map((item) => (
+              <li key={item.name}>
+                <strong>{item.name}</strong> — {item.topics}
+              </li>
+            ))}
+          </ul>
+          <p>
+            The catalogue below is the selection currently mirrored on this gateway, not the
+            complete 60-course offering. Visit the official Academy for the full scope and current
+            availability.
+          </p>
+          <div className="official-profile-links">
+            <a href="https://academy.ndh.com.ng">Open the official Academy ↗</a>
+            <Link to="/verify">Verify a certificate ↗</Link>
+          </div>
+        </section>
         <Reveal>
           <div className="catalog-controls">
             <div className="catalog-search">
@@ -89,7 +116,7 @@ function Academy() {
                 <button
                   key={s}
                   type="button"
-                  className={s === school ? 'chip is-active' : 'chip'}
+                  className={s === school ? "chip is-active" : "chip"}
                   onClick={() => setSchool(s)}
                 >
                   {s}
@@ -100,7 +127,10 @@ function Academy() {
         </Reveal>
 
         <p className="catalog-count">
-          {filtered.length} {filtered.length === 1 ? 'course' : 'courses'}
+          {filtered.length}{" "}
+          {filtered.length === 1
+            ? "course in this gateway selection"
+            : "courses in this gateway selection"}
         </p>
 
         {filtered.length === 0 ? (
@@ -109,7 +139,11 @@ function Academy() {
           <div className="course-grid">
             {filtered.map((c, i) => (
               <Reveal key={c.id} delay={(i % 3) * 60}>
-                <Link to="/academy/$slug" params={{ slug: c.slug }} className="course-card course-card-link">
+                <Link
+                  to="/academy/$slug"
+                  params={{ slug: c.slug }}
+                  className="course-card course-card-link"
+                >
                   {(courseImage(c.slug) ?? schoolImage(c.school)) && (
                     <img
                       className="course-card-media"
