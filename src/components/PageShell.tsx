@@ -2,7 +2,7 @@ import { Link, Navigate } from "@tanstack/react-router";
 import { useEffect, useState, type ReactNode } from "react";
 import { ArrowUpRight } from "lucide-react";
 import { roleHome, useAuth } from "@/lib/auth";
-import { BrandMark } from "@/components/BrandMark";
+import { NdhFamilySymbol } from "@/components/NdhFamilySymbol";
 import { FamilyFooter } from "@/components/ecosystem/FamilyFooter";
 import { FamilyMenu } from "@/components/ecosystem/FamilyMenu";
 import { useI18n } from "@/lib/preferences";
@@ -41,10 +41,11 @@ export function PageShell({
   }
 
   return (
-    <>
+    <div className="precision-public-shell">
       <header id="top" className={scrolled ? "site-header is-scrolled" : "site-header"}>
-        <Link to="/" className="brand">
-          <BrandMark title="Najeeb Digital Hub" />
+        <Link to="/" className="brand precision-brand" aria-label="Najeeb Digital Hub home">
+          <NdhFamilySymbol />
+          <span><strong>NAJEEB</strong><small>DIGITAL HUB</small></span>
         </Link>
         <nav className="desktop-nav">
           <FamilyMenu links={links} cta={{ label: t("nav.talkToUs"), href: "/contact" }} />
@@ -70,7 +71,7 @@ export function PageShell({
       {children}
 
       <FamilyFooter />
-    </>
+    </div>
   );
 }
 

@@ -15,7 +15,7 @@ function AdminDashboard() {
     void (async () => {
       const db = supabase as any;
       const [reviews, enquiries, payouts, applications] = await Promise.all([
-        db.from('academy_submissions').select('id', { count: 'exact', head: true }).eq('status', 'submitted'),
+        db.from('student_projects').select('id', { count: 'exact', head: true }).eq('status', 'submitted'),
         db.from('enquiries').select('id', { count: 'exact', head: true }),
         db.from('payout_requests').select('id', { count: 'exact', head: true }).eq('status', 'pending'),
         db.from('career_applications').select('id', { count: 'exact', head: true }).eq('status', 'pending'),

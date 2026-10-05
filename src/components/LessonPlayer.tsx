@@ -41,11 +41,12 @@ export function LessonPlayer({ videoId, startSeconds, endSeconds, title, complet
   const watchedRef = useRef(0);
   const lastTimeRef = useRef(startSeconds);
   const firedRef = useRef(false);
+  const targetRef = useRef(Number.POSITIVE_INFINITY);
   const [watched, setWatched] = useState(0);
+  const [target, setTarget] = useState<number | null>(
+    endSeconds === null ? null : Math.max((endSeconds - startSeconds) * 0.9, 1),
+  );
   const [finished, setFinished] = useState(false);
-
-  const segment = Math.max((endSeconds ?? startSeconds + 1) - startSeconds, 1);
-  const target = segment * 0.9;
 
   useEffect(() => {
     let cancelled = false;
@@ -54,6 +55,9 @@ export function LessonPlayer({ videoId, startSeconds, endSeconds, title, complet
     lastTimeRef.current = startSeconds;
     firedRef.current = completed;
     setWatched(0);
+    const storedTarget = endSeconds === null ? null : Math.max((endSeconds - startSeconds) * 0.9, 1);
+    targetRef.current = storedTarget ?? Number.POSITIVE_INFINITY;
+    setTarget(storedTarget);
     setFinished(false);
 
     void loadPlayerApi().then((YT) => {
@@ -69,6 +73,14 @@ export function LessonPlayer({ videoId, startSeconds, endSeconds, title, complet
         },
         events: {
           onReady: () => {
+            if (endSeconds === null) {
+              const duration = Number(playerRef.current?.getDuration?.() ?? 0);
+              if (duration > startSeconds) {
+                const fullVideoTarget = Math.max((duration - startSeconds) * 0.9, 1);
+                targetRef.current = fullVideoTarget;
+                setTarget(fullVideoTarget);
+              }
+            }
             timer = setInterval(() => {
               const player = playerRef.current;
               if (!player?.getCurrentTime) return;
@@ -85,7 +97,7 @@ export function LessonPlayer({ videoId, startSeconds, endSeconds, title, complet
                 player.pauseVideo?.();
                 setFinished(true);
               }
-              if (!firedRef.current && watchedRef.current >= target) {
+              if (!firedRef.current && watchedRef.current >= targetRef.current) {
                 firedRef.current = true;
                 onSegmentWatched();
               }
@@ -94,7 +106,7 @@ export function LessonPlayer({ videoId, startSeconds, endSeconds, title, complet
           onStateChange: (event: any) => {
             if (event.data === 0) {
               setFinished(true);
-              if (!firedRef.current) {
+              if (!firedRef.current && watchedRef.current >= targetRef.current) {
                 firedRef.current = true;
                 onSegmentWatched();
               }
@@ -117,7 +129,7 @@ export function LessonPlayer({ videoId, startSeconds, endSeconds, title, complet
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [videoId, startSeconds, endSeconds]);
 
-  const percent = Math.min(100, Math.round((watched / target) * 100));
+  const percent = target ? Math.min(100, Math.round((watched / target) * 100)) : 0;
 
   return (
     <div className="lesson-player">
@@ -131,7 +143,7 @@ export function LessonPlayer({ videoId, startSeconds, endSeconds, title, complet
           </span>
         ) : (
           <span>
-            <PlayCircle size={16} /> Watched {percent}% of this segment
+            <PlayCircle size={16} /> {target ? `Watched ${percent}% of this segment` : 'Preparing watch progress…'}
           </span>
         )}
         <div className="progress-track">

@@ -25,7 +25,7 @@ import {
 } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth, roleHome, type AppRole } from '@/lib/auth';
-import { BrandMark } from '@/components/BrandMark';
+import { NdhFamilySymbol } from '@/components/NdhFamilySymbol';
 
 type NavItem = { to: string; label: string; icon: typeof LayoutDashboard };
 
@@ -121,8 +121,8 @@ export function PortalShell({ role, children }: { role: AppRole; children?: Reac
           <Menu size={22} />
         </button>
         <Link to={roleHome(role) as never} className="portal-brand">
-          <BrandMark compact title="Najeeb Digital Hub" />
-          <span>{nav.name}</span>
+          <NdhFamilySymbol />
+          <span><strong>NDH</strong><small>{nav.name}</small></span>
         </Link>
         <AccountMenu role={role} />
       </header>
@@ -136,7 +136,7 @@ export function PortalShell({ role, children }: { role: AppRole; children?: Reac
           <div className="portal-drawer-backdrop" onClick={() => setOpen(false)}>
             <aside className="portal-drawer" onClick={(e) => e.stopPropagation()}>
               <div className="portal-drawer-head">
-                <span className="portal-drawer-brand"><BrandMark compact /> {nav.name}</span>
+                <span className="portal-drawer-brand"><NdhFamilySymbol /> {nav.name}</span>
                 <button aria-label="Close menu" onClick={() => setOpen(false)}>
                   <X size={20} />
                 </button>
@@ -294,8 +294,8 @@ export function PortalFrame({ children }: { children: ReactNode }) {
     <div className="portal-shell">
       <header className="portal-topbar">
         <Link to={roleHome(active) as never} className="portal-brand">
-          <BrandMark compact title="Najeeb Digital Hub" />
-          <span>{PORTAL_NAV[active].name}</span>
+          <NdhFamilySymbol />
+          <span><strong>NDH</strong><small>{PORTAL_NAV[active].name}</small></span>
         </Link>
         <AccountMenu role={active} />
       </header>

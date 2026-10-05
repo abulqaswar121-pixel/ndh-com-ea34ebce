@@ -78,6 +78,7 @@ export function OmniHubChat() {
   const [avatarState, setAvatarState] = useState<AvatarState>("idle");
   const [mode, setMode] = useState<"engine" | "model" | null>(null);
   const messagesRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLTextAreaElement>(null);
   const abortRef = useRef<AbortController | null>(null);
   /** Latest transcript, so `send` never closes over a stale array. */
   const messagesSnapshot = useRef<ChatMessage[]>([]);
@@ -246,6 +247,7 @@ export function OmniHubChat() {
 
   useEffect(() => {
     if (!open) return;
+    window.requestAnimationFrame(() => inputRef.current?.focus());
     const onKey = (event: KeyboardEvent) => {
       if (event.key === "Escape") setOpen(false);
     };
@@ -479,8 +481,15 @@ export function OmniHubChat() {
           <div className="ai-assistant-composer">
             <form onSubmit={submit}>
               <textarea
+                ref={inputRef}
                 value={input}
                 onChange={(event) => setInput(event.target.value)}
+                onKeyDown={(event) => {
+                  if (event.key === "Enter" && !event.shiftKey && !event.nativeEvent.isComposing) {
+                    event.preventDefault();
+                    if (!busy && input.trim()) void send(input);
+                  }
+                }}
                 maxLength={1000}
                 placeholder={t("chat.placeholder")}
                 aria-label={t("chat.placeholder")}
