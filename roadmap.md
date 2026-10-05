@@ -7,7 +7,7 @@
 - [x] Explore a letter-free Open Gateway symbol in the selected integrated-badge arrangement, without replacing the live identity.
 - [x] Turn ndh.com.ng into the NDH parent-brand landing page and business directory.
 - [x] Polish NDH's existing public experience without changing its identity: foreground actual work, refine page openings, and give service/course blocks stronger visual structure.
-- [ ] Check public pages at phone and desktop sizes after the Precision Gateway polish; preserve functional journeys.
+- [x] Check public pages at phone and desktop sizes after the Precision Gateway polish; preserve functional journeys.
 - [x] Apply the selected Precision Gateway visual system to shared public and portal shells and repair current Project monitoring findings.
 - [x] Tighten empty public and portal sections; restore first-screen visual density across desktop and phone.
 - [x] Verify updated pages and share the exact changed sections.
