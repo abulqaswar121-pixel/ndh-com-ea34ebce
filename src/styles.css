@@ -96,8 +96,8 @@
   --color-sidebar-foreground: var(--sidebar-foreground);
   --color-sidebar-border: var(--sidebar-border);
 
-  --font-display: "Instrument Serif", Georgia, serif;
-  --font-sans: "Work Sans", ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-display: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "DM Sans", ui-sans-serif, system-ui, -apple-system, sans-serif;
 }
 
 /* ============================================================
@@ -117,7 +117,7 @@ body {
   margin: 0;
   background: var(--paper);
   color: var(--ink);
-  font-family: "Work Sans", ui-sans-serif, system-ui, -apple-system, sans-serif;
+  font-family: "DM Sans", ui-sans-serif, system-ui, -apple-system, sans-serif;
   font-size: 16px;
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
@@ -125,7 +125,7 @@ body {
 }
 
 h1, h2, h3, h4 {
-  font-family: "Instrument Serif", Georgia, serif;
+  font-family: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
   color: var(--ink);
   letter-spacing: 0;
   line-height: 1.08;
