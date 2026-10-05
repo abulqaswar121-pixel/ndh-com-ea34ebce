@@ -1,88 +1,136 @@
-import { ArrowRight } from 'lucide-react';
-import { createFileRoute, Link } from '@tanstack/react-router';
-import { PageShell, PageIntro } from '@/components/PageShell';
-import { Reveal } from '@/components/Reveal';
-import { listPosts } from '@/lib/catalog.functions';
-import { blogImage } from '@/lib/editorial-assets';
+import { useState } from "react";
+import { ArrowRight, ArrowUpRight, BookOpen } from "lucide-react";
+import { createFileRoute, Link } from "@tanstack/react-router";
+import { FamilyPage, FamilyIntro, FamilyCta } from "@/components/ecosystem/FamilyPage";
+import { listPosts } from "@/lib/catalog.functions";
+import { FAMILY_ARTICLES, journalCover } from "@/lib/family-journal";
 
-const title = 'Blog — Notes on digital delivery and AI skills | NDH';
+const title = "The NDH Journal — Ideas for your next step";
 const description =
-  'Practical writing from Najeeb Digital Hub on running digital projects, AI tools and building useful skills.';
-
-export const Route = createFileRoute('/blog/')({
+  "Practical notes from across the NDH family: learning, digital work, useful tools, school systems and the ideas that connect them.";
+export const Route = createFileRoute("/blog/")({
   head: () => ({
     meta: [
       { title },
-      { name: 'description', content: description },
-      { property: 'og:title', content: title },
-      { property: 'og:description', content: description },
-      { property: 'og:type', content: 'website' },
-      { property: 'og:image', content: 'https://ndh.com.ng/og-image.png' },
-      { name: 'twitter:card', content: 'summary_large_image' },
-      { name: 'twitter:image', content: 'https://ndh.com.ng/og-image.png' },
+      { name: "description", content: description },
+      { property: "og:title", content: title },
+      { property: "og:description", content: description },
     ],
+    links: [{ rel: "canonical", href: "https://ndh.com.ng/blog" }],
   }),
-  loader: () => listPosts(),
-  errorComponent: () => (
-    <PageShell>
-      <main className="content">
-        <h1>Blog unavailable</h1>
-        <p>We could not load the articles just now. Please refresh the page.</p>
-      </main>
-    </PageShell>
-  ),
+  loader: async () => {
+    const posts = await listPosts().catch(() => []);
+    return [
+      ...FAMILY_ARTICLES.map(({ sections: _sections, ...article }) => article),
+      ...posts
+        .filter((post) => !FAMILY_ARTICLES.some((article) => article.slug === post.slug))
+        .map((post) => ({ ...post, category: "Learning & digital work" })),
+    ];
+  },
   component: Blog,
 });
 
 function Blog() {
   const posts = Route.useLoaderData();
-  const [featured, ...supporting] = posts;
+  const [category, setCategory] = useState("All notes");
+  const [featured] = posts;
+  const categories = ["All notes", ...new Set(posts.map((post) => post.category))];
+  const filtered = posts.filter((post) => category === "All notes" || post.category === category);
   return (
-    <PageShell>
-      <PageIntro
-        eyebrow="Blog"
-        title="Notes from the work."
-        body="Short, practical writing on digital delivery, AI tools and building skills that hold up."
-        image="/images/ndh-hero-960.webp"
-        imageAlt="Digital work in progress at a desk"
+    <FamilyPage>
+      <FamilyIntro
+        eyebrow="The NDH journal"
+        title="Useful ideas for what comes next."
+        body="Practical notes on learning, building, choosing tools and making everyday systems work better. Perspectives from across the family — without the unnecessary jargon."
       />
-      <main className="content journal-page">
-        {posts.length === 0 ? (
-          <div className="empty-card">The first articles are on the way. Check back shortly.</div>
-        ) : (
-          <>
-            {featured && (
-              <Reveal>
-                <Link to="/blog/$slug" params={{ slug: featured.slug }} className="journal-feature">
-                  <img src={blogImage(featured.slug, featured.cover_image_url) ?? ''} alt={`Editorial photograph for ${featured.title}`} width={1400} height={900} fetchPriority="high" decoding="async" />
-                  <div>
-                    <p className="case-kicker">Featured note</p>
-                    <h2>{featured.title}</h2>
-                    <p>{featured.excerpt}</p>
-                    <span className="post-meta">{featured.author_name ?? 'NDH'}{featured.published_at ? ` · ${new Date(featured.published_at).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}` : ''}</span>
-                    <span className="editorial-link">Read article <ArrowRight size={16} /></span>
-                  </div>
-                </Link>
-              </Reveal>
-            )}
-            <div className="journal-grid">
-              {supporting.map((post, index) => (
-                <Reveal key={post.slug} delay={(index % 2) * 70}>
-                  <Link to="/blog/$slug" params={{ slug: post.slug }} className="journal-card">
-                    <img src={blogImage(post.slug, post.cover_image_url) ?? ''} alt={`Editorial photograph for ${post.title}`} width={900} height={600} loading="lazy" decoding="async" />
-                    <div>
-                      <p className="case-kicker">NDH journal</p>
-                      <h2>{post.title}</h2>
-                      <p>{post.excerpt}</p>
-                      <span className="editorial-link">Read article <ArrowRight size={16} /></span>
-                    </div>
-                  </Link>
-                </Reveal>
-              ))}
+      <section className="family-band is-white">
+        <div className="family-wrap">
+          <Link to="/blog/$slug" params={{ slug: featured.slug }} className="family-feature">
+            <div className="family-feature-image">
+              <img
+                src={featured.cover_image_url ?? "/images/ndh-hero-960.webp"}
+                alt="A workspace for exploring digital ideas"
+                width={960}
+                height={640}
+                fetchPriority="high"
+              />
             </div>
-          </>
-        )}
-      </main>
-    </PageShell>
+            <div className="family-feature-copy">
+              <p className="family-kicker">Start here · The NDH family</p>
+              <h2>{featured.title}</h2>
+              <p>{featured.excerpt}</p>
+              <span className="family-small">{featured.author_name} · A practical guide</span>
+              <span className="family-text-link">
+                Read the story <ArrowUpRight size={19} />
+              </span>
+            </div>
+          </Link>
+        </div>
+      </section>
+      <section className="family-band" id="articles">
+        <div className="family-wrap">
+          <div className="family-section-heading">
+            <div>
+              <p className="family-kicker">Explore the journal</p>
+              <h2>A little clarity goes a long way.</h2>
+            </div>
+            <BookOpen size={29} aria-hidden="true" />
+          </div>
+          <div
+            className="family-journal-filters"
+            role="group"
+            aria-label="Filter articles by topic"
+          >
+            {categories.map((item) => (
+              <button
+                type="button"
+                key={item}
+                aria-pressed={category === item}
+                onClick={() => setCategory(item)}
+              >
+                {item}
+              </button>
+            ))}
+          </div>
+          <p className="family-small" role="status">
+            {filtered.length} {filtered.length === 1 ? "article" : "articles"}
+            {category !== "All notes" ? ` in ${category}` : " across the family"}
+          </p>
+          <div className="family-journal-grid">
+            {filtered.map((post) => (
+              <Link
+                to="/blog/$slug"
+                params={{ slug: post.slug }}
+                className="family-card family-post"
+                key={post.slug}
+              >
+                <img
+                  src={journalCover(post.slug, post.cover_image_url)}
+                  onError={(event) => {
+                    event.currentTarget.onerror = null;
+                    event.currentTarget.src = "/images/ndh-hero-960.webp";
+                  }}
+                  alt=""
+                  width={960}
+                  height={640}
+                  loading="lazy"
+                  decoding="async"
+                />
+                <div className="family-post-copy">
+                  <p className="family-kicker">{post.category}</p>
+                  <h3>{post.title}</h3>
+                  <p>{post.excerpt}</p>
+                  <span className="family-small">{post.author_name ?? "NDH Editorial"}</span>
+                  <span className="family-text-link">
+                    Read article <ArrowRight size={16} />
+                  </span>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+      <FamilyCta />
+    </FamilyPage>
   );
 }

@@ -48,8 +48,8 @@ import { Route as AuthenticatedPortalTalentRouteImport } from './routes/_authent
 import { Route as AuthenticatedPortalTermsRouteImport } from './routes/_authenticated/portal/terms'
 import { Route as AuthenticatedProjectSlugRouteImport } from './routes/_authenticated/project.$slug'
 import { Route as AuthenticatedWorkspaceIdRouteImport } from './routes/_authenticated/workspace.$id'
+import { Route as ApiPublicOmniHubRouteImport } from './routes/api/public/omni-hub'
 import { Route as ApiPublicPaystackWebhookRouteImport } from './routes/api/public/paystack-webhook'
-import { Route as ApiPublicSupportChatRouteImport } from './routes/api/public/support-chat'
 import { Route as AuthenticatedPortalAdminIndexRouteImport } from './routes/_authenticated/portal/admin.index'
 import { Route as AuthenticatedPortalAdminAccessRouteImport } from './routes/_authenticated/portal/admin.access'
 import { Route as AuthenticatedPortalAdminAccountRouteImport } from './routes/_authenticated/portal/admin.account'
@@ -293,17 +293,17 @@ const AuthenticatedWorkspaceIdRoute =
     path: '/workspace/$id',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const ApiPublicOmniHubRoute = ApiPublicOmniHubRouteImport.update({
+  id: '/api/public/omni-hub',
+  path: '/api/public/omni-hub',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiPublicPaystackWebhookRoute =
   ApiPublicPaystackWebhookRouteImport.update({
     id: '/api/public/paystack-webhook',
     path: '/api/public/paystack-webhook',
     getParentRoute: () => rootRouteImport,
   } as any)
-const ApiPublicSupportChatRoute = ApiPublicSupportChatRouteImport.update({
-  id: '/api/public/support-chat',
-  path: '/api/public/support-chat',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const AuthenticatedPortalAdminIndexRoute =
   AuthenticatedPortalAdminIndexRouteImport.update({
     id: '/',
@@ -564,8 +564,8 @@ export interface FileRoutesByFullPath {
   '/portal/terms': typeof AuthenticatedPortalTermsRoute
   '/project/$slug': typeof AuthenticatedProjectSlugRoute
   '/workspace/$id': typeof AuthenticatedWorkspaceIdRoute
+  '/api/public/omni-hub': typeof ApiPublicOmniHubRoute
   '/api/public/paystack-webhook': typeof ApiPublicPaystackWebhookRoute
-  '/api/public/support-chat': typeof ApiPublicSupportChatRoute
   '/portal/admin/access': typeof AuthenticatedPortalAdminAccessRoute
   '/portal/admin/account': typeof AuthenticatedPortalAdminAccountRoute
   '/portal/admin/applications': typeof AuthenticatedPortalAdminApplicationsRoute
@@ -634,8 +634,8 @@ export interface FileRoutesByTo {
   '/portal/terms': typeof AuthenticatedPortalTermsRoute
   '/project/$slug': typeof AuthenticatedProjectSlugRoute
   '/workspace/$id': typeof AuthenticatedWorkspaceIdRoute
+  '/api/public/omni-hub': typeof ApiPublicOmniHubRoute
   '/api/public/paystack-webhook': typeof ApiPublicPaystackWebhookRoute
-  '/api/public/support-chat': typeof ApiPublicSupportChatRoute
   '/portal/admin/access': typeof AuthenticatedPortalAdminAccessRoute
   '/portal/admin/account': typeof AuthenticatedPortalAdminAccountRoute
   '/portal/admin/applications': typeof AuthenticatedPortalAdminApplicationsRoute
@@ -714,8 +714,8 @@ export interface FileRoutesById {
   '/_authenticated/portal/terms': typeof AuthenticatedPortalTermsRoute
   '/_authenticated/project/$slug': typeof AuthenticatedProjectSlugRoute
   '/_authenticated/workspace/$id': typeof AuthenticatedWorkspaceIdRoute
+  '/api/public/omni-hub': typeof ApiPublicOmniHubRoute
   '/api/public/paystack-webhook': typeof ApiPublicPaystackWebhookRoute
-  '/api/public/support-chat': typeof ApiPublicSupportChatRoute
   '/_authenticated/portal/admin/access': typeof AuthenticatedPortalAdminAccessRoute
   '/_authenticated/portal/admin/account': typeof AuthenticatedPortalAdminAccountRoute
   '/_authenticated/portal/admin/applications': typeof AuthenticatedPortalAdminApplicationsRoute
@@ -795,8 +795,8 @@ export interface FileRouteTypes {
     | '/portal/terms'
     | '/project/$slug'
     | '/workspace/$id'
+    | '/api/public/omni-hub'
     | '/api/public/paystack-webhook'
-    | '/api/public/support-chat'
     | '/portal/admin/access'
     | '/portal/admin/account'
     | '/portal/admin/applications'
@@ -865,8 +865,8 @@ export interface FileRouteTypes {
     | '/portal/terms'
     | '/project/$slug'
     | '/workspace/$id'
+    | '/api/public/omni-hub'
     | '/api/public/paystack-webhook'
-    | '/api/public/support-chat'
     | '/portal/admin/access'
     | '/portal/admin/account'
     | '/portal/admin/applications'
@@ -944,8 +944,8 @@ export interface FileRouteTypes {
     | '/_authenticated/portal/terms'
     | '/_authenticated/project/$slug'
     | '/_authenticated/workspace/$id'
+    | '/api/public/omni-hub'
     | '/api/public/paystack-webhook'
-    | '/api/public/support-chat'
     | '/_authenticated/portal/admin/access'
     | '/_authenticated/portal/admin/account'
     | '/_authenticated/portal/admin/applications'
@@ -1004,8 +1004,8 @@ export interface RootRouteChildren {
   InviteTokenRoute: typeof InviteTokenRoute
   VerifyCodeRoute: typeof VerifyCodeRoute
   VerifyIndexRoute: typeof VerifyIndexRoute
+  ApiPublicOmniHubRoute: typeof ApiPublicOmniHubRoute
   ApiPublicPaystackWebhookRoute: typeof ApiPublicPaystackWebhookRoute
-  ApiPublicSupportChatRoute: typeof ApiPublicSupportChatRoute
   LovableEmailAuthPreviewRoute: typeof LovableEmailAuthPreviewRoute
   LovableEmailAuthWebhookRoute: typeof LovableEmailAuthWebhookRoute
   LovableEmailQueueProcessRoute: typeof LovableEmailQueueProcessRoute
@@ -1286,18 +1286,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedWorkspaceIdRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/api/public/omni-hub': {
+      id: '/api/public/omni-hub'
+      path: '/api/public/omni-hub'
+      fullPath: '/api/public/omni-hub'
+      preLoaderRoute: typeof ApiPublicOmniHubRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/public/paystack-webhook': {
       id: '/api/public/paystack-webhook'
       path: '/api/public/paystack-webhook'
       fullPath: '/api/public/paystack-webhook'
       preLoaderRoute: typeof ApiPublicPaystackWebhookRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/api/public/support-chat': {
-      id: '/api/public/support-chat'
-      path: '/api/public/support-chat'
-      fullPath: '/api/public/support-chat'
-      preLoaderRoute: typeof ApiPublicSupportChatRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_authenticated/portal/admin/': {
@@ -1820,8 +1820,8 @@ const rootRouteChildren: RootRouteChildren = {
   InviteTokenRoute: InviteTokenRoute,
   VerifyCodeRoute: VerifyCodeRoute,
   VerifyIndexRoute: VerifyIndexRoute,
+  ApiPublicOmniHubRoute: ApiPublicOmniHubRoute,
   ApiPublicPaystackWebhookRoute: ApiPublicPaystackWebhookRoute,
-  ApiPublicSupportChatRoute: ApiPublicSupportChatRoute,
   LovableEmailAuthPreviewRoute: LovableEmailAuthPreviewRoute,
   LovableEmailAuthWebhookRoute: LovableEmailAuthWebhookRoute,
   LovableEmailQueueProcessRoute: LovableEmailQueueProcessRoute,

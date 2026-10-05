@@ -1,31 +1,31 @@
-import { createFileRoute } from '@tanstack/react-router';
-import { PageShell, PageIntro } from '@/components/PageShell';
-import { TermsBody } from '@/components/portal/LegalContent';
+import { createFileRoute } from "@tanstack/react-router";
+import { FamilyPage, FamilyIntro } from "@/components/ecosystem/FamilyPage";
+import { FamilyTerms } from "@/components/ecosystem/FamilyLegal";
 
-const title = 'Terms of service — Najeeb Digital Hub';
-const description = 'The terms that apply to using Najeeb Digital Hub services, the Academy and certification.';
-
-export const Route = createFileRoute('/terms')({
+export const Route = createFileRoute("/terms")({
   head: () => ({
     meta: [
-      { title },
-      { name: 'description', content: description },
-      { property: 'og:title', content: title },
-      { property: 'og:description', content: description },
-      { property: 'og:type', content: 'website' },
-      { name: 'twitter:card', content: 'summary' },
+      { title: "Terms of service — Najeeb Digital Hub" },
+      {
+        name: "description",
+        content:
+          "A clear starting point for using the NDH website and finding your way around the family.",
+      },
     ],
+    links: [{ rel: "canonical", href: "https://ndh.com.ng/terms" }],
   }),
   component: () => (
-    <PageShell>
-      <PageIntro
-        eyebrow="Terms"
+    <FamilyPage>
+      <FamilyIntro
+        eyebrow="Terms of service"
         title="Terms of service"
-        body="These terms describe the basis for using Najeeb Digital Hub services and certification."
+        body="A clear starting point for using the NDH website and finding your way around the family."
       />
-      <main className="content prose">
-        <TermsBody />
-      </main>
-    </PageShell>
+      <section className="family-band is-white">
+        <article className="family-wrap family-legal family-card">
+          <FamilyTerms />
+        </article>
+      </section>
+    </FamilyPage>
   ),
 });

@@ -15,8 +15,11 @@ import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { AuthProvider } from "../lib/auth";
 import { Toaster } from "sonner";
-const SupportChat = lazy(() =>
-  import("@/components/SupportChat").then((m) => ({ default: m.SupportChat })),
+import { DEFAULT_PREFERENCES, PreferencesProvider } from "../lib/preferences";
+import { DEFAULT_LOCALE, localeDirection } from "../lib/i18n/dictionary";
+import { readPreferences } from "../lib/preferences.functions";
+const OmniHubChat = lazy(() =>
+  import("@/components/omnihub/OmniHubChat").then((m) => ({ default: m.OmniHubChat })),
 );
 
 function NotFoundComponent() {
@@ -45,7 +48,9 @@ function ErrorComponent({ error, reset }: ErrorComponentProps) {
   console.error(error);
   const router = useRouter();
   useEffect(() => {
-    reportLovableError(error instanceof Error ? error : new Error(String(error)), { boundary: "tanstack_root_error_component" });
+    reportLovableError(error instanceof Error ? error : new Error(String(error)), {
+      boundary: "tanstack_root_error_component",
+    });
   }, [error]);
 
   return (
@@ -102,6 +107,20 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       },
     ],
   }),
+  /**
+   * Read the region/language/currency cookie during SSR so the first paint is
+   * already correct (no flash of English, no hydration mismatch). Cached for
+   * client-side navigation because the provider owns the state after that.
+   */
+  staleTime: Number.POSITIVE_INFINITY,
+  loader: async () => {
+    try {
+      return await readPreferences();
+    } catch (error) {
+      console.warn("Preferences unavailable during render, using defaults:", error);
+      return { prefs: DEFAULT_PREFERENCES, stored: false };
+    }
+  },
   shellComponent: RootShell,
   component: RootComponent,
   notFoundComponent: NotFoundComponent,
@@ -109,8 +128,18 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 });
 
 function RootShell({ children }: { children: ReactNode }) {
+  // The preference loader runs during SSR, so the document can declare the
+  // visitor's language and direction before hydration (important for Arabic).
+  let locale = DEFAULT_LOCALE;
+  try {
+    const data = Route.useLoaderData();
+    if (data?.prefs?.locale) locale = data.prefs.locale;
+  } catch {
+    /* Shell rendered outside the route context — English defaults are fine. */
+  }
+
   return (
-    <html lang="en">
+    <html lang={locale} dir={localeDirection(locale)}>
       <head>
         <HeadContent />
       </head>
@@ -124,19 +153,23 @@ function RootShell({ children }: { children: ReactNode }) {
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
+  const preferences = Route.useLoaderData();
 
   return (
     <QueryClientProvider client={queryClient}>
-      <AuthProvider>
-        {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
-        <Outlet />
-        <ClientOnly fallback={null}>
-          <Suspense fallback={null}>
-            <SupportChat />
-          </Suspense>
-        </ClientOnly>
-        <Toaster position="top-right" richColors />
-      </AuthProvider>
+      <PreferencesProvider initial={preferences?.prefs} stored={preferences?.stored}>
+        <AuthProvider>
+          {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
+          <Outlet />
+          {/* Browser-only widget (session storage, streaming fetch) — never SSR'd. */}
+          <ClientOnly fallback={null}>
+            <Suspense fallback={null}>
+              <OmniHubChat />
+            </Suspense>
+          </ClientOnly>
+          <Toaster position="top-right" richColors />
+        </AuthProvider>
+      </PreferencesProvider>
     </QueryClientProvider>
   );
 }
