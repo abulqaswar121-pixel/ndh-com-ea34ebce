@@ -16,3 +16,5 @@ Keep speculative brand-family identity systems on a separate comparison route un
 The root route is the parent-brand gateway and must remain independent from any one subsidiary's workflow; each business is linked as a sibling destination.
 
 The approved Open Gateway asset is the parent homepage identity, and subsidiaries use that same asset with an integrated corner icon; this keeps the family recognisable as it grows.
+
+Use the Precision Gateway shared shell and tokens for public pages and signed-in portals; one visual system prevents subsidiaries and workflows from looking like unrelated products.
