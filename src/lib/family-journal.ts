@@ -16,7 +16,7 @@ export const FAMILY_ARTICLES = [
       },
       {
         heading: "Choose a focused starting point",
-        body: "NDH Academy offers 60 practical AI-skills courses across 6 specialized schools, with readiness quizzes, capstones and signed verifiable certificates. NDH Agency delivers engineering, design and AI services through dedicated PM teams. NDH eStore powers multi-vendor digital and physical storefronts. NDH AgriCapital, formerly Venture, supports cooperative farm-cycle investment using a transparent shared contribution ledger.",
+        body: "NDH Academy offers 60 practical AI-skills courses across 6 specialized schools, with readiness quizzes, capstones and signed verifiable certificates. NDH Agency delivers engineering, design and AI services through dedicated PM teams. NDH Market powers multi-vendor digital and physical storefronts. NDH FarmFund, formerly Venture, supports cooperative farm-cycle investment using a transparent shared contribution ledger.",
       },
       {
         heading: "A connected need can involve more than one business",
@@ -24,7 +24,7 @@ export const FAMILY_ARTICLES = [
       },
       {
         heading: "Check what is available today",
-        body: "The family directory separates available businesses from those still in the pipeline. NDH SchoolDesk, Travel and iHospital are Coming Soon, not services you should assume are ready to use. Check the destination page and confirm availability directly before making plans or sharing sensitive information.",
+        body: "The family directory separates available businesses from those still in the pipeline. NDH SchoolOS, Travel and iHospital are Coming Soon, not services you should assume are ready to use. Check the destination page and confirm availability directly before making plans or sharing sensitive information.",
       },
       {
         heading: "Take one useful next step",
@@ -92,7 +92,7 @@ export const FAMILY_ARTICLES = [
       },
       {
         heading: "Know when you need a different kind of help",
-        body: "NDH eStore is a multi-vendor commerce platform for digital and physical products, with merchant onboarding, custom storefronts, inventory, shipping and vendor payout ledgers. A digital resource may be one product in that wider marketplace; it does not define the platform’s full scope. If your challenge is learning how to use a tool, explore Academy. If it needs custom delivery, explore Agency. Choose the level of support that matches the task rather than forcing a ready-made resource to do everything.",
+        body: "NDH Market is a multi-vendor commerce platform for digital and physical products, with merchant onboarding, custom storefronts, inventory, shipping and vendor payout ledgers. A digital resource may be one product in that wider marketplace; it does not define the platform’s full scope. If your challenge is learning how to use a tool, explore Academy. If it needs custom delivery, explore Agency. Choose the level of support that matches the task rather than forcing a ready-made resource to do everything.",
       },
     ],
   },

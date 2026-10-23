@@ -174,13 +174,13 @@ export const en = {
   "chat.contactTeam": "Contact the team",
   "chat.reset": "Start again",
   "chat.greeting":
-    "Welcome to Najeeb Digital Hub — Agency, Academy, AgriCapital and eStore, with SchoolDesk, Travel and iHospital Coming Soon. Tell me what you need and I’ll point you to the right business.",
+    "Welcome to Najeeb Digital Hub — Agency, Academy, FarmFund and Market, with Mall, Cloud, SchoolOS, Express, Pay, Travel, Health and Foundation on the way. Tell me what you need and I’ll point you to the right business.",
   "chat.quickLabel": "Where would you like to start?",
   "chat.chip.hire": "Build with a team",
   "chat.chip.learn": "Find a course",
   "chat.chip.store": "Sell through a storefront",
   "chat.chip.family": "What NDH does",
-  "chat.chip.school": "SchoolDesk — Coming Soon",
+  "chat.chip.school": "SchoolOS — Coming Soon",
   "chat.chip.early": "Invest in a farm cycle",
   "chat.chip.pricing": "How pricing works",
   "chat.route.suggested": "Suggested route",
@@ -202,7 +202,7 @@ export const en = {
     "PM-managed delivery, structured learning, farm-cycle equity and vendor storefronts: each business has its own purpose and workflow.",
   "bento.standard.title": "Clear roles and accountability",
   "bento.standard.body":
-    "Agency PMs oversee delivery; Academy learners complete capstones; AgriCapital operators log farm activity; eStore vendors manage their storefronts.",
+    "Agency PMs oversee delivery; Academy learners complete capstones; FarmFund operators log farm activity; Market vendors manage their storefronts.",
   "bento.region.title": "Built in Nigeria. Open to the world.",
   "bento.region.body":
     "We work across regions, time zones and languages, with the parent gateway available in English, French and Arabic.",
@@ -229,6 +229,36 @@ export const en = {
   "eco.schooldesk.category": BUSINESS_PROFILES.schooldesk.category,
   "eco.travel.category": BUSINESS_PROFILES.travel.category,
   "eco.ihospital.category": BUSINESS_PROFILES.ihospital.category,
+  "eco.mall.name": BUSINESS_PROFILES.mall.name,
+  "eco.mall.tagline": BUSINESS_PROFILES.mall.tagline,
+  "eco.mall.description": BUSINESS_PROFILES.mall.description,
+  "eco.mall.point1": BUSINESS_PROFILES.mall.point1,
+  "eco.mall.point2": BUSINESS_PROFILES.mall.point2,
+  "eco.mall.category": BUSINESS_PROFILES.mall.category,
+  "eco.cloud.name": BUSINESS_PROFILES.cloud.name,
+  "eco.cloud.tagline": BUSINESS_PROFILES.cloud.tagline,
+  "eco.cloud.description": BUSINESS_PROFILES.cloud.description,
+  "eco.cloud.point1": BUSINESS_PROFILES.cloud.point1,
+  "eco.cloud.point2": BUSINESS_PROFILES.cloud.point2,
+  "eco.cloud.category": BUSINESS_PROFILES.cloud.category,
+  "eco.express.name": BUSINESS_PROFILES.express.name,
+  "eco.express.tagline": BUSINESS_PROFILES.express.tagline,
+  "eco.express.description": BUSINESS_PROFILES.express.description,
+  "eco.express.point1": BUSINESS_PROFILES.express.point1,
+  "eco.express.point2": BUSINESS_PROFILES.express.point2,
+  "eco.express.category": BUSINESS_PROFILES.express.category,
+  "eco.pay.name": BUSINESS_PROFILES.pay.name,
+  "eco.pay.tagline": BUSINESS_PROFILES.pay.tagline,
+  "eco.pay.description": BUSINESS_PROFILES.pay.description,
+  "eco.pay.point1": BUSINESS_PROFILES.pay.point1,
+  "eco.pay.point2": BUSINESS_PROFILES.pay.point2,
+  "eco.pay.category": BUSINESS_PROFILES.pay.category,
+  "eco.foundation.name": BUSINESS_PROFILES.foundation.name,
+  "eco.foundation.tagline": BUSINESS_PROFILES.foundation.tagline,
+  "eco.foundation.description": BUSINESS_PROFILES.foundation.description,
+  "eco.foundation.point1": BUSINESS_PROFILES.foundation.point1,
+  "eco.foundation.point2": BUSINESS_PROFILES.foundation.point2,
+  "eco.foundation.category": BUSINESS_PROFILES.foundation.category,
 };
 
 /** French — complete translation of the gateway surface. */
@@ -354,21 +384,21 @@ export const fr: Dictionary = {
     "60 cours de compétences IA : ingénierie IA, design et marque, médias et vidéo, rédaction et contenu, marketing et croissance, gestion et opérations. Leçons vidéo structurées, projets de synthèse et certificats signés vérifiables cryptographiquement.",
   "eco.academy.point1": "Leçons vidéo et quiz de préparation avant projet",
   "eco.academy.point2": "Projets de synthèse et vérification des certificats sur /verify",
-  "eco.agricapital.name": "NDH AgriCapital",
+  "eco.agricapital.name": "NDH FarmFund",
   "eco.agricapital.tagline":
     "Investissements agricoles via un registre partagé transparent, avec versements automatisés selon les parts après récolte.",
   "eco.agricapital.description":
     "Les contributeurs financent élevage et cultures par Paystack ou virement. Les parts sont calculées en direct depuis le registre partagé. Les opérateurs enregistrent alimentation, croissance et dépenses ; après récolte et vente, l’administrateur clôture le cycle et répartit les bénéfices proportionnellement aux parts.",
   "eco.agricapital.point1": "Registre des contributions et calcul des parts en direct",
   "eco.agricapital.point2": "Dépenses des fermes et bénéfices répartis au prorata",
-  "eco.estore.name": "NDH eStore",
+  "eco.estore.name": "NDH Market",
   "eco.estore.tagline":
     "Moteur de boutiques multivendeurs pour le commerce local et transfrontalier.",
   "eco.estore.description":
     "Plateforme mondiale de produits physiques et numériques : inscription automatisée des marchands, boutiques /store/:vendorSlug, gestion des produits et stocks, livraison nationale et internationale.",
   "eco.estore.point1": "Paiement via Paystack et Flutterwave",
   "eco.estore.point2": "Boutiques personnalisées et registres automatisés de versements vendeurs",
-  "eco.schooldesk.name": "NDH SchoolDesk",
+  "eco.schooldesk.name": "NDH SchoolOS",
   "eco.schooldesk.tagline":
     "Système EdTech de gestion scolaire, de notation et de bulletins automatisés.",
   "eco.schooldesk.description":
@@ -381,7 +411,7 @@ export const fr: Dictionary = {
     "Bientôt disponible. Conciergerie, vols et conseil en visas en préparation ; les réservations ne sont pas ouvertes.",
   "eco.travel.point1": "Conciergerie et réservation de vols prévues",
   "eco.travel.point2": "Conseil en visas · À venir",
-  "eco.ihospital.name": "NDH iHospital",
+  "eco.ihospital.name": "NDH Health",
   "eco.ihospital.tagline": "Infrastructure de télémédecine et de gestion numérique des cliniques.",
   "eco.ihospital.description":
     "Bientôt disponible. Télémédecine et gestion de cliniques en développement ; aucune consultation ni prestation clinique actuellement.",
@@ -581,20 +611,20 @@ export const ar: Dictionary = {
     "60 دورة لمهارات الذكاء الاصطناعي في هندسة الذكاء الاصطناعي والتصميم والعلامة والإعلام والفيديو والكتابة والمحتوى والتسويق والنمو والأعمال والعمليات. دروس فيديو منظمة ومشاريع ختامية وشهادات موقعة قابلة للتحقق تشفيرياً.",
   "eco.academy.point1": "دروس فيديو واختبارات استعداد قبل المشروع",
   "eco.academy.point2": "مشاريع ختامية والتحقق من الشهادات عبر /verify",
-  "eco.agricapital.name": "NDH AgriCapital",
+  "eco.agricapital.name": "NDH FarmFund",
   "eco.agricapital.tagline":
     "استثمارات زراعية بسجل مشترك شفاف وتوزيعات آلية حسب حصص الملكية بعد الحصاد.",
   "eco.agricapital.description":
     "يمول المساهمون دورات تربية المواشي والزراعة عبر Paystack أو التحويل المباشر. تُحسب الحصص مباشرة من سجل المساهمات. يسجل المشغلون التغذية والنمو والمصروفات؛ وبعد الحصاد والبيع يغلق المسؤول الدورة ويوزع الأرباح بنسبة حصة كل مساهم.",
   "eco.agricapital.point1": "سجل مساهمات مشترك وحساب مباشر لحصص الملكية",
   "eco.agricapital.point2": "تسجيل المصروفات وتوزيع أرباح الحصاد بنسبة الحصص",
-  "eco.estore.name": "NDH eStore",
+  "eco.estore.name": "NDH Market",
   "eco.estore.tagline": "محرك متاجر متعددة البائعين يدعم التجارة المحلية والعابرة للحدود.",
   "eco.estore.description":
     "منصة عالمية للمنتجات الرقمية والمادية: تسجيل آلي للتجار ومتاجر مخصصة عبر /store/:vendorSlug وإدارة المنتجات والمخزون ومسارات شحن محلية ودولية.",
   "eco.estore.point1": "الدفع عبر Paystack وFlutterwave",
   "eco.estore.point2": "متاجر مخصصة وسجلات آلية لمستحقات البائعين",
-  "eco.schooldesk.name": "NDH SchoolDesk",
+  "eco.schooldesk.name": "NDH SchoolOS",
   "eco.schooldesk.tagline": "نظام لإدارة المدارس والتقييم وإصدار تقارير الدرجات آلياً.",
   "eco.schooldesk.description":
     "قريباً. نظام لإدارة المدارس والتقييم والتقارير الآلية قيد التطوير؛ التسجيل والتشغيل المدرسي غير متاحين حالياً.",
@@ -606,7 +636,7 @@ export const ar: Dictionary = {
     "قريباً. خدمات السفر والطيران واستشارات التأشيرات قيد التحضير؛ الحجوزات غير متاحة حالياً.",
   "eco.travel.point1": "خدمات سفر وحجز طيران ضمن الخطة",
   "eco.travel.point2": "استشارات التأشيرات · قريباً",
-  "eco.ihospital.name": "NDH iHospital",
+  "eco.ihospital.name": "NDH Health",
   "eco.ihospital.tagline": "بنية تحتية للتطبيب عن بُعد وإدارة العيادات الرقمية.",
   "eco.ihospital.description":
     "قريباً. التطبيب عن بُعد وإدارة العيادات قيد التطوير؛ لا تقدم المنصة استشارات أو خدمات سريرية حالياً.",

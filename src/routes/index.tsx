@@ -17,7 +17,7 @@ import { LIVE_SUBSIDIARY_COUNT, COMING_SUBSIDIARY_COUNT, SUBSIDIARIES } from "@/
 
 const title = "Najeeb Digital Hub | The NDH Family of Businesses";
 const description =
-  "A family of Nigerian-born businesses spanning digital services, practical AI education, multi-vendor commerce and cooperative farming, with school technology, travel and healthcare in the pipeline.";
+  "A family of Nigerian-born businesses spanning digital services, AI-skills education, farm investment and online shopping, with Mall, Cloud, SchoolOS, Express, Pay, Travel, Health and Foundation on the way.";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -27,7 +27,12 @@ export const Route = createFileRoute("/")({
       { property: "og:title", content: title },
       { property: "og:description", content: description },
       { property: "og:type", content: "website" },
+      { property: "og:url", content: "https://ndh.com.ng/" },
+      { property: "og:image", content: "https://ndh-com.lovable.app/og-image.jpg" },
+      { property: "og:image:width", content: "1200" },
+      { property: "og:image:height", content: "630" },
       { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:image", content: "https://ndh-com.lovable.app/og-image.jpg" },
     ],
     links: [{ rel: "canonical", href: "https://ndh.com.ng/" }],
     scripts: [
