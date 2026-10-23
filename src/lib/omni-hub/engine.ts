@@ -700,7 +700,7 @@ const ROUTE_COPY: Record<BusinessIntent, RouteCopy> = {
   agricapital: {
     owner: "agricapital",
     headline: "Cooperative farming with transparent equity.",
-    body: `${BUSINESS_PROFILES.agricapital.description} NDH AgriCapital was formerly called Venture. Farming carries risk: returns are not guaranteed.`,
+    body: `${BUSINESS_PROFILES.agricapital.description} NDH FarmFund was formerly called Venture. Farming carries risk: returns are not guaranteed.`,
     chips: [
       "How is farm equity calculated?",
       "What do farm operators record?",
@@ -731,7 +731,7 @@ const ROUTE_COPY: Record<BusinessIntent, RouteCopy> = {
   },
   ihospital: {
     owner: "ihospital",
-    headline: "NDH iHospital — Coming Soon.",
+    headline: "NDH Health — Coming Soon.",
     body: BUSINESS_PROFILES.ihospital.description,
     chips: ["Ask about iHospital", "What does NDH do?"],
   },
@@ -797,10 +797,10 @@ function helpAnswer(): string {
   return [
     "Here is what I can route you to:",
     `◦ Learn: ${BUSINESS_BLURBS.academy} — NDH Academy.`,
-    `◦ Buy: ${BUSINESS_BLURBS.estore} — NDH eStore.`,
-    `◦ Coming Soon for schools: ${BUSINESS_BLURBS.schooldesk} — NDH SchoolDesk.`,
+    `◦ Buy: ${BUSINESS_BLURBS.estore} — NDH Market.`,
+    `◦ Coming Soon for schools: ${BUSINESS_BLURBS.schooldesk} — NDH SchoolOS.`,
     `◦ Build: ${BUSINESS_BLURBS.agency} — NDH Agency.`,
-    `◦ Cooperative farming: ${BUSINESS_BLURBS.agricapital} — NDH AgriCapital.`,
+    `◦ Cooperative farming: ${BUSINESS_BLURBS.agricapital} — NDH FarmFund.`,
     "Pick one, or describe your situation in your own words.",
   ].join("\n\n");
 }

@@ -50,7 +50,7 @@ export const BUSINESS_PROFILES = {
     point2: "Capstone deliverables and certificate verification at /verify",
   },
   agricapital: {
-    name: "NDH AgriCapital",
+    name: "NDH FarmFund",
     category: "Agriculture Investment & Cooperative Farming",
     tagline: "Transparent shared-ledger farming investments with automated harvest equity payouts.",
     description:
@@ -59,7 +59,7 @@ export const BUSINESS_PROFILES = {
     point2: "Operator expense logs and proportional harvest profit distribution",
   },
   estore: {
-    name: "NDH eStore",
+    name: "NDH Market",
     category: "Commerce & Retail Infrastructure",
     tagline: "Multi-vendor storefront engine powering local and cross-border commerce.",
     description:
@@ -68,27 +68,72 @@ export const BUSINESS_PROFILES = {
     point2: "Custom vendor storefronts and automated vendor payout ledgers",
   },
   schooldesk: {
-    name: "NDH SchoolDesk",
+    name: "NDH SchoolOS",
     category: "Education Technology · Coming Soon",
-    tagline: "EdTech operating system for school management, grading, and automated report cards.",
+    tagline: "Run a single or integrated (Conventional + Islamiyya) school: results, Tahfeez, fees and salaries.",
     description:
-      "Coming Soon. A planned school operating system for management, grading and automated report cards. It is not yet available for onboarding or live school operations.",
+      "Coming Soon. A school operating system for single and integrated Conventional + Islamiyya schools: students, results, report cards, Tahfeez records, fees and staff salaries. Not yet open for onboarding.",
     point1: "Planned school management and grading tools",
     point2: "Automated report cards · Coming Soon",
   },
   travel: {
     name: "NDH Travel",
     category: "Travel Services · Coming Soon",
-    tagline: "Travel concierge, flight booking, and visa advisory services.",
+    tagline: "Flights, hotels, Umrah packages and visa guidance.",
     description:
       "Coming Soon. Travel concierge, flight booking and visa advisory services are in the pipeline; bookings and service availability are not yet open.",
     point1: "Planned concierge and flight booking services",
     point2: "Visa advisory · Coming Soon",
   },
+  mall: {
+    name: "NDH Mall",
+    category: "Shopping Marketplace · Coming Soon",
+    tagline: "One trusted online mall for cars, fashion, phones, electronics and home goods.",
+    description:
+      "Coming Soon. A Jumia-style shopping mall where buyers see one trusted NDH storefront, while NDH promotes and sells verified partner products on commission. Orders are not open yet.",
+    point1: "Cars, fashion, phones, electronics and home goods",
+    point2: "Verified partner sellers · Coming Soon",
+  },
+  cloud: {
+    name: "NDH Cloud",
+    category: "AI, Software & Hosting · Coming Soon",
+    tagline: "Ready AI tools, business software and website hosting under one roof.",
+    description:
+      "Coming Soon. AI assistants, automation tools, ready business software such as invoicing and inventory, plus website hosting and domains for African businesses.",
+    point1: "AI assistants and business automation",
+    point2: "Business software and hosting · Coming Soon",
+  },
+  express: {
+    name: "NDH Express",
+    category: "Delivery & Logistics · Coming Soon",
+    tagline: "City dispatch and doorstep parcel delivery.",
+    description:
+      "Coming Soon. Bikes and vans for parcels, documents and farm produce, built to serve NDH Market, NDH Mall and NDH FarmFund first.",
+    point1: "Doorstep parcel and document delivery",
+    point2: "Farm produce haulage · Coming Soon",
+  },
+  pay: {
+    name: "NDH Pay",
+    category: "Payments & Escrow · Coming Soon",
+    tagline: "Safe checkout and escrow that holds money until delivery is confirmed.",
+    description:
+      "Coming Soon. Merchant checkout and buyer protection escrow for sellers, freelancers and customers across the NDH family.",
+    point1: "Merchant checkout and payment links",
+    point2: "Buyer protection escrow · Coming Soon",
+  },
+  foundation: {
+    name: "NDH Foundation",
+    category: "Community Impact · Coming Soon",
+    tagline: "Tech scholarships and support for young people and schools.",
+    description:
+      "Coming Soon. The giving arm of NDH: free digital-skills scholarships, school equipment drives and community outreach.",
+    point1: "Digital-skills scholarships for young people",
+    point2: "School and community outreach · Coming Soon",
+  },
   ihospital: {
-    name: "NDH iHospital",
+    name: "NDH Health",
     category: "Digital Healthcare · Coming Soon",
-    tagline: "Telemedicine and digital clinic management infrastructure.",
+    tagline: "Online doctor visits, health records and digital clinics.",
     description:
       "Coming Soon. Telemedicine and digital clinic management infrastructure are in development. The platform is not yet providing consultations or clinical services.",
     point1: "Planned telemedicine infrastructure",

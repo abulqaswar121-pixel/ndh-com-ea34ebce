@@ -9,7 +9,12 @@
 import {
   BookOpen,
   BriefcaseBusiness,
+  Cloud,
+  CreditCard,
+  HandHeart,
   HeartPulse,
+  Store,
+  Truck,
   Plane,
   School,
   ShoppingBag,
@@ -40,7 +45,18 @@ export const ECOSYSTEM_CATEGORIES: {
  * ------------------------------------------------------------------ */
 
 export type SubsidiaryId =
-  "agency" | "academy" | "agricapital" | "estore" | "schooldesk" | "travel" | "ihospital";
+    | "agency"
+  | "academy"
+  | "agricapital"
+  | "estore"
+  | "mall"
+  | "cloud"
+  | "schooldesk"
+  | "express"
+  | "pay"
+  | "travel"
+  | "ihospital"
+  | "foundation";
 
 /** `live` is launched and public, `preview` is a working pre-launch build. */
 export type LaunchState = "live" | "preview" | "coming";
@@ -108,12 +124,56 @@ export const SUBSIDIARIES: Subsidiary[] = [
     external: true,
   },
   {
+    id: "mall",
+    icon: Store,
+    accent: "rose",
+    state: "coming",
+    categories: ["commerce"],
+    domain: "mall.ndh.com.ng",
+    previewUrl: null,
+    href: "",
+    external: false,
+  },
+  {
+    id: "cloud",
+    icon: Cloud,
+    accent: "sky",
+    state: "coming",
+    categories: ["enterprise"],
+    domain: "cloud.ndh.com.ng",
+    previewUrl: null,
+    href: "",
+    external: false,
+  },
+  {
     id: "schooldesk",
     icon: School,
     accent: "cyan",
     state: "coming",
     categories: ["infrastructure"],
-    domain: "schooldesk.ndh.com.ng",
+    domain: "schoolos.ndh.com.ng",
+    previewUrl: null,
+    href: "",
+    external: false,
+  },
+  {
+    id: "express",
+    icon: Truck,
+    accent: "amber",
+    state: "coming",
+    categories: ["commerce"],
+    domain: "express.ndh.com.ng",
+    previewUrl: null,
+    href: "",
+    external: false,
+  },
+  {
+    id: "pay",
+    icon: CreditCard,
+    accent: "violet",
+    state: "coming",
+    categories: ["enterprise"],
+    domain: "pay.ndh.com.ng",
     previewUrl: null,
     href: "",
     external: false,
@@ -135,11 +195,22 @@ export const SUBSIDIARIES: Subsidiary[] = [
     accent: "rose",
     state: "coming",
     categories: ["infrastructure"],
-    domain: "ihospital.ndh.com.ng",
+    domain: "health.ndh.com.ng",
     previewUrl: null,
     href: "",
     external: false,
   },
+  {
+    id: "foundation",
+    icon: HandHeart,
+    accent: "emerald",
+    state: "coming",
+    categories: ["education"],
+    domain: "foundation.ndh.com.ng",
+    previewUrl: null,
+    href: "",
+    external: false,
+  }
 ];
 
 export function getSubsidiary(id: SubsidiaryId): Subsidiary {
