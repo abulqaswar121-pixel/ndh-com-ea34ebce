@@ -14,6 +14,7 @@ import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as AcademyRouteImport } from './routes/academy'
 import { Route as AgencyRouteImport } from './routes/agency'
+import { Route as ApproachRouteImport } from './routes/approach'
 import { Route as BlogRouteImport } from './routes/blog'
 import { Route as BrandExplorationsRouteImport } from './routes/brand-explorations'
 import { Route as ContactRouteImport } from './routes/contact'
@@ -30,6 +31,8 @@ import { Route as AgencyIndexRouteImport } from './routes/agency.index'
 import { Route as AgencySlugRouteImport } from './routes/agency.$slug'
 import { Route as BlogIndexRouteImport } from './routes/blog.index'
 import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
+import { Route as BusinessesIndexRouteImport } from './routes/businesses.index'
+import { Route as BusinessesIdRouteImport } from './routes/businesses.$id'
 import { Route as InviteTokenRouteImport } from './routes/invite.$token'
 import { Route as VerifyIndexRouteImport } from './routes/verify.index'
 import { Route as VerifyCodeRouteImport } from './routes/verify.$code'
@@ -112,6 +115,11 @@ const AgencyRoute = AgencyRouteImport.update({
   path: '/agency',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApproachRoute = ApproachRouteImport.update({
+  id: '/approach',
+  path: '/approach',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const BlogRoute = BlogRouteImport.update({
   id: '/blog',
   path: '/blog',
@@ -191,6 +199,16 @@ const BlogSlugRoute = BlogSlugRouteImport.update({
   id: '/$slug',
   path: '/$slug',
   getParentRoute: () => BlogRoute,
+} as any)
+const BusinessesIndexRoute = BusinessesIndexRouteImport.update({
+  id: '/businesses/',
+  path: '/businesses/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BusinessesIdRoute = BusinessesIdRouteImport.update({
+  id: '/businesses/$id',
+  path: '/businesses/$id',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const InviteTokenRoute = InviteTokenRouteImport.update({
   id: '/invite/$token',
@@ -530,6 +548,7 @@ export interface FileRoutesByFullPath {
   '/about': typeof AboutRoute
   '/academy': typeof AcademyRouteWithChildren
   '/agency': typeof AgencyRouteWithChildren
+  '/approach': typeof ApproachRoute
   '/blog': typeof BlogRouteWithChildren
   '/brand-explorations': typeof BrandExplorationsRoute
   '/contact': typeof ContactRoute
@@ -543,12 +562,14 @@ export interface FileRoutesByFullPath {
   '/academy/$slug': typeof AcademySlugRoute
   '/agency/$slug': typeof AgencySlugRoute
   '/blog/$slug': typeof BlogSlugRoute
+  '/businesses/$id': typeof BusinessesIdRoute
   '/invite/$token': typeof InviteTokenRoute
   '/verify/$code': typeof VerifyCodeRoute
   '/work/$slug': typeof WorkSlugRoute
   '/academy/': typeof AcademyIndexRoute
   '/agency/': typeof AgencyIndexRoute
   '/blog/': typeof BlogIndexRoute
+  '/businesses/': typeof BusinessesIndexRoute
   '/verify/': typeof VerifyIndexRoute
   '/work/': typeof WorkIndexRoute
   '/certificate/$id': typeof AuthenticatedCertificateIdRoute
@@ -607,6 +628,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/approach': typeof ApproachRoute
   '/brand-explorations': typeof BrandExplorationsRoute
   '/contact': typeof ContactRoute
   '/faq': typeof FaqRoute
@@ -618,12 +640,14 @@ export interface FileRoutesByTo {
   '/academy/$slug': typeof AcademySlugRoute
   '/agency/$slug': typeof AgencySlugRoute
   '/blog/$slug': typeof BlogSlugRoute
+  '/businesses/$id': typeof BusinessesIdRoute
   '/invite/$token': typeof InviteTokenRoute
   '/verify/$code': typeof VerifyCodeRoute
   '/work/$slug': typeof WorkSlugRoute
   '/academy': typeof AcademyIndexRoute
   '/agency': typeof AgencyIndexRoute
   '/blog': typeof BlogIndexRoute
+  '/businesses': typeof BusinessesIndexRoute
   '/verify': typeof VerifyIndexRoute
   '/work': typeof WorkIndexRoute
   '/certificate/$id': typeof AuthenticatedCertificateIdRoute
@@ -680,6 +704,7 @@ export interface FileRoutesById {
   '/about': typeof AboutRoute
   '/academy': typeof AcademyRouteWithChildren
   '/agency': typeof AgencyRouteWithChildren
+  '/approach': typeof ApproachRoute
   '/blog': typeof BlogRouteWithChildren
   '/brand-explorations': typeof BrandExplorationsRoute
   '/contact': typeof ContactRoute
@@ -693,12 +718,14 @@ export interface FileRoutesById {
   '/academy/$slug': typeof AcademySlugRoute
   '/agency/$slug': typeof AgencySlugRoute
   '/blog/$slug': typeof BlogSlugRoute
+  '/businesses/$id': typeof BusinessesIdRoute
   '/invite/$token': typeof InviteTokenRoute
   '/verify/$code': typeof VerifyCodeRoute
   '/work/$slug': typeof WorkSlugRoute
   '/academy/': typeof AcademyIndexRoute
   '/agency/': typeof AgencyIndexRoute
   '/blog/': typeof BlogIndexRoute
+  '/businesses/': typeof BusinessesIndexRoute
   '/verify/': typeof VerifyIndexRoute
   '/work/': typeof WorkIndexRoute
   '/_authenticated/certificate/$id': typeof AuthenticatedCertificateIdRoute
@@ -761,6 +788,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/academy'
     | '/agency'
+    | '/approach'
     | '/blog'
     | '/brand-explorations'
     | '/contact'
@@ -774,12 +802,14 @@ export interface FileRouteTypes {
     | '/academy/$slug'
     | '/agency/$slug'
     | '/blog/$slug'
+    | '/businesses/$id'
     | '/invite/$token'
     | '/verify/$code'
     | '/work/$slug'
     | '/academy/'
     | '/agency/'
     | '/blog/'
+    | '/businesses/'
     | '/verify/'
     | '/work/'
     | '/certificate/$id'
@@ -838,6 +868,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/about'
+    | '/approach'
     | '/brand-explorations'
     | '/contact'
     | '/faq'
@@ -849,12 +880,14 @@ export interface FileRouteTypes {
     | '/academy/$slug'
     | '/agency/$slug'
     | '/blog/$slug'
+    | '/businesses/$id'
     | '/invite/$token'
     | '/verify/$code'
     | '/work/$slug'
     | '/academy'
     | '/agency'
     | '/blog'
+    | '/businesses'
     | '/verify'
     | '/work'
     | '/certificate/$id'
@@ -910,6 +943,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/academy'
     | '/agency'
+    | '/approach'
     | '/blog'
     | '/brand-explorations'
     | '/contact'
@@ -923,12 +957,14 @@ export interface FileRouteTypes {
     | '/academy/$slug'
     | '/agency/$slug'
     | '/blog/$slug'
+    | '/businesses/$id'
     | '/invite/$token'
     | '/verify/$code'
     | '/work/$slug'
     | '/academy/'
     | '/agency/'
     | '/blog/'
+    | '/businesses/'
     | '/verify/'
     | '/work/'
     | '/_authenticated/certificate/$id'
@@ -991,6 +1027,7 @@ export interface RootRouteChildren {
   AboutRoute: typeof AboutRoute
   AcademyRoute: typeof AcademyRouteWithChildren
   AgencyRoute: typeof AgencyRouteWithChildren
+  ApproachRoute: typeof ApproachRoute
   BlogRoute: typeof BlogRouteWithChildren
   BrandExplorationsRoute: typeof BrandExplorationsRoute
   ContactRoute: typeof ContactRoute
@@ -1001,8 +1038,10 @@ export interface RootRouteChildren {
   TalentApplicationRoute: typeof TalentApplicationRoute
   TermsRoute: typeof TermsRoute
   WorkRoute: typeof WorkRouteWithChildren
+  BusinessesIdRoute: typeof BusinessesIdRoute
   InviteTokenRoute: typeof InviteTokenRoute
   VerifyCodeRoute: typeof VerifyCodeRoute
+  BusinessesIndexRoute: typeof BusinessesIndexRoute
   VerifyIndexRoute: typeof VerifyIndexRoute
   ApiPublicOmniHubRoute: typeof ApiPublicOmniHubRoute
   ApiPublicPaystackWebhookRoute: typeof ApiPublicPaystackWebhookRoute
@@ -1046,6 +1085,13 @@ declare module '@tanstack/react-router' {
       path: '/agency'
       fullPath: '/agency'
       preLoaderRoute: typeof AgencyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/approach': {
+      id: '/approach'
+      path: '/approach'
+      fullPath: '/approach'
+      preLoaderRoute: typeof ApproachRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/blog': {
@@ -1159,6 +1205,20 @@ declare module '@tanstack/react-router' {
       fullPath: '/blog/$slug'
       preLoaderRoute: typeof BlogSlugRouteImport
       parentRoute: typeof BlogRoute
+    }
+    '/businesses/': {
+      id: '/businesses/'
+      path: '/businesses'
+      fullPath: '/businesses/'
+      preLoaderRoute: typeof BusinessesIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/businesses/$id': {
+      id: '/businesses/$id'
+      path: '/businesses/$id'
+      fullPath: '/businesses/$id'
+      preLoaderRoute: typeof BusinessesIdRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/invite/$token': {
       id: '/invite/$token'
@@ -1807,6 +1867,7 @@ const rootRouteChildren: RootRouteChildren = {
   AboutRoute: AboutRoute,
   AcademyRoute: AcademyRouteWithChildren,
   AgencyRoute: AgencyRouteWithChildren,
+  ApproachRoute: ApproachRoute,
   BlogRoute: BlogRouteWithChildren,
   BrandExplorationsRoute: BrandExplorationsRoute,
   ContactRoute: ContactRoute,
@@ -1817,8 +1878,10 @@ const rootRouteChildren: RootRouteChildren = {
   TalentApplicationRoute: TalentApplicationRoute,
   TermsRoute: TermsRoute,
   WorkRoute: WorkRouteWithChildren,
+  BusinessesIdRoute: BusinessesIdRoute,
   InviteTokenRoute: InviteTokenRoute,
   VerifyCodeRoute: VerifyCodeRoute,
+  BusinessesIndexRoute: BusinessesIndexRoute,
   VerifyIndexRoute: VerifyIndexRoute,
   ApiPublicOmniHubRoute: ApiPublicOmniHubRoute,
   ApiPublicPaystackWebhookRoute: ApiPublicPaystackWebhookRoute,
