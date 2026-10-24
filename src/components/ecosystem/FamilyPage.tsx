@@ -1,51 +1,19 @@
 import type { ReactNode } from "react";
-import { Link } from "@tanstack/react-router";
 import { ArrowUpRight } from "lucide-react";
 import { NdhFamilySymbol } from "@/components/NdhFamilySymbol";
-import { FamilyMenu } from "./FamilyMenu";
+import { SiteHeader } from "./SiteHeader";
 import { FamilyFooter } from "./FamilyFooter";
 import { useI18n } from "@/lib/preferences";
 
 /** Public parent-brand pages, independent of subsidiary portals and auth redirects. */
 export function FamilyPage({ children }: { children: ReactNode }) {
   const { t } = useI18n();
-  const links = [
-    { label: t("nav.businesses"), href: "/#businesses" },
-    { label: t("nav.about"), href: "/about" },
-    { label: t("nav.blog"), href: "/blog" },
-    { label: t("nav.contact"), href: "/contact" },
-  ];
   return (
-    <div className="ecosystem-page gw-page family-page" id="top">
+    <div className="ecosystem-page gw-page family-page nx-page" id="top">
       <a className="gw-skip" href="#page-content">
         {t("nav.skip")}
       </a>
-      <header className="ecosystem-header gw-header">
-        <Link to="/" className="ecosystem-brand" aria-label="Najeeb Digital Hub home">
-          <NdhFamilySymbol />
-          <span>
-            <strong>NAJEEB</strong>
-            <small>DIGITAL HUB</small>
-          </span>
-        </Link>
-        <nav className="gw-nav" aria-label={t("nav.menu")}>
-          <FamilyMenu links={links} cta={{ label: t("nav.talkToUs"), href: "/contact" }} />
-          {links.slice(1, 3).map((link) => (
-            <Link
-              key={link.href}
-              to={link.href}
-              className="gw-nav-link"
-              activeProps={{ "aria-current": "page" }}
-            >
-              {link.label}
-            </Link>
-          ))}
-        </nav>
-        <Link className="ecosystem-header-link gw-header-cta" to="/contact">
-          {t("nav.talkToUs")}
-          <ArrowUpRight size={15} />
-        </Link>
-      </header>
+      <SiteHeader />
       <main id="page-content">{children}</main>
       <FamilyFooter />
     </div>

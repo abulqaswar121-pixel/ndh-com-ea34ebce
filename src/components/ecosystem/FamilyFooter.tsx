@@ -86,10 +86,10 @@ export function FamilyFooter() {
           <nav aria-label={copy.explore}>
             <h2>{copy.explore}</h2>
             <a href="/about">{t("nav.about")}</a>
-            <a href="/#businesses">{t("nav.businesses")}</a>
+            <a href="/businesses">{t("nav.businesses")}</a>
             <a href="/blog">{t("nav.blog")}</a>
             <a href="/contact">{t("nav.contact")}</a>
-            <a href="/#status">{t("nav.status")}</a>
+            <a href="/approach">{t("nav.status")}</a>
             <a href="/verify">{copy.verify}</a>
           </nav>
           <nav aria-label={copy.family}>
