@@ -7080,3 +7080,16 @@ a.ecosystem-card:hover { box-shadow: 0 20px 45px -22px color-mix(in oklab, var(-
 @media (max-width:960px){.nx-features{grid-template-columns:1fr 1fr}}
 @media (max-width:520px){.nx-features{grid-template-columns:1fr}}
 @media (prefers-reduced-motion:reduce){.nx-hero-bg,.nx-cover>img,.nx-ticker-track{animation:none}}
+/* NX overrides of older family-page rules */
+.nx-page :is(.nx-hero,.nx-cover,.nx-band) :is(h1,h2,h3){color:#fff;text-transform:none;letter-spacing:-.03em;max-width:none}
+.nx-page :is(.nx-hero,.nx-cover) h1{margin-bottom:0}
+.nx-page .nx-hero h1 span{color:transparent}
+.nx-page :is(.nx-hero-lead,.nx-cover-inner>p:not(.nx-kicker)){color:#d3defa}
+.nx-page .nx-kicker{color:#e6eeff}
+.nx-page .nx-header a.nx-nav-link,.nx-page .nx-header .nx-nav-btn{color:#dbe6ff}
+.nx-page .nx-header .nx-brand strong{color:#fff}
+.nx-page .nx-header a.nx-cta{color:#0a1a30}
+.nx-page .nx-btn-primary,.nx-page .nx-btn-glass{color:#fff}
+.nx-page :is(.nx-section) :is(h2,h3){text-transform:none;letter-spacing:-.02em}
+.nx-page .nx-card h3{color:#0a1a30}
+.nx-page .nx-detail-side p{color:#dbe6ff}
