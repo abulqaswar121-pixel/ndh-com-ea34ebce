@@ -67,7 +67,6 @@ function BusinessPage() {
           </Link>
           <p className="nx-kicker">
             <Icon size={14} aria-hidden="true" /> {p.category}
-            <span className={`nx-status${soon ? " is-soon" : ""}`}>{soon ? "Coming soon" : "Open now"}</span>
           </p>
           <h1>{p.name}</h1>
           <p>{p.tagline}</p>
