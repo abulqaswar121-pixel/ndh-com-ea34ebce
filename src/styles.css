@@ -7096,3 +7096,66 @@ a.ecosystem-card:hover { box-shadow: 0 20px 45px -22px color-mix(in oklab, var(-
 
 .nx-page .nx-header-wrap{background:rgb(10 26 48/.82)!important}.nx-page header.nx-header{background:transparent!important;border:0!important;box-shadow:none!important;position:static!important}
 .nx-page .nx-kicker .nx-status{color:#1a1200!important}
+
+/* ============================================================
+   Compact dark footer (parent site) — overrides older footer rules
+   ============================================================ */
+.family-footer {
+  background: var(--family-dark);
+  border-top: 1px solid color-mix(in oklab, var(--family-cyan) 25%, transparent);
+  padding: 36px 0 18px;
+  color: color-mix(in oklab, var(--family-white) 72%, transparent);
+}
+.family-footer a { color: color-mix(in oklab, var(--family-white) 72%, transparent); }
+.family-footer a:hover { color: var(--family-cyan); }
+.family-footer a:focus-visible { outline-color: var(--family-cyan); }
+.family-footer h2 {
+  color: var(--family-white) !important;
+  font-size: 11px; letter-spacing: .1em; text-transform: uppercase; margin: 0 0 12px;
+}
+.family-footer-top {
+  display: flex; align-items: center; gap: 24px;
+  padding-bottom: 24px; margin-bottom: 26px;
+  border-bottom: 1px solid color-mix(in oklab, var(--family-white) 12%, transparent);
+}
+.family-footer-top .ecosystem-brand { flex: none; color: var(--family-white); }
+.family-footer-top .ecosystem-brand strong { color: var(--family-white); }
+.family-footer-top .ecosystem-brand small { color: var(--family-cyan); }
+.family-footer-top > p {
+  flex: 1; margin: 0; font-size: 13px; line-height: 1.6; max-width: 52ch;
+  color: color-mix(in oklab, var(--family-white) 65%, transparent);
+}
+.family-footer .family-socials { display: flex; gap: 8px; margin-inline-start: auto; }
+.family-footer .family-socials a {
+  width: 34px; height: 34px; border-radius: 10px; display: grid; place-items: center;
+  border: 1px solid color-mix(in oklab, var(--family-white) 18%, transparent);
+  background: color-mix(in oklab, var(--family-white) 5%, transparent);
+}
+.family-footer .family-socials a:hover { background: color-mix(in oklab, var(--family-cyan) 16%, transparent); border-color: var(--family-cyan); }
+.family-footer-grid { display: grid; grid-template-columns: 1fr 1fr 1.4fr; gap: 28px; }
+.family-footer-grid nav { display: flex; flex-direction: column; align-items: start; gap: 4px; }
+.family-footer-grid nav h2 { margin-bottom: 10px; }
+.family-footer-grid nav a { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; line-height: 1.5; padding-block: 3px; }
+.family-footer-grid nav a.family-footer-more {
+  margin-top: 6px; font-size: 11px; font-weight: 600; letter-spacing: .02em;
+  padding: 3px 10px; border-radius: 999px; color: var(--family-cyan);
+  border: 1px solid color-mix(in oklab, var(--family-cyan) 40%, transparent);
+}
+.family-footer-contact address { display: grid; gap: 8px; font-style: normal; margin: 0; }
+.family-footer-contact address a { display: flex; gap: 9px; font-size: 13px; line-height: 1.5; overflow-wrap: anywhere; }
+.family-footer-contact svg { flex: none; margin-top: 3px; color: var(--family-cyan); }
+.family-footer-base {
+  border-top: 1px solid color-mix(in oklab, var(--family-white) 12%, transparent);
+  margin-top: 26px; padding-top: 16px; padding-bottom: 0;
+  display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px 18px;
+  font-size: 11px; color: color-mix(in oklab, var(--family-white) 55%, transparent);
+}
+.family-footer-base nav { display: flex; flex-wrap: wrap; gap: 16px; }
+@media (max-width: 760px) {
+  .family-footer { padding: 28px 0 16px; }
+  .family-footer-top { flex-wrap: wrap; gap: 14px; padding-bottom: 18px; margin-bottom: 20px; }
+  .family-footer-top > p { flex-basis: 100%; order: 3; font-size: 12.5px; }
+  .family-footer-grid { grid-template-columns: 1fr 1fr; gap: 22px 16px; }
+  .family-footer-contact { grid-column: 1 / -1; }
+  .family-footer-base { flex-direction: row; margin-top: 20px; padding-bottom: 72px; }
+}
