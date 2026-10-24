@@ -18,3 +18,4 @@ The root route is the parent-brand gateway and must remain independent from any 
 The approved Open Gateway asset is the parent homepage identity, and subsidiaries use that same asset with an integrated corner icon; this keeps the family recognisable as it grows.
 
 Use the Precision Gateway shared shell and tokens for public pages and signed-in portals; one visual system prevents subsidiaries and workflows from looking like unrelated products.
+- Each NDH business has its own reading page at /businesses/$id driven by business-profiles.ts + business-details.ts; the homepage stays short and links out instead of holding every section.
