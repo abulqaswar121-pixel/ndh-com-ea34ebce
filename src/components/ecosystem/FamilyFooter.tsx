@@ -57,39 +57,39 @@ const labels = {
 export function FamilyFooter() {
   const { t, locale } = usePreferences();
   const copy = labels[locale];
+  const coming = SUBSIDIARIES.filter((item) => item.state === "coming");
   return (
     <footer className="family-footer">
       <div className="family-footer-inner">
-        <div className="family-footer-grid">
-          <div className="family-footer-brand">
-            <a className="ecosystem-brand" href="/" aria-label="Najeeb Digital Hub home">
-              <NdhFamilySymbol />
-              <span>
-                <strong>NAJEEB</strong>
-                <small>DIGITAL HUB</small>
-              </span>
+        <div className="family-footer-top">
+          <a className="ecosystem-brand" href="/" aria-label="Najeeb Digital Hub home">
+            <NdhFamilySymbol />
+            <span>
+              <strong>NAJEEB</strong>
+              <small>DIGITAL HUB</small>
+            </span>
+          </a>
+          <p>{t("footer.tagline")}</p>
+          <div className="family-socials">
+            <a href={contact.whatsapp} aria-label="WhatsApp">
+              <MessageCircle size={16} />
             </a>
-            <p>{t("footer.tagline")}</p>
-            <p className="family-footer-origin">{copy.location}</p>
-            <div className="family-socials">
-              <a href={contact.whatsapp} aria-label="WhatsApp">
-                <MessageCircle size={18} />
-              </a>
-              <a href={contact.facebook} aria-label="Facebook">
-                <Facebook size={18} />
-              </a>
-              <a href={contact.instagram} aria-label="Instagram">
-                <Instagram size={18} />
-              </a>
-            </div>
+            <a href={contact.facebook} aria-label="Facebook">
+              <Facebook size={16} />
+            </a>
+            <a href={contact.instagram} aria-label="Instagram">
+              <Instagram size={16} />
+            </a>
           </div>
+        </div>
+        <div className="family-footer-grid">
           <nav aria-label={copy.explore}>
             <h2>{copy.explore}</h2>
             <a href="/about">{t("nav.about")}</a>
             <a href="/businesses">{t("nav.businesses")}</a>
+            <a href="/approach">{t("nav.status")}</a>
             <a href="/blog">{t("nav.blog")}</a>
             <a href="/contact">{t("nav.contact")}</a>
-            <a href="/approach">{t("nav.status")}</a>
             <a href="/verify">{copy.verify}</a>
           </nav>
           <nav aria-label={copy.family}>
@@ -97,46 +97,41 @@ export function FamilyFooter() {
             {SUBSIDIARIES.filter((item) => item.state !== "coming").map((item) => (
               <a key={item.id} href={subsidiaryHref(item)}>
                 {t(`eco.${item.id}.name` as never)}
-                <ArrowUpRight size={13} aria-hidden="true" />
+                <ArrowUpRight size={12} aria-hidden="true" />
               </a>
             ))}
-            <span className="family-footer-note">
-              {copy.soon}:{" "}
-              {SUBSIDIARIES.filter((item) => item.state === "coming")
-                .map((item) => t(`eco.${item.id}.name` as never))
-                .join(" · ")}
-            </span>
+            {coming.length > 0 && (
+              <a className="family-footer-more" href="/businesses">
+                +{coming.length} {copy.soon.toLowerCase()}
+              </a>
+            )}
           </nav>
           <div className="family-footer-contact">
             <h2>{copy.reach}</h2>
             <address>
               <a href={contact.map} target="_blank" rel="noopener noreferrer">
-                <MapPin size={16} />
+                <MapPin size={14} />
                 <span>{contact.address}</span>
               </a>
               <a href={`tel:${contact.telephone}`}>
-                <Phone size={16} />
+                <Phone size={14} />
                 <span dir="ltr">{contact.phone}</span>
               </a>
-              <a href={`mailto:${contact.email}`}>
-                <Mail size={16} />
-                <span>
-                  <small>{copy.general}</small>
-                  {contact.email}
-                </span>
+              <a href={`mailto:${contact.email}`} title={copy.general}>
+                <Mail size={14} />
+                <span>{contact.email}</span>
               </a>
-              <a href={`mailto:${contact.support}`}>
-                <Mail size={16} />
-                <span>
-                  <small>{copy.support}</small>
-                  {contact.support}
-                </span>
+              <a href={`mailto:${contact.support}`} title={copy.support}>
+                <Mail size={14} />
+                <span>{contact.support}</span>
               </a>
             </address>
           </div>
         </div>
         <div className="family-footer-base">
-          <span>{t("footer.rights", { year: new Date().getFullYear() })}</span>
+          <span>
+            {t("footer.rights", { year: new Date().getFullYear() })} {copy.location}
+          </span>
           <nav
             aria-label={
               locale === "ar"
