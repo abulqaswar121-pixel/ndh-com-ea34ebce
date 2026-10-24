@@ -7159,3 +7159,4 @@ a.ecosystem-card:hover { box-shadow: 0 20px 45px -22px color-mix(in oklab, var(-
   .family-footer-contact { grid-column: 1 / -1; }
   .family-footer-base { flex-direction: row; margin-top: 20px; padding-bottom: 72px; }
 }
+@media (min-width: 761px) { .family-footer-base { padding-inline-end: 84px; } }
