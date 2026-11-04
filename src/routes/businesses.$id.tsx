@@ -1,10 +1,11 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
-import { ArrowLeft, ArrowUpRight, Bell, Check } from "lucide-react";
+import { ArrowLeft, ArrowUpRight, ArrowRight, Bell, Check, Layers, Rocket } from "lucide-react";
 import { FamilyPage } from "@/components/ecosystem/FamilyPage";
 import { BusinessCard } from "@/components/ecosystem/BusinessCard";
-import { SUBSIDIARIES, subsidiaryHref } from "@/lib/ecosystem";
+import { SUBSIDIARIES, STATE_LABEL, STATE_ACTION } from "@/lib/ecosystem";
 import { BUSINESS_PROFILES } from "@/lib/business-profiles";
 import { BUSINESS_DETAILS } from "@/lib/business-details";
+import { BRAND } from "@/lib/brand";
 
 export const Route = createFileRoute("/businesses/$id")({
   loader: ({ params }) => {
@@ -13,25 +14,33 @@ export const Route = createFileRoute("/businesses/$id")({
     return { id: s.id };
   },
   head: ({ loaderData }) => {
-    if (!loaderData) return { meta: [{ title: "Business | Najeeb Digital Hub" }, { name: "robots", content: "noindex" }] };
+    if (!loaderData)
+      return {
+        meta: [{ title: "Business | NDH" }, { name: "robots", content: "noindex" }],
+      };
     const p = BUSINESS_PROFILES[loaderData.id];
-    const t = `${p.name} | Najeeb Digital Hub`;
+    const t = `${p.name} | NAJEEB DIGITAL HUB`;
+    const url = `${BRAND.url}/businesses/${loaderData.id}`;
     return {
       meta: [
         { title: t },
-        { name: "description", content: p.tagline },
+        { name: "description", content: p.role },
         { property: "og:title", content: t },
-        { property: "og:description", content: p.tagline },
+        { property: "og:description", content: p.role },
         { property: "og:type", content: "website" },
+        { property: "og:url", content: url },
         { name: "twitter:card", content: "summary_large_image" },
       ],
+      links: [{ rel: "canonical", href: url }],
     };
   },
   notFoundComponent: () => (
     <FamilyPage>
       <div className="nx-wrap nx-section">
         <h1>Business not found</h1>
-        <Link to="/businesses" className="nx-link">See all businesses</Link>
+        <Link to="/businesses" className="ndh-head-link">
+          See all businesses <ArrowRight size={15} />
+        </Link>
       </div>
     </FamilyPage>
   ),
@@ -39,7 +48,9 @@ export const Route = createFileRoute("/businesses/$id")({
     <FamilyPage>
       <div className="nx-wrap nx-section">
         <h1>Something went wrong</h1>
-        <Link to="/businesses" className="nx-link">See all businesses</Link>
+        <Link to="/businesses" className="ndh-head-link">
+          See all businesses <ArrowRight size={15} />
+        </Link>
       </div>
     </FamilyPage>
   ),
@@ -51,14 +62,12 @@ function BusinessPage() {
   const s = SUBSIDIARIES.find((x) => x.id === id)!;
   const p = BUSINESS_PROFILES[id];
   const d = BUSINESS_DETAILS[id];
-  const Icon = s.icon;
-  const soon = s.state === "coming";
-  const href = subsidiaryHref(s);
+  const live = s.state === "live";
   const others = SUBSIDIARIES.filter((x) => x.id !== id).slice(0, 3);
 
   return (
     <FamilyPage>
-      <section className="nx-cover nx-cover-tall">
+      <section className="nx-cover nx-cover-tall ndh-cover">
         <img src={d.cover} alt="" width={1280} height={720} />
         <div className="nx-cover-shade" aria-hidden="true" />
         <div className="nx-wrap nx-cover-inner">
@@ -66,50 +75,81 @@ function BusinessPage() {
             <ArrowLeft size={15} /> All businesses
           </Link>
           <p className="nx-kicker">
-            <Icon size={14} aria-hidden="true" /> {p.category}
+            {live ? (
+              <Rocket size={14} aria-hidden="true" />
+            ) : (
+              <Layers size={14} aria-hidden="true" />
+            )}
+            {STATE_LABEL[s.state]} · {p.category}
           </p>
           <h1>{p.name}</h1>
-          <p>{p.tagline}</p>
+          <p>{p.role}</p>
           <div className="nx-hero-actions">
-            {soon ? (
+            {live ? (
+              <a
+                href={s.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="nx-btn nx-btn-primary"
+              >
+                {STATE_ACTION[s.state]} <ArrowUpRight size={16} />
+              </a>
+            ) : (
               <Link to="/contact" className="nx-btn nx-btn-primary">
                 <Bell size={16} /> Tell me when it opens
               </Link>
-            ) : (
-              <a href={href} rel="noreferrer" className="nx-btn nx-btn-primary">
-                Visit {p.name} <ArrowUpRight size={16} />
-              </a>
             )}
-            <Link to="/contact" className="nx-btn nx-btn-glass">Ask a question</Link>
+            <Link to="/contact" className="nx-btn nx-btn-glass">
+              Ask a question
+            </Link>
           </div>
         </div>
       </section>
 
-      <section className="nx-section nx-white">
+      <section className="nx-section ndh-white">
         <div className="nx-wrap nx-detail">
           <div className="nx-detail-main">
             <p className="nx-eyebrow">About</p>
             <h2>What {p.name} does</h2>
             <p className="nx-detail-text">{p.description}</p>
             <ul className="nx-points">
-              <li><Check size={15} /> {p.point1}</li>
-              <li><Check size={15} /> {p.point2}</li>
+              <li>
+                <Check size={15} /> {p.point1}
+              </li>
+              <li>
+                <Check size={15} /> {p.point2}
+              </li>
             </ul>
           </div>
           <aside className="nx-detail-side">
-            <p className="nx-eyebrow">Who it's for</p>
+            <p className="nx-eyebrow">Status</p>
+            <p>{STATE_LABEL[s.state]}</p>
+            <p className="nx-eyebrow">Who it&apos;s for</p>
             <p>{d.audience}</p>
             <p className="nx-eyebrow">Address</p>
             <p className="nx-mono">{s.domain}</p>
-            {soon ? <p className="nx-note">This business is being planned. Details may change before launch.</p> : null}
+            {live ? (
+              <a
+                href={s.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="ndh-btn ndh-btn-launch ndh-detail-launch"
+              >
+                {STATE_ACTION[s.state]} <ArrowUpRight size={15} />
+              </a>
+            ) : (
+              <p className="nx-note">
+                In development. Scope may still change before the platform opens.
+              </p>
+            )}
           </aside>
         </div>
       </section>
 
-      <section className="nx-section nx-porcelain">
+      <section className="nx-section ndh-porcelain">
         <div className="nx-wrap">
-          <p className="nx-eyebrow">What's inside</p>
-          <h2 className="nx-h2">{soon ? "What we are planning" : "Key features"}</h2>
+          <p className="nx-eyebrow">What&apos;s inside</p>
+          <h2 className="nx-h2">{live ? "Key features" : "What we are building"}</h2>
           <div className="nx-features">
             {d.features.map((f, i) => (
               <div className="nx-feature" key={f.title}>
@@ -122,11 +162,13 @@ function BusinessPage() {
         </div>
       </section>
 
-      <section className="nx-section nx-white">
+      <section className="nx-section ndh-white">
         <div className="nx-wrap">
           <h2 className="nx-h2">More from NDH</h2>
-          <div className="nx-grid nx-grid-3">
-            {others.map((o) => <BusinessCard key={o.id} s={o} />)}
+          <div className="ndh-grid">
+            {others.map((o) => (
+              <BusinessCard key={o.id} s={o} compact />
+            ))}
           </div>
         </div>
       </section>

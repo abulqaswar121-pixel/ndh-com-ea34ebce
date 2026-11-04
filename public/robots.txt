@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 Disallow: /portal/
-Sitemap: https://ndh.com.ng/sitemap.xml
+Sitemap: https://ndhnet.com/sitemap.xml

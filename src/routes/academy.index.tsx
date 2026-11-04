@@ -21,11 +21,11 @@ export const Route = createFileRoute("/academy/")({
       { property: "og:title", content: title },
       { property: "og:description", content: description },
       { property: "og:type", content: "website" },
-      { property: "og:image", content: "https://ndh.com.ng/og-image.png" },
+      { property: "og:image", content: "https://ndhnet.com/og-image.png" },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:image", content: "https://ndh.com.ng/og-image.png" },
+      { name: "twitter:image", content: "https://ndhnet.com/og-image.png" },
     ],
-    links: [{ rel: "canonical", href: "https://ndh.com.ng/academy" }],
+    links: [{ rel: "canonical", href: "https://ndhnet.com/academy" }],
   }),
   loader: async () => {
     const [courses, voices] = await Promise.all([listCourses(), listStudentVoices()]);
@@ -96,7 +96,7 @@ function Academy() {
             availability.
           </p>
           <div className="official-profile-links">
-            <a href="https://academy.ndh.com.ng">Open the official Academy ↗</a>
+            <a href="https://ndhacademy.lovable.app">Open the official Academy ↗</a>
             <Link to="/verify">Verify a certificate ↗</Link>
           </div>
         </section>

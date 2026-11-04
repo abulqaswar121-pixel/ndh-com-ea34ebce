@@ -16,7 +16,7 @@ export const Route = createFileRoute("/blog/")({
       { property: "og:title", content: title },
       { property: "og:description", content: description },
     ],
-    links: [{ rel: "canonical", href: "https://ndh.com.ng/blog" }],
+    links: [{ rel: "canonical", href: "https://ndhnet.com/blog" }],
   }),
   loader: async () => {
     const posts = await listPosts().catch(() => []);

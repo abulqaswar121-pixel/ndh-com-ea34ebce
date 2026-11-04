@@ -3,9 +3,9 @@ import { render } from '@react-email/render'
 import { NoticeEmail, type NoticeEmailProps } from '@/lib/email-templates/notice'
 
 const SITE_NAME = 'Najeeb Digital Hub'
-const ROOT_DOMAIN = 'ndh.com.ng'
-const SENDER_DOMAIN = 'notify.ndh.com.ng'
-const FROM_DOMAIN = 'ndh.com.ng'
+const ROOT_DOMAIN = 'ndhnet.com'
+const SENDER_DOMAIN = 'notify.ndhnet.com'
+const FROM_DOMAIN = 'ndhnet.com'
 
 export const SITE_URL = `https://${ROOT_DOMAIN}`
 

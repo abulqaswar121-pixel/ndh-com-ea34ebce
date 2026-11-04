@@ -1,10 +1,16 @@
 /**
  * Single source of truth for the NDH family of businesses.
  *
- * The parent gateway (src/routes/index.tsx), the universal app-switcher and the
- * Omni-Hub AI consultant all read from this module so a new subsidiary only has
- * to be described once. Everything here is plain data with no browser APIs, so
- * it is safe to import at module scope on the Cloudflare Workers edge runtime.
+ * The parent gateway (src/routes/index.tsx), the business directory, the
+ * newsroom, the AI Content Studio and the Omni-Hub consultant all read from
+ * this module, so a new subsidiary only has to be described once.
+ *
+ * Everything here is plain data with no browser APIs, so it is safe to import
+ * at module scope on the Cloudflare Workers edge runtime.
+ *
+ * Status vocabulary (owner-confirmed):
+ *   live    → "Active Product"      — launched and open today
+ *   coming  → "In Development"      — being built, no onboarding yet
  */
 import {
   BookOpen,
@@ -13,31 +19,32 @@ import {
   CreditCard,
   HandHeart,
   HeartPulse,
-  Store,
-  Truck,
   Plane,
   School,
   ShoppingBag,
   Sprout,
+  Store,
+  Truck,
   type LucideIcon,
 } from "lucide-react";
 
 /* ------------------------------------------------------------------ *
- * Categories — drive the interactive gateway filter
+ * Categories — drive the interactive directory filter
  * ------------------------------------------------------------------ */
 
 export type CategoryId = "enterprise" | "education" | "agriculture" | "commerce" | "infrastructure";
 
 export const ECOSYSTEM_CATEGORIES: {
   id: CategoryId;
+  label: string;
   icon: LucideIcon;
   tone: "sky" | "iris" | "violet" | "cyan";
 }[] = [
-  { id: "enterprise", icon: BriefcaseBusiness, tone: "sky" },
-  { id: "education", icon: BookOpen, tone: "iris" },
-  { id: "agriculture", icon: Sprout, tone: "violet" },
-  { id: "commerce", icon: ShoppingBag, tone: "sky" },
-  { id: "infrastructure", icon: School, tone: "cyan" },
+  { id: "enterprise", label: "Enterprise & technology", icon: BriefcaseBusiness, tone: "sky" },
+  { id: "education", label: "Education & talent", icon: BookOpen, tone: "iris" },
+  { id: "agriculture", label: "Agriculture & investment", icon: Sprout, tone: "violet" },
+  { id: "commerce", label: "Commerce & retail", icon: ShoppingBag, tone: "sky" },
+  { id: "infrastructure", label: "Infrastructure & services", icon: School, tone: "cyan" },
 ];
 
 /* ------------------------------------------------------------------ *
@@ -45,40 +52,57 @@ export const ECOSYSTEM_CATEGORIES: {
  * ------------------------------------------------------------------ */
 
 export type SubsidiaryId =
-    | "agency"
   | "academy"
-  | "agricapital"
-  | "estore"
+  | "agency"
+  | "shopos"
+  | "schoolos"
+  | "farmfund"
   | "mall"
   | "cloud"
-  | "schooldesk"
   | "express"
   | "pay"
   | "travel"
-  | "ihospital"
+  | "health"
   | "foundation";
 
-/** `live` is launched and public, `preview` is a working pre-launch build. */
-export type LaunchState = "live" | "preview" | "coming";
+/** `live` is launched and public; `coming` is still being built. */
+export type LaunchState = "live" | "coming";
 
 export type Subsidiary = {
   id: SubsidiaryId;
-  /** Sector icon integrated into the bottom-right corner of the Open Gateway tile. */
+  /** Sector icon integrated into the corner of the Open Gateway tile. */
   icon: LucideIcon;
   accent: "sky" | "iris" | "violet" | "cyan" | "amber" | "rose" | "emerald";
   state: LaunchState;
   categories: CategoryId[];
-  /** Canonical production subdomain. */
+  /** Canonical address shown on the business profile page. */
   domain: string;
-  /** Working pre-launch build, when one exists. */
-  previewUrl: string | null;
-  /** Where a click should land today. */
+  /** Live destination. Empty while a business is still in development. */
   href: string;
-  /** True when `href` leaves ndh.com.ng. */
+  /** True when `href` leaves ndhnet.com. */
   external: boolean;
 };
 
+/** Owner-confirmed launch destinations. Do not rewrite these. */
+const LIVE_URLS = {
+  academy: "https://ndhacademy.lovable.app",
+  agency: "https://agency.ndh.com.ng",
+  shopos: "https://ndhshopos.lovable.app",
+  schoolos: "https://ndhschoolos.lovable.app",
+  farmfund: "https://ndhfarmfund.lovable.app",
+} as const;
+
 export const SUBSIDIARIES: Subsidiary[] = [
+  {
+    id: "academy",
+    icon: BookOpen,
+    accent: "iris",
+    state: "live",
+    categories: ["education"],
+    domain: "ndhacademy.lovable.app",
+    href: LIVE_URLS.academy,
+    external: true,
+  },
   {
     id: "agency",
     icon: BriefcaseBusiness,
@@ -86,41 +110,37 @@ export const SUBSIDIARIES: Subsidiary[] = [
     state: "live",
     categories: ["enterprise"],
     domain: "agency.ndh.com.ng",
-    previewUrl: "https://ndhagency.lovable.app",
-    href: "https://agency.ndh.com.ng",
+    href: LIVE_URLS.agency,
     external: true,
   },
   {
-    id: "academy",
-    icon: BookOpen,
-    accent: "iris",
-    state: "live",
-    categories: ["education"],
-    domain: "academy.ndh.com.ng",
-    previewUrl: "https://ndhacademy.lovable.app",
-    href: "https://academy.ndh.com.ng",
-    external: true,
-  },
-  {
-    id: "agricapital",
-    icon: Sprout,
-    accent: "emerald",
-    state: "live",
-    categories: ["agriculture"],
-    domain: "venture.ndh.com.ng",
-    previewUrl: "https://ndhventure.lovable.app",
-    href: "https://ndhventure.lovable.app",
-    external: true,
-  },
-  {
-    id: "estore",
+    id: "shopos",
     icon: ShoppingBag,
     accent: "amber",
     state: "live",
     categories: ["commerce"],
-    domain: "estore.ndh.com.ng",
-    previewUrl: "https://ndhestore.lovable.app",
-    href: "https://estore.ndh.com.ng",
+    domain: "ndhshopos.lovable.app",
+    href: LIVE_URLS.shopos,
+    external: true,
+  },
+  {
+    id: "schoolos",
+    icon: School,
+    accent: "cyan",
+    state: "live",
+    categories: ["education", "infrastructure"],
+    domain: "ndhschoolos.lovable.app",
+    href: LIVE_URLS.schoolos,
+    external: true,
+  },
+  {
+    id: "farmfund",
+    icon: Sprout,
+    accent: "emerald",
+    state: "live",
+    categories: ["agriculture"],
+    domain: "ndhfarmfund.lovable.app",
+    href: LIVE_URLS.farmfund,
     external: true,
   },
   {
@@ -129,8 +149,7 @@ export const SUBSIDIARIES: Subsidiary[] = [
     accent: "rose",
     state: "coming",
     categories: ["commerce"],
-    domain: "mall.ndh.com.ng",
-    previewUrl: null,
+    domain: "mall.ndhnet.com",
     href: "",
     external: false,
   },
@@ -140,19 +159,7 @@ export const SUBSIDIARIES: Subsidiary[] = [
     accent: "sky",
     state: "coming",
     categories: ["enterprise"],
-    domain: "cloud.ndh.com.ng",
-    previewUrl: null,
-    href: "",
-    external: false,
-  },
-  {
-    id: "schooldesk",
-    icon: School,
-    accent: "cyan",
-    state: "coming",
-    categories: ["infrastructure"],
-    domain: "schoolos.ndh.com.ng",
-    previewUrl: null,
+    domain: "cloud.ndhnet.com",
     href: "",
     external: false,
   },
@@ -161,9 +168,8 @@ export const SUBSIDIARIES: Subsidiary[] = [
     icon: Truck,
     accent: "amber",
     state: "coming",
-    categories: ["commerce"],
-    domain: "express.ndh.com.ng",
-    previewUrl: null,
+    categories: ["commerce", "infrastructure"],
+    domain: "express.ndhnet.com",
     href: "",
     external: false,
   },
@@ -173,30 +179,27 @@ export const SUBSIDIARIES: Subsidiary[] = [
     accent: "violet",
     state: "coming",
     categories: ["enterprise"],
-    domain: "pay.ndh.com.ng",
-    previewUrl: null,
+    domain: "pay.ndhnet.com",
     href: "",
     external: false,
   },
   {
     id: "travel",
     icon: Plane,
-    accent: "emerald",
+    accent: "cyan",
     state: "coming",
     categories: ["infrastructure"],
-    domain: "travel.ndh.com.ng",
-    previewUrl: null,
+    domain: "travel.ndhnet.com",
     href: "",
     external: false,
   },
   {
-    id: "ihospital",
+    id: "health",
     icon: HeartPulse,
     accent: "rose",
     state: "coming",
     categories: ["infrastructure"],
-    domain: "health.ndh.com.ng",
-    previewUrl: null,
+    domain: "health.ndhnet.com",
     href: "",
     external: false,
   },
@@ -206,11 +209,10 @@ export const SUBSIDIARIES: Subsidiary[] = [
     accent: "emerald",
     state: "coming",
     categories: ["education"],
-    domain: "foundation.ndh.com.ng",
-    previewUrl: null,
+    domain: "foundation.ndhnet.com",
     href: "",
     external: false,
-  }
+  },
 ];
 
 export function getSubsidiary(id: SubsidiaryId): Subsidiary {
@@ -224,17 +226,26 @@ export function filterSubsidiaries(category: CategoryId | "all"): Subsidiary[] {
   return SUBSIDIARIES.filter((item) => item.categories.includes(category));
 }
 
-export const LIVE_SUBSIDIARY_COUNT = SUBSIDIARIES.filter((s) => s.state === "live").length;
+export const LIVE_SUBSIDIARIES = SUBSIDIARIES.filter((s) => s.state === "live");
+export const COMING_SUBSIDIARIES = SUBSIDIARIES.filter((s) => s.state === "coming");
 
-/** A destination is only actionable when the business is available.
- * AgriCapital retains the previously supplied deployment link until the owner
- * confirms its renamed domain. Do not fabricate agricapital.ndh.com.ng.
- */
+export const LIVE_SUBSIDIARY_COUNT = LIVE_SUBSIDIARIES.length;
+export const COMING_SUBSIDIARY_COUNT = COMING_SUBSIDIARIES.length;
+
+export const STATE_LABEL: Record<LaunchState, string> = {
+  live: "Active Product",
+  coming: "In Development",
+};
+
+export const STATE_ACTION: Record<LaunchState, string> = {
+  live: "Launch Platform",
+  coming: "Read Overview",
+};
+
+/** A destination is only actionable when the business is live. */
 export function subsidiaryHref(subsidiary: Subsidiary): string {
   return subsidiary.state === "coming" ? "" : subsidiary.href;
 }
-
-export const COMING_SUBSIDIARY_COUNT = SUBSIDIARIES.filter((s) => s.state === "coming").length;
 
 export { ACADEMY_SNAPSHOT, ACADEMY_SCHOOLS } from "./business-profiles";
 import { ACADEMY_SNAPSHOT, AGENCY_SNAPSHOT } from "./business-profiles";

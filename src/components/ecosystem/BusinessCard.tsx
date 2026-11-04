@@ -1,31 +1,63 @@
 import { Link } from "@tanstack/react-router";
-import { ArrowRight } from "lucide-react";
-import type { Subsidiary } from "@/lib/ecosystem";
+import { ArrowRight, ArrowUpRight } from "lucide-react";
+import { NdhFamilySymbol } from "@/components/NdhFamilySymbol";
+import { STATE_ACTION, STATE_LABEL, type Subsidiary } from "@/lib/ecosystem";
 import { BUSINESS_PROFILES } from "@/lib/business-profiles";
 import { BUSINESS_DETAILS } from "@/lib/business-details";
 
-/** One equal-size card for every business, live or coming. Always opens its reading page. */
-export function BusinessCard({ s }: { s: Subsidiary }) {
+/**
+ * One portfolio card. Every card shows the Open Gateway mark with the sector
+ * icon, real cover photography, a status badge and two clear actions:
+ * launch the live platform in a new tab, or read the overview on this site.
+ */
+export function BusinessCard({ s, compact = false }: { s: Subsidiary; compact?: boolean }) {
   const p = BUSINESS_PROFILES[s.id];
+  const d = BUSINESS_DETAILS[s.id];
   const Icon = s.icon;
-  const soon = s.state === "coming";
+  const live = s.state === "live";
+
   return (
-    <Link to="/businesses/$id" params={{ id: s.id }} className={`nx-card${soon ? " is-soon" : ""}`}>
-      <div className="nx-card-media">
-        <img src={BUSINESS_DETAILS[s.id].cover} alt="" loading="lazy" width={640} height={360} />
-        <span className={`nx-status${soon ? " is-soon" : ""}`}>{soon ? "Coming soon" : "Open now"}</span>
-        <span className={`nx-card-icon tone-${s.accent}`} aria-hidden="true">
-          <Icon size={18} />
+    <article className={`ndh-card${live ? " is-live" : " is-dev"}${compact ? " is-compact" : ""}`}>
+      <div className="ndh-card-media">
+        <img src={d.cover} alt={`${p.name} — ${p.role}`} loading="lazy" width={640} height={400} />
+        <span className={`ndh-badge${live ? " is-live" : " is-dev"}`}>
+          <span className="ndh-badge-dot" aria-hidden="true" />
+          {STATE_LABEL[s.state]}
+        </span>
+        <span className="ndh-card-marks">
+          <NdhFamilySymbol />
+          <span className={`ndh-card-sector tone-${s.accent}`}>
+            <Icon size={13} aria-hidden="true" />
+          </span>
         </span>
       </div>
-      <div className="nx-card-body">
-        <p className="nx-card-cat">{p.category}</p>
+
+      <div className="ndh-card-body">
+        <p className="ndh-card-cat">{p.category}</p>
         <h3>{p.name}</h3>
-        <p>{p.tagline}</p>
-        <span className="nx-card-more">
-          {soon ? "See what's coming" : "Explore"} <ArrowRight size={15} aria-hidden="true" />
-        </span>
+        <p className="ndh-card-role">{p.role}</p>
+        <div className="ndh-card-actions">
+          {live ? (
+            <a
+              href={s.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="ndh-btn ndh-btn-launch"
+            >
+              {STATE_ACTION[s.state]}
+              <ArrowUpRight size={15} aria-hidden="true" />
+            </a>
+          ) : null}
+          <Link
+            to="/businesses/$id"
+            params={{ id: s.id }}
+            className={`ndh-btn ${live ? "ndh-btn-quiet" : "ndh-btn-ghost"}`}
+          >
+            {live ? "Read Overview" : STATE_ACTION[s.state]}
+            <ArrowRight size={15} aria-hidden="true" />
+          </Link>
+        </div>
       </div>
-    </Link>
+    </article>
   );
 }

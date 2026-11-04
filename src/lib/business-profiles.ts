@@ -1,4 +1,4 @@
-/** Owner-verified business reference, supplied 5 October 2026.
+/** Owner-verified business reference for the NDH ecosystem.
  * Describes business scope, not a live monitoring feed or a complete course catalogue.
  */
 export const ACADEMY_SCHOOLS = [
@@ -29,114 +29,129 @@ export const ACADEMY_SCHOOLS = [
 export const ACADEMY_SNAPSHOT = { courses: 60, schools: ACADEMY_SCHOOLS.length } as const;
 export const AGENCY_SNAPSHOT = { departments: 10 } as const;
 
+/**
+ * `role` is the one-line description the owner uses for each business — it is
+ * printed on the directory card, the profile page and inside the Studio.
+ */
 export const BUSINESS_PROFILES = {
-  agency: {
-    name: "NDH Agency",
-    category: "Enterprise Digital Delivery",
-    tagline:
-      "Enterprise-grade engineering, design, and AI automation delivered through dedicated PM teams.",
-    description:
-      "A managed digital services bureau with 10 core departments, including Brand Strategy, UI/UX, Full-Stack Web/App Engineering, Custom AI Systems and Growth Marketing. Dedicated project managers enforce a confidential isolation layer: clients and talents never communicate directly.",
-    point1: "PM-led quality control and milestone verification",
-    point2: "Confidential client–talent separation and talent escrow payouts",
-  },
   academy: {
     name: "NDH Academy",
+    role: "Tech, digital skills & certified professional training.",
     category: "Education & Tech Talent",
-    tagline: "60 practical courses across 6 schools with verifiable certificates.",
+    tagline: "Practical AI and digital skills, taught properly and certified publicly.",
     description:
-      "60 practical AI-skills courses across AI Engineering, Design & Brand, Media & Video, Writing & Content, Marketing & Growth, and Business & Operations. Structured video lessons lead to capstone project deliverables and signed, cryptographically verifiable certificates.",
-    point1: "Structured video lessons and pre-project readiness quizzes",
-    point2: "Capstone deliverables and certificate verification at /verify",
+      "A practical learning platform for tech and digital skills. 60 courses across six schools — AI Engineering, Design & Brand, Media & Video, Writing & Content, Marketing & Growth, Business & Operations — take learners from foundations to a real capstone and a verifiable certificate employers can check.",
+    point1: "Structured lessons, readiness quizzes and real capstone projects",
+    point2: "Certificates anyone can verify before hiring",
   },
-  agricapital: {
-    name: "NDH FarmFund",
-    category: "Agriculture Investment & Cooperative Farming",
-    tagline: "Transparent shared-ledger farming investments with automated harvest equity payouts.",
+  agency: {
+    name: "NDH Agency",
+    role: "Managed digital services, web engineering, branding & project talent.",
+    category: "Enterprise Digital Delivery",
+    tagline: "A managed digital services bureau for serious work.",
     description:
-      "Contributors fund livestock and crop cycles via Paystack or direct transfer. Equity is calculated live from a shared contribution ledger. Farm operators log feeding, growth milestones and expenses; after harvest and sale, the admin closes the cycle and distributes profits in proportion to each contributor’s equity stake.",
-    point1: "Shared contribution ledger and live equity calculations",
-    point2: "Operator expense logs and proportional harvest profit distribution",
+      "Web engineering, brand systems, UI/UX, AI automation and growth marketing delivered by vetted specialists under a dedicated project manager. Scope, milestones and quality checks are agreed up front, so clients get finished work instead of a folder of loose files.",
+    point1: "One project manager owns your brief, timeline and quality",
+    point2: "Engineering, branding, automation and talent under one contract",
   },
-  estore: {
-    name: "NDH Market",
-    category: "Commerce & Retail Infrastructure",
-    tagline: "Multi-vendor storefront engine powering local and cross-border commerce.",
+  shopos: {
+    name: "NDH ShopOS",
+    role: "Cloud online store builder for small businesses.",
+    category: "Commerce · Cloud Storefronts",
+    tagline: "Launch a real online shop in minutes, on a low monthly or yearly plan.",
     description:
-      "A global storefront engine for digital and physical products. Merchants onboard automatically, manage products and inventory, and run custom storefronts at /store/:vendorSlug, with domestic and international shipping routes.",
-    point1: "Paystack and Flutterwave checkout",
-    point2: "Custom vendor storefronts and automated vendor payout ledgers",
+      "A cloud store builder for small businesses. Create a custom shop with product catalogue, checkout, payment collection and marketing tools on affordable monthly or yearly plans — no developer, no hosting bill, no code. Built for traders, boutiques, pharmacies, food vendors and service businesses moving online.",
+    point1: "Payments, orders and marketing tools in one dashboard",
+    point2: "Low monthly or yearly plans with no technical setup",
   },
-  schooldesk: {
+  schoolos: {
     name: "NDH SchoolOS",
-    category: "Education Technology · Coming Soon",
-    tagline: "Run a single or integrated (Conventional + Islamiyya) school: results, Tahfeez, fees and salaries.",
+    role: "Complete school management platform with integrated conventional + optional tahfeez.",
+    category: "Education Technology · School Management",
+    tagline: "One operating system for a whole school — conventional, tahfeez or both.",
     description:
-      "Coming Soon. A school operating system for single and integrated Conventional + Islamiyya schools: students, results, report cards, Tahfeez records, fees and staff salaries. Not yet open for onboarding.",
-    point1: "Planned school management and grading tools",
-    point2: "Automated report cards · Coming Soon",
+      "A complete school management platform for single and integrated schools: conventional academics plus optional tahfeez, students and classes, results and report cards, fee collection and invoicing, staff records and payroll. Schools name their own classes, sections and halqahs instead of bending the system to fit.",
+    point1: "Academics, tahfeez records, fees and payroll in one place",
+    point2: "Built for integrated conventional + tahfeez schools",
   },
-  travel: {
-    name: "NDH Travel",
-    category: "Travel Services · Coming Soon",
-    tagline: "Flights, hotels, Umrah packages and visa guidance.",
+  farmfund: {
+    name: "NDH FarmFund",
+    role: "Agricultural investment platform with verified farming cycles.",
+    category: "Agriculture · Investment",
+    tagline: "Fund verified farming cycles and share the harvest, transparently.",
     description:
-      "Coming Soon. Travel concierge, flight booking and visa advisory services are in the pipeline; bookings and service availability are not yet open.",
-    point1: "Planned concierge and flight booking services",
-    point2: "Visa advisory · Coming Soon",
+      "An agricultural investment platform. Investors fund verified farming cycles and share profits at harvest, while operators log feeding, growth and expenses in the open. Every contribution builds a shared ledger, and payouts are distributed in proportion to each investor's equity stake at cycle close.",
+    point1: "Verified cycles with operator tracking you can follow",
+    point2: "Transparent shared ledger and proportional harvest payouts",
   },
   mall: {
     name: "NDH Mall",
-    category: "Shopping Marketplace · Coming Soon",
-    tagline: "One trusted online mall for cars, fashion, phones, electronics and home goods.",
+    role: "Consumer shopping, vendor affiliate platform and direct product retail.",
+    category: "Shopping Marketplace",
+    tagline: "One trusted online mall for everyday shopping.",
     description:
-      "Coming Soon. A Jumia-style shopping mall where buyers see one trusted NDH storefront, while NDH promotes and sells verified partner products on commission. Orders are not open yet.",
-    point1: "Cars, fashion, phones, electronics and home goods",
-    point2: "Verified partner sellers · Coming Soon",
+      "In development. A consumer shopping platform combining a vendor affiliate programme with direct NDH product retail — one trusted storefront, verified sellers, NDH fulfilment and a single checkout across fashion, phones, electronics, home goods and more.",
+    point1: "Vendor affiliate programme plus direct NDH retail",
+    point2: "One trusted checkout and delivery promise",
   },
   cloud: {
     name: "NDH Cloud",
-    category: "AI, Software & Hosting · Coming Soon",
-    tagline: "Ready AI tools, business software and website hosting under one roof.",
+    role: "Software, AI services, API hosting and business automation tools.",
+    category: "AI, Software & Hosting",
+    tagline: "The software, AI and hosting layer for African businesses.",
     description:
-      "Coming Soon. AI assistants, automation tools, ready business software such as invoicing and inventory, plus website hosting and domains for African businesses.",
-    point1: "AI assistants and business automation",
-    point2: "Business software and hosting · Coming Soon",
+      "In development. Ready-made software, managed AI services, API hosting and business automation — the infrastructure layer every other NDH business, and any African business, can build on.",
+    point1: "AI services and API hosting with managed setup",
+    point2: "Business automation tools for sales, finance and support",
   },
   express: {
     name: "NDH Express",
-    category: "Delivery & Logistics · Coming Soon",
-    tagline: "City dispatch and doorstep parcel delivery.",
+    role: "Logistics, local parcel dispatch and delivery network.",
+    category: "Logistics",
+    tagline: "Same-city dispatch that keeps a promise.",
     description:
-      "Coming Soon. Bikes and vans for parcels, documents and farm produce, built to serve NDH Market, NDH Mall and NDH FarmFund first.",
-    point1: "Doorstep parcel and document delivery",
-    point2: "Farm produce haulage · Coming Soon",
+      "In development. A local parcel dispatch and delivery network for documents, online orders and farm produce — built to serve NDH Mall, NDH ShopOS merchants and NDH FarmFund first, then opened to every business in the city.",
+    point1: "Same-city dispatch with tracking from pickup to doorstep",
+    point2: "Built to plug into Mall, ShopOS and FarmFund orders",
   },
   pay: {
     name: "NDH Pay",
-    category: "Payments & Escrow · Coming Soon",
-    tagline: "Safe checkout and escrow that holds money until delivery is confirmed.",
+    role: "Modern payment processing, billing and merchant payouts.",
+    category: "Payments & Billing",
+    tagline: "Payments, billing and payouts that settle cleanly.",
     description:
-      "Coming Soon. Merchant checkout and buyer protection escrow for sellers, freelancers and customers across the NDH family.",
-    point1: "Merchant checkout and payment links",
-    point2: "Buyer protection escrow · Coming Soon",
+      "In development. Modern payment processing for the family: card and transfer checkout, subscription billing, invoicing and merchant payouts, with buyer-protection escrow for marketplaces and service work.",
+    point1: "Checkout, subscriptions and invoices in one account",
+    point2: "Merchant payouts and buyer-protection escrow",
+  },
+  travel: {
+    name: "NDH Travel",
+    role: "Travel booking, flight reservations and holiday packages.",
+    category: "Travel Services",
+    tagline: "Book flights, plan holidays, travel lightly.",
+    description:
+      "In development. Seamless travel booking: flight reservations, holiday packages, hotel stays and Hajj/Umrah guidance, handled by real travel consultants instead of an unhelpful search box.",
+    point1: "Flight reservations and curated holiday packages",
+    point2: "Consultant-supported bookings for families and groups",
+  },
+  health: {
+    name: "NDH Health",
+    role: "Telemedicine, clinic bookings and digital health records.",
+    category: "Digital Healthcare",
+    tagline: "Digital care that reaches the last mile.",
+    description:
+      "In development. Telemedicine consultations, clinic appointment booking and digital health records for clinics and hospitals — designed to reduce queues and keep patient history with the clinician who needs it.",
+    point1: "Telemedicine consultations and clinic bookings",
+    point2: "Secure digital health records for providers",
   },
   foundation: {
     name: "NDH Foundation",
-    category: "Community Impact · Coming Soon",
-    tagline: "Tech scholarships and support for young people and schools.",
+    role: "Non-profit initiatives, tech scholarships and community youth impact.",
+    category: "Community Impact",
+    tagline: "The giving arm: scholarships, skills and community impact.",
     description:
-      "Coming Soon. The giving arm of NDH: free digital-skills scholarships, school equipment drives and community outreach.",
-    point1: "Digital-skills scholarships for young people",
-    point2: "School and community outreach · Coming Soon",
-  },
-  ihospital: {
-    name: "NDH Health",
-    category: "Digital Healthcare · Coming Soon",
-    tagline: "Online doctor visits, health records and digital clinics.",
-    description:
-      "Coming Soon. Telemedicine and digital clinic management infrastructure are in development. The platform is not yet providing consultations or clinical services.",
-    point1: "Planned telemedicine infrastructure",
-    point2: "Digital clinic management · Coming Soon",
+      "In development. The non-profit arm of NDH: tech scholarships, free digital-skills training for young people, school equipment drives and community outreach, funded by partners and reported openly.",
+    point1: "Tech scholarships and free digital-skills training",
+    point2: "Open reporting on every funded programme",
   },
 } as const;
