@@ -68,7 +68,17 @@ function BusinessPage() {
   return (
     <FamilyPage>
       <section className="nx-cover nx-cover-tall ndh-cover">
-        <img src={d.cover} alt="" width={1280} height={720} />
+        <img
+          src={d.cover}
+          srcSet={`${d.coverSmall} 640w, ${d.cover} 1280w`}
+          sizes="100vw"
+          alt=""
+          width={1280}
+          height={720}
+          loading="eager"
+          fetchPriority="high"
+          decoding="sync"
+        />
         <div className="nx-cover-shade" aria-hidden="true" />
         <div className="nx-wrap nx-cover-inner">
           <Link to="/businesses" className="nx-back">

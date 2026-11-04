@@ -27,6 +27,7 @@ import { Route as TermsRouteImport } from './routes/terms'
 import { Route as WorkRouteImport } from './routes/work'
 import { Route as AcademyIndexRouteImport } from './routes/academy.index'
 import { Route as AcademySlugRouteImport } from './routes/academy.$slug'
+import { Route as AdminLoginRouteImport } from './routes/admin.login'
 import { Route as AgencyIndexRouteImport } from './routes/agency.index'
 import { Route as AgencySlugRouteImport } from './routes/agency.$slug'
 import { Route as BlogIndexRouteImport } from './routes/blog.index'
@@ -183,6 +184,11 @@ const AcademySlugRoute = AcademySlugRouteImport.update({
   id: '/$slug',
   path: '/$slug',
   getParentRoute: () => AcademyRoute,
+} as any)
+const AdminLoginRoute = AdminLoginRouteImport.update({
+  id: '/admin/login',
+  path: '/admin/login',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const AgencyIndexRoute = AgencyIndexRouteImport.update({
   id: '/',
@@ -586,6 +592,7 @@ export interface FileRoutesByFullPath {
   '/terms': typeof TermsRoute
   '/work': typeof WorkRouteWithChildren
   '/academy/$slug': typeof AcademySlugRoute
+  '/admin/login': typeof AdminLoginRoute
   '/agency/$slug': typeof AgencySlugRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/businesses/$id': typeof BusinessesIdRoute
@@ -668,6 +675,7 @@ export interface FileRoutesByTo {
   '/talent-application': typeof TalentApplicationRoute
   '/terms': typeof TermsRoute
   '/academy/$slug': typeof AcademySlugRoute
+  '/admin/login': typeof AdminLoginRoute
   '/agency/$slug': typeof AgencySlugRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/businesses/$id': typeof BusinessesIdRoute
@@ -750,6 +758,7 @@ export interface FileRoutesById {
   '/terms': typeof TermsRoute
   '/work': typeof WorkRouteWithChildren
   '/academy/$slug': typeof AcademySlugRoute
+  '/admin/login': typeof AdminLoginRoute
   '/agency/$slug': typeof AgencySlugRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/businesses/$id': typeof BusinessesIdRoute
@@ -838,6 +847,7 @@ export interface FileRouteTypes {
     | '/terms'
     | '/work'
     | '/academy/$slug'
+    | '/admin/login'
     | '/agency/$slug'
     | '/blog/$slug'
     | '/businesses/$id'
@@ -920,6 +930,7 @@ export interface FileRouteTypes {
     | '/talent-application'
     | '/terms'
     | '/academy/$slug'
+    | '/admin/login'
     | '/agency/$slug'
     | '/blog/$slug'
     | '/businesses/$id'
@@ -1001,6 +1012,7 @@ export interface FileRouteTypes {
     | '/terms'
     | '/work'
     | '/academy/$slug'
+    | '/admin/login'
     | '/agency/$slug'
     | '/blog/$slug'
     | '/businesses/$id'
@@ -1088,6 +1100,7 @@ export interface RootRouteChildren {
   TalentApplicationRoute: typeof TalentApplicationRoute
   TermsRoute: typeof TermsRoute
   WorkRoute: typeof WorkRouteWithChildren
+  AdminLoginRoute: typeof AdminLoginRoute
   BusinessesIdRoute: typeof BusinessesIdRoute
   InviteTokenRoute: typeof InviteTokenRoute
   NewsSlugRoute: typeof NewsSlugRoute
@@ -1229,6 +1242,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/academy/$slug'
       preLoaderRoute: typeof AcademySlugRouteImport
       parentRoute: typeof AcademyRoute
+    }
+    '/admin/login': {
+      id: '/admin/login'
+      path: '/admin/login'
+      fullPath: '/admin/login'
+      preLoaderRoute: typeof AdminLoginRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/agency/': {
       id: '/agency/'
@@ -1962,6 +1982,7 @@ const rootRouteChildren: RootRouteChildren = {
   TalentApplicationRoute: TalentApplicationRoute,
   TermsRoute: TermsRoute,
   WorkRoute: WorkRouteWithChildren,
+  AdminLoginRoute: AdminLoginRoute,
   BusinessesIdRoute: BusinessesIdRoute,
   InviteTokenRoute: InviteTokenRoute,
   NewsSlugRoute: NewsSlugRoute,

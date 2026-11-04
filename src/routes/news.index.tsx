@@ -80,6 +80,9 @@ function NewsPage() {
                     alt={featured.coverAlt ?? ""}
                     width={960}
                     height={600}
+                    loading="eager"
+                    fetchPriority="high"
+                    decoding="sync"
                   />
                 ) : (
                   <span className="ndh-news-fallback" aria-hidden="true" />

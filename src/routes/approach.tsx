@@ -2,10 +2,11 @@ import { createFileRoute } from "@tanstack/react-router";
 import { FamilyPage } from "@/components/ecosystem/FamilyPage";
 import { WhyNdhBento } from "@/components/ecosystem/WhyNdhBento";
 import { LiveStatusBar } from "@/components/ecosystem/LiveStatusBar";
-import cover from "@/assets/covers/agency.jpg";
+import cover from "@/assets/covers/agency-1280.webp";
 
 const title = "Our Approach | Najeeb Digital Hub";
-const description = "How the NDH family works: one standard of trust, real people and businesses that grow together.";
+const description =
+  "How the NDH family works: one standard of trust, real people and businesses that grow together.";
 
 export const Route = createFileRoute("/approach")({
   head: () => ({
@@ -21,7 +22,7 @@ export const Route = createFileRoute("/approach")({
   component: () => (
     <FamilyPage>
       <section className="nx-cover">
-        <img src={cover} alt="" width={1280} height={720} />
+        <img src={cover} alt="" width={1280} height={720} fetchPriority="high" decoding="sync" />
         <div className="nx-cover-shade" aria-hidden="true" />
         <div className="nx-wrap nx-cover-inner">
           <p className="nx-kicker">Our approach</p>
@@ -29,8 +30,12 @@ export const Route = createFileRoute("/approach")({
           <p>{description}</p>
         </div>
       </section>
-      <div className="gw-band gw-band-white"><WhyNdhBento /></div>
-      <div className="gw-band gw-band-porcelain"><LiveStatusBar /></div>
+      <div className="gw-band gw-band-white">
+        <WhyNdhBento />
+      </div>
+      <div className="gw-band gw-band-porcelain">
+        <LiveStatusBar />
+      </div>
     </FamilyPage>
   ),
 });

@@ -2,7 +2,7 @@ import { createFileRoute, Link } from '@tanstack/react-router';
 import { useState } from 'react';
 import { ArrowLeft, ArrowUpRight, BookOpen, BriefcaseBusiness, HeartPulse, Plane, Sprout, Plus, ShoppingBag, School } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import gatewayLogo from '@/assets/ndh-logo-gateway-cropped.png';
+import gatewayLogo from '@/assets/ndh-logo-gateway-cropped.webp';
 
 const title = 'NDH Brand Family Explorations — Najeeb Digital Hub';
 const description = 'Preview a non-letter gateway symbol in the selected integrated badge for the NDH family of businesses.';
@@ -33,7 +33,7 @@ function Identity({ business, parent = false }: { business?: Business; parent?: 
   return <div className={`brand-lab-identity integrated${parent ? ' parent' : ''}`}>
     <div className="brand-lab-symbol-group">
       <span className="gateway-badge">
-        <img src={gatewayLogo} alt="" width={684} height={679} loading="lazy" />
+        <img src={gatewayLogo} alt="" width={684} height={679} loading="lazy" decoding="async" />
         {Icon && <span className="gateway-sector"><Icon aria-hidden="true" strokeWidth={2} /></span>}
       </span>
     </div>

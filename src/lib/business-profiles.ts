@@ -66,13 +66,13 @@ export const BUSINESS_PROFILES = {
   },
   schoolos: {
     name: "NDH SchoolOS",
-    role: "Complete school management platform with integrated conventional + optional tahfeez.",
+    role: "Complete operating system for modern schools & colleges.",
     category: "Education Technology · School Management",
-    tagline: "One operating system for a whole school — conventional, tahfeez or both.",
+    tagline: "Admissions, CA & exams, auto-graded report cards, fees, payroll and a parent portal.",
     description:
-      "A complete school management platform for single and integrated schools: conventional academics plus optional tahfeez, students and classes, results and report cards, fee collection and invoicing, staff records and payroll. Schools name their own classes, sections and halqahs instead of bending the system to fit.",
-    point1: "Academics, tahfeez records, fees and payroll in one place",
-    point2: "Built for integrated conventional + tahfeez schools",
+      "A universal school management platform for nursery, primary, secondary schools and colleges: student admissions, continuous assessment (CA and exams), auto-graded report cards, school fees and receipts in naira, staff payroll and a parent portal. Zero spreadsheet headaches, fee debt tracking, instant broadsheets and parent SMS/WhatsApp notices.",
+    point1: "Zero spreadsheet headaches, with fee debt tracking for every family",
+    point2: "Instant broadsheets and parent SMS/WhatsApp notices",
   },
   farmfund: {
     name: "NDH FarmFund",

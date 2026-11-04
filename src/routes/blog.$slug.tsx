@@ -87,6 +87,7 @@ function Post() {
                 width={960}
                 height={640}
                 fetchPriority="high"
+                decoding="sync"
               />
             )}
             {editorial

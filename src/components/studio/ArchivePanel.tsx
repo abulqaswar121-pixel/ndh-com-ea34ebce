@@ -123,7 +123,7 @@ export function ArchivePanel() {
               <article className="studio-archive-card" key={item.id}>
                 <div className="studio-archive-thumb">
                   {item.thumb ? (
-                    <img src={item.thumb} alt="" loading="lazy" />
+                    <img src={item.thumb} alt="" loading="lazy" decoding="async" />
                   ) : (
                     <span className="studio-archive-blank">
                       <Icon size={22} />

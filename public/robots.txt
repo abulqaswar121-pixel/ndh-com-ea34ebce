@@ -1,4 +1,7 @@
 User-agent: *
 Allow: /
 Disallow: /portal/
+Disallow: /admin/
+Disallow: /staff/
+Disallow: /api/
 Sitemap: https://ndhnet.com/sitemap.xml

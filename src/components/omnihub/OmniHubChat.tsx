@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState, type FormEvent } from "react";
 import { ArrowUpRight, Bot, LoaderCircle, Minus, RotateCcw, Send, Sparkles, X } from "lucide-react";
-import assistantAvatar from "@/assets/ndh-ai-assistant.png";
+import assistantAvatar from "@/assets/ndh-ai-assistant.webp";
 import { Button } from "@/components/ui/button";
 import { usePreferences } from "@/lib/preferences";
 import { OPEN_ASSISTANT_EVENT } from "@/lib/omni-hub/events";
@@ -311,6 +311,8 @@ export function OmniHubChat() {
               alt=""
               width={816}
               height={816}
+              loading="eager"
+              decoding="async"
             />
             <span className="ai-assistant-status" aria-hidden="true" />
           </>
@@ -321,7 +323,14 @@ export function OmniHubChat() {
         <div role="dialog" aria-label={t("chat.title")} className="ai-assistant-dialog gw-chat">
           <header className="ai-assistant-header">
             <span className={`gw-chat-avatar is-${avatarState}`}>
-              <img src={assistantAvatar} alt="" width={816} height={816} />
+              <img
+                src={assistantAvatar}
+                alt=""
+                width={816}
+                height={816}
+                loading="lazy"
+                decoding="async"
+              />
               <i aria-hidden="true" />
             </span>
             <div className="ai-assistant-title">

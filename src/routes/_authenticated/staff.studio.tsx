@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { StudioApp } from "@/components/studio/StudioApp";
+import { StudioGuard } from "@/components/studio/StudioGuard";
 
 /** Staff studio at /staff/studio — the same workspace, staff framing. */
 export const Route = createFileRoute("/_authenticated/staff/studio")({
@@ -14,5 +15,9 @@ export const Route = createFileRoute("/_authenticated/staff/studio")({
       { name: "robots", content: "noindex" },
     ],
   }),
-  component: () => <StudioApp scope="staff" />,
+  component: () => (
+    <StudioGuard>
+      <StudioApp scope="staff" />
+    </StudioGuard>
+  ),
 });

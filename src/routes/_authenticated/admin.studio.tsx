@@ -1,13 +1,14 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { StudioApp } from "@/components/studio/StudioApp";
+import { StudioGuard } from "@/components/studio/StudioGuard";
 
 /**
  * Admin studio at /admin/studio.
  *
- * The page itself is available to signed-in users and to preview visitors (the
- * studio is a drafting tool with no private data). Publishing to the newsroom
- * is the one action that requires the admin role, and it is gated in the UI and
- * by the database policy on `posts`.
+ * Internal tool: nothing on the public site links here. StudioGuard sends
+ * signed-out visitors to the hidden entrance at /admin/login, and refuses
+ * accounts without an admin, PM or talent role. Newsroom publishing is admin
+ * only, enforced in the UI and by the database policy on `posts`.
  */
 export const Route = createFileRoute("/_authenticated/admin/studio")({
   head: () => ({
@@ -21,5 +22,9 @@ export const Route = createFileRoute("/_authenticated/admin/studio")({
       { name: "robots", content: "noindex" },
     ],
   }),
-  component: () => <StudioApp scope="admin" />,
+  component: () => (
+    <StudioGuard>
+      <StudioApp scope="admin" />
+    </StudioGuard>
+  ),
 });

@@ -58,6 +58,11 @@ export function StudioApp({ scope }: { scope: "admin" | "staff" }) {
   const { roles, loading, user } = useAuth();
   const isStaff = roles.some((role) => role === "admin" || role === "pm" || role === "talent");
   const isAdmin = roles.includes("admin");
+  const portalPath = isAdmin
+    ? "/portal/admin"
+    : roles.includes("pm")
+      ? "/portal/pm"
+      : "/portal/talent";
 
   const [brandId, setBrandId] = useState<StudioBrandId>("parent");
   const [topic, setTopicState] = useState("One family of twelve businesses, five live today");
@@ -171,6 +176,9 @@ export function StudioApp({ scope }: { scope: "admin" | "staff" }) {
               <Link to="/businesses" className="studio-back">
                 <ChevronLeft size={15} /> Directory
               </Link>
+              <Link to={portalPath} className="studio-back">
+                <LayoutGrid size={14} /> Portal
+              </Link>
             </div>
           </div>
 
@@ -188,6 +196,7 @@ export function StudioApp({ scope }: { scope: "admin" | "staff" }) {
           </div>
         </header>
 
+        {/* Defensive fallback: StudioGuard normally redirects signed-out visitors. */}
         {!loading && !user ? (
           <div className="studio-gate">
             <div>
@@ -197,7 +206,7 @@ export function StudioApp({ scope }: { scope: "admin" | "staff" }) {
                 publish announcements to the public newsroom.
               </p>
             </div>
-            <Link to="/login" className="studio-gate-link">
+            <Link to="/admin/login" className="studio-gate-link">
               Sign in <ShieldCheck size={15} />
             </Link>
           </div>

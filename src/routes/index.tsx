@@ -24,7 +24,8 @@ import {
 } from "@/lib/ecosystem";
 import { NEWS_POSTS, formatNewsDate } from "@/lib/news";
 import { BRAND } from "@/lib/brand";
-import heroImg from "@/assets/covers/hero.jpg";
+import heroImg from "@/assets/covers/hero-1280.webp";
+import heroImgSmall from "@/assets/covers/hero-640.webp";
 
 const title = "NAJEEB DIGITAL HUB (NDH) | One Gateway. Twelve Businesses.";
 const description =
@@ -39,12 +40,19 @@ export const Route = createFileRoute("/")({
       { property: "og:description", content: description },
       { property: "og:type", content: "website" },
       { property: "og:url", content: `${BRAND.url}/` },
-      { property: "og:image", content: `${BRAND.url}/og-image.jpg` },
-      { property: "og:image:alt", content: "NAJEEB DIGITAL HUB — the Open Gateway logo" },
+      { property: "og:image", content: "https://ndhnet.com/og-image.jpg" },
+      {
+        property: "og:image:alt",
+        content: "NAJEEB DIGITAL HUB (NDH) — One Gateway. Five Live Platforms.",
+      },
       { property: "og:image:width", content: "1200" },
       { property: "og:image:height", content: "630" },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:image", content: `${BRAND.url}/og-image.jpg` },
+      { name: "twitter:image", content: "https://ndhnet.com/og-image.jpg" },
+      {
+        name: "twitter:image:alt",
+        content: "NAJEEB DIGITAL HUB (NDH) — One Gateway. Five Live Platforms.",
+      },
     ],
     links: [{ rel: "canonical", href: `${BRAND.url}/` }],
     scripts: [
@@ -92,10 +100,14 @@ function Home() {
         <img
           className="nx-hero-bg"
           src={heroImg}
+          srcSet={`${heroImgSmall} 640w, ${heroImg} 1280w`}
+          sizes="100vw"
           alt=""
           width={1600}
           height={912}
+          loading="eager"
           fetchPriority="high"
+          decoding="sync"
         />
         <div className="nx-hero-shade" aria-hidden="true" />
         <div className="nx-wrap nx-hero-inner">
