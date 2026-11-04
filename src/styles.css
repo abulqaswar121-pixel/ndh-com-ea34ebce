@@ -9647,6 +9647,15 @@ body {
 }
 
 /* The banner frame and its iframes (top bar, "show original" strip). */
+body > .skiptranslate,
+body > div.skiptranslate > iframe,
+iframe.skiptranslate,
+iframe[id=":1.container"],
+iframe[id=":2.container"],
+.VIpgJd-ZVi9od-ORHb-OEVmcd,
+.VIpgJd-ZVi9od-aZ2wEe-wOHMyf,
+.VIpgJd-ZVi9od-l4eHX-hSRGPd,
+.VIpgJd-yAWNEb-L7lbkb,
 .goog-te-banner-frame,
 .goog-te-banner-frame.skiptranslate,
 iframe.goog-te-banner-frame,
