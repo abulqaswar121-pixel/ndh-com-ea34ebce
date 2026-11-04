@@ -34,10 +34,13 @@ import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
 import { Route as BusinessesIndexRouteImport } from './routes/businesses.index'
 import { Route as BusinessesIdRouteImport } from './routes/businesses.$id'
 import { Route as InviteTokenRouteImport } from './routes/invite.$token'
+import { Route as NewsIndexRouteImport } from './routes/news.index'
+import { Route as NewsSlugRouteImport } from './routes/news.$slug'
 import { Route as VerifyIndexRouteImport } from './routes/verify.index'
 import { Route as VerifyCodeRouteImport } from './routes/verify.$code'
 import { Route as WorkIndexRouteImport } from './routes/work.index'
 import { Route as WorkSlugRouteImport } from './routes/work.$slug'
+import { Route as AuthenticatedAdminStudioRouteImport } from './routes/_authenticated/admin.studio'
 import { Route as AuthenticatedCertificateIdRouteImport } from './routes/_authenticated/certificate.$id'
 import { Route as AuthenticatedEnrolCallbackRouteImport } from './routes/_authenticated/enrol.callback'
 import { Route as AuthenticatedExamSlugRouteImport } from './routes/_authenticated/exam.$slug'
@@ -50,6 +53,7 @@ import { Route as AuthenticatedPortalStudentRouteImport } from './routes/_authen
 import { Route as AuthenticatedPortalTalentRouteImport } from './routes/_authenticated/portal/talent'
 import { Route as AuthenticatedPortalTermsRouteImport } from './routes/_authenticated/portal/terms'
 import { Route as AuthenticatedProjectSlugRouteImport } from './routes/_authenticated/project.$slug'
+import { Route as AuthenticatedStaffStudioRouteImport } from './routes/_authenticated/staff.studio'
 import { Route as AuthenticatedWorkspaceIdRouteImport } from './routes/_authenticated/workspace.$id'
 import { Route as ApiPublicOmniHubRouteImport } from './routes/api/public/omni-hub'
 import { Route as ApiPublicPaystackWebhookRouteImport } from './routes/api/public/paystack-webhook'
@@ -215,6 +219,16 @@ const InviteTokenRoute = InviteTokenRouteImport.update({
   path: '/invite/$token',
   getParentRoute: () => rootRouteImport,
 } as any)
+const NewsIndexRoute = NewsIndexRouteImport.update({
+  id: '/news/',
+  path: '/news/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const NewsSlugRoute = NewsSlugRouteImport.update({
+  id: '/news/$slug',
+  path: '/news/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const VerifyIndexRoute = VerifyIndexRouteImport.update({
   id: '/verify/',
   path: '/verify/',
@@ -235,6 +249,12 @@ const WorkSlugRoute = WorkSlugRouteImport.update({
   path: '/$slug',
   getParentRoute: () => WorkRoute,
 } as any)
+const AuthenticatedAdminStudioRoute =
+  AuthenticatedAdminStudioRouteImport.update({
+    id: '/admin/studio',
+    path: '/admin/studio',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedCertificateIdRoute =
   AuthenticatedCertificateIdRouteImport.update({
     id: '/certificate/$id',
@@ -303,6 +323,12 @@ const AuthenticatedProjectSlugRoute =
   AuthenticatedProjectSlugRouteImport.update({
     id: '/project/$slug',
     path: '/project/$slug',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedStaffStudioRoute =
+  AuthenticatedStaffStudioRouteImport.update({
+    id: '/staff/studio',
+    path: '/staff/studio',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
 const AuthenticatedWorkspaceIdRoute =
@@ -564,14 +590,17 @@ export interface FileRoutesByFullPath {
   '/blog/$slug': typeof BlogSlugRoute
   '/businesses/$id': typeof BusinessesIdRoute
   '/invite/$token': typeof InviteTokenRoute
+  '/news/$slug': typeof NewsSlugRoute
   '/verify/$code': typeof VerifyCodeRoute
   '/work/$slug': typeof WorkSlugRoute
   '/academy/': typeof AcademyIndexRoute
   '/agency/': typeof AgencyIndexRoute
   '/blog/': typeof BlogIndexRoute
   '/businesses/': typeof BusinessesIndexRoute
+  '/news/': typeof NewsIndexRoute
   '/verify/': typeof VerifyIndexRoute
   '/work/': typeof WorkIndexRoute
+  '/admin/studio': typeof AuthenticatedAdminStudioRoute
   '/certificate/$id': typeof AuthenticatedCertificateIdRoute
   '/enrol/callback': typeof AuthenticatedEnrolCallbackRoute
   '/exam/$slug': typeof AuthenticatedExamSlugRoute
@@ -584,6 +613,7 @@ export interface FileRoutesByFullPath {
   '/portal/talent': typeof AuthenticatedPortalTalentRouteWithChildren
   '/portal/terms': typeof AuthenticatedPortalTermsRoute
   '/project/$slug': typeof AuthenticatedProjectSlugRoute
+  '/staff/studio': typeof AuthenticatedStaffStudioRoute
   '/workspace/$id': typeof AuthenticatedWorkspaceIdRoute
   '/api/public/omni-hub': typeof ApiPublicOmniHubRoute
   '/api/public/paystack-webhook': typeof ApiPublicPaystackWebhookRoute
@@ -642,14 +672,17 @@ export interface FileRoutesByTo {
   '/blog/$slug': typeof BlogSlugRoute
   '/businesses/$id': typeof BusinessesIdRoute
   '/invite/$token': typeof InviteTokenRoute
+  '/news/$slug': typeof NewsSlugRoute
   '/verify/$code': typeof VerifyCodeRoute
   '/work/$slug': typeof WorkSlugRoute
   '/academy': typeof AcademyIndexRoute
   '/agency': typeof AgencyIndexRoute
   '/blog': typeof BlogIndexRoute
   '/businesses': typeof BusinessesIndexRoute
+  '/news': typeof NewsIndexRoute
   '/verify': typeof VerifyIndexRoute
   '/work': typeof WorkIndexRoute
+  '/admin/studio': typeof AuthenticatedAdminStudioRoute
   '/certificate/$id': typeof AuthenticatedCertificateIdRoute
   '/enrol/callback': typeof AuthenticatedEnrolCallbackRoute
   '/exam/$slug': typeof AuthenticatedExamSlugRoute
@@ -657,6 +690,7 @@ export interface FileRoutesByTo {
   '/portal/privacy': typeof AuthenticatedPortalPrivacyRoute
   '/portal/terms': typeof AuthenticatedPortalTermsRoute
   '/project/$slug': typeof AuthenticatedProjectSlugRoute
+  '/staff/studio': typeof AuthenticatedStaffStudioRoute
   '/workspace/$id': typeof AuthenticatedWorkspaceIdRoute
   '/api/public/omni-hub': typeof ApiPublicOmniHubRoute
   '/api/public/paystack-webhook': typeof ApiPublicPaystackWebhookRoute
@@ -720,14 +754,17 @@ export interface FileRoutesById {
   '/blog/$slug': typeof BlogSlugRoute
   '/businesses/$id': typeof BusinessesIdRoute
   '/invite/$token': typeof InviteTokenRoute
+  '/news/$slug': typeof NewsSlugRoute
   '/verify/$code': typeof VerifyCodeRoute
   '/work/$slug': typeof WorkSlugRoute
   '/academy/': typeof AcademyIndexRoute
   '/agency/': typeof AgencyIndexRoute
   '/blog/': typeof BlogIndexRoute
   '/businesses/': typeof BusinessesIndexRoute
+  '/news/': typeof NewsIndexRoute
   '/verify/': typeof VerifyIndexRoute
   '/work/': typeof WorkIndexRoute
+  '/_authenticated/admin/studio': typeof AuthenticatedAdminStudioRoute
   '/_authenticated/certificate/$id': typeof AuthenticatedCertificateIdRoute
   '/_authenticated/enrol/callback': typeof AuthenticatedEnrolCallbackRoute
   '/_authenticated/exam/$slug': typeof AuthenticatedExamSlugRoute
@@ -740,6 +777,7 @@ export interface FileRoutesById {
   '/_authenticated/portal/talent': typeof AuthenticatedPortalTalentRouteWithChildren
   '/_authenticated/portal/terms': typeof AuthenticatedPortalTermsRoute
   '/_authenticated/project/$slug': typeof AuthenticatedProjectSlugRoute
+  '/_authenticated/staff/studio': typeof AuthenticatedStaffStudioRoute
   '/_authenticated/workspace/$id': typeof AuthenticatedWorkspaceIdRoute
   '/api/public/omni-hub': typeof ApiPublicOmniHubRoute
   '/api/public/paystack-webhook': typeof ApiPublicPaystackWebhookRoute
@@ -804,14 +842,17 @@ export interface FileRouteTypes {
     | '/blog/$slug'
     | '/businesses/$id'
     | '/invite/$token'
+    | '/news/$slug'
     | '/verify/$code'
     | '/work/$slug'
     | '/academy/'
     | '/agency/'
     | '/blog/'
     | '/businesses/'
+    | '/news/'
     | '/verify/'
     | '/work/'
+    | '/admin/studio'
     | '/certificate/$id'
     | '/enrol/callback'
     | '/exam/$slug'
@@ -824,6 +865,7 @@ export interface FileRouteTypes {
     | '/portal/talent'
     | '/portal/terms'
     | '/project/$slug'
+    | '/staff/studio'
     | '/workspace/$id'
     | '/api/public/omni-hub'
     | '/api/public/paystack-webhook'
@@ -882,14 +924,17 @@ export interface FileRouteTypes {
     | '/blog/$slug'
     | '/businesses/$id'
     | '/invite/$token'
+    | '/news/$slug'
     | '/verify/$code'
     | '/work/$slug'
     | '/academy'
     | '/agency'
     | '/blog'
     | '/businesses'
+    | '/news'
     | '/verify'
     | '/work'
+    | '/admin/studio'
     | '/certificate/$id'
     | '/enrol/callback'
     | '/exam/$slug'
@@ -897,6 +942,7 @@ export interface FileRouteTypes {
     | '/portal/privacy'
     | '/portal/terms'
     | '/project/$slug'
+    | '/staff/studio'
     | '/workspace/$id'
     | '/api/public/omni-hub'
     | '/api/public/paystack-webhook'
@@ -959,14 +1005,17 @@ export interface FileRouteTypes {
     | '/blog/$slug'
     | '/businesses/$id'
     | '/invite/$token'
+    | '/news/$slug'
     | '/verify/$code'
     | '/work/$slug'
     | '/academy/'
     | '/agency/'
     | '/blog/'
     | '/businesses/'
+    | '/news/'
     | '/verify/'
     | '/work/'
+    | '/_authenticated/admin/studio'
     | '/_authenticated/certificate/$id'
     | '/_authenticated/enrol/callback'
     | '/_authenticated/exam/$slug'
@@ -979,6 +1028,7 @@ export interface FileRouteTypes {
     | '/_authenticated/portal/talent'
     | '/_authenticated/portal/terms'
     | '/_authenticated/project/$slug'
+    | '/_authenticated/staff/studio'
     | '/_authenticated/workspace/$id'
     | '/api/public/omni-hub'
     | '/api/public/paystack-webhook'
@@ -1040,8 +1090,10 @@ export interface RootRouteChildren {
   WorkRoute: typeof WorkRouteWithChildren
   BusinessesIdRoute: typeof BusinessesIdRoute
   InviteTokenRoute: typeof InviteTokenRoute
+  NewsSlugRoute: typeof NewsSlugRoute
   VerifyCodeRoute: typeof VerifyCodeRoute
   BusinessesIndexRoute: typeof BusinessesIndexRoute
+  NewsIndexRoute: typeof NewsIndexRoute
   VerifyIndexRoute: typeof VerifyIndexRoute
   ApiPublicOmniHubRoute: typeof ApiPublicOmniHubRoute
   ApiPublicPaystackWebhookRoute: typeof ApiPublicPaystackWebhookRoute
@@ -1227,6 +1279,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof InviteTokenRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/news/': {
+      id: '/news/'
+      path: '/news'
+      fullPath: '/news/'
+      preLoaderRoute: typeof NewsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/news/$slug': {
+      id: '/news/$slug'
+      path: '/news/$slug'
+      fullPath: '/news/$slug'
+      preLoaderRoute: typeof NewsSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/verify/': {
       id: '/verify/'
       path: '/verify'
@@ -1254,6 +1320,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/work/$slug'
       preLoaderRoute: typeof WorkSlugRouteImport
       parentRoute: typeof WorkRoute
+    }
+    '/_authenticated/admin/studio': {
+      id: '/_authenticated/admin/studio'
+      path: '/admin/studio'
+      fullPath: '/admin/studio'
+      preLoaderRoute: typeof AuthenticatedAdminStudioRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/certificate/$id': {
       id: '/_authenticated/certificate/$id'
@@ -1337,6 +1410,13 @@ declare module '@tanstack/react-router' {
       path: '/project/$slug'
       fullPath: '/project/$slug'
       preLoaderRoute: typeof AuthenticatedProjectSlugRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/staff/studio': {
+      id: '/_authenticated/staff/studio'
+      path: '/staff/studio'
+      fullPath: '/staff/studio'
+      preLoaderRoute: typeof AuthenticatedStaffStudioRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/workspace/$id': {
@@ -1777,6 +1857,7 @@ const AuthenticatedPortalTalentRouteWithChildren =
   )
 
 interface AuthenticatedRouteRouteChildren {
+  AuthenticatedAdminStudioRoute: typeof AuthenticatedAdminStudioRoute
   AuthenticatedCertificateIdRoute: typeof AuthenticatedCertificateIdRoute
   AuthenticatedEnrolCallbackRoute: typeof AuthenticatedEnrolCallbackRoute
   AuthenticatedExamSlugRoute: typeof AuthenticatedExamSlugRoute
@@ -1789,10 +1870,12 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedPortalTalentRoute: typeof AuthenticatedPortalTalentRouteWithChildren
   AuthenticatedPortalTermsRoute: typeof AuthenticatedPortalTermsRoute
   AuthenticatedProjectSlugRoute: typeof AuthenticatedProjectSlugRoute
+  AuthenticatedStaffStudioRoute: typeof AuthenticatedStaffStudioRoute
   AuthenticatedWorkspaceIdRoute: typeof AuthenticatedWorkspaceIdRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedAdminStudioRoute: AuthenticatedAdminStudioRoute,
   AuthenticatedCertificateIdRoute: AuthenticatedCertificateIdRoute,
   AuthenticatedEnrolCallbackRoute: AuthenticatedEnrolCallbackRoute,
   AuthenticatedExamSlugRoute: AuthenticatedExamSlugRoute,
@@ -1805,6 +1888,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedPortalTalentRoute: AuthenticatedPortalTalentRouteWithChildren,
   AuthenticatedPortalTermsRoute: AuthenticatedPortalTermsRoute,
   AuthenticatedProjectSlugRoute: AuthenticatedProjectSlugRoute,
+  AuthenticatedStaffStudioRoute: AuthenticatedStaffStudioRoute,
   AuthenticatedWorkspaceIdRoute: AuthenticatedWorkspaceIdRoute,
 }
 
@@ -1880,8 +1964,10 @@ const rootRouteChildren: RootRouteChildren = {
   WorkRoute: WorkRouteWithChildren,
   BusinessesIdRoute: BusinessesIdRoute,
   InviteTokenRoute: InviteTokenRoute,
+  NewsSlugRoute: NewsSlugRoute,
   VerifyCodeRoute: VerifyCodeRoute,
   BusinessesIndexRoute: BusinessesIndexRoute,
+  NewsIndexRoute: NewsIndexRoute,
   VerifyIndexRoute: VerifyIndexRoute,
   ApiPublicOmniHubRoute: ApiPublicOmniHubRoute,
   ApiPublicPaystackWebhookRoute: ApiPublicPaystackWebhookRoute,

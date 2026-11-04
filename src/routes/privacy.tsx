@@ -12,7 +12,7 @@ export const Route = createFileRoute("/privacy")({
           "What you share, why it is used and how to ask questions about your personal information.",
       },
     ],
-    links: [{ rel: "canonical", href: "https://ndh.com.ng/privacy" }],
+    links: [{ rel: "canonical", href: "https://ndhnet.com/privacy" }],
   }),
   component: () => (
     <FamilyPage>

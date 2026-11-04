@@ -1,21 +1,21 @@
 /**
  * Extra reading content for each NDH business page (/businesses/$id).
- * Names, taglines and descriptions stay in business-profiles.ts; this file only
+ * Names, roles and descriptions stay in business-profiles.ts; this file only
  * adds the cover photo and the "what's inside" lists.
  * Planned businesses describe intended scope, never launch dates or results.
  */
 import type { SubsidiaryId } from "./ecosystem";
 import agency from "@/assets/covers/agency.jpg";
 import academy from "@/assets/covers/academy.jpg";
-import agricapital from "@/assets/covers/agricapital.jpg";
-import estore from "@/assets/covers/estore.jpg";
+import farmfund from "@/assets/covers/agricapital.jpg";
+import shopos from "@/assets/covers/estore.jpg";
 import mall from "@/assets/covers/mall.jpg";
 import cloud from "@/assets/covers/cloud.jpg";
-import schooldesk from "@/assets/covers/schooldesk.jpg";
+import schoolos from "@/assets/covers/schooldesk.jpg";
 import express from "@/assets/covers/express.jpg";
 import pay from "@/assets/covers/pay.jpg";
 import travel from "@/assets/covers/travel.jpg";
-import ihospital from "@/assets/covers/ihospital.jpg";
+import health from "@/assets/covers/ihospital.jpg";
 import foundation from "@/assets/covers/foundation.jpg";
 
 export type BusinessDetail = {
@@ -25,124 +25,151 @@ export type BusinessDetail = {
 };
 
 export const BUSINESS_DETAILS: Record<SubsidiaryId, BusinessDetail> = {
+  academy: {
+    cover: academy,
+    audience: "Learners who want practical digital skills they can earn with.",
+    features: [
+      { title: "60 courses", body: "Six schools, from AI engineering to business operations." },
+      { title: "Structured lessons", body: "Short video lessons with readiness quizzes." },
+      { title: "Real projects", body: "Every course ends with a capstone deliverable." },
+      {
+        title: "Verified certificates",
+        body: "Anyone can check a certificate online before hiring.",
+      },
+    ],
+  },
   agency: {
     cover: agency,
     audience: "Businesses, founders and organisations that need digital work done properly.",
     features: [
-      { title: "Websites & apps", body: "Full-stack web and mobile products, built and launched." },
-      { title: "Brand & design", body: "Logos, brand systems and UI/UX that look sharp everywhere." },
-      { title: "AI & automation", body: "Custom AI systems and workflows that save hours each week." },
-      { title: "A dedicated PM", body: "One project manager handles your brief, milestones and quality." },
+      {
+        title: "Web engineering",
+        body: "Full-stack websites, platforms and apps, built and launched.",
+      },
+      {
+        title: "Brand & design",
+        body: "Logos, brand systems and UI/UX that look sharp everywhere.",
+      },
+      {
+        title: "AI & automation",
+        body: "Custom AI systems and workflows that save hours each week.",
+      },
+      {
+        title: "A dedicated PM",
+        body: "One project manager owns your brief, milestones and quality.",
+      },
     ],
   },
-  academy: {
-    cover: academy,
-    audience: "Learners who want practical AI skills they can earn with.",
+  shopos: {
+    cover: shopos,
+    audience: "Small businesses, traders and boutiques moving sales online.",
     features: [
-      { title: "60 courses", body: "Across six schools, from AI engineering to business operations." },
-      { title: "Video lessons", body: "Short, structured lessons with readiness quizzes." },
-      { title: "Real projects", body: "Every course ends with a capstone deliverable." },
-      { title: "Verified certificates", body: "Anyone can check a certificate online." },
+      { title: "Custom shop", body: "Your own branded storefront with products and categories." },
+      { title: "Payments built in", body: "Collect payment at checkout with order tracking." },
+      {
+        title: "Marketing tools",
+        body: "Discounts, campaigns and customer lists in the dashboard.",
+      },
+      { title: "Low plans", body: "Affordable monthly or yearly pricing, no developer needed." },
     ],
   },
-  agricapital: {
-    cover: agricapital,
+  schoolos: {
+    cover: schoolos,
+    audience: "Schools — including integrated Conventional + Tahfeez schools.",
+    features: [
+      { title: "Conventional + tahfeez", body: "Run one section or both from a single platform." },
+      { title: "Academics", body: "Students, classes, results and report cards." },
+      { title: "Fees", body: "Billing, invoices, payment records and reminders." },
+      { title: "Staff & payroll", body: "Staff records and salary processing in one place." },
+    ],
+  },
+  farmfund: {
+    cover: farmfund,
     audience: "People who want to fund real farming cycles and share the harvest.",
     features: [
-      { title: "Fund a cycle", body: "Contribute to livestock or crop cycles by card or transfer." },
-      { title: "Shared ledger", body: "Your equity share is calculated openly from contributions." },
-      { title: "Farm updates", body: "Operators log feeding, growth and expenses." },
-      { title: "Harvest payouts", body: "Profits are shared by equity after harvest and sale." },
-    ],
-  },
-  estore: {
-    cover: estore,
-    audience: "Shoppers and small vendors who want a simple online store.",
-    features: [
-      { title: "Many vendors", body: "Independent sellers run their own shop space." },
-      { title: "Easy checkout", body: "Cart, checkout and order tracking in one place." },
-      { title: "Seller tools", body: "Vendors manage products, stock and orders." },
-      { title: "Buyer accounts", body: "Order history and saved details for repeat buyers." },
+      {
+        title: "Verified cycles",
+        body: "Fund livestock or crop cycles that have passed verification.",
+      },
+      {
+        title: "Shared ledger",
+        body: "Your equity share is calculated openly from contributions.",
+      },
+      {
+        title: "Operator tracking",
+        body: "Operators log feeding, growth milestones and expenses.",
+      },
+      { title: "Harvest payouts", body: "Profits shared by equity after harvest and sale." },
     ],
   },
   mall: {
     cover: mall,
-    audience: "Shoppers looking for cars, fashion, electronics and more in one trusted place.",
+    audience: "Shoppers who want one trusted place to buy, and vendors who want reach.",
     features: [
-      { title: "One front door", body: "Many categories, from cars to clothing, in one mall." },
-      { title: "Verified sellers", body: "NDH checks and promotes partner sellers." },
-      { title: "Buyer trust", body: "Clear listings and support handled by NDH." },
-      { title: "Partner sales", body: "Sellers grow through NDH promotion." },
+      { title: "One front door", body: "Fashion, phones, electronics, home goods and more." },
+      { title: "Vendor affiliates", body: "Partner sellers promote and sell through NDH." },
+      { title: "Direct retail", body: "NDH-stocked products with clear pricing and delivery." },
+      { title: "Buyer trust", body: "Verified sellers and NDH-handled support." },
     ],
   },
   cloud: {
     cover: cloud,
     audience: "Businesses that need AI tools, hosting and ready-made software.",
     features: [
-      { title: "AI tools", body: "Ready AI assistants and automations for daily work." },
-      { title: "Hosting", body: "Reliable hosting for websites and apps." },
-      { title: "Business software", body: "Tools for sales, records and teams." },
-      { title: "Support", body: "Setup help from the NDH team." },
-    ],
-  },
-  schooldesk: {
-    cover: schooldesk,
-    audience: "Schools — including integrated Conventional + Islamiyya schools.",
-    features: [
-      { title: "Single or dual school", body: "Choose one section or both at setup." },
-      { title: "Your own names", body: "Name classes, halqahs and groups the way you work." },
-      { title: "Results & Tahfeez", body: "Scores, report cards and memorisation logs." },
-      { title: "Fees & salaries", body: "Billing, payments and staff payroll in one place." },
+      { title: "AI services", body: "Ready assistants and automations for daily work." },
+      { title: "API hosting", body: "Run and scale APIs without managing servers." },
+      { title: "Business software", body: "Tools for sales, records, finance and teams." },
+      { title: "Managed setup", body: "The NDH team sets it up and supports it." },
     ],
   },
   express: {
     cover: express,
     audience: "Sellers and families who need parcels delivered fast.",
     features: [
-      { title: "Doorstep delivery", body: "Pick-up and drop-off across the city." },
-      { title: "Live tracking", body: "Follow your parcel from start to finish." },
-      { title: "For sellers", body: "Built to work with NDH eStore and Mall." },
-      { title: "Cold chain", body: "Planned support for fresh and farm goods." },
+      { title: "Local dispatch", body: "Pick-up and same-city drop-off." },
+      { title: "Tracking", body: "Follow a parcel from dispatch to doorstep." },
+      { title: "For merchants", body: "Built to plug into Mall and ShopOS orders." },
+      { title: "Farm produce", body: "Planned haulage for FarmFund harvests." },
     ],
   },
   pay: {
     cover: pay,
-    audience: "Merchants and buyers who want safe payments.",
+    audience: "Merchants and buyers who want safe, clean payments.",
     features: [
-      { title: "Merchant payments", body: "Accept payments easily." },
-      { title: "Escrow", body: "Money is held safely until delivery is confirmed." },
-      { title: "Payouts", body: "Clear payouts for sellers and talents." },
-      { title: "One wallet", body: "Planned use across the NDH family." },
+      { title: "Processing", body: "Card and transfer checkout for merchants." },
+      { title: "Billing", body: "Subscriptions, invoices and reminders." },
+      { title: "Payouts", body: "Clear merchant and talent payouts." },
+      { title: "Escrow", body: "Buyer-protection escrow until delivery is confirmed." },
     ],
   },
   travel: {
     cover: travel,
-    audience: "Travellers, pilgrims and students going abroad.",
+    audience: "Travellers, pilgrims and families planning a trip.",
     features: [
-      { title: "Flights & hotels", body: "Planned booking in one place." },
-      { title: "Hajj & Umrah", body: "Planned guided packages." },
-      { title: "Visa help", body: "Planned document guidance." },
-      { title: "Study trips", body: "Planned support for students." },
+      { title: "Flights", body: "Reservations handled by real consultants." },
+      { title: "Holidays", body: "Curated packages for families and groups." },
+      { title: "Hajj & Umrah", body: "Guided pilgrimage travel support." },
+      { title: "Documents", body: "Practical guidance on travel requirements." },
     ],
   },
-  ihospital: {
-    cover: ihospital,
-    audience: "Clinics, hospitals and their patients.",
+  health: {
+    cover: health,
+    audience: "Clinics, hospitals and the patients they serve.",
     features: [
-      { title: "Patient records", body: "Planned digital records for clinics." },
-      { title: "Appointments", body: "Planned booking and reminders." },
-      { title: "Billing", body: "Planned clinic billing." },
-      { title: "Teleconsult", body: "Planned remote consultations." },
+      { title: "Telemedicine", body: "Remote consultations that reach rural patients." },
+      { title: "Clinic bookings", body: "Appointment scheduling and reminders." },
+      { title: "Health records", body: "Digital records for providers." },
+      { title: "Billing", body: "Clinic invoicing and payment records." },
     ],
   },
   foundation: {
     cover: foundation,
     audience: "Young people and communities who need a fair start.",
     features: [
-      { title: "Scholarships", body: "Planned free digital training for youth." },
-      { title: "School drives", body: "Planned equipment and laptop drives." },
-      { title: "Outreach", body: "Planned community and charity outreach." },
-      { title: "Partners", body: "Planned work with donors and NGOs." },
+      { title: "Scholarships", body: "Free digital-skills training for young people." },
+      { title: "School drives", body: "Equipment and laptop drives for schools." },
+      { title: "Outreach", body: "Community and charity programmes." },
+      { title: "Open reporting", body: "Partners see where every naira goes." },
     ],
   },
 };

@@ -12,7 +12,7 @@ export const Route = createFileRoute("/terms")({
           "A clear starting point for using the NDH website and finding your way around the family.",
       },
     ],
-    links: [{ rel: "canonical", href: "https://ndh.com.ng/terms" }],
+    links: [{ rel: "canonical", href: "https://ndhnet.com/terms" }],
   }),
   component: () => (
     <FamilyPage>

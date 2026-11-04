@@ -20,7 +20,7 @@ export const Route = createFileRoute("/about")({
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
-    links: [{ rel: "canonical", href: "https://ndh.com.ng/about" }],
+    links: [{ rel: "canonical", href: "https://ndhnet.com/about" }],
   }),
   component: About,
 });
@@ -175,7 +175,7 @@ function About() {
             ))}
           </div>
           <div className="official-profile-links">
-            <a href="https://academy.ndh.com.ng" className="family-text-link">
+            <a href="https://ndhacademy.lovable.app" className="family-text-link">
               Explore the official Academy <ArrowUpRight size={16} />
             </a>
             <a href="/verify" className="family-text-link">

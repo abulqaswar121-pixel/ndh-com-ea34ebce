@@ -19,11 +19,11 @@ export const Route = createFileRoute('/brand-explorations')({
 const businesses = [
   { name: 'Agency', Icon: BriefcaseBusiness, state: 'Current' },
   { name: 'Academy', Icon: BookOpen, state: 'Current' },
-  { name: 'AgriCapital', Icon: Sprout, state: 'Current' },
-  { name: 'eStore', Icon: ShoppingBag, state: 'Current' },
-  { name: 'SchoolDesk', Icon: School, state: 'Coming Soon' },
+  { name: 'NDH FarmFund', Icon: Sprout, state: 'Current' },
+  { name: 'ShopOS', Icon: ShoppingBag, state: 'Current' },
+  { name: 'NDH SchoolOS', Icon: School, state: 'Coming Soon' },
   { name: 'Travel', Icon: Plane, state: 'Coming Soon' },
-  { name: 'iHospital', Icon: HeartPulse, state: 'Coming Soon' },
+  { name: 'NDH Health', Icon: HeartPulse, state: 'Coming Soon' },
 ] as const;
 
 type Business = (typeof businesses)[number];
@@ -69,7 +69,7 @@ function BrandExplorations() {
            <div><h2 id="heading-02">Open Gateway · Integrated badge</h2><p>The master symbol stays consistent; each business icon is fitted into its corner.</p></div>
         </div>
         <div className="brand-lab-master-display">
-          <div className="brand-lab-display-meta"><span>01 / Parent identity</span><span>ndh.com.ng</span></div>
+          <div className="brand-lab-display-meta"><span>01 / Parent identity</span><span>ndhnet.com</span></div>
            <Identity parent />
         </div>
         <div className="brand-lab-family-heading"><h3>One system, seven expressions</h3><span>Same palette · shared symbol · sector-specific icon</span></div>

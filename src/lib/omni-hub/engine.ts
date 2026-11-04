@@ -29,11 +29,11 @@ export type OmniMessage = {
 export type OmniIntent =
   | "agency"
   | "academy"
-  | "estore"
-  | "schooldesk"
-  | "agricapital"
+  | "shopos"
+  | "schoolos"
+  | "farmfund"
   | "travel"
-  | "ihospital"
+  | "health"
   | "pricing"
   | "about"
   | "contact"
@@ -46,11 +46,11 @@ export type OmniIntent =
 const BUSINESS_INTENTS = [
   "agency",
   "academy",
-  "estore",
-  "schooldesk",
-  "agricapital",
+  "shopos",
+  "schoolos",
+  "farmfund",
   "travel",
-  "ihospital",
+  "health",
 ] as const;
 type BusinessIntent = (typeof BUSINESS_INTENTS)[number];
 
@@ -136,19 +136,19 @@ const RULES: IntentRule[] = [
     pattern: /^\s*(thanks|thank you|thankyou|cheers|merci|shukran|jazak\w*|شكرا|شكرًا)/i,
   },
   {
-    intent: "schooldesk",
+    intent: "schoolos",
     weight: 3,
     pattern:
       /(school|schools|pupils?|students? records|admissions?|registrar|principal|head ?teacher|term(s)? (fees?|results?)|report cards?|result sheets?|school management|école|ecole|élèves|élève|scolaire|مدرسة|مدارس|الطلاب|تسجيل الطلاب)/i,
   },
   {
-    intent: "estore",
+    intent: "shopos",
     weight: 4,
     pattern:
       /(e-?store|multi[- ]?vendor|vendors?|merchants?|storefronts?|online store|inventory|shipping|checkout|cross[- ]border|sell (online|products|goods|clothes)|shop(?:ping)?|buy (products|goods)|physical products|digital products|paystack|flutterwave|templates?|boilerplates?|starter kits?|boutique|vendeur|marchand|livraison|stock|متجر|بائع|تجار|شحن|مخزون|منتجات)/i,
   },
   {
-    intent: "agricapital",
+    intent: "farmfund",
     weight: 5,
     pattern:
       /(agri(capital|vest)|\bventure\b|agricultur|\bfarm(?:s|ing|er|ers)?\b|livestock|cattle|poultry|crops?|harvest|feeding|cooperative farming|contribution ledger|farm cycle|invest\w*|equity stake|proportional (profit|payout)|élevage|récolte|ferme|agricole|coopérative|زراع|مزرع|ماشية|مواشي|محصول|حصاد|استثمار|سجل المساهمات)/i,
@@ -160,7 +160,7 @@ const RULES: IntentRule[] = [
       /(ndh travel|travel concierge|flight|visa|travel booking|book a trip|voyage|vols?\b|billet|سفر|طيران|تأشيرة)/i,
   },
   {
-    intent: "ihospital",
+    intent: "health",
     weight: 4,
     pattern:
       /(i-?hospital|telemedicine|telehealth|clinic|medical consultation|doctor|hospital|télémédecine|clinique|médecin|تطبيب|عيادة|طبيب|مستشفى)/i,
@@ -216,7 +216,7 @@ export function classifyIntent(text: string): {
     ) &&
     !/(farm|agri|livestock|crop|harvest|venture|زراع|مواشي)/i.test(text)
   ) {
-    delete scores.agricapital;
+    delete scores.farmfund;
     scores.contact = (scores.contact ?? 0) + 7;
   }
   const entries = Object.entries(scores).sort((a, b) => b[1] - a[1]);
@@ -457,11 +457,11 @@ function continuesThread(text: string, messages: OmniMessage[], route?: Business
 const NAME_PATTERNS: { id: SubsidiaryId; pattern: RegExp }[] = [
   { id: "agency", pattern: /\b(ndh agency|the agency|agence)\b/i },
   { id: "academy", pattern: /(academy|académie)/i },
-  { id: "agricapital", pattern: /\b(agricapital|agrivest|venture)\b/i },
-  { id: "estore", pattern: /(e-?store)/i },
-  { id: "schooldesk", pattern: /(schooldesk|school desk)/i },
+  { id: "farmfund", pattern: /\b(farmfund|agrivest|venture)\b/i },
+  { id: "shopos", pattern: /(e-?store)/i },
+  { id: "schoolos", pattern: /(schoolos|school desk)/i },
   { id: "travel", pattern: /\b(ndh travel|travel platform)\b/i },
-  { id: "ihospital", pattern: /\b(ihospital|i-?hospital|hospital platform)\b/i },
+  { id: "health", pattern: /\b(health|i-?hospital|hospital platform)\b/i },
 ];
 
 export function mentionedSubsidiaries(text: string): SubsidiaryId[] {
@@ -680,7 +680,7 @@ export function recommendCourses(
 const STARTER_COURSES = ["prompt-engineering", "no-code-ai-apps", "ai-copywriting"];
 
 const FAMILY_LINE =
-  "NDH has seven businesses: four active — Agency for managed digital delivery, Academy for 60 practical AI-skills courses across 6 schools, AgriCapital for cooperative farming investments, and eStore for multi-vendor commerce. SchoolDesk, Travel and iHospital are Coming Soon.";
+  "NDH has twelve businesses: five are active — Academy for 60 practical AI-skills courses across 6 schools, Agency for managed digital delivery, ShopOS for cloud storefronts, SchoolOS for school management, and FarmFund for agricultural investment. Mall, Cloud, Express, Pay, Travel, Health and Foundation are in development.";
 
 type RouteCopy = { owner: SubsidiaryId; headline: string; body: string; chips: string[] };
 
@@ -697,31 +697,31 @@ const ROUTE_COPY: Record<BusinessIntent, RouteCopy> = {
     body: `${BUSINESS_PROFILES.academy.description} Pre-project readiness quizzes prepare learners for capstone deliverables.`,
     chips: ["What are the 6 schools?", "Recommend a course", "Verify a certificate"],
   },
-  agricapital: {
-    owner: "agricapital",
+  farmfund: {
+    owner: "farmfund",
     headline: "Cooperative farming with transparent equity.",
-    body: `${BUSINESS_PROFILES.agricapital.description} NDH FarmFund was formerly called Venture. Farming carries risk: returns are not guaranteed.`,
+    body: `${BUSINESS_PROFILES.farmfund.description} NDH FarmFund was formerly called Venture. Farming carries risk: returns are not guaranteed.`,
     chips: [
       "How is farm equity calculated?",
       "What do farm operators record?",
       "How are harvest profits distributed?",
     ],
   },
-  estore: {
-    owner: "estore",
-    headline: "Multi-vendor commerce, locally and across borders.",
-    body: `${BUSINESS_PROFILES.estore.description} Checkout supports Paystack and Flutterwave, with automated vendor payout ledgers.`,
+  shopos: {
+    owner: "shopos",
+    headline: "Cloud storefronts for small businesses.",
+    body: `${BUSINESS_PROFILES.shopos.description} Shops run on low monthly or yearly plans with payments and marketing tools included.`,
     chips: [
       "How do vendors onboard?",
       "Can I sell physical products?",
       "How do shipping and payouts work?",
     ],
   },
-  schooldesk: {
-    owner: "schooldesk",
-    headline: "SchoolDesk — Coming Soon.",
-    body: BUSINESS_PROFILES.schooldesk.description,
-    chips: ["Ask about SchoolDesk", "What does NDH do?"],
+  schoolos: {
+    owner: "schoolos",
+    headline: "Complete school management, live today.",
+    body: BUSINESS_PROFILES.schoolos.description,
+    chips: ["What does SchoolOS manage?", "How do fees and payroll work?", "What does NDH do?"],
   },
   travel: {
     owner: "travel",
@@ -729,11 +729,11 @@ const ROUTE_COPY: Record<BusinessIntent, RouteCopy> = {
     body: BUSINESS_PROFILES.travel.description,
     chips: ["Ask about NDH Travel", "What does NDH do?"],
   },
-  ihospital: {
-    owner: "ihospital",
+  health: {
+    owner: "health",
     headline: "NDH Health — Coming Soon.",
-    body: BUSINESS_PROFILES.ihospital.description,
-    chips: ["Ask about iHospital", "What does NDH do?"],
+    body: BUSINESS_PROFILES.health.description,
+    chips: ["Ask about NDH Health", "What does NDH do?"],
   },
 };
 
@@ -782,7 +782,7 @@ function bandLabel(key: string): string {
  * hands the numbers to the page that owns them.
  */
 function pricingAnswer(): string {
-  return "Confirm current terms with the business providing the service. Academy lists course details; eStore vendors list their products and checkout terms; Agency confirms a project’s scope and terms through its PM team. AgriCapital contributions fund farm cycles, with equity calculated from the shared ledger and profits distributed after harvest and sale. Investment returns are not guaranteed. SchoolDesk, Travel and iHospital are Coming Soon, not bookable services.";
+  return "Confirm current terms with the business providing the service. Academy lists course details; ShopOS vendors list their products and checkout terms; Agency confirms a project’s scope and terms through its PM team. NDH FarmFund contributions fund farm cycles, with equity calculated from the shared ledger and profits distributed after harvest and sale. Investment returns are not guaranteed. SchoolOS is live today; Travel and NDH Health are in development and not bookable.";
 }
 
 function aboutAnswer(): string {
@@ -797,10 +797,10 @@ function helpAnswer(): string {
   return [
     "Here is what I can route you to:",
     `◦ Learn: ${BUSINESS_BLURBS.academy} — NDH Academy.`,
-    `◦ Buy: ${BUSINESS_BLURBS.estore} — NDH Market.`,
-    `◦ Coming Soon for schools: ${BUSINESS_BLURBS.schooldesk} — NDH SchoolOS.`,
+    `◦ Sell: ${BUSINESS_BLURBS.shopos} — NDH ShopOS.`,
+    `◦ Schools: ${BUSINESS_BLURBS.schoolos} — NDH SchoolOS.`,
     `◦ Build: ${BUSINESS_BLURBS.agency} — NDH Agency.`,
-    `◦ Cooperative farming: ${BUSINESS_BLURBS.agricapital} — NDH FarmFund.`,
+    `◦ Cooperative farming: ${BUSINESS_BLURBS.farmfund} — NDH FarmFund.`,
     "Pick one, or describe your situation in your own words.",
   ].join("\n\n");
 }
@@ -924,14 +924,14 @@ export function respond(input: {
         : intent === "help"
           ? helpAnswer()
           : intent === "greeting"
-            ? "Welcome to Najeeb Digital Hub. I route people across the whole family — learning, commerce, cooperative farming and managed digital delivery, with three platforms Coming Soon. What are you trying to do?"
+            ? "Welcome to Najeeb Digital Hub. I route people across the whole family — learning, commerce, cooperative farming and managed digital delivery, with seven more platforms in development. What are you trying to do?"
             : "I can point you to the right business in the family. Tell me what you are trying to do, or pick one of these:";
     cards.push({
       kind: "summary",
       href: "/#businesses",
-      title: "All seven businesses",
+      title: "All twelve businesses",
       body: "Browse the directory and open the one that fits.",
-      meta: "ndh.com.ng",
+      meta: "ndhnet.com",
       cta: "See the family",
     });
     return { intent, confidence, text: reply, cards, chips, profile };
@@ -943,7 +943,7 @@ export function respond(input: {
       confidence,
       text: [
         `Visit us at ${SITE_CONTACT.address}. Call ${SITE_CONTACT.phone}, email ${SITE_CONTACT.email} or ${SITE_CONTACT.support}, or use WhatsApp.`,
-        "Use the contact page for general enquiries or to ask about an upcoming platform. AgriCapital is for cooperative farming, not general startup fundraising. SchoolDesk, Travel and iHospital are Coming Soon.",
+        "Use the contact page for general enquiries or to ask about an upcoming platform. NDH FarmFund is for verified agricultural cycles, not general startup fundraising. SchoolOS is live today; Travel and NDH Health are still in development.",
       ].join("\n\n"),
       cards: [
         {
@@ -951,7 +951,7 @@ export function respond(input: {
           href: "/contact",
           title: "Contact the family",
           body: "One form reaches every business — projects, courses, products and school platforms.",
-          meta: "ndh.com.ng/contact",
+          meta: "ndhnet.com/contact",
           cta: "Open the contact page",
         },
       ],
@@ -981,9 +981,9 @@ export function respond(input: {
         ({ intent: candidate, clause }) =>
           BUSINESS_INTENT_SET.has(candidate) &&
           !(
-            candidate === "schooldesk" &&
+            candidate === "schoolos" &&
             intent === "academy" &&
-            !/(schooldesk|management|grading|report cards|records)/i.test(clause)
+            !/(schoolos|management|grading|report cards|records)/i.test(clause)
           ),
       )
       .map(({ intent: candidate }) => candidate as BusinessIntent);
@@ -993,7 +993,7 @@ export function respond(input: {
 
   if (mentioned.length > 1) {
     const known = mentioned.filter((id) => id in BUSINESS_BLURBS) as (
-      BusinessIntent | "travel" | "ihospital"
+      BusinessIntent | "travel" | "health"
     )[];
     for (const id of known.slice(0, 3)) {
       const subsidiary = SUBSIDIARIES.find((item) => item.id === id);
@@ -1125,7 +1125,7 @@ export function respond(input: {
       href: "/contact",
       title: "Contact the family",
       body: "Send the brief in writing and a project manager replies with scope and a fixed fee.",
-      meta: "ndh.com.ng/contact",
+      meta: "ndhnet.com/contact",
       cta: "Open the contact page",
     });
   }

@@ -1,6 +1,6 @@
-import { Link, Outlet, useNavigate, useRouterState } from '@tanstack/react-router';
-import { useEffect, useRef, useState, type ReactNode } from 'react';
-import { useQueryClient } from '@tanstack/react-query';
+import { Link, Outlet, useNavigate, useRouterState } from "@tanstack/react-router";
+import { useEffect, useRef, useState, type ReactNode } from "react";
+import { useQueryClient } from "@tanstack/react-query";
 import {
   Award,
   BookOpen,
@@ -18,83 +18,86 @@ import {
   Menu,
   Receipt,
   ShieldCheck,
+  Sparkles,
   UserRound,
   UsersRound,
   WalletCards,
   X,
-} from 'lucide-react';
-import { supabase } from '@/integrations/supabase/client';
-import { useAuth, roleHome, type AppRole } from '@/lib/auth';
-import { NdhFamilySymbol } from '@/components/NdhFamilySymbol';
+} from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
+import { useAuth, roleHome, type AppRole } from "@/lib/auth";
+import { NdhFamilySymbol } from "@/components/NdhFamilySymbol";
 
 type NavItem = { to: string; label: string; icon: typeof LayoutDashboard };
 
 export const PORTAL_NAV: Record<AppRole, { name: string; items: NavItem[] }> = {
   student: {
-    name: 'Student portal',
+    name: "Student portal",
     items: [
-      { to: '/portal/student', label: 'Dashboard', icon: LayoutDashboard },
-      { to: '/portal/student/courses', label: 'My courses', icon: BookOpen },
-      { to: '/portal/student/catalogue', label: 'Browse courses', icon: GraduationCap },
-      { to: '/portal/student/certificates', label: 'Certificates', icon: Award },
-      { to: '/portal/student/account', label: 'Account', icon: UserRound },
+      { to: "/portal/student", label: "Dashboard", icon: LayoutDashboard },
+      { to: "/portal/student/courses", label: "My courses", icon: BookOpen },
+      { to: "/portal/student/catalogue", label: "Browse courses", icon: GraduationCap },
+      { to: "/portal/student/certificates", label: "Certificates", icon: Award },
+      { to: "/portal/student/account", label: "Account", icon: UserRound },
     ],
   },
   client: {
-    name: 'Client portal',
+    name: "Client portal",
     items: [
-      { to: '/portal/client', label: 'Dashboard', icon: LayoutDashboard },
-      { to: '/portal/client/projects', label: 'Projects', icon: FolderKanban },
-      { to: '/portal/client/new-brief', label: 'New brief', icon: FileText },
-      { to: '/portal/client/invoices', label: 'Invoices', icon: Receipt },
-      { to: '/portal/client/escrow', label: 'Escrow', icon: ShieldCheck },
-      { to: '/portal/client/account', label: 'Account', icon: UserRound },
+      { to: "/portal/client", label: "Dashboard", icon: LayoutDashboard },
+      { to: "/portal/client/projects", label: "Projects", icon: FolderKanban },
+      { to: "/portal/client/new-brief", label: "New brief", icon: FileText },
+      { to: "/portal/client/invoices", label: "Invoices", icon: Receipt },
+      { to: "/portal/client/escrow", label: "Escrow", icon: ShieldCheck },
+      { to: "/portal/client/account", label: "Account", icon: UserRound },
     ],
   },
   pm: {
-    name: 'Project manager',
+    name: "Project manager",
     items: [
-      { to: '/portal/pm', label: 'Dashboard', icon: LayoutDashboard },
-      { to: '/portal/pm/projects', label: 'My projects', icon: FolderKanban },
-      { to: '/portal/pm/briefs', label: 'Open briefs', icon: Inbox },
-      { to: '/portal/pm/new-project', label: 'Create project', icon: FileText },
-      { to: '/portal/pm/tasks', label: 'My tasks', icon: ClipboardCheck },
-      { to: '/portal/pm/account', label: 'Account', icon: UserRound },
+      { to: "/portal/pm", label: "Dashboard", icon: LayoutDashboard },
+      { to: "/portal/pm/projects", label: "My projects", icon: FolderKanban },
+      { to: "/portal/pm/briefs", label: "Open briefs", icon: Inbox },
+      { to: "/portal/pm/new-project", label: "Create project", icon: FileText },
+      { to: "/portal/pm/tasks", label: "My tasks", icon: ClipboardCheck },
+      { to: "/staff/studio", label: "Content studio", icon: Sparkles },
+      { to: "/portal/pm/account", label: "Account", icon: UserRound },
     ],
   },
   talent: {
-    name: 'Talent portal',
+    name: "Talent portal",
     items: [
-      { to: '/portal/talent', label: 'Dashboard', icon: LayoutDashboard },
-      { to: '/portal/talent/tasks', label: 'My tasks', icon: ClipboardCheck },
-      { to: '/portal/talent/earnings', label: 'Earnings', icon: WalletCards },
-      { to: '/portal/talent/profile', label: 'My profile', icon: Briefcase },
-      { to: '/portal/talent/account', label: 'Account', icon: UserRound },
+      { to: "/portal/talent", label: "Dashboard", icon: LayoutDashboard },
+      { to: "/portal/talent/tasks", label: "My tasks", icon: ClipboardCheck },
+      { to: "/portal/talent/earnings", label: "Earnings", icon: WalletCards },
+      { to: "/portal/talent/profile", label: "My profile", icon: Briefcase },
+      { to: "/portal/talent/account", label: "Account", icon: UserRound },
     ],
   },
   admin: {
-    name: 'Admin portal',
+    name: "Admin portal",
     items: [
-      { to: '/portal/admin', label: 'Dashboard', icon: LayoutDashboard },
-      { to: '/portal/admin/reviews', label: 'Review queue', icon: ClipboardCheck },
-      { to: '/portal/admin/access', label: 'Invitations & access', icon: KeyRound },
-      { to: '/portal/admin/users', label: 'People & roles', icon: UsersRound },
-      { to: '/portal/admin/applications', label: 'Talent applications', icon: Inbox },
-      { to: '/portal/admin/courses', label: 'Courses', icon: BookOpen },
-      { to: '/portal/admin/content', label: 'Content', icon: FileText },
-      { to: '/portal/admin/enquiries', label: 'Enquiries', icon: Mail },
-      { to: '/portal/admin/payouts', label: 'Payouts', icon: WalletCards },
-      { to: '/portal/admin/account', label: 'Account', icon: UserRound },
+      { to: "/portal/admin", label: "Dashboard", icon: LayoutDashboard },
+      { to: "/portal/admin/reviews", label: "Review queue", icon: ClipboardCheck },
+      { to: "/portal/admin/access", label: "Invitations & access", icon: KeyRound },
+      { to: "/portal/admin/users", label: "People & roles", icon: UsersRound },
+      { to: "/portal/admin/applications", label: "Talent applications", icon: Inbox },
+      { to: "/portal/admin/courses", label: "Courses", icon: BookOpen },
+      { to: "/portal/admin/content", label: "Content", icon: FileText },
+      { to: "/admin/studio", label: "Content studio", icon: Sparkles },
+      { to: "/portal/admin/enquiries", label: "Enquiries", icon: Mail },
+      { to: "/portal/admin/payouts", label: "Payouts", icon: WalletCards },
+      { to: "/portal/admin/account", label: "Account", icon: UserRound },
     ],
   },
 };
 
 const ROLE_LABEL: Record<AppRole, string> = {
-  student: 'Student',
-  client: 'Client',
-  pm: 'Project manager',
-  talent: 'Talent',
-  admin: 'Admin',
+  student: "Student",
+  client: "Client",
+  pm: "Project manager",
+  talent: "Talent",
+  admin: "Admin",
 };
 
 /** Frame for a whole portal. Renders the child page through <Outlet />. */
@@ -108,21 +111,28 @@ export function PortalShell({ role, children }: { role: AppRole; children?: Reac
   }, [pathname]);
 
   useEffect(() => {
-    document.body.style.overflow = open ? 'hidden' : '';
+    document.body.style.overflow = open ? "hidden" : "";
     return () => {
-      document.body.style.overflow = '';
+      document.body.style.overflow = "";
     };
   }, [open]);
 
   return (
     <div className="portal-shell">
       <header className="portal-topbar">
-        <button className="portal-menu-button" aria-label="Open portal menu" onClick={() => setOpen(true)}>
+        <button
+          className="portal-menu-button"
+          aria-label="Open portal menu"
+          onClick={() => setOpen(true)}
+        >
           <Menu size={22} />
         </button>
         <Link to={roleHome(role) as never} className="portal-brand">
           <NdhFamilySymbol />
-          <span><strong>NDH</strong><small>{nav.name}</small></span>
+          <span>
+            <strong>NDH</strong>
+            <small>{nav.name}</small>
+          </span>
         </Link>
         <AccountMenu role={role} />
       </header>
@@ -136,7 +146,9 @@ export function PortalShell({ role, children }: { role: AppRole; children?: Reac
           <div className="portal-drawer-backdrop" onClick={() => setOpen(false)}>
             <aside className="portal-drawer" onClick={(e) => e.stopPropagation()}>
               <div className="portal-drawer-head">
-                <span className="portal-drawer-brand"><NdhFamilySymbol /> {nav.name}</span>
+                <span className="portal-drawer-brand">
+                  <NdhFamilySymbol /> {nav.name}
+                </span>
                 <button aria-label="Close menu" onClick={() => setOpen(false)}>
                   <X size={20} />
                 </button>
@@ -187,7 +199,7 @@ function PortalFooter() {
   return (
     <footer className="portal-footer">
       <span>© {new Date().getFullYear()} Najeeb Digital Hub</span>
-      <a href="mailto:hello@ndh.com.ng">hello@ndh.com.ng</a>
+      <a href="mailto:hello@ndhnet.com">hello@ndhnet.com</a>
       <Link to="/portal/terms">Terms</Link>
       <Link to="/portal/privacy">Privacy</Link>
     </footer>
@@ -204,7 +216,7 @@ function PortalNav({ items }: { items: NavItem[] }) {
             key={item.to}
             to={item.to as never}
             className="portal-nav-link"
-            activeProps={{ className: 'portal-nav-link active' }}
+            activeProps={{ className: "portal-nav-link active" }}
             activeOptions={{ exact: true }}
           >
             <Icon size={17} />
@@ -228,17 +240,21 @@ function AccountMenu({ role }: { role: AppRole }) {
     function onClick(e: MouseEvent) {
       if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false);
     }
-    document.addEventListener('mousedown', onClick);
-    return () => document.removeEventListener('mousedown', onClick);
+    document.addEventListener("mousedown", onClick);
+    return () => document.removeEventListener("mousedown", onClick);
   }, []);
 
-  const name = (user?.user_metadata?.['full_name'] as string) || user?.email || 'Your account';
+  const name = (user?.user_metadata?.["full_name"] as string) || user?.email || "Your account";
   const initial = name.charAt(0).toUpperCase();
   const otherRoles = roles.filter((r) => r !== role);
 
   return (
     <div className="portal-account" ref={ref}>
-      <button className="portal-account-button" onClick={() => setOpen((v) => !v)} aria-expanded={open}>
+      <button
+        className="portal-account-button"
+        onClick={() => setOpen((v) => !v)}
+        aria-expanded={open}
+      >
         <span className="portal-avatar">{initial}</span>
         <span className="portal-account-name">{name}</span>
         <ChevronDown size={16} />
@@ -269,12 +285,12 @@ function AccountMenu({ role }: { role: AppRole }) {
                   await supabase.auth.signOut();
                 } finally {
                   setBusy(false);
-                  void navigate({ to: '/login', replace: true });
+                  void navigate({ to: "/login", replace: true });
                 }
               }}
               disabled={busy}
             >
-              <LogOut size={15} /> {busy ? 'Signing out…' : 'Sign out'}
+              <LogOut size={15} /> {busy ? "Signing out…" : "Sign out"}
             </button>
           </div>
         </div>
@@ -289,13 +305,16 @@ function AccountMenu({ role }: { role: AppRole }) {
  */
 export function PortalFrame({ children }: { children: ReactNode }) {
   const { role } = useAuth();
-  const active: AppRole = role ?? 'student';
+  const active: AppRole = role ?? "student";
   return (
     <div className="portal-shell">
       <header className="portal-topbar">
         <Link to={roleHome(active) as never} className="portal-brand">
           <NdhFamilySymbol />
-          <span><strong>NDH</strong><small>{PORTAL_NAV[active].name}</small></span>
+          <span>
+            <strong>NDH</strong>
+            <small>{PORTAL_NAV[active].name}</small>
+          </span>
         </Link>
         <AccountMenu role={active} />
       </header>

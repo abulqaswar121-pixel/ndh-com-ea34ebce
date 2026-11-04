@@ -32,11 +32,11 @@ export const Route = createFileRoute("/agency/")({
       { property: "og:title", content: title },
       { property: "og:description", content: description },
       { property: "og:type", content: "website" },
-      { property: "og:image", content: "https://ndh.com.ng/og-image.png" },
+      { property: "og:image", content: "https://ndhnet.com/og-image.png" },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:image", content: "https://ndh.com.ng/og-image.png" },
+      { name: "twitter:image", content: "https://ndhnet.com/og-image.png" },
     ],
-    links: [{ rel: "canonical", href: "https://ndh.com.ng/agency" }],
+    links: [{ rel: "canonical", href: "https://ndhnet.com/agency" }],
   }),
   loader: async () => {
     const [studies, testimonials] = await Promise.all([listCaseStudies(), listTestimonials()]);

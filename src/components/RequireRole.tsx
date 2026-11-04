@@ -45,7 +45,7 @@ export function RequireRole({ role, children }: { role: AppRole; children: React
           <h1 className="text-lg font-semibold">Your account isn’t set up yet</h1>
           <p className="text-sm text-muted-foreground">
             We couldn’t load your account access. Please try again in a moment, or contact support at
-            hello@ndh.com.ng.
+            hello@ndhnet.com.
           </p>
           <button className="button" onClick={() => void signOut()}>
             Sign out

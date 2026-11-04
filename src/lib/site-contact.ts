@@ -4,7 +4,7 @@ export const SITE_CONTACT = {
   phone: "09029932794",
   telephone: "+2349029932794",
   email: "abunnajeeh7@gmail.com",
-  support: "support@ndh.com.ng",
+  support: "support@ndhnet.com",
   whatsapp: "https://wa.me/2349029932794",
   map: "https://www.google.com/maps/search/?api=1&query=Marmaron%20Nufawa%20Western%20Bye%20Pass%20Sokoto%2C%20Nigeria",
   facebook: "https://www.facebook.com/share/1Be6HN8zjS/",

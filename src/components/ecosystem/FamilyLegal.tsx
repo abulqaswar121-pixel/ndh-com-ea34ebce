@@ -4,7 +4,7 @@ import { SITE_CONTACT as contact } from "@/lib/site-contact";
 export function FamilyTerms() {
   return (
     <>
-      <p className="family-small">Last updated: 5 October 2026 · Parent website: ndh.com.ng</p>
+      <p className="family-small">Last updated: 5 October 2026 · Parent website: ndhnet.com</p>
       <h2>1. About this website</h2>
       <p>
         Najeeb Digital Hub (NDH) is a family of businesses based at {contact.address}. This website
@@ -20,7 +20,7 @@ export function FamilyTerms() {
         service.
       </p>
       <p>
-        SchoolDesk, Travel and iHospital are identified as upcoming initiatives. Their inclusion
+        Mall, Cloud, Express, Pay, Travel, NDH Health and the Foundation are identified as initiatives in development. Their inclusion
         does not mean they are currently accepting school onboarding or bookings, providing care or
         offering services.
       </p>
@@ -72,7 +72,7 @@ export function FamilyTerms() {
 export function FamilyPrivacy() {
   return (
     <>
-      <p className="family-small">Last updated: 5 October 2026 · Parent website: ndh.com.ng</p>
+      <p className="family-small">Last updated: 5 October 2026 · Parent website: ndhnet.com</p>
       <h2>1. Scope and contact</h2>
       <p>
         This notice describes information handled through the NDH parent website. Najeeb Digital Hub

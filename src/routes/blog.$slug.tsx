@@ -25,7 +25,7 @@ export const Route = createFileRoute("/blog/$slug")({
         { property: "og:description", content: description },
         { property: "og:type", content: "article" },
       ],
-      links: [{ rel: "canonical", href: `https://ndh.com.ng/blog/${loaderData.slug}` }],
+      links: [{ rel: "canonical", href: `https://ndhnet.com/blog/${loaderData.slug}` }],
     };
   },
   errorComponent: () => <ArticleUnavailable />,

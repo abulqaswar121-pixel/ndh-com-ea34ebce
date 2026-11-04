@@ -1,15 +1,34 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ArrowRight, ArrowUpRight, ShieldCheck, Sparkles, Users } from "lucide-react";
+import {
+  ArrowRight,
+  ArrowUpRight,
+  BadgeCheck,
+  Layers,
+  Newspaper,
+  Rocket,
+  ShieldCheck,
+  Sparkles,
+  Users,
+} from "lucide-react";
 import { FamilyPage } from "@/components/ecosystem/FamilyPage";
 import { BusinessCard } from "@/components/ecosystem/BusinessCard";
 import { BUSINESS_PROFILES } from "@/lib/business-profiles";
 import { SITE_CONTACT } from "@/lib/site-contact";
-import { LIVE_SUBSIDIARY_COUNT, COMING_SUBSIDIARY_COUNT, SUBSIDIARIES, ACADEMY_SNAPSHOT } from "@/lib/ecosystem";
+import {
+  LIVE_SUBSIDIARY_COUNT,
+  COMING_SUBSIDIARY_COUNT,
+  SUBSIDIARIES,
+  LIVE_SUBSIDIARIES,
+  COMING_SUBSIDIARIES,
+  ACADEMY_SNAPSHOT,
+} from "@/lib/ecosystem";
+import { NEWS_POSTS, formatNewsDate } from "@/lib/news";
+import { BRAND } from "@/lib/brand";
 import heroImg from "@/assets/covers/hero.jpg";
 
-const title = "Najeeb Digital Hub | The NDH Family of Businesses";
+const title = "NAJEEB DIGITAL HUB (NDH) | One Gateway. Twelve Businesses.";
 const description =
-  "A family of Nigerian-born businesses spanning digital services, AI-skills education, farm investment and online shopping, with Mall, Cloud, SchoolOS, Express, Pay, Travel, Health and Foundation on the way.";
+  "NDH is Nigeria's Open Gateway to digital business: Academy, Agency, ShopOS, SchoolOS and FarmFund are live today, with Mall, Cloud, Express, Pay, Travel, Health and Foundation in development.";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -19,27 +38,27 @@ export const Route = createFileRoute("/")({
       { property: "og:title", content: title },
       { property: "og:description", content: description },
       { property: "og:type", content: "website" },
-      { property: "og:url", content: "https://ndh.com.ng/" },
-      { property: "og:image", content: "https://ndh-com.lovable.app/og-image.jpg?v=20261024" },
-      { property: "og:image:alt", content: "Najeeb Digital Hub — Open Gateway logo and the NDH family of businesses" },
+      { property: "og:url", content: `${BRAND.url}/` },
+      { property: "og:image", content: `${BRAND.url}/og-image.jpg` },
+      { property: "og:image:alt", content: "NAJEEB DIGITAL HUB — the Open Gateway logo" },
       { property: "og:image:width", content: "1200" },
       { property: "og:image:height", content: "630" },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:image", content: "https://ndh-com.lovable.app/og-image.jpg?v=20261024" },
+      { name: "twitter:image", content: `${BRAND.url}/og-image.jpg` },
     ],
-    links: [{ rel: "canonical", href: "https://ndh.com.ng/" }],
+    links: [{ rel: "canonical", href: `${BRAND.url}/` }],
     scripts: [
       {
         type: "application/ld+json",
         children: JSON.stringify({
           "@context": "https://schema.org",
           "@type": "Organization",
-          name: "Najeeb Digital Hub",
-          alternateName: "NDH",
-          url: "https://ndh.com.ng/",
+          name: BRAND.displayName,
+          alternateName: BRAND.shortName,
+          url: `${BRAND.url}/`,
           description,
+          email: BRAND.email,
           telephone: SITE_CONTACT.telephone,
-          email: SITE_CONTACT.support,
           address: {
             "@type": "PostalAddress",
             streetAddress: "Marmaron Nufawa Western Bye Pass",
@@ -47,17 +66,12 @@ export const Route = createFileRoute("/")({
             addressRegion: "Sokoto",
             addressCountry: "NG",
           },
-          sameAs: [
-            "https://www.facebook.com/share/1Be6HN8zjS/",
-            "https://www.instagram.com/njb_digital_hub",
-          ],
-          /* The family is published as structured data so search engines can
-             discover each business from the parent domain. */
+          sameAs: [SITE_CONTACT.facebook, SITE_CONTACT.instagram, SITE_CONTACT.whatsapp],
           subOrganization: SUBSIDIARIES.map((subsidiary) => ({
             "@type": "Organization",
             name: BUSINESS_PROFILES[subsidiary.id].name,
-            description: BUSINESS_PROFILES[subsidiary.id].description,
-            ...(subsidiary.state === "coming" ? {} : { url: subsidiary.href }),
+            description: BUSINESS_PROFILES[subsidiary.id].role,
+            ...(subsidiary.state === "live" ? { url: subsidiary.href } : {}),
           })),
         }),
       },
@@ -67,103 +81,211 @@ export const Route = createFileRoute("/")({
 });
 
 function Home() {
-  const live = SUBSIDIARIES.filter((s) => s.state !== "coming");
-  const coming = SUBSIDIARIES.filter((s) => s.state === "coming");
+  const latest = [...NEWS_POSTS]
+    .sort((a, b) => b.publishedAt.localeCompare(a.publishedAt))
+    .slice(0, 3);
+
   return (
     <FamilyPage>
-      <section className="nx-hero">
-        <img className="nx-hero-bg" src={heroImg} alt="" width={1600} height={912} fetchPriority="high" />
+      {/* ---------------------------------------------------------------- HERO */}
+      <section className="nx-hero ndh-hero">
+        <img
+          className="nx-hero-bg"
+          src={heroImg}
+          alt=""
+          width={1600}
+          height={912}
+          fetchPriority="high"
+        />
         <div className="nx-hero-shade" aria-hidden="true" />
         <div className="nx-wrap nx-hero-inner">
           <p className="nx-kicker">
-            <Sparkles size={14} aria-hidden="true" /> Najeeb Digital Hub · Made in Nigeria
+            <Sparkles size={14} aria-hidden="true" /> NAJEEB DIGITAL HUB · Open Gateway
           </p>
           <h1>
-            One family.
+            One gateway.
             <br />
-            <span>Many businesses</span> built for real life.
+            <span>Twelve businesses</span> built for real life.
           </h1>
           <p className="nx-hero-lead">
-            From digital services and AI skills to farm investment and online shopping — every NDH
-            business shares one standard of trust.
+            Practical digital skills, managed engineering, cloud storefronts, school systems and
+            verified farm investment — five platforms live today, seven more being built. Every NDH
+            product shares one standard of trust.
           </p>
           <div className="nx-hero-actions">
             <Link to="/businesses" className="nx-btn nx-btn-primary">
-              Explore our businesses <ArrowRight size={17} />
+              Explore the ecosystem <ArrowRight size={17} />
             </Link>
-            <Link to="/contact" className="nx-btn nx-btn-glass">
-              Talk to us <ArrowUpRight size={16} />
+            <Link to="/news" className="nx-btn nx-btn-glass">
+              <Newspaper size={16} /> Read the newsroom
             </Link>
           </div>
           <dl className="nx-hero-stats">
-            <div><dt>{LIVE_SUBSIDIARY_COUNT}</dt><dd>Businesses open now</dd></div>
-            <div><dt>{COMING_SUBSIDIARY_COUNT}</dt><dd>On the way</dd></div>
-            <div><dt>{ACADEMY_SNAPSHOT.courses}</dt><dd>Academy courses</dd></div>
+            <div>
+              <dt>{SUBSIDIARIES.length}</dt>
+              <dd>Businesses</dd>
+            </div>
+            <div>
+              <dt>{ACADEMY_SNAPSHOT.courses}</dt>
+              <dd>Academy courses</dd>
+            </div>
+            <div>
+              <dt>{ACADEMY_SNAPSHOT.schools}</dt>
+              <dd>Academy schools</dd>
+            </div>
           </dl>
         </div>
       </section>
 
-      <div className="nx-ticker" aria-label="Coming soon">
-        <div className="nx-ticker-track">
-          {[...coming, ...coming].map((s, i) => {
-            const Icon = s.icon;
-            return (
-              <span key={`${s.id}-${i}`}>
-                <Icon size={15} aria-hidden="true" /> {BUSINESS_PROFILES[s.id].name}
-                <em>Coming soon</em>
-              </span>
-            );
-          })}
+      {/* ------------------------------------------------------- PRODUCT STATUS */}
+      <section className="ndh-status-strip" aria-label="Platform status">
+        <div className="nx-wrap ndh-status-inner">
+          <span className="ndh-status-pill is-live">
+            <span className="ndh-badge-dot" aria-hidden="true" /> {LIVE_SUBSIDIARY_COUNT} active
+            products
+          </span>
+          <span className="ndh-status-pill is-dev">
+            <Layers size={13} aria-hidden="true" /> {COMING_SUBSIDIARY_COUNT} in development
+          </span>
+          <span className="ndh-status-note">
+            <BadgeCheck size={14} aria-hidden="true" /> Status is updated as each platform opens
+          </span>
         </div>
-      </div>
+      </section>
 
-      <section className="nx-section nx-porcelain">
+      {/* --------------------------------------------------- ACTIVE PRODUCTS */}
+      <section className="nx-section ndh-porcelain" id="businesses">
         <div className="nx-wrap">
-          <div className="nx-head">
+          <div className="ndh-head">
             <div>
-              <p className="nx-eyebrow">Open now</p>
-              <h2>Start with what is ready today</h2>
+              <p className="nx-eyebrow">Ready &amp; active</p>
+              <h2>Five platforms you can use today</h2>
+              <p className="ndh-head-lead">
+                Every card below launches the real product in a new tab. Read the overview first if
+                you want the detail.
+              </p>
             </div>
-            <Link to="/businesses" className="nx-link">
-              All {SUBSIDIARIES.length} businesses <ArrowRight size={15} />
+            <Link to="/businesses" className="ndh-head-link">
+              Directory <ArrowRight size={15} />
             </Link>
           </div>
-          <div className="nx-grid">
-            {live.map((s) => (
+          <div className="ndh-grid">
+            {LIVE_SUBSIDIARIES.map((s) => (
               <BusinessCard key={s.id} s={s} />
             ))}
           </div>
         </div>
       </section>
 
-      <section className="nx-section nx-white">
-        <div className="nx-wrap nx-trust">
-          {[
-            { icon: ShieldCheck, t: "One standard of trust", b: "Every business follows the same rules for honesty, payments and support." },
-            { icon: Users, t: "Real people behind it", b: "Project managers, teachers and operators — not faceless apps." },
-            { icon: Sparkles, t: "Built to grow together", b: "Learn at the Academy, build with the Agency, sell on eStore." },
-          ].map(({ icon: Icon, t, b }) => (
-            <div className="nx-trust-item" key={t}>
-              <span className="nx-trust-icon"><Icon size={20} aria-hidden="true" /></span>
-              <h3>{t}</h3>
-              <p>{b}</p>
+      {/* ------------------------------------------------------- IN DEVELOPMENT */}
+      <section className="nx-section ndh-ink">
+        <div className="nx-wrap">
+          <div className="ndh-head is-dark">
+            <div>
+              <p className="nx-eyebrow">In build · launching soon</p>
+              <h2>Seven platforms on the way</h2>
+              <p className="ndh-head-lead">
+                Each of these is scoped and in development. We announce the opening day in the
+                newsroom instead of publishing a date we cannot keep.
+              </p>
             </div>
-          ))}
-          <Link to="/approach" className="nx-trust-more">
-            Read our approach <ArrowRight size={15} />
-          </Link>
+          </div>
+          <div className="ndh-grid">
+            {COMING_SUBSIDIARIES.map((s) => (
+              <BusinessCard key={s.id} s={s} compact />
+            ))}
+          </div>
         </div>
       </section>
 
-      <section className="nx-band">
-        <div className="nx-wrap nx-band-inner">
-          <div>
-            <h2>Not sure where to start?</h2>
-            <p>Tell us what you need. We will point you to the right NDH business.</p>
+      {/* ------------------------------------------------------------- WHY NDH */}
+      <section className="nx-section ndh-porcelain">
+        <div className="nx-wrap">
+          <p className="nx-eyebrow">Why the family holds together</p>
+          <h2 className="ndh-h2">One standard, twelve products</h2>
+          <div className="ndh-trust">
+            {[
+              {
+                icon: ShieldCheck,
+                t: "Written scope, then money",
+                b: "Every engagement, subscription and investment has terms before payment — never after.",
+              },
+              {
+                icon: Users,
+                t: "Real people on support",
+                b: "Project managers, instructors, operators and consultants you can actually reach.",
+              },
+              {
+                icon: Rocket,
+                t: "Built to hand off",
+                b: "Exports, certificates and records stay yours. Nothing is locked behind NDH forever.",
+              },
+            ].map(({ icon: Icon, t, b }) => (
+              <div className="ndh-trust-item" key={t}>
+                <span className="ndh-trust-icon">
+                  <Icon size={20} aria-hidden="true" />
+                </span>
+                <h3>{t}</h3>
+                <p>{b}</p>
+              </div>
+            ))}
           </div>
-          <Link to="/contact" className="nx-btn nx-btn-primary">
-            Talk to us <ArrowUpRight size={16} />
-          </Link>
+        </div>
+      </section>
+
+      {/* -------------------------------------------------------------- NEWSROOM */}
+      <section className="nx-section ndh-white">
+        <div className="nx-wrap">
+          <div className="ndh-head">
+            <div>
+              <p className="nx-eyebrow">Newsroom</p>
+              <h2>Official announcements</h2>
+              <p className="ndh-head-lead">
+                Product releases, platform updates and company notices — published by the NDH team.
+              </p>
+            </div>
+            <Link to="/news" className="ndh-head-link">
+              All news <ArrowRight size={15} />
+            </Link>
+          </div>
+          <div className="ndh-news-grid">
+            {latest.map((post) => (
+              <Link
+                key={post.slug}
+                to="/news/$slug"
+                params={{ slug: post.slug }}
+                className="ndh-news-card"
+              >
+                <span className="ndh-news-meta">
+                  <span className="ndh-news-badge">{post.badge}</span>
+                  <time dateTime={post.publishedAt}>{formatNewsDate(post.publishedAt)}</time>
+                </span>
+                <h3>{post.title}</h3>
+                <p>{post.excerpt}</p>
+                <span className="ndh-news-more">
+                  Read announcement <ArrowRight size={14} aria-hidden="true" />
+                </span>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ------------------------------------------------------------- CONTACT */}
+      <section className="ndh-band">
+        <div className="nx-wrap ndh-band-inner">
+          <div>
+            <h2>Not sure which platform fits?</h2>
+            <p>Tell us the outcome you need. We will point you to the right NDH business.</p>
+          </div>
+          <div className="ndh-band-actions">
+            <Link to="/contact" className="ndh-btn ndh-btn-light">
+              Talk to us <ArrowUpRight size={16} />
+            </Link>
+            <a href={`mailto:${BRAND.email}`} className="ndh-band-mail">
+              {BRAND.email}
+            </a>
+          </div>
         </div>
       </section>
     </FamilyPage>
