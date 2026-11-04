@@ -153,11 +153,40 @@ function elementContainer(): HTMLElement | null {
   return document.getElementById(TRANSLATE_ELEMENT_ID);
 }
 
+let domPatched = false;
+/**
+ * Google wraps translated text in <font> tags behind React's back. When React
+ * later removes or moves those nodes it throws and the whole page goes blank.
+ * These guards make those calls safe no-ops instead of crashes.
+ */
+export function patchDomForTranslate() {
+  if (domPatched || typeof Node === "undefined") return;
+  domPatched = true;
+  const origRemove = Node.prototype.removeChild;
+  Node.prototype.removeChild = function <T extends Node>(this: Node, child: T): T {
+    if (child.parentNode !== this) {
+      if (child.parentNode) child.parentNode.removeChild(child);
+      return child;
+    }
+    return origRemove.call(this, child) as T;
+  };
+  const origInsert = Node.prototype.insertBefore;
+  Node.prototype.insertBefore = function <T extends Node>(
+    this: Node,
+    node: T,
+    ref: Node | null,
+  ): T {
+    if (ref && ref.parentNode !== this) return origInsert.call(this, node, null) as T;
+    return origInsert.call(this, node, ref) as T;
+  };
+}
+
 /** Injects Google's script once and resolves when the widget exists. */
 export function ensureTranslateEngine(): Promise<boolean> {
   if (typeof window === "undefined" || typeof document === "undefined") {
     return Promise.resolve(false);
   }
+  patchDomForTranslate();
   if (loading) return loading;
 
   loading = new Promise<boolean>((resolve) => {

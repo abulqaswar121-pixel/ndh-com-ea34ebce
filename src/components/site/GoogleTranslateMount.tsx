@@ -5,6 +5,7 @@ import {
   TRANSLATE_ELEMENT_ID,
   applyDocumentLanguage,
   ensureTranslateEngine,
+  patchDomForTranslate,
   readStoredLanguage,
   translatePage,
 } from "@/lib/i18n/google-translate";
@@ -21,6 +22,7 @@ export function GoogleTranslateMount() {
   const pathname = useRouterState({ select: (state) => state.location.pathname });
 
   useEffect(() => {
+    patchDomForTranslate();
     const stored = readStoredLanguage();
     applyDocumentLanguage(stored);
     if (stored === DEFAULT_LANG) return;
