@@ -393,3 +393,46 @@ every trace of Google's own interface is removed.
   the globe control; `/admin/login` does not.
 - No public page links to `/admin`, `/staff` or the studio, and no currency
   switcher exists anywhere.
+
+## Sticky glass navigation, gateway hero, ecosystem metrics and the business ticker
+
+The home page now opens on the NDH gateway itself rather than on one
+subsidiary, and the top bar follows the visitor down the page.
+
+### Added
+
+- `src/components/ecosystem/BusinessTicker.tsx` — a seamless CSS ticker under the
+  hero listing all twelve businesses with their sector icon, name and a green
+  "Live" / grey "Soon" badge. Each pill links to `/businesses/$id`. The track
+  holds two identical runs and slides exactly half its width, so the loop never
+  jumps; motion pauses on hover, on touch and while a pill is focused, and the
+  bar becomes a sideways scroller when reduced motion is requested.
+- `src/assets/covers/hero-gateway-{640,768,1280,1600}.webp` — the new hero
+  visual: a glass headquarters at blue hour with electric-blue architectural
+  lighting, cropped 16:9 (26 KB / 35 KB / 84 KB / 98 KB, all under 100 KB) with
+  a JPEG master kept beside them.
+
+### Changed
+
+- `src/routes/index.tsx` — the hero now serves the gateway image with a
+  four-step `srcSet`, and the three Academy-flavoured stat cards are replaced by
+  three glass ecosystem tiles: **12** Ecosystem Businesses, **5** Active
+  Platforms, **1** Open Gateway, each with its own icon and subtext. The old
+  status strip is gone because the ticker already carries live/soon status.
+- `src/styles.css` — sticky `.nx-header-wrap` (`top: 0`, `z-index: 50`) and
+  sticky `.site-header`, both with a navy/white glass background, backdrop blur
+  and a hairline bottom border that strengthens on scroll; the layered navy
+  gradient over the hero (measured 5.6:1 worst-case contrast for white text);
+  the metric tiles; the ticker; and a `≤620px` pass that turns the metrics into
+  compact rows and keeps ticker pills at 44px.
+- The floating WhatsApp button is removed — `src/components/site/WhatsAppFab.tsx`
+  is deleted and the AI assistant is the only corner action again, with the
+  WhatsApp chat entry living inside its panel.
+
+### Verified
+
+- `npx tsc --noEmit` clean, `npm run build` clean, ESLint clean on every touched
+  file.
+- `/` renders 3 metric tiles and 24 ticker pills (12 businesses × 2 runs), all
+  linking to `/businesses/$id`; no WhatsApp link in the document; every public
+  route still 200; no `/admin` or `/staff` link anywhere in public markup.

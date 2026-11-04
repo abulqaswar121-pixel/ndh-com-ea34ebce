@@ -2,7 +2,6 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import {
   ArrowRight,
   ArrowUpRight,
-  BadgeCheck,
   Layers,
   Newspaper,
   Rocket,
@@ -12,6 +11,7 @@ import {
 } from "lucide-react";
 import { FamilyPage } from "@/components/ecosystem/FamilyPage";
 import { BusinessCard } from "@/components/ecosystem/BusinessCard";
+import { BusinessTicker } from "@/components/ecosystem/BusinessTicker";
 import { BUSINESS_PROFILES } from "@/lib/business-profiles";
 import { SITE_CONTACT } from "@/lib/site-contact";
 import {
@@ -20,12 +20,13 @@ import {
   SUBSIDIARIES,
   LIVE_SUBSIDIARIES,
   COMING_SUBSIDIARIES,
-  ACADEMY_SNAPSHOT,
 } from "@/lib/ecosystem";
 import { NEWS_POSTS, formatNewsDate } from "@/lib/news";
 import { BRAND } from "@/lib/brand";
-import heroImg from "@/assets/covers/hero-1280.webp";
-import heroImgSmall from "@/assets/covers/hero-640.webp";
+import heroImg from "@/assets/covers/hero-gateway-1280.webp";
+import heroImgLarge from "@/assets/covers/hero-gateway-1600.webp";
+import heroImgMedium from "@/assets/covers/hero-gateway-768.webp";
+import heroImgSmall from "@/assets/covers/hero-gateway-640.webp";
 
 const title = "NAJEEB DIGITAL HUB (NDH) | One Gateway. Twelve Businesses.";
 const description =
@@ -100,11 +101,11 @@ function Home() {
         <img
           className="nx-hero-bg"
           src={heroImg}
-          srcSet={`${heroImgSmall} 640w, ${heroImg} 1280w`}
+          srcSet={`${heroImgSmall} 640w, ${heroImgMedium} 768w, ${heroImg} 1280w, ${heroImgLarge} 1600w`}
           sizes="100vw"
           alt=""
           width={1600}
-          height={912}
+          height={900}
           loading="eager"
           fetchPriority="high"
           decoding="sync"
@@ -132,38 +133,44 @@ function Home() {
               <Newspaper size={16} /> Read the newsroom
             </Link>
           </div>
-          <dl className="nx-hero-stats">
-            <div>
-              <dt>{SUBSIDIARIES.length}</dt>
-              <dd>Businesses</dd>
+          <div className="ndh-hero-metrics">
+            <div className="ndh-metric">
+              <span className="ndh-metric-icon" aria-hidden="true">
+                <Layers size={16} />
+              </span>
+              <p className="ndh-metric-num">{SUBSIDIARIES.length}</p>
+              <p className="ndh-metric-title">Ecosystem Businesses</p>
+              <p className="ndh-metric-sub">
+                {LIVE_SUBSIDIARY_COUNT} live platforms · {COMING_SUBSIDIARY_COUNT} in active
+                development
+              </p>
             </div>
-            <div>
-              <dt>{ACADEMY_SNAPSHOT.courses}</dt>
-              <dd>Academy courses</dd>
+            <div className="ndh-metric">
+              <span className="ndh-metric-icon" aria-hidden="true">
+                <Rocket size={16} />
+              </span>
+              <p className="ndh-metric-num">{LIVE_SUBSIDIARY_COUNT}</p>
+              <p className="ndh-metric-title">Active Platforms</p>
+              <p className="ndh-metric-sub">
+                Agency, Academy, ShopOS, SchoolOS &amp; FarmFund ready today
+              </p>
             </div>
-            <div>
-              <dt>{ACADEMY_SNAPSHOT.schools}</dt>
-              <dd>Academy schools</dd>
+            <div className="ndh-metric">
+              <span className="ndh-metric-icon" aria-hidden="true">
+                <Sparkles size={16} />
+              </span>
+              <p className="ndh-metric-num">1</p>
+              <p className="ndh-metric-title">Open Gateway</p>
+              <p className="ndh-metric-sub">
+                Tech, commerce, education, finance &amp; logistics under one standard
+              </p>
             </div>
-          </dl>
+          </div>
         </div>
       </section>
 
-      {/* ------------------------------------------------------- PRODUCT STATUS */}
-      <section className="ndh-status-strip" aria-label="Platform status">
-        <div className="nx-wrap ndh-status-inner">
-          <span className="ndh-status-pill is-live">
-            <span className="ndh-badge-dot" aria-hidden="true" /> {LIVE_SUBSIDIARY_COUNT} active
-            products
-          </span>
-          <span className="ndh-status-pill is-dev">
-            <Layers size={13} aria-hidden="true" /> {COMING_SUBSIDIARY_COUNT} in development
-          </span>
-          <span className="ndh-status-note">
-            <BadgeCheck size={14} aria-hidden="true" /> Status is updated as each platform opens
-          </span>
-        </div>
-      </section>
+      {/* ------------------------------------------------------------ TICKER */}
+      <BusinessTicker />
 
       {/* --------------------------------------------------- ACTIVE PRODUCTS */}
       <section className="nx-section ndh-porcelain" id="businesses">
