@@ -47,8 +47,8 @@ export function PageShell({
         <Link to="/" className="brand precision-brand" aria-label="Najeeb Digital Hub home">
           <NdhFamilySymbol />
           <span>
-            <strong>NAJEEB</strong>
-            <small>DIGITAL HUB</small>
+            <strong translate="no" className="notranslate">NAJEEB</strong>
+            <small translate="no" className="notranslate">DIGITAL HUB</small>
           </span>
         </Link>
         <nav className="desktop-nav">
