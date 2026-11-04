@@ -55,7 +55,17 @@ export const Route = createFileRoute("/")({
         content: "NAJEEB DIGITAL HUB (NDH) — One Gateway. Five Live Platforms.",
       },
     ],
-    links: [{ rel: "canonical", href: `${BRAND.url}/` }],
+    links: [
+      { rel: "canonical", href: `${BRAND.url}/` },
+      {
+        rel: "preload",
+        as: "image",
+        href: heroImg,
+        imageSrcSet: `${heroImgSmall} 640w, ${heroImgMedium} 768w, ${heroImg} 1280w, ${heroImgLarge} 1600w`,
+        imageSizes: "100vw",
+        fetchPriority: "high",
+      },
+    ],
     scripts: [
       {
         type: "application/ld+json",

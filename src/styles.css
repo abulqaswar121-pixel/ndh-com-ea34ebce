@@ -10265,3 +10265,9 @@ font.goog-text-highlight,
   .ndh-hero .nx-hero-inner { padding: 44px 0 38px; }
   .ndh-metric-num { font-size: 26px; min-width: 36px; }
 }
+
+/* Hero metric cards: always crisp on the dark hero photo */
+.ndh-hero .ndh-metric { background: linear-gradient(158deg, rgb(10 22 48 / 0.78), rgb(10 22 48 / 0.6)) !important; border-color: rgb(125 211 252 / 0.3) !important; }
+.ndh-hero .ndh-metric .ndh-metric-num { color: #7dd3fc !important; }
+.ndh-hero .ndh-metric .ndh-metric-title { color: #ffffff !important; }
+.ndh-hero .ndh-metric .ndh-metric-sub { color: #dbe6ff !important; }
