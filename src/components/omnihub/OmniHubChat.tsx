@@ -1,6 +1,8 @@
 import { useCallback, useEffect, useMemo, useRef, useState, type FormEvent } from "react";
 import { ArrowUpRight, Bot, LoaderCircle, Minus, RotateCcw, Send, Sparkles, X } from "lucide-react";
 import assistantAvatar from "@/assets/ndh-ai-assistant.webp";
+import { WhatsAppIcon } from "@/components/site/WhatsAppIcon";
+import { whatsappLink } from "@/lib/whatsapp";
 import { Button } from "@/components/ui/button";
 import { usePreferences } from "@/lib/preferences";
 import { OPEN_ASSISTANT_EVENT } from "@/lib/omni-hub/events";
@@ -464,6 +466,16 @@ export function OmniHubChat() {
                     </Button>
                   ))}
                 </div>
+                <a
+                  className="gw-chat-whatsapp"
+                  href={whatsappLink()}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <WhatsAppIcon size={16} />
+                  Talk to a human on WhatsApp
+                  <ArrowUpRight size={13} aria-hidden="true" />
+                </a>
               </div>
             ) : null}
 

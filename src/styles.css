@@ -9665,3 +9665,382 @@ body {
   .studio-login-title { font-size: 19px; }
   .studio-gate-card { padding: 22px 18px; }
 }
+
+/* ============================================================
+   GOOGLE TRANSLATE — INVISIBLE ENGINE
+   The visitor only ever sees the site in their language. Every
+   piece of Google chrome (banner, tooltips, logos) is removed.
+   ============================================================ */
+
+/* The widget host: present for the engine, invisible to visitors. */
+.ndh-translate-host,
+#google_translate_element {
+  position: absolute !important;
+  left: -9999px !important;
+  top: 0 !important;
+  width: 1px !important;
+  height: 1px !important;
+  overflow: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+/* Google forces a top offset on the document to make room for its banner. */
+html { margin-top: 0 !important; overflow-x: clip; }
+body {
+  top: 0 !important;
+  margin-top: 0 !important;
+  position: static !important;
+  min-height: 100%;
+}
+
+/* The banner frame and its iframes (top bar, "show original" strip). */
+.goog-te-banner-frame,
+.goog-te-banner-frame.skiptranslate,
+iframe.goog-te-banner-frame,
+.goog-te-top-frame,
+#goog-gt-tt,
+.goog-te-balloon-frame,
+.goog-tooltip,
+.goog-tooltip:hover,
+.goog-text-highlight,
+.goog-te-spinner-pos,
+.goog-te-spinner {
+  display: none !important;
+  visibility: hidden !important;
+  height: 0 !important;
+  width: 0 !important;
+  opacity: 0 !important;
+  box-shadow: none !important;
+  background: none !important;
+  border: 0 !important;
+}
+
+/* The gadget itself, its logo, and "Powered by Google Translate". */
+.goog-te-gadget,
+.goog-te-gadget-simple,
+.goog-te-gadget-icon,
+.goog-te-gadget span,
+.goog-logo-link,
+.goog-te-gadget img,
+.goog-te-gadget > span > a,
+#google_translate_element .goog-te-gadget > div {
+  display: none !important;
+}
+
+/* Hover highlight boxes Google paints over translated phrases. */
+font.goog-text-highlight,
+.goog-text-highlight {
+  background: none !important;
+  box-shadow: none !important;
+  border: 0 !important;
+}
+
+/* Keep the page top edge clean even if Google re-applies an offset. */
+.skiptranslate:not(select):not(option) {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* ============================================================
+   LANGUAGE SWITCHER
+   ============================================================ */
+
+.ndh-lang { position: relative; display: inline-flex; flex: none; }
+
+.ndh-lang-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-height: 40px;
+  min-width: 40px;
+  padding: 0 11px;
+  border-radius: 999px;
+  border: 1px solid rgb(255 255 255 / 0.22);
+  background: rgb(255 255 255 / 0.08);
+  color: #e8efff;
+  font-family: inherit;
+  font-size: 12.5px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  transition: background 0.18s ease, border-color 0.18s ease, color 0.18s ease;
+}
+
+.ndh-lang-btn:hover,
+.ndh-lang-btn[aria-expanded="true"] {
+  background: rgb(255 255 255 / 0.16);
+  border-color: rgb(125 211 252 / 0.6);
+  color: #fff;
+}
+
+.ndh-lang-btn svg { flex: none; }
+.ndh-lang-code { line-height: 1; }
+.ndh-lang-caret { opacity: 0.7; }
+
+.ndh-lang-menu {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  z-index: 90;
+  width: 236px;
+  max-width: calc(100vw - 24px);
+  padding: 6px;
+  border-radius: 14px;
+  border: 1px solid #e2e8f0;
+  background: #fff;
+  box-shadow: 0 22px 50px -24px rgb(10 26 48 / 0.55);
+  animation: ndhLangIn 0.16s ease;
+}
+
+@keyframes ndhLangIn {
+  from { opacity: 0; transform: translateY(-6px); }
+}
+
+.ndh-lang-option {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  min-height: 44px;
+  padding: 8px 10px;
+  border: 0;
+  border-radius: 10px;
+  background: none;
+  color: #16233d;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 500;
+  text-align: start;
+  cursor: pointer;
+}
+
+.ndh-lang-option:hover { background: #f1f5f9; }
+.ndh-lang-option.is-active { background: #eef4ff; color: #0a1a30; }
+.ndh-lang-option.is-active svg { color: #2563eb; }
+.ndh-lang-native { flex: 1 1 auto; font-weight: 600; }
+.ndh-lang-en {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: #64748b;
+}
+
+/* Full-width picker: mobile drawer + family menu panel. */
+.ndh-lang-list { display: flex; flex-wrap: wrap; gap: 8px; }
+
+.ndh-lang-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  min-height: 44px;
+  padding: 9px 14px;
+  border-radius: 999px;
+  border: 1px solid rgb(255 255 255 / 0.22);
+  background: rgb(255 255 255 / 0.06);
+  color: #e6eeff;
+  font-family: inherit;
+  font-size: 13.5px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.18s ease, border-color 0.18s ease, color 0.18s ease;
+}
+
+.ndh-lang-chip small {
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  opacity: 0.65;
+}
+
+.ndh-lang-chip:hover { background: rgb(255 255 255 / 0.14); }
+
+.ndh-lang-chip.is-active {
+  background: #fff;
+  border-color: #fff;
+  color: #0a1a30;
+}
+
+.ndh-lang-chip.is-active small,
+.ndh-lang-chip.is-active svg { opacity: 1; color: #2563eb; }
+
+/* The family menu panel is a light surface, so the chips invert there. */
+.gw-menu-lang .ndh-lang-chip {
+  border-color: #d9e1ef;
+  background: #fff;
+  color: #4c5975;
+  min-height: 44px;
+}
+
+.gw-menu-lang .ndh-lang-chip:hover { border-color: #c3cfe6; color: #101b40; }
+
+.gw-menu-lang .ndh-lang-chip.is-active {
+  background: #3159c6;
+  border-color: #3159c6;
+  color: #fff;
+}
+
+.gw-menu-lang .ndh-lang-chip.is-active small,
+.gw-menu-lang .ndh-lang-chip.is-active svg { color: #fff; }
+
+/* Drawer section. */
+.nx-drawer-lang {
+  margin: 14px 0 4px;
+  padding-top: 14px;
+  border-top: 1px solid rgb(255 255 255 / 0.1);
+}
+
+.nx-drawer:not(.is-open) .nx-drawer-lang { visibility: hidden; }
+
+.nx-drawer-lang-title {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin: 0 0 10px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #8fa7c9;
+}
+
+/* ============================================================
+   FLOATING ACTIONS — AI ASSISTANT + WHATSAPP
+   ============================================================ */
+
+:root {
+  --ndh-fab-edge: 20px;
+  --ndh-fab-size: 62px;
+  --ndh-fab-gap: 12px;
+}
+
+.ai-assistant-launcher {
+  right: max(var(--ndh-fab-edge), env(safe-area-inset-right)) !important;
+  bottom: max(var(--ndh-fab-edge), env(safe-area-inset-bottom)) !important;
+  z-index: 70 !important;
+}
+
+.ndh-wa-fab {
+  position: fixed;
+  right: max(var(--ndh-fab-edge), env(safe-area-inset-right));
+  bottom: calc(max(var(--ndh-fab-edge), env(safe-area-inset-bottom)) + var(--ndh-fab-size) + var(--ndh-fab-gap));
+  z-index: 65;
+  display: inline-grid;
+  place-items: center;
+  width: var(--ndh-fab-size);
+  height: var(--ndh-fab-size);
+  border-radius: 50%;
+  background: #25d366;
+  color: #fff;
+  text-decoration: none;
+  box-shadow: 0 14px 34px -12px rgb(37 211 102 / 0.75), 0 0 0 1px rgb(255 255 255 / 0.35) inset;
+  transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
+}
+
+.ndh-wa-fab:hover {
+  background: #1ebe5b;
+  transform: translateY(-2px);
+  box-shadow: 0 18px 40px -14px rgb(37 211 102 / 0.85);
+}
+
+.ndh-wa-fab:focus-visible { outline: 3px solid #0a1a30; outline-offset: 3px; }
+
+.ndh-wa-tip {
+  position: absolute;
+  right: calc(100% + 10px);
+  top: 50%;
+  transform: translateY(-50%);
+  padding: 7px 11px;
+  border-radius: 8px;
+  background: #0a1a30;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.16s ease;
+}
+
+.ndh-wa-fab:hover .ndh-wa-tip,
+.ndh-wa-fab:focus-visible .ndh-wa-tip { opacity: 1; }
+
+/* The chat dialog owns the corner while it is open. */
+body:has(.ai-assistant-dialog) .ndh-wa-fab {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.gw-chat-whatsapp {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 12px;
+  padding: 10px 14px;
+  border-radius: 999px;
+  border: 1px solid rgb(37 211 102 / 0.45);
+  background: rgb(37 211 102 / 0.12);
+  color: #0f7a3d;
+  font-size: 13px;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.gw-chat-whatsapp:hover { background: rgb(37 211 102 / 0.2); }
+
+/* PageShell header sits on a light surface: invert the switcher there. */
+.header-tools {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+
+.site-header .ndh-lang-btn {
+  border-color: #d7e0ee;
+  background: #fff;
+  color: #16233d;
+}
+
+.site-header .ndh-lang-btn:hover,
+.site-header .ndh-lang-btn[aria-expanded="true"] {
+  border-color: #9ec2e8;
+  background: #f2f7ff;
+  color: #0a1a30;
+}
+
+/* Arabic: the popover and its rows follow the reading direction. */
+[dir="rtl"] .ndh-lang-menu { right: auto; left: 0; }
+[dir="rtl"] .ndh-lang-option,
+[dir="rtl"] .ndh-lang-chip { text-align: right; }
+
+@media (max-width: 900px) {
+  .ndh-lang-btn { min-height: 40px; padding: 0 9px; gap: 5px; }
+  .ndh-lang-caret { display: none; }
+}
+
+@media (max-width: 760px) {
+  :root {
+    --ndh-fab-edge: 14px;
+    --ndh-fab-size: 56px;
+    --ndh-fab-gap: 10px;
+  }
+  .ai-assistant-launcher {
+    width: var(--ndh-fab-size) !important;
+    height: var(--ndh-fab-size) !important;
+    padding: 5px !important;
+  }
+  .ai-assistant-avatar { width: 46px !important; height: 46px !important; }
+  .ndh-wa-tip { display: none; }
+}
+
+@media (max-width: 420px) {
+  .site-header { gap: 8px; padding-inline: 12px; }
+  .site-header .desktop-action { padding: 8px 11px; font-size: 11px; }
+  .header-tools { gap: 7px; }
+  .ndh-lang-btn { min-height: 44px; min-width: 44px; padding: 0 10px; }
+  .ndh-lang-menu { width: 224px; }
+  .ndh-lang-option { min-height: 46px; }
+}

@@ -27,6 +27,7 @@ import {
   type TranslationKey,
 } from "@/lib/i18n/dictionary";
 import { DEFAULT_REGION, detectRegion, type RegionId } from "@/lib/region";
+import { DEFAULT_LANG, languageFor, readStoredLanguage } from "@/lib/i18n/google-translate";
 
 export type Preferences = {
   locale: LocaleId;
@@ -111,12 +112,19 @@ export function PreferencesProvider({
 
   const dir = localeDirection(prefs.locale);
 
-  /** Keep the document honest for screen readers and RTL layout. */
+  /**
+   * Keep the document honest for screen readers and RTL layout.
+   *
+   * When the visitor has chosen a language through the Google Translate
+   * switcher, that choice owns `lang`/`dir` — otherwise this effect would snap
+   * Arabic pages back to left-to-right on every mount.
+   */
   useEffect(() => {
     if (typeof document === "undefined") return;
+    const translated = readStoredLanguage();
     const root = document.documentElement;
-    root.lang = prefs.locale;
-    root.dir = dir;
+    root.lang = translated === DEFAULT_LANG ? prefs.locale : translated;
+    root.dir = translated === DEFAULT_LANG ? dir : languageFor(translated).dir;
   }, [prefs.locale, dir]);
 
   const value = useMemo<PreferencesContextValue>(

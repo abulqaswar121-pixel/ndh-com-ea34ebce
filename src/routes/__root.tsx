@@ -21,6 +21,14 @@ import { readPreferences } from "../lib/preferences.functions";
 const OmniHubChat = lazy(() =>
   import("@/components/omnihub/OmniHubChat").then((m) => ({ default: m.OmniHubChat })),
 );
+const WhatsAppFab = lazy(() =>
+  import("@/components/site/WhatsAppFab").then((m) => ({ default: m.WhatsAppFab })),
+);
+const GoogleTranslateMount = lazy(() =>
+  import("@/components/site/GoogleTranslateMount").then((m) => ({
+    default: m.GoogleTranslateMount,
+  })),
+);
 
 function NotFoundComponent() {
   return (
@@ -166,6 +174,8 @@ function RootComponent() {
           <ClientOnly fallback={null}>
             <Suspense fallback={null}>
               <OmniHubChat />
+              <WhatsAppFab />
+              <GoogleTranslateMount />
             </Suspense>
           </ClientOnly>
           <Toaster position="top-right" richColors />
