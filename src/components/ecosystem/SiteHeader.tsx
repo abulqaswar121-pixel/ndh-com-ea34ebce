@@ -119,9 +119,10 @@ export function SiteHeader() {
                     className="nx-mega-card"
                   >
                     <img
-                      src={BUSINESS_DETAILS[s.id].cover}
+                      src={BUSINESS_DETAILS[s.id].coverSmall}
                       alt=""
                       loading="lazy"
+                      decoding="async"
                       width={320}
                       height={180}
                     />

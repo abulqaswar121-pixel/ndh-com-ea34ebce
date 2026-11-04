@@ -285,3 +285,59 @@ light-first one and applies the exact hex values from the correction.
   including state counts, metrics, destinations and six Academy school cards.
 - Fixed an RTL skip-link overflow revealed by the Arabic browser checks, and
   bounded the longer family dropdown to the viewport height.
+
+## SchoolOS repositioning, Open Gateway favicons, image speed pass, hidden staff access
+
+### Changed
+
+- **NDH SchoolOS is now a universal school platform.** Every mention of tahfeez,
+  halqah or an integrated religious curriculum is gone from profiles, the
+  business page, the newsroom, the consultant brief, the studio brand kit and
+  the French/Arabic dictionaries. The line on the directory card and profile is
+  "Complete operating system for modern schools & colleges." with admissions,
+  continuous assessment (CA & exams), auto-graded report cards, fees & receipts
+  (₦), staff payroll and a parent portal as the scope, and zero spreadsheet
+  headaches, fee debt tracking, instant broadsheets and parent SMS/WhatsApp
+  notices as the highlights. Audience: nursery, primary, secondary and colleges.
+- The seeded SchoolOS announcement moved to
+  `/news/schoolos-operating-system-for-modern-schools` with rewritten body copy.
+
+### Added
+
+- `public/favicon.ico` — real multi-size icon (16, 32, 48) written as 32-bit
+  BMP entries from the official Open Gateway mark, plus regenerated
+  `public/favicon.png` (96px) and `public/apple-touch-icon.png` (180px).
+- `public/og-image.jpg` — 1200×630 social banner on midnight navy with a cyan
+  glow, the 3D gateway mark, "NAJEEB DIGITAL HUB (NDH)", the tagline
+  "One Gateway. Five Live Platforms.", the five active-platform badges and
+  ndhnet.com. PNG/WebP twins refreshed so no legacy link shows the old art.
+- `src/lib/studio/access.ts` — studio role rules in one place.
+- `src/components/studio/StudioGuard.tsx` — signed-out visitors to
+  `/admin/studio` or `/staff/studio` are sent to `/admin/login`.
+- `src/routes/admin.login.tsx` — hidden staff entrance at `/admin/login`
+  (noindex, unlinked from every public surface). A staff sign-in lands
+  directly in the Content Studio; `/login` does the same for staff roles.
+- WebP artwork: 13 cover images in 640px and 1280px variants, brand marks,
+  editorial photos and testimonial portraits — all under 100 KB.
+
+### Changed (performance)
+
+- `src/routes/__root.tsx` — explicit `favicon.ico`, `favicon.png` and
+  `apple-touch-icon` links.
+- Hero images carry `fetchPriority="high"` and `decoding="sync"`; every card,
+  cover and list image below the fold carries `loading="lazy"` and
+  `decoding="async"`, with `srcSet` on directory cards and page heroes.
+- `robots.txt` disallows `/admin/`, `/staff/` and `/api/`; `_headers` caches
+  the new social image, favicons and the immutable `/images/*` set.
+
+### Verified
+
+- `npx tsc --noEmit` clean, `npm run build` clean, ESLint clean on every
+  touched file.
+- `/`, `/businesses`, `/businesses/schoolos`, `/news`,
+  `/news/schoolos-operating-system-for-modern-schools`, `/admin/login`, `/login`
+  and the existing public routes all return 200.
+- The `.ico` was parsed back out of its BMP payloads and re-rendered to confirm
+  each size decodes correctly; no `<img>` on the home, directory or news pages
+  is missing its loading/decoding hints; no public page links to `/admin`,
+  `/staff` or the studio.

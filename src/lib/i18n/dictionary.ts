@@ -121,7 +121,8 @@ export const en = {
   "eco.category.education.name": "Education & Tech Talent",
   "eco.category.education.blurb": "60 practical AI-skills courses across 6 specialized schools.",
   "eco.category.infrastructure.name": "Pipeline Platforms",
-  "eco.category.infrastructure.blurb": "SchoolOS, Express, Pay, Travel and NDH Health in development.",
+  "eco.category.infrastructure.blurb":
+    "SchoolOS, Express, Pay, Travel and NDH Health in development.",
   "eco.agency.name": BUSINESS_PROFILES.agency.name,
   "eco.agency.tagline": BUSINESS_PROFILES.agency.tagline,
   "eco.agency.description": BUSINESS_PROFILES.agency.description,
@@ -370,7 +371,8 @@ export const fr: Dictionary = {
   "eco.category.education.blurb":
     "60 cours pratiques de compétences IA dans 6 écoles spécialisées.",
   "eco.category.infrastructure.name": "Plateformes à venir",
-  "eco.category.infrastructure.blurb": "SchoolOS, Express, Pay, Travel et NDH Health en préparation.",
+  "eco.category.infrastructure.blurb":
+    "SchoolOS, Express, Pay, Travel et NDH Health en préparation.",
   "eco.agency.name": "NDH Agency",
   "eco.agency.tagline":
     "Ingénierie, design et automatisation IA de niveau entreprise, livrés par des équipes de chefs de projet dédiés.",
@@ -392,19 +394,17 @@ export const fr: Dictionary = {
   "eco.farmfund.point1": "Registre des contributions et calcul des parts en direct",
   "eco.farmfund.point2": "Dépenses des fermes et bénéfices répartis au prorata",
   "eco.shopos.name": "NDH ShopOS",
-  "eco.shopos.tagline":
-    "Votre boutique en ligne dans le cloud, prête en quelques minutes.",
+  "eco.shopos.tagline": "Votre boutique en ligne dans le cloud, prête en quelques minutes.",
   "eco.shopos.description":
     "Créateur de boutiques en ligne pour petites entreprises : vitrine personnalisée, catalogue produits, encaissement des paiements, commandes et outils marketing sur des formules mensuelles ou annuelles abordables.",
   "eco.shopos.point1": "Paiements et commandes dans un seul tableau de bord",
   "eco.shopos.point2": "Formules mensuelles ou annuelles abordables",
   "eco.schoolos.name": "NDH SchoolOS",
-  "eco.schoolos.tagline":
-    "Gestion scolaire complète : conventionnel intégré et tahfeez optionnel.",
+  "eco.schoolos.tagline": "Le système d’exploitation complet des écoles et collèges modernes.",
   "eco.schoolos.description":
-    "Plateforme complète de gestion scolaire : élèves et classes, résultats et bulletins, frais scolaires, dossiers du personnel et paie, avec un programme tahfeez optionnel intégré au cursus conventionnel.",
-  "eco.schoolos.point1": "Académique, tahfeez, frais et paie au même endroit",
-  "eco.schoolos.point2": "Conçu pour les écoles conventionnelles + tahfeez",
+    "Plateforme universelle de gestion scolaire pour écoles maternelles, primaires, secondaires et collèges : admissions, évaluation continue (CA et examens), bulletins notés automatiquement, frais et reçus en naira, paie du personnel et portail parents.",
+  "eco.schoolos.point1": "Admissions, évaluations, bulletins, frais et paie au même endroit",
+  "eco.schoolos.point2": "Broadsheets instantanés et avis aux parents par SMS/WhatsApp",
   "eco.travel.name": "NDH Travel",
   "eco.travel.tagline": "Conciergerie de voyage, réservation de vols et conseil en visas.",
   "eco.travel.description":
@@ -486,7 +486,7 @@ export const fr: Dictionary = {
   "eco.academy.category": "Éducation et talents technologiques",
   "eco.farmfund.category": "Investissement agricole et agriculture coopérative",
   "eco.shopos.category": "Commerce et infrastructure de vente",
-  "eco.schoolos.category": "Technologie éducative · À venir",
+  "eco.schoolos.category": "Technologie éducative · Gestion scolaire",
   "eco.travel.category": "Services de voyage · À venir",
   "eco.health.category": "Santé numérique · À venir",
 };
@@ -625,11 +625,11 @@ export const ar: Dictionary = {
   "eco.shopos.point1": "المدفوعات والطلبات في لوحة واحدة",
   "eco.shopos.point2": "متاجر مخصصة وسجلات آلية لمستحقات البائعين",
   "eco.schoolos.name": "NDH SchoolOS",
-  "eco.schoolos.tagline": "نظام لإدارة المدارس والتقييم وإصدار تقارير الدرجات آلياً.",
+  "eco.schoolos.tagline": "نظام التشغيل الكامل للمدارس والكليات الحديثة.",
   "eco.schoolos.description":
-    "قريباً. نظام لإدارة المدارس والتقييم والتقارير الآلية قيد التطوير؛ التسجيل والتشغيل المدرسي غير متاحين حالياً.",
-  "eco.schoolos.point1": "إدارة المدارس والتقييم ضمن الخطة",
-  "eco.schoolos.point2": "تقارير درجات آلية · قريباً",
+    "منصة عالمية لإدارة المدارس: رياض الأطفال والابتدائية والثانوية والكليات، تشمل القبول والتقييم المستمر (الاختبارات والفروض) وتقارير الدرجات الآلية والرسوم والإيصالات بالنايرا ورواتب الموظفين وبوابة أولياء الأمور.",
+  "eco.schoolos.point1": "القبول والتقييم والتقارير والرسوم والرواتب في مكان واحد",
+  "eco.schoolos.point2": "كشوف درجات فورية وإشعارات لأولياء الأمور عبر SMS وواتساب",
   "eco.travel.name": "NDH Travel",
   "eco.travel.tagline": "خدمات كونسيرج السفر وحجز الطيران والاستشارات المتعلقة بالتأشيرات.",
   "eco.travel.description":
@@ -709,7 +709,7 @@ export const ar: Dictionary = {
   "eco.academy.category": "التعليم والمواهب التقنية",
   "eco.farmfund.category": "الاستثمار الزراعي والزراعة التعاونية",
   "eco.shopos.category": "التجارة والبنية التحتية للبيع",
-  "eco.schoolos.category": "تقنية التعليم · قريباً",
+  "eco.schoolos.category": "تقنية التعليم · إدارة المدارس",
   "eco.travel.category": "خدمات السفر · قريباً",
   "eco.health.category": "الرعاية الصحية الرقمية · قريباً",
 };

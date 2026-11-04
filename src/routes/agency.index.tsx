@@ -16,8 +16,8 @@ import { Reveal } from "@/components/Reveal";
 import { Rail } from "@/components/Rail";
 import { listCaseStudies, listTestimonials } from "@/lib/catalog.functions";
 import { testimonialPortrait } from "@/lib/testimonial-portraits";
-import agencyCollaboration from "@/assets/agency-collaboration.jpg";
-import projectDelivery from "@/assets/project-delivery.jpg";
+import agencyCollaboration from "@/assets/agency-collaboration.webp";
+import projectDelivery from "@/assets/project-delivery.webp";
 import { caseStudyImage } from "@/lib/editorial-assets";
 import { serviceImage } from "@/lib/topic-images";
 
@@ -32,9 +32,9 @@ export const Route = createFileRoute("/agency/")({
       { property: "og:title", content: title },
       { property: "og:description", content: description },
       { property: "og:type", content: "website" },
-      { property: "og:image", content: "https://ndhnet.com/og-image.png" },
+      { property: "og:image", content: "https://ndhnet.com/og-image.jpg" },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:image", content: "https://ndhnet.com/og-image.png" },
+      { name: "twitter:image", content: "https://ndhnet.com/og-image.jpg" },
     ],
     links: [{ rel: "canonical", href: "https://ndhnet.com/agency" }],
   }),

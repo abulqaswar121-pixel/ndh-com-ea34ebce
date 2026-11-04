@@ -5,6 +5,7 @@ import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { lovable } from "@/integrations/lovable";
 import { useAuth, roleHome } from "@/lib/auth";
+import { STUDIO_PATH, canUseStudio } from "@/lib/studio/access";
 import { Button } from "@/components/ui/button";
 import { BrandMark } from "@/components/BrandMark";
 
@@ -23,15 +24,17 @@ export const Route = createFileRoute("/login")({
 });
 
 function LoginPage() {
-  const { user, role } = useAuth();
+  const { user, role, roles } = useAuth();
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState<"email" | "google" | null>(null);
 
+  // Staff and admins go straight to the studio; everyone else keeps their portal.
   useEffect(() => {
-    if (user && role) void navigate({ to: roleHome(role) });
-  }, [user, role, navigate]);
+    if (!user || !role) return;
+    void navigate({ to: canUseStudio(roles) ? STUDIO_PATH : roleHome(role), replace: true });
+  }, [user, role, roles, navigate]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -80,8 +83,18 @@ function LoginPage() {
           <h1>Sign in</h1>
         </div>
 
-        <Button type="button" variant="outline" className="auth-oauth" onClick={handleGoogle} disabled={loading !== null}>
-          {loading === "google" ? <Loader2 className="h-4 w-4 animate-spin" /> : "Continue with Google"}
+        <Button
+          type="button"
+          variant="outline"
+          className="auth-oauth"
+          onClick={handleGoogle}
+          disabled={loading !== null}
+        >
+          {loading === "google" ? (
+            <Loader2 className="h-4 w-4 animate-spin" />
+          ) : (
+            "Continue with Google"
+          )}
         </Button>
 
         <div className="auth-divider">
@@ -92,25 +105,23 @@ function LoginPage() {
 
         <form onSubmit={handleSubmit} className="auth-form">
           <div>
-            <label htmlFor="email" >Email</label>
+            <label htmlFor="email">Email</label>
             <input
               id="email"
               type="email"
               required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              
             />
           </div>
           <div>
-            <label htmlFor="password" >Password</label>
+            <label htmlFor="password">Password</label>
             <input
               id="password"
               type="password"
               required
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              
             />
           </div>
           <Button type="submit" disabled={loading !== null}>
@@ -119,7 +130,7 @@ function LoginPage() {
         </form>
 
         <p className="auth-alt">
-          No account? <Link to="/signup" >Create one</Link>
+          No account? <Link to="/signup">Create one</Link>
         </p>
       </div>
     </main>

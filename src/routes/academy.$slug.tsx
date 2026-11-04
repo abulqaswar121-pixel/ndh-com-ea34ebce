@@ -28,9 +28,9 @@ export const Route = createFileRoute('/academy/$slug')({
         { property: 'og:title', content: t },
         { property: 'og:description', content: d },
         { property: 'og:type', content: 'article' },
-        { property: 'og:image', content: 'https://ndhnet.com/og-image.png' },
+        { property: 'og:image', content: 'https://ndhnet.com/og-image.jpg' },
         { name: 'twitter:card', content: 'summary_large_image' },
-        { name: 'twitter:image', content: 'https://ndhnet.com/og-image.png' },
+        { name: 'twitter:image', content: 'https://ndhnet.com/og-image.jpg' },
       ],
     };
   },
@@ -95,7 +95,7 @@ function CoursePage() {
                     width={1400}
                     height={933}
                     fetchPriority="high"
-                    decoding="async"
+                    decoding="sync"
                   />
                 )}
                 <span className="tag">{course.school}</span>

@@ -70,7 +70,7 @@ export const NEWS_POSTS: NewsPost[] = [
           "NDH Academy — tech, digital skills and certified professional training.",
           "NDH Agency — managed digital services, web engineering, branding and project talent.",
           "NDH ShopOS — cloud online store builder on low monthly or yearly plans.",
-          "NDH SchoolOS — complete school management with integrated conventional and optional tahfeez.",
+          "NDH SchoolOS — the complete operating system for modern schools and colleges.",
           "NDH FarmFund — agricultural investment with verified cycles and operator tracking.",
         ],
       },
@@ -83,10 +83,10 @@ export const NEWS_POSTS: NewsPost[] = [
     ],
   },
   {
-    slug: "schoolos-integrated-tahfeez-management",
-    title: "NDH SchoolOS now runs integrated conventional and tahfeez schools",
+    slug: "schoolos-operating-system-for-modern-schools",
+    title: "NDH SchoolOS is now a complete operating system for modern schools and colleges",
     excerpt:
-      "Results, report cards, tahfeez records, fees and staff payroll in one platform — and schools name their own classes, sections and halqahs.",
+      "Admissions, CA and exams, auto-graded report cards, fees and receipts in naira, staff payroll and a parent portal — without a single spreadsheet.",
     category: "Product launch",
     publishedAt: "2026-10-14",
     badge: "New release",
@@ -96,23 +96,32 @@ export const NEWS_POSTS: NewsPost[] = [
     blocks: [
       {
         paragraphs: [
-          "Most school systems assume one academic tradition. NDH SchoolOS was built for schools that run both: a conventional curriculum and an integrated tahfeez programme, in the same timetable, for the same students.",
-          "The platform has left preview and is available today at ndhschoolos.lovable.app.",
+          "NDH SchoolOS is now a complete operating system for modern schools and colleges. One platform runs the whole academic year: student admissions, continuous assessment (CA and exams), auto-graded report cards, school fees and receipts in naira, staff payroll and a parent portal.",
+          "It is built for every kind of school — nursery, primary, secondary and colleges — and it is available today at ndhschoolos.lovable.app.",
         ],
       },
       {
         heading: "Inside the release",
         bullets: [
-          "Conventional academics: classes, subjects, scores and report cards.",
-          "Optional tahfeez: memorisation records, halqah groups and progress notes.",
-          "Fees: invoices, payment records and reminders for families.",
-          "Staff: records and payroll in the same system as academics.",
+          "Admissions and records: students, guardians, classes and sections in one register.",
+          "CA and exams: continuous assessment and exam scores recorded once and tallied automatically.",
+          "Auto-graded report cards and instant broadsheets, generated the moment scores are in.",
+          "Fees and receipts in naira, with fee-debt tracking and payment reminders for each family.",
+          "Staff payroll: records, allowances and salary runs beside the academics they support.",
+          "Parent portal: results, fees and notices, with SMS and WhatsApp alerts.",
+        ],
+      },
+      {
+        heading: "Zero spreadsheet headaches",
+        paragraphs: [
+          "Most schools still stitch term results together in spreadsheets, chase fee balances in notebooks and print report cards by hand. SchoolOS removes that work: scores are entered once, report cards grade themselves, broadsheets are ready instantly, and outstanding fees follow each family instead of getting lost in a register.",
+          "When something needs a parent's attention, the portal carries it — and SMS and WhatsApp notices reach guardians who are not logged in.",
         ],
       },
       {
         heading: "Built for how schools actually name things",
         paragraphs: [
-          "Schools define their own class names, sections and halqahs during setup. Nothing is forced into a fixed template, and staff can export records whenever they need them.",
+          "Schools define their own class names, sections and subjects during setup. Nothing is forced into a fixed template, and staff can export records whenever they need them.",
         ],
       },
     ],

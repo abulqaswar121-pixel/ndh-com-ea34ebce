@@ -53,6 +53,7 @@ function Blog() {
                 width={960}
                 height={640}
                 fetchPriority="high"
+                decoding="sync"
               />
             </div>
             <div className="family-feature-copy">

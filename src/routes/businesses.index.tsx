@@ -5,7 +5,8 @@ import { FamilyPage } from "@/components/ecosystem/FamilyPage";
 import { BusinessCard } from "@/components/ecosystem/BusinessCard";
 import { SUBSIDIARIES, LIVE_SUBSIDIARY_COUNT, COMING_SUBSIDIARY_COUNT } from "@/lib/ecosystem";
 import { BRAND } from "@/lib/brand";
-import cover from "@/assets/covers/hero.jpg";
+import cover from "@/assets/covers/hero-1280.webp";
+import coverSmall from "@/assets/covers/hero-640.webp";
 
 const title = "Our Businesses | NAJEEB DIGITAL HUB (NDH)";
 const description =
@@ -42,7 +43,17 @@ function Businesses() {
   return (
     <FamilyPage>
       <section className="nx-cover ndh-cover">
-        <img src={cover} alt="" width={1600} height={912} />
+        <img
+          src={cover}
+          srcSet={`${coverSmall} 640w, ${cover} 1280w`}
+          sizes="100vw"
+          alt=""
+          width={1600}
+          height={912}
+          loading="eager"
+          fetchPriority="high"
+          decoding="sync"
+        />
         <div className="nx-cover-shade" aria-hidden="true" />
         <div className="nx-wrap nx-cover-inner">
           <p className="nx-kicker">The NDH directory</p>

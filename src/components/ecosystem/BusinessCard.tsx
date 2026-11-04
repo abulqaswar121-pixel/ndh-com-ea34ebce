@@ -19,7 +19,16 @@ export function BusinessCard({ s, compact = false }: { s: Subsidiary; compact?: 
   return (
     <article className={`ndh-card${live ? " is-live" : " is-dev"}${compact ? " is-compact" : ""}`}>
       <div className="ndh-card-media">
-        <img src={d.cover} alt={`${p.name} — ${p.role}`} loading="lazy" width={640} height={400} />
+        <img
+          src={d.coverSmall}
+          srcSet={`${d.coverSmall} 640w, ${d.cover} 1280w`}
+          sizes="(max-width: 700px) 100vw, (max-width: 1100px) 45vw, 360px"
+          alt={`${p.name} — ${p.role}`}
+          loading="lazy"
+          decoding="async"
+          width={640}
+          height={400}
+        />
         <span className={`ndh-badge${live ? " is-live" : " is-dev"}`}>
           <span className="ndh-badge-dot" aria-hidden="true" />
           {STATE_LABEL[s.state]}

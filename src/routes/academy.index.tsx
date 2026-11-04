@@ -7,7 +7,7 @@ import { Reveal } from "@/components/Reveal";
 import { Rail } from "@/components/Rail";
 import { listCourses, listStudentVoices } from "@/lib/catalog.functions";
 import { formatPrice } from "@/lib/format";
-import academyLearning from "@/assets/academy-learning.jpg";
+import academyLearning from "@/assets/academy-learning.webp";
 import { courseImage, schoolImage } from "@/lib/topic-images";
 
 const title = "Academy — Practical AI courses and certification | NDH";
@@ -21,9 +21,9 @@ export const Route = createFileRoute("/academy/")({
       { property: "og:title", content: title },
       { property: "og:description", content: description },
       { property: "og:type", content: "website" },
-      { property: "og:image", content: "https://ndhnet.com/og-image.png" },
+      { property: "og:image", content: "https://ndhnet.com/og-image.jpg" },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:image", content: "https://ndhnet.com/og-image.png" },
+      { name: "twitter:image", content: "https://ndhnet.com/og-image.jpg" },
     ],
     links: [{ rel: "canonical", href: "https://ndhnet.com/academy" }],
   }),

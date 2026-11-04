@@ -11,7 +11,7 @@
 import { BUSINESS_PROFILES } from "@/lib/business-profiles";
 import { SUBSIDIARIES, type SubsidiaryId } from "@/lib/ecosystem";
 import { BRAND } from "@/lib/brand";
-import gatewayLogo from "@/assets/ndh-logo-gateway-cropped.png";
+import gatewayLogo from "@/assets/ndh-logo-gateway-cropped.webp";
 
 export type StudioBrandId = "parent" | SubsidiaryId | "other";
 
@@ -176,19 +176,19 @@ const SUBSIDIARY_KITS: Record<SubsidiaryId, BrandKit> = {
     shortName: "NDH SchoolOS",
     url: "https://ndhschoolos.lovable.app",
     handle: "@ndhschoolos",
-    tagline: "Run the whole school from one platform.",
+    tagline: "The complete operating system for modern schools & colleges.",
     audience: "School owners, principals, bursars and administrators.",
     description: BUSINESS_PROFILES.schoolos.role,
     bg: "#04212B",
     bg2: "#0A4553",
     accent: "#22D3EE",
     accent2: "#10B981",
-    hashtags: ["#NDHSchoolOS", "#SchoolManagement", "#Tahfeez", "#Education"],
+    hashtags: ["#NDHSchoolOS", "#SchoolManagement", "#ModernSchools", "#Education"],
     voice: "Calm administrator. Emphasises accuracy of records, fees and results.",
     offerIdeas: [
-      "Results, fees and payroll in one system",
-      "Conventional + tahfeez in one record",
-      "Term start is easier with SchoolOS",
+      "Admissions to report cards, no spreadsheets",
+      "CA, exams and instant broadsheets in one system",
+      "Fees, payroll and parent notices in one place",
     ],
   }),
   farmfund: makeKit({

@@ -173,7 +173,7 @@ function ServiceDetail() {
               width={1400}
               height={933}
               fetchPriority="high"
-              decoding="async"
+              decoding="sync"
             />
           </Reveal>
         )}

@@ -120,7 +120,15 @@ function NewsArticle() {
         <div className="nx-wrap ndh-article-body">
           {post.cover ? (
             <figure className="ndh-article-cover">
-              <img src={post.cover} alt={post.coverAlt ?? ""} width={1200} height={675} />
+              <img
+                src={post.cover}
+                alt={post.coverAlt ?? ""}
+                width={1200}
+                height={675}
+                loading="eager"
+                fetchPriority="high"
+                decoding="sync"
+              />
             </figure>
           ) : null}
 
