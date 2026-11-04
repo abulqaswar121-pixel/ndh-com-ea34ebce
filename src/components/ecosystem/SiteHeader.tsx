@@ -1,10 +1,11 @@
 import { useEffect, useRef, useState } from "react";
 import { Link, useRouterState } from "@tanstack/react-router";
-import { ArrowRight, ArrowUpRight, ChevronDown, Menu, Sparkles, X } from "lucide-react";
+import { ArrowRight, ArrowUpRight, ChevronDown, Globe, Menu, Sparkles, X } from "lucide-react";
 import { NdhFamilySymbol } from "@/components/NdhFamilySymbol";
 import { SUBSIDIARIES, LIVE_SUBSIDIARIES, COMING_SUBSIDIARIES } from "@/lib/ecosystem";
 import { BUSINESS_PROFILES } from "@/lib/business-profiles";
 import { BUSINESS_DETAILS } from "@/lib/business-details";
+import { LanguageList, LanguageSwitcher } from "@/components/site/LanguageSwitcher";
 
 const LINKS = [
   { to: "/businesses", label: "Businesses" },
@@ -89,6 +90,7 @@ export function SiteHeader() {
         </nav>
 
         <div className="nx-actions">
+          <LanguageSwitcher />
           <Link to="/contact" className="nx-cta">
             Talk to us <ArrowUpRight size={15} aria-hidden="true" />
           </Link>
@@ -183,6 +185,13 @@ export function SiteHeader() {
               );
             })}
           </div>
+          <div className="nx-drawer-lang">
+            <p className="nx-drawer-lang-title">
+              <Globe size={14} aria-hidden="true" /> Choose your language
+            </p>
+            <LanguageList onPick={() => setDrawer(false)} />
+          </div>
+
           {LINKS.map((l) => (
             <Link key={l.to} to={l.to} className="nx-drawer-link" tabIndex={drawer ? 0 : -1}>
               {l.label}

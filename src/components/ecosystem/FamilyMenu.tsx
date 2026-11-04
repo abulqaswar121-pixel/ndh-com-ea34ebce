@@ -1,14 +1,14 @@
 import { useEffect, useId, useRef, useState } from "react";
 import { Link } from "@tanstack/react-router";
-import { ArrowUpRight, Check, ChevronDown, Languages } from "lucide-react";
+import { ArrowUpRight, ChevronDown, Languages } from "lucide-react";
 import {
   ECOSYSTEM_CATEGORIES,
   SUBSIDIARIES,
   subsidiaryHref,
   type Subsidiary,
 } from "@/lib/ecosystem";
-import { LOCALES } from "@/lib/i18n/dictionary";
 import { usePreferences } from "@/lib/preferences";
+import { LanguageList } from "@/components/site/LanguageSwitcher";
 
 export type FamilyMenuLink = { label: string; href: string };
 export type FamilyMenuAction = { label: string; href: string };
@@ -33,7 +33,7 @@ export function FamilyMenu({
   /** Optional secondary button in the panel footer. */
   action?: FamilyMenuAction;
 }) {
-  const { t, locale, setLocale } = usePreferences();
+  const { t } = usePreferences();
   const [open, setOpen] = useState(false);
   const rootRef = useRef<HTMLDivElement>(null);
   const panelId = useId();
@@ -186,20 +186,7 @@ export function FamilyMenu({
                 <p className="gw-menu-title">
                   <Languages size={13} aria-hidden="true" /> {t("prefs.title")}
                 </p>
-                <div className="gw-menu-lang-list">
-                  {LOCALES.map((option) => (
-                    <button
-                      key={option.id}
-                      type="button"
-                      className={option.id === locale ? "is-active" : undefined}
-                      aria-pressed={option.id === locale}
-                      onClick={() => setLocale(option.id)}
-                    >
-                      {option.native}
-                      {option.id === locale ? <Check size={13} aria-hidden="true" /> : null}
-                    </button>
-                  ))}
-                </div>
+                <LanguageList onPick={() => setOpen(false)} />
               </div>
 
               <Link className="gw-menu-all" to="/" hash="businesses" onClick={close}>

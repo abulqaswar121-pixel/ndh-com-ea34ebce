@@ -341,3 +341,55 @@ light-first one and applies the exact hex values from the correction.
   each size decodes correctly; no `<img>` on the home, directory or news pages
   is missing its loading/decoding hints; no public page links to `/admin`,
   `/staff` or the studio.
+
+## Google-powered language switcher, floating WhatsApp line, mobile nav polish
+
+The parent app now speaks five languages without shipping five dictionaries.
+Google's translation engine is mounted silently behind a custom control, and
+every trace of Google's own interface is removed.
+
+### Added
+
+- `src/lib/i18n/google-translate.ts` — the language model (`en`, `ar`, `fr`, `es`,
+  `zh` with endonyms and text direction), first-party cookie persistence
+  (`ndh_lang` plus Google's `googtrans`), single-shot script injection,
+  `translatePage()`/`clearTranslation()`, and the `ndh:language` event every
+  switcher listens to. If the engine is blocked or offline the site keeps
+  working in English and the choice is still remembered.
+- `src/components/site/LanguageSwitcher.tsx` — the globe button with a popover
+  list for the desktop header, and `LanguageList` pills for the mobile drawer and
+  the family menu panel.
+- `src/components/site/GoogleTranslateMount.tsx` — mounts the hidden widget once
+  in `__root.tsx` and re-asks the engine to translate after every client-side
+  route change.
+- `src/components/site/WhatsAppFab.tsx` + `src/lib/whatsapp.ts` — the support
+  line as a single source of truth (`wa.me/2348144444662`, pre-filled
+  "Hello NDH, I would like to make an inquiry"), rendered as a green action
+  stacked directly above the AI assistant.
+
+### Changed
+
+- `src/components/ecosystem/SiteHeader.tsx` — globe selector beside the burger
+  and a dedicated "Choose your language" picker inside the drawer.
+- `src/components/PageShell.tsx` — the same selector in the light secondary
+  header, grouped with the call to action.
+- `src/components/ecosystem/FamilyMenu.tsx` — the panel's three-language
+  dictionary list is replaced by the five-language Google switcher, so the site
+  has exactly one language system.
+- `src/lib/preferences.tsx` — `<html lang>`/`dir` defer to a translation choice,
+  so Arabic stays right-to-left instead of snapping back on mount.
+- `src/components/omnihub/OmniHubChat.tsx` — a "Talk to a human on WhatsApp"
+  action inside the assistant's starter panel.
+- `src/styles.css` — the `.ndh-translate` hiding rules (banner frame, top frame,
+  `#goog-gt-tt`, balloon frames, hover highlights, gadget, logo, "Powered by"
+  markup), `body{top:0}` enforcement, the switcher/drawer/FAB styles, and a
+  `≤420px` pass that keeps 44px targets and kills sideways scroll.
+
+### Verified
+
+- `npx tsc --noEmit` clean, `npm run build` clean, ESLint clean (warnings only,
+  pre-existing) on every touched file.
+- `/`, `/about`, `/businesses`, `/news`, `/academy`, `/work`, `/contact` render
+  the globe control; `/admin/login` does not.
+- No public page links to `/admin`, `/staff` or the studio, and no currency
+  switcher exists anywhere.

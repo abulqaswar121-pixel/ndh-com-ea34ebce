@@ -5,6 +5,7 @@ import { roleHome, useAuth } from "@/lib/auth";
 import { NdhFamilySymbol } from "@/components/NdhFamilySymbol";
 import { FamilyFooter } from "@/components/ecosystem/FamilyFooter";
 import { FamilyMenu } from "@/components/ecosystem/FamilyMenu";
+import { LanguageSwitcher } from "@/components/site/LanguageSwitcher";
 import { useI18n } from "@/lib/preferences";
 
 export function PageShell({
@@ -45,7 +46,10 @@ export function PageShell({
       <header id="top" className={scrolled ? "site-header is-scrolled" : "site-header"}>
         <Link to="/" className="brand precision-brand" aria-label="Najeeb Digital Hub home">
           <NdhFamilySymbol />
-          <span><strong>NAJEEB</strong><small>DIGITAL HUB</small></span>
+          <span>
+            <strong>NAJEEB</strong>
+            <small>DIGITAL HUB</small>
+          </span>
         </Link>
         <nav className="desktop-nav">
           <FamilyMenu links={links} cta={{ label: t("nav.talkToUs"), href: "/contact" }} />
@@ -57,9 +61,12 @@ export function PageShell({
             </Link>
           ))}
         </nav>
-        <Link to="/contact" className="nav-action desktop-action">
-          {t("nav.talkToUs")}
-        </Link>
+        <div className="header-tools">
+          <LanguageSwitcher />
+          <Link to="/contact" className="nav-action desktop-action">
+            {t("nav.talkToUs")}
+          </Link>
+        </div>
       </header>
 
       {title ? (
