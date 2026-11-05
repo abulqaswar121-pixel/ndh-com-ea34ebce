@@ -293,7 +293,14 @@ export function clearTranslation() {
     const root = document.documentElement;
     const stillTranslated =
       root.classList.contains("translated-ltr") || root.classList.contains("translated-rtl");
-    if (!stillTranslated) return;
+    if (!stillTranslated) {
+      try {
+        window.sessionStorage.removeItem("ndh_lang_reload");
+      } catch {
+        /* ignore */
+      }
+      return;
+    }
     try {
       if (window.sessionStorage.getItem("ndh_lang_reload") === "1") return;
       window.sessionStorage.setItem("ndh_lang_reload", "1");
