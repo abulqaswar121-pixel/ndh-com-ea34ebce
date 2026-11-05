@@ -25,7 +25,15 @@ export function GoogleTranslateMount() {
     patchDomForTranslate();
     const stored = readStoredLanguage();
     applyDocumentLanguage(stored);
-    if (stored === DEFAULT_LANG) return;
+    if (stored === DEFAULT_LANG) {
+      // A fresh English page: allow the one-time "back to English" reload again.
+      try {
+        window.sessionStorage.removeItem("ndh_lang_reload");
+      } catch {
+        /* storage blocked */
+      }
+      return;
+    }
     void translatePage(stored);
   }, []);
 
