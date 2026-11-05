@@ -72,9 +72,11 @@ export function BusinessTicker() {
               aria-label={`${name} — ${DESCRIPTORS[subsidiary.id]} — ${live ? "Live" : "Coming soon"}`}
             >
               <Icon size={15} aria-hidden="true" className="ndh-ticker-icon" />
-              <span className="ndh-ticker-name">{name}</span>
+              <span className="ndh-ticker-name notranslate" translate="no">
+                {name}
+              </span>
               <span className={`ndh-ticker-badge ${live ? "is-live" : "is-soon"}`}>
-                {live ? "Live" : "Soon"}
+                {live ? "Open now" : "Coming soon"}
               </span>
             </Link>
           </li>
