@@ -37,6 +37,27 @@ export const TRANSLATE_LANGUAGES: readonly TranslateLanguage[] = [
 ];
 
 export const DEFAULT_LANG: TranslateLangId = "en";
+
+/** Google's engine uses regional codes for some languages (Chinese = zh-CN). */
+const GOOGLE_CODES: Record<TranslateLangId, string> = {
+  en: "en",
+  ar: "ar",
+  fr: "fr",
+  es: "es",
+  zh: "zh-CN",
+};
+
+export function googleCodeFor(id: TranslateLangId): string {
+  return GOOGLE_CODES[id];
+}
+
+function fromGoogleCode(code: string | undefined): TranslateLangId | null {
+  if (!code) return null;
+  const match = (Object.keys(GOOGLE_CODES) as TranslateLangId[]).find(
+    (id) => GOOGLE_CODES[id].toLowerCase() === code.toLowerCase() || id === code.toLowerCase(),
+  );
+  return match ?? null;
+}
 export const LANG_COOKIE = "ndh_lang";
 export const LANG_EVENT = "ndh:language";
 export const TRANSLATE_ELEMENT_ID = "google_translate_element";
@@ -93,8 +114,8 @@ export function readStoredLanguage(): TranslateLangId {
   // Fall back to Google's own cookie, e.g. "/en/ar".
   const legacy = readCookie("googtrans");
   if (legacy) {
-    const target = legacy.split("/").filter(Boolean).pop();
-    if (isTranslateLang(target)) return target;
+    const target = fromGoogleCode(legacy.split("/").filter(Boolean).pop());
+    if (target) return target;
   }
   return DEFAULT_LANG;
 }
@@ -115,7 +136,7 @@ export function changeLanguage(id: TranslateLangId) {
     clearCookie("googtrans");
   } else {
     // Google reads `/source/target`; English is the page's source language.
-    writeCookie("googtrans", `/en/${id}`);
+    writeCookie("googtrans", `/en/${googleCodeFor(id)}`);
   }
   applyDocumentLanguage(id);
   window.dispatchEvent(new CustomEvent<TranslateLangId>(LANG_EVENT, { detail: id }));
@@ -202,7 +223,7 @@ export function ensureTranslateEngine(): Promise<boolean> {
         new window.google.translate.TranslateElement(
           {
             pageLanguage: "en",
-            includedLanguages: TRANSLATE_LANGUAGES.map((language) => language.id).join(","),
+            includedLanguages: TRANSLATE_LANGUAGES.map((language) => googleCodeFor(language.id)).join(","),
             autoDisplay: false,
             multilanguagePage: true,
           },
@@ -262,13 +283,14 @@ export async function translatePage(id: TranslateLangId): Promise<void> {
       if (tries > 0) window.setTimeout(() => attempt(tries - 1), 300);
       return;
     }
-    if (select.value === id) {
+    const code = googleCodeFor(id);
+    if (select.value === code) {
       // Already pointing at the right language: nudge it so freshly rendered
       // content (client-side navigation) is translated too.
       select.dispatchEvent(new Event("change"));
       return;
     }
-    select.value = id;
+    select.value = code;
     select.dispatchEvent(new Event("change"));
   };
 
