@@ -101,31 +101,76 @@ function RunnerGame({ onClose }: { onClose: () => void }) {
   );
 }
 
-/** Offline / back-online notice with the mini-game. */
+/** Pop-up notices: offline, back online, and install app. They slide in, then leave by themselves. */
+type Note = { kind: "off" | "on" | "install"; text: string };
+
+function useAutoHide(ms: number) {
+  const [note, setNote] = useState<Note | null>(null);
+  const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const show = (n: Note) => {
+    setNote(n);
+    if (timer.current) clearTimeout(timer.current);
+    timer.current = setTimeout(() => setNote(null), ms);
+  };
+  return { note, show, hide: () => setNote(null) };
+}
+
 function NetworkNotice() {
-  const [online, setOnline] = useState(true);
-  const [back, setBack] = useState(false);
+  const { note, show, hide } = useAutoHide(6000);
   const [game, setGame] = useState(false);
+  const prompt = useRef<any>(null);
+
   useEffect(() => {
-    setOnline(navigator.onLine);
-    const off = () => { setOnline(false); setBack(false); };
-    const on = () => { setOnline(true); setBack(true); setTimeout(() => setBack(false), 4000); };
+    const off = () => show({ kind: "off", text: "You're offline • Showing saved page" });
+    const on = () => show({ kind: "on", text: "Back online" });
     window.addEventListener("offline", off);
     window.addEventListener("online", on);
-    return () => { window.removeEventListener("offline", off); window.removeEventListener("online", on); };
+
+    const installed =
+      window.matchMedia("(display-mode: standalone)").matches ||
+      (navigator as any).standalone === true;
+    const inFrame = window.top !== window.self;
+    const onPrompt = (e: Event) => {
+      e.preventDefault();
+      prompt.current = e;
+      if (!installed && !inFrame) show({ kind: "install", text: "Get the NDH Hub app on your phone" });
+    };
+    window.addEventListener("beforeinstallprompt", onPrompt);
+    // iPhone has no install event, so show a short tip on each open instead.
+    const isIos = /iphone|ipad|ipod/i.test(navigator.userAgent);
+    let t: ReturnType<typeof setTimeout> | undefined;
+    if (isIos && !installed && !inFrame) {
+      t = setTimeout(() => show({ kind: "install", text: "Tap Share, then 'Add to Home Screen'" }), 1800);
+    }
+    if (!navigator.onLine) off();
+    return () => {
+      window.removeEventListener("offline", off);
+      window.removeEventListener("online", on);
+      window.removeEventListener("beforeinstallprompt", onPrompt);
+      if (t) clearTimeout(t);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  const install = async () => {
+    const p = prompt.current;
+    hide();
+    if (!p) return;
+    p.prompt();
+    await p.userChoice.catch(() => null);
+    prompt.current = null;
+  };
+
   return (
     <>
-      {!online && (
-        <div className="ndh-net is-off" role="status">
-          <span>Offline • Showing saved page</span>
-          <button type="button" onClick={() => setGame(true)}>Play game</button>
-        </div>
-      )}
-      {online && back && (
-        <div className="ndh-net is-on" role="status">
-          <span>Back online</span>
-          <button type="button" onClick={() => location.reload()}>Refresh</button>
+      {note && (
+        <div key={note.text} className={`ndh-toast is-${note.kind}`} role="status">
+          <img src={logo} alt="" className="ndh-toast-icon" />
+          <span>{note.text}</span>
+          {note.kind === "off" && <button type="button" onClick={() => { hide(); setGame(true); }}>Play</button>}
+          {note.kind === "on" && <button type="button" onClick={() => location.reload()}>Refresh</button>}
+          {note.kind === "install" && prompt.current && <button type="button" onClick={install}>Install</button>}
+          <button type="button" className="ndh-toast-x" onClick={hide} aria-label="Close">✕</button>
         </div>
       )}
       {game && <RunnerGame onClose={() => setGame(false)} />}
