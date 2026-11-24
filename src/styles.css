@@ -10283,3 +10283,28 @@ font.goog-text-highlight,
 .ndh-hero .ndh-metric .ndh-metric-num { color: #7dd3fc !important; }
 .ndh-hero .ndh-metric .ndh-metric-title { color: #ffffff !important; }
 .ndh-hero .ndh-metric .ndh-metric-sub { color: #dbe6ff !important; }
+
+/* ---------- NDH app shell: splash, loading line, offline notice, game ---------- */
+.ndh-splash { position: fixed; inset: 0; z-index: 9999; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: .35rem; background: #0a1a30; transition: opacity .4s ease; }
+.ndh-splash.is-leaving { opacity: 0; pointer-events: none; }
+.ndh-splash-logo { width: 96px; height: 96px; border-radius: 22px; animation: ndh-pop .7s ease-out both, ndh-glow 1.6s ease-in-out infinite; }
+.ndh-splash-parent { margin-top: .9rem; font-size: .62rem; letter-spacing: .32em; color: rgb(203 213 225); animation: ndh-rise .6s .25s both; }
+.ndh-splash-name { font-size: 1.6rem; font-weight: 800; letter-spacing: .06em; color: #f8fafc; animation: ndh-rise .6s .4s both; }
+.ndh-splash-bar { margin-top: 1rem; width: 120px; height: 3px; border-radius: 3px; background: linear-gradient(90deg, transparent, #22d3ee, transparent); background-size: 200% 100%; animation: ndh-sweep 1s linear infinite; }
+@keyframes ndh-pop { from { opacity: 0; transform: scale(.8); } to { opacity: 1; transform: scale(1); } }
+@keyframes ndh-glow { 50% { filter: drop-shadow(0 0 18px rgba(34,211,238,.55)); } }
+@keyframes ndh-rise { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+@keyframes ndh-sweep { from { background-position: 200% 0; } to { background-position: -200% 0; } }
+.ndh-loadline { position: fixed; top: 0; left: 0; right: 0; height: 3px; z-index: 9998; pointer-events: none; opacity: 0; background: linear-gradient(90deg, #6366f1, #22d3ee, #6366f1); background-size: 200% 100%; transition: opacity .25s; }
+.ndh-loadline.is-on { opacity: 1; animation: ndh-sweep 1s linear infinite; }
+.ndh-net { position: fixed; left: 50%; bottom: 1rem; transform: translateX(-50%); z-index: 9990; display: flex; align-items: center; gap: .75rem; padding: .55rem .6rem .55rem 1rem; border-radius: 999px; font-size: .8rem; color: #f8fafc; background: #0a1a30; border: 1px solid rgba(34,211,238,.35); box-shadow: 0 10px 30px rgba(10,26,48,.35); white-space: nowrap; }
+.ndh-net.is-on { border-color: rgba(52,211,153,.5); }
+.ndh-net button { border-radius: 999px; padding: .3rem .8rem; font-weight: 600; background: #22d3ee; color: #0a1a30; }
+.ndh-game { position: fixed; inset: 0; z-index: 9995; display: grid; place-items: center; padding: 1rem; background: rgba(10,26,48,.7); backdrop-filter: blur(4px); }
+.ndh-game-card { width: 100%; max-width: 360px; border-radius: 1.25rem; padding: 1rem; background: #f8fafc; color: #0a1a30; border: 1px solid rgba(10,26,48,.12); box-shadow: 0 20px 50px rgba(10,26,48,.4); }
+.ndh-game-head { display: flex; justify-content: space-between; align-items: center; font-size: 1rem; }
+.ndh-game-sub { font-size: .8rem; color: #475569; margin: .25rem 0 .75rem; }
+.ndh-game-canvas { width: 100%; height: auto; border-radius: .75rem; background: #eef2f7; touch-action: manipulation; cursor: pointer; }
+.ndh-game-score { display: flex; justify-content: space-between; font-size: .8rem; font-weight: 600; margin-top: .5rem; }
+.ndh-game-btn { margin-top: .75rem; width: 100%; border-radius: .75rem; padding: .6rem; font-weight: 700; background: #0a1a30; color: #f8fafc; }
+@media (prefers-reduced-motion: reduce) { .ndh-splash *, .ndh-loadline { animation: none !important; } }

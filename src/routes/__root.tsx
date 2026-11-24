@@ -21,6 +21,9 @@ import { readPreferences } from "../lib/preferences.functions";
 const OmniHubChat = lazy(() =>
   import("@/components/omnihub/OmniHubChat").then((m) => ({ default: m.OmniHubChat })),
 );
+const AppShellExtras = lazy(() =>
+  import("@/components/app/AppShellExtras").then((m) => ({ default: m.AppShellExtras })),
+);
 const GoogleTranslateMount = lazy(() =>
   import("@/components/site/GoogleTranslateMount").then((m) => ({
     default: m.GoogleTranslateMount,
@@ -96,6 +99,11 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "viewport", content: "width=device-width, initial-scale=1" },
       { title: "Najeeb Digital Hub" },
       { name: "author", content: "Najeeb Digital Hub" },
+      { name: "theme-color", content: "#0A1A30" },
+      { name: "apple-mobile-web-app-capable", content: "yes" },
+      { name: "mobile-web-app-capable", content: "yes" },
+      { name: "apple-mobile-web-app-title", content: "NDH Hub" },
+      { name: "apple-mobile-web-app-status-bar-style", content: "black-translucent" },
       { property: "og:type", content: "website" },
       { property: "og:site_name", content: "Najeeb Digital Hub" },
       { name: "twitter:card", content: "summary" },
@@ -104,6 +112,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { rel: "stylesheet", href: appCss },
       { rel: "icon", href: "/favicon.ico", sizes: "any" },
       { rel: "icon", type: "image/png", href: "/favicon.png", sizes: "96x96" },
+      { rel: "manifest", href: "/manifest.webmanifest" },
       { rel: "apple-touch-icon", href: "/apple-touch-icon.png", sizes: "180x180" },
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
@@ -172,6 +181,7 @@ function RootComponent() {
             <Suspense fallback={null}>
               <OmniHubChat />
               <GoogleTranslateMount />
+              <AppShellExtras />
             </Suspense>
           </ClientOnly>
           <Toaster position="top-right" richColors />
