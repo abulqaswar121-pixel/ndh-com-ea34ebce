@@ -1369,6 +1369,87 @@ export type Database = {
           },
         ]
       }
+      studio_daily_flyers: {
+        Row: {
+          automatic: boolean
+          brand_id: string
+          caption: string
+          created_at: string
+          day: string
+          email_error: string | null
+          email_state: string
+          file_path: string | null
+          headline: string
+          id: string
+          message_id: string | null
+          state: string
+          template_id: string
+          updated_at: string
+        }
+        Insert: {
+          automatic?: boolean
+          brand_id: string
+          caption: string
+          created_at?: string
+          day: string
+          email_error?: string | null
+          email_state?: string
+          file_path?: string | null
+          headline: string
+          id?: string
+          message_id?: string | null
+          state?: string
+          template_id: string
+          updated_at?: string
+        }
+        Update: {
+          automatic?: boolean
+          brand_id?: string
+          caption?: string
+          created_at?: string
+          day?: string
+          email_error?: string | null
+          email_state?: string
+          file_path?: string | null
+          headline?: string
+          id?: string
+          message_id?: string | null
+          state?: string
+          template_id?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      studio_daily_settings: {
+        Row: {
+          brand_ids: string[]
+          created_at: string
+          enabled: boolean
+          id: number
+          recipient_email: string
+          sender_domain: string
+          updated_at: string
+        }
+        Insert: {
+          brand_ids?: string[]
+          created_at?: string
+          enabled?: boolean
+          id?: number
+          recipient_email: string
+          sender_domain?: string
+          updated_at?: string
+        }
+        Update: {
+          brand_ids?: string[]
+          created_at?: string
+          enabled?: boolean
+          id?: number
+          recipient_email?: string
+          sender_domain?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       suppressed_emails: {
         Row: {
           created_at: string

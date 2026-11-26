@@ -1,0 +1,13 @@
+CREATE TABLE public.studio_daily_settings (id integer PRIMARY KEY DEFAULT 1 CHECK(id=1), enabled boolean NOT NULL DEFAULT true, recipient_email text NOT NULL, sender_domain text NOT NULL DEFAULT '', brand_ids text[] NOT NULL DEFAULT ARRAY['academy','agency'], created_at timestamptz NOT NULL DEFAULT now(), updated_at timestamptz NOT NULL DEFAULT now());
+GRANT SELECT,INSERT,UPDATE ON public.studio_daily_settings TO authenticated;
+GRANT ALL ON public.studio_daily_settings TO service_role;
+ALTER TABLE public.studio_daily_settings ENABLE ROW LEVEL SECURITY;
+CREATE POLICY studio_settings_admin ON public.studio_daily_settings FOR ALL TO authenticated USING(public.is_admin()) WITH CHECK(public.is_admin());
+CREATE TABLE public.studio_daily_flyers (id uuid PRIMARY KEY DEFAULT gen_random_uuid(), day date NOT NULL, automatic boolean NOT NULL DEFAULT false, template_id text NOT NULL, brand_id text NOT NULL, headline text NOT NULL, caption text NOT NULL, file_path text, state text NOT NULL DEFAULT 'creating' CHECK(state IN ('creating','ready','failed')), email_state text NOT NULL DEFAULT 'waiting' CHECK(email_state IN ('waiting','sending','sent','failed')), email_error text, message_id uuid, created_at timestamptz NOT NULL DEFAULT now(), updated_at timestamptz NOT NULL DEFAULT now());
+GRANT SELECT ON public.studio_daily_flyers TO authenticated;
+GRANT ALL ON public.studio_daily_flyers TO service_role;
+ALTER TABLE public.studio_daily_flyers ENABLE ROW LEVEL SECURITY;
+CREATE POLICY studio_flyers_admin ON public.studio_daily_flyers FOR SELECT TO authenticated USING(public.is_admin());
+CREATE UNIQUE INDEX studio_one_automatic_flyer_per_day ON public.studio_daily_flyers(day) WHERE automatic;
+CREATE INDEX studio_flyer_created ON public.studio_daily_flyers(created_at DESC);
+CREATE POLICY studio_flyers_private_read ON storage.objects FOR SELECT TO authenticated USING(bucket_id='studio-flyers' AND public.is_admin());

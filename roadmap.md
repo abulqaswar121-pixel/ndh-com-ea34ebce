@@ -1,5 +1,11 @@
 # Roadmap
 
+## Daily photo flyer studio
+- [ ] Add the six approved Academy and Agency photo flyers and reusable photo layouts to the private studio.
+- [ ] Add automatic daily selection, editable captions, and cloud archive/downloads.
+- [ ] Add owner-only email alerts and scheduled delivery; sender-domain setup required before delivery.
+- [ ] Verify signed-in creation, privacy, phone layout, and rendering tests.
+
 - [x] Roll out the approved Open Gateway integrated badge on the parent homepage, align its palette, add useful ecosystem content, and check phone/desktop views.
 - [x] Show three side-by-side NDH family identity systems as a separate visual exploration without replacing the current brand.
 - [x] Select integrated-corner direction for the NDH family.

@@ -1,0 +1,7 @@
+import { Body, Button, Container, Head, Heading, Html, Preview, Text } from '@react-email/components';
+import type { TemplateEntry } from './registry';
+export type FlyerReadyProps = { headline: string; downloadUrl: string; studioUrl: string };
+function FlyerReadyEmail({ headline, downloadUrl, studioUrl }: FlyerReadyProps) {
+  return <Html lang="en"><Head /><Preview>Your daily NDH flyer is ready to download.</Preview><Body style={{ backgroundColor: '#ffffff', fontFamily: 'Arial, sans-serif', color: '#0A1A30' }}><Container style={{ padding: '32px', maxWidth: '560px' }}><Text>NAJEEB DIGITAL HUB · PRIVATE STUDIO</Text><Heading>Your flyer is ready</Heading><Text>“{headline}” has been created and saved in your private studio.</Text><Text>Download the image, then open the studio to copy your ready-to-post caption.</Text><Button href={downloadUrl} style={{ backgroundColor: '#0A1A30', color: '#ffffff', padding: '14px 22px' }}>Download flyer</Button><Text>The private download link expires after seven days. You can get a fresh link in the studio.</Text><Button href={studioUrl}>Open private studio</Button></Container></Body></Html>;
+}
+export const template = { component: FlyerReadyEmail, subject: 'Your daily NDH flyer is ready', displayName: 'Daily flyer ready', previewData: { headline: 'AI Graphic Design', downloadUrl: 'https://ndh.com.ng/admin/login', studioUrl: 'https://ndh.com.ng/admin/login' } } satisfies TemplateEntry<FlyerReadyProps>;

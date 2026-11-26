@@ -90,6 +90,7 @@ import { Route as AuthenticatedPortalTalentAccountRouteImport } from './routes/_
 import { Route as AuthenticatedPortalTalentEarningsRouteImport } from './routes/_authenticated/portal/talent.earnings'
 import { Route as AuthenticatedPortalTalentProfileRouteImport } from './routes/_authenticated/portal/talent.profile'
 import { Route as AuthenticatedPortalTalentTasksRouteImport } from './routes/_authenticated/portal/talent.tasks'
+import { Route as ApiPublicStudioDailyRouteImport } from './routes/api/public/studio/daily'
 import { Route as LovableEmailAuthPreviewRouteImport } from './routes/lovable/email/auth/preview'
 import { Route as LovableEmailAuthWebhookRouteImport } from './routes/lovable/email/auth/webhook'
 import { Route as LovableEmailQueueProcessRouteImport } from './routes/lovable/email/queue/process'
@@ -546,6 +547,11 @@ const AuthenticatedPortalTalentTasksRoute =
     path: '/tasks',
     getParentRoute: () => AuthenticatedPortalTalentRoute,
   } as any)
+const ApiPublicStudioDailyRoute = ApiPublicStudioDailyRouteImport.update({
+  id: '/api/public/studio/daily',
+  path: '/api/public/studio/daily',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const LovableEmailAuthPreviewRoute = LovableEmailAuthPreviewRouteImport.update({
   id: '/lovable/email/auth/preview',
   path: '/lovable/email/auth/preview',
@@ -651,6 +657,7 @@ export interface FileRoutesByFullPath {
   '/portal/talent/earnings': typeof AuthenticatedPortalTalentEarningsRoute
   '/portal/talent/profile': typeof AuthenticatedPortalTalentProfileRoute
   '/portal/talent/tasks': typeof AuthenticatedPortalTalentTasksRoute
+  '/api/public/studio/daily': typeof ApiPublicStudioDailyRoute
   '/lovable/email/auth/preview': typeof LovableEmailAuthPreviewRoute
   '/lovable/email/auth/webhook': typeof LovableEmailAuthWebhookRoute
   '/lovable/email/queue/process': typeof LovableEmailQueueProcessRoute
@@ -728,6 +735,7 @@ export interface FileRoutesByTo {
   '/portal/talent/earnings': typeof AuthenticatedPortalTalentEarningsRoute
   '/portal/talent/profile': typeof AuthenticatedPortalTalentProfileRoute
   '/portal/talent/tasks': typeof AuthenticatedPortalTalentTasksRoute
+  '/api/public/studio/daily': typeof ApiPublicStudioDailyRoute
   '/lovable/email/auth/preview': typeof LovableEmailAuthPreviewRoute
   '/lovable/email/auth/webhook': typeof LovableEmailAuthWebhookRoute
   '/lovable/email/queue/process': typeof LovableEmailQueueProcessRoute
@@ -817,6 +825,7 @@ export interface FileRoutesById {
   '/_authenticated/portal/talent/earnings': typeof AuthenticatedPortalTalentEarningsRoute
   '/_authenticated/portal/talent/profile': typeof AuthenticatedPortalTalentProfileRoute
   '/_authenticated/portal/talent/tasks': typeof AuthenticatedPortalTalentTasksRoute
+  '/api/public/studio/daily': typeof ApiPublicStudioDailyRoute
   '/lovable/email/auth/preview': typeof LovableEmailAuthPreviewRoute
   '/lovable/email/auth/webhook': typeof LovableEmailAuthWebhookRoute
   '/lovable/email/queue/process': typeof LovableEmailQueueProcessRoute
@@ -906,6 +915,7 @@ export interface FileRouteTypes {
     | '/portal/talent/earnings'
     | '/portal/talent/profile'
     | '/portal/talent/tasks'
+    | '/api/public/studio/daily'
     | '/lovable/email/auth/preview'
     | '/lovable/email/auth/webhook'
     | '/lovable/email/queue/process'
@@ -983,6 +993,7 @@ export interface FileRouteTypes {
     | '/portal/talent/earnings'
     | '/portal/talent/profile'
     | '/portal/talent/tasks'
+    | '/api/public/studio/daily'
     | '/lovable/email/auth/preview'
     | '/lovable/email/auth/webhook'
     | '/lovable/email/queue/process'
@@ -1071,6 +1082,7 @@ export interface FileRouteTypes {
     | '/_authenticated/portal/talent/earnings'
     | '/_authenticated/portal/talent/profile'
     | '/_authenticated/portal/talent/tasks'
+    | '/api/public/studio/daily'
     | '/lovable/email/auth/preview'
     | '/lovable/email/auth/webhook'
     | '/lovable/email/queue/process'
@@ -1110,6 +1122,7 @@ export interface RootRouteChildren {
   VerifyIndexRoute: typeof VerifyIndexRoute
   ApiPublicOmniHubRoute: typeof ApiPublicOmniHubRoute
   ApiPublicPaystackWebhookRoute: typeof ApiPublicPaystackWebhookRoute
+  ApiPublicStudioDailyRoute: typeof ApiPublicStudioDailyRoute
   LovableEmailAuthPreviewRoute: typeof LovableEmailAuthPreviewRoute
   LovableEmailAuthWebhookRoute: typeof LovableEmailAuthWebhookRoute
   LovableEmailQueueProcessRoute: typeof LovableEmailQueueProcessRoute
@@ -1684,6 +1697,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedPortalTalentTasksRouteImport
       parentRoute: typeof AuthenticatedPortalTalentRoute
     }
+    '/api/public/studio/daily': {
+      id: '/api/public/studio/daily'
+      path: '/api/public/studio/daily'
+      fullPath: '/api/public/studio/daily'
+      preLoaderRoute: typeof ApiPublicStudioDailyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/lovable/email/auth/preview': {
       id: '/lovable/email/auth/preview'
       path: '/lovable/email/auth/preview'
@@ -1992,6 +2012,7 @@ const rootRouteChildren: RootRouteChildren = {
   VerifyIndexRoute: VerifyIndexRoute,
   ApiPublicOmniHubRoute: ApiPublicOmniHubRoute,
   ApiPublicPaystackWebhookRoute: ApiPublicPaystackWebhookRoute,
+  ApiPublicStudioDailyRoute: ApiPublicStudioDailyRoute,
   LovableEmailAuthPreviewRoute: LovableEmailAuthPreviewRoute,
   LovableEmailAuthWebhookRoute: LovableEmailAuthWebhookRoute,
   LovableEmailQueueProcessRoute: LovableEmailQueueProcessRoute,
