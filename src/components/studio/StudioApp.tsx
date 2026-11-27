@@ -4,7 +4,6 @@ import {
   BellRing,
   CalendarHeart,
   Check,
-  ChevronLeft,
   Film,
   ImageIcon,
   LayoutGrid,
@@ -61,11 +60,6 @@ export function StudioApp({ scope }: { scope: "admin" | "staff" }) {
   const { roles, loading, user } = useAuth();
   const isStaff = roles.some((role) => role === "admin" || role === "pm" || role === "talent");
   const isAdmin = roles.includes("admin");
-  const portalPath = isAdmin
-    ? "/portal/admin"
-    : roles.includes("pm")
-      ? "/portal/pm"
-      : "/portal/talent";
 
   const [brandId, setBrandId] = useState<StudioBrandId>("parent");
   const [topic, setTopicState] = useState("One family of twelve businesses, five live today");
@@ -176,12 +170,6 @@ export function StudioApp({ scope }: { scope: "admin" | "staff" }) {
                       : "Staff access"
                     : "Preview mode"}
               </span>
-              <Link to="/businesses" className="studio-back">
-                <ChevronLeft size={15} /> Directory
-              </Link>
-              <Link to={portalPath} className="studio-back">
-                <LayoutGrid size={14} /> Portal
-              </Link>
             </div>
           </div>
 
