@@ -9,7 +9,7 @@
 import type { BrandKit } from "./kits";
 import { BODY_FONT, HEADING_FONT, loadLogo, ensureFonts, hexToRgba } from "./render-shared";
 import type { Holiday } from "./holidays";
-import { startMotionAudio, type MotionAudioSpec } from "./motion-audio";
+import { startMotionAudio, type MotionAudioHandle, type MotionAudioSpec } from "./motion-audio";
 
 export type MotionKind = "holiday" | "countdown" | "reveal" | "launch";
 
@@ -131,6 +131,54 @@ const PARTICLES = Array.from({ length: 26 }, (_, index) => {
   };
 });
 
+/* ------------------------------------------------------------------ media */
+
+/**
+ * Load the chosen background photo.
+ *
+ * Everything about this is optional: a missing URL, a broken file, a blocked
+ * cross-origin request or a browser that never fires `load` all resolve to
+ * `null` after a short timeout, and the canvas simply keeps its gradient
+ * backdrop. Nothing here may throw into the render loop.
+ */
+export function loadMotionPhoto(url: string | null | undefined): Promise<HTMLImageElement | null> {
+  if (typeof window === "undefined" || typeof Image === "undefined") return Promise.resolve(null);
+  const source = (url ?? "").trim();
+  if (!source) return Promise.resolve(null);
+
+  return new Promise<HTMLImageElement | null>((resolve) => {
+    const image = new Image();
+    image.crossOrigin = "anonymous";
+    image.decoding = "async";
+
+    let settled = false;
+    const finish = (value: HTMLImageElement | null) => {
+      if (settled) return;
+      settled = true;
+      window.clearTimeout(timer);
+      resolve(value);
+    };
+    const timer = window.setTimeout(() => finish(null), 6000);
+
+    image.onload = () => finish(image.naturalWidth > 0 && image.naturalHeight > 0 ? image : null);
+    image.onerror = () => finish(null);
+    image.onabort = () => finish(null);
+
+    try {
+      image.src = source;
+    } catch {
+      finish(null);
+    }
+  });
+}
+
+/** True when a decoded photo can safely be handed to `drawImage`. */
+function usablePhoto(photo: HTMLImageElement | null): HTMLImageElement | null {
+  if (!photo) return null;
+  if (!photo.complete) return null;
+  return photo.naturalWidth > 0 && photo.naturalHeight > 0 ? photo : null;
+}
+
 /* --------------------------------------------------------------- painting */
 
 function paintBackdrop(
@@ -149,16 +197,21 @@ function paintBackdrop(
   ctx.fillStyle = base;
   ctx.fillRect(0, 0, W, H);
 
-  if (photo) {
-    const scale = Math.max(W / photo.width, H / photo.height) * (1.02 + progress * 0.035);
-    const width = photo.width * scale;
-    const height = photo.height * scale;
-    ctx.save();
-    ctx.globalAlpha = 0.38;
-    ctx.drawImage(photo, (W - width) / 2, (H - height) / 2, width, height);
-    ctx.restore();
-    ctx.fillStyle = "rgba(3, 10, 24, 0.46)";
-    ctx.fillRect(0, 0, W, H);
+  const backdrop = usablePhoto(photo);
+  if (backdrop) {
+    try {
+      const scale = Math.max(W / backdrop.width, H / backdrop.height) * (1.02 + progress * 0.035);
+      const width = backdrop.width * scale;
+      const height = backdrop.height * scale;
+      ctx.save();
+      ctx.globalAlpha = 0.38;
+      ctx.drawImage(backdrop, (W - width) / 2, (H - height) / 2, width, height);
+      ctx.restore();
+      ctx.fillStyle = "rgba(3, 10, 24, 0.46)";
+      ctx.fillRect(0, 0, W, H);
+    } catch {
+      /* A photo that cannot be drawn is not worth interrupting the video for. */
+    }
   }
 
   const sweep = Math.sin(progress * Math.PI * 2) * 0.5 + 0.5;
@@ -584,7 +637,7 @@ export async function playMotion(
   onProgress?: (fraction: number) => void,
 ): Promise<MotionHandle> {
   await ensureFonts();
-  const logo = await loadLogo();
+  const [logo, photo] = await Promise.all([loadLogo(), loadMotionPhoto(spec.photoUrl)]);
   canvas.width = W;
   canvas.height = H;
   const ctx = canvas.getContext("2d");
@@ -595,7 +648,7 @@ export async function playMotion(
   const loop = (now: number) => {
     const elapsed = (now - started) / 1000;
     const t = elapsed % spec.duration;
-    paintFrame(ctx, spec, t, logo);
+    paintFrame(ctx, spec, t, logo, photo);
     onProgress?.(t / spec.duration);
     frame = requestAnimationFrame(loop);
   };
@@ -611,19 +664,100 @@ export async function renderMotionPoster(
   spec: MotionSpec,
 ): Promise<string> {
   await ensureFonts();
-  const logo = await loadLogo();
+  const [logo, photo] = await Promise.all([loadLogo(), loadMotionPhoto(spec.photoUrl)]);
   canvas.width = W;
   canvas.height = H;
   const ctx = canvas.getContext("2d");
   if (!ctx) throw new Error("This browser cannot render motion cards.");
-  paintFrame(ctx, spec, Math.min(2.4, spec.duration * 0.42), logo);
+  paintFrame(ctx, spec, Math.min(2.4, spec.duration * 0.42), logo, photo);
   return canvas.toDataURL("image/jpeg", 0.8);
 }
 
+/* ------------------------------------------------------------ video format */
+
+/**
+ * Formats we try, in order.
+ *
+ * MP4 first because WhatsApp status, Reels and TikTok all play it natively.
+ * Safari records MP4 through MediaRecorder; most desktop Chrome builds record
+ * WebM only, so the WebM entries are a real fallback rather than a footnote —
+ * which is why the UI reports the extension it actually produced.
+ */
+const MP4_MIME_CANDIDATES = [
+  "video/mp4;codecs=avc1.42E01E,mp4a.40.2",
+  "video/mp4;codecs=avc1",
+  "video/mp4",
+] as const;
+
+const WEBM_MIME_CANDIDATES = [
+  "video/webm;codecs=vp9,opus",
+  "video/webm;codecs=vp8,opus",
+  "video/webm;codecs=vp9",
+  "video/webm;codecs=vp8",
+  "video/webm",
+] as const;
+
+const MIME_CANDIDATES = [...MP4_MIME_CANDIDATES, ...WEBM_MIME_CANDIDATES];
+
+function mimeSupported(type: string): boolean {
+  if (typeof MediaRecorder === "undefined") return false;
+  try {
+    return MediaRecorder.isTypeSupported(type);
+  } catch {
+    return false;
+  }
+}
+
+/** The best container/codec pair this browser can actually record. */
 export function supportedVideoMime(): string {
-  if (typeof MediaRecorder === "undefined") return "";
-  const candidates = ["video/webm;codecs=vp9", "video/webm;codecs=vp8", "video/webm", "video/mp4"];
-  return candidates.find((type) => MediaRecorder.isTypeSupported(type)) ?? "";
+  return MIME_CANDIDATES.find((type) => mimeSupported(type)) ?? "";
+}
+
+/** True when the browser can record real MP4 (Safari, newer Chrome builds). */
+export function canRecordMp4(): boolean {
+  return MP4_MIME_CANDIDATES.some((type) => mimeSupported(type));
+}
+
+/** The extension a download will get right now. */
+export function preferredVideoExtension(): "mp4" | "webm" {
+  const mime = supportedVideoMime();
+  return mime && isMp4Mime(mime) ? "mp4" : "webm";
+}
+
+export function isMp4Mime(mime: string): boolean {
+  return mime.toLowerCase().includes("mp4");
+}
+
+/** Honest, human label for the container and codecs in a finished blob. */
+export function videoFormatLabel(mime: string): string {
+  const lower = mime.toLowerCase();
+  if (lower.includes("mp4")) {
+    return lower.includes("mp4a") ? "MP4 · H.264 + AAC" : "MP4 · H.264";
+  }
+  if (lower.includes("vp9")) {
+    return lower.includes("opus") ? "WebM · VP9 + Opus" : "WebM · VP9";
+  }
+  if (lower.includes("vp8")) {
+    return lower.includes("opus") ? "WebM · VP8 + Opus" : "WebM · VP8";
+  }
+  return "WebM";
+}
+
+/**
+ * Pick the recording format for this take. Audio-aware: when a soundtrack is
+ * going into the file we need a mime that names an audio codec, otherwise the
+ * recorder can drop the sound track.
+ */
+function pickRecordingMime(withAudio: boolean): string {
+  if (withAudio) {
+    const withCodec = MIME_CANDIDATES.find(
+      (type) =>
+        mimeSupported(type) &&
+        (type.includes("mp4a") || type.includes("opus") || type === "video/webm"),
+    );
+    if (withCodec) return withCodec;
+  }
+  return supportedVideoMime();
 }
 
 export function canExportVideo(): boolean {
@@ -636,28 +770,93 @@ export function canExportVideo(): boolean {
   );
 }
 
+export type MotionExport = {
+  blob: Blob;
+  /** Exact mimeType the recorder used. */
+  mime: string;
+  /** `mp4` only when a real MP4 was recorded, otherwise `webm`. */
+  extension: "mp4" | "webm";
+  /** e.g. "MP4 · H.264 + AAC". */
+  formatLabel: string;
+  /** True when an audio track is inside the file. */
+  hasAudio: boolean;
+  /** True when the browser recorded a genuine MP4 container. */
+  trueMp4: boolean;
+};
+
 /**
  * Record one full pass of the animation at 30fps and return the video blob.
- * `onProgress` receives 0–1 so the UI can show a recording bar.
+ *
+ * The soundtrack is rendered through `startMotionAudio(..., recording: true)`,
+ * which hands back a MediaStream of the audio graph; those tracks are merged
+ * with the canvas stream so the exported file carries sound. `onProgress`
+ * receives 0–1 so the UI can show a recording bar.
  */
 export async function exportMotion(
   canvas: HTMLCanvasElement,
   spec: MotionSpec,
   onProgress?: (fraction: number) => void,
-): Promise<{ blob: Blob; mime: string; extension: string }> {
+): Promise<MotionExport> {
   if (!canExportVideo()) {
     throw new Error("This browser cannot record canvas video. Try Chrome, Edge or Safari 15+.");
   }
+
+  const duration = Math.max(1, spec.duration);
+
+  // Start the audio graph first: the AudioContext must be created inside the
+  // click that triggered the export, before any other await can yield.
+  const wantsAudio = spec.music.track !== "none" && spec.music.volume > 0;
+  let audioHandle: MotionAudioHandle | null = null;
+
+  if (wantsAudio) {
+    const starting = startMotionAudio(spec.music, duration, true).catch(() => null);
+    // Never hold the export hostage if the browser blocks or stalls audio.
+    audioHandle = await Promise.race<MotionAudioHandle | null>([
+      starting,
+      new Promise<null>((resolve) => window.setTimeout(() => resolve(null), 1500)),
+    ]);
+    if (!audioHandle) {
+      // If the graph lands late, take it straight back down.
+      void starting.then((late) => late?.stop());
+    }
+  }
+
   await ensureFonts();
-  const logo = await loadLogo();
+  const [logo, photo] = await Promise.all([loadLogo(), loadMotionPhoto(spec.photoUrl)]);
+
   canvas.width = W;
   canvas.height = H;
   const ctx = canvas.getContext("2d");
-  if (!ctx) throw new Error("This browser cannot record motion cards.");
+  if (!ctx) {
+    audioHandle?.stop();
+    throw new Error("This browser cannot record motion cards.");
+  }
 
-  const mime = supportedVideoMime();
-  const stream = canvas.captureStream(30);
-  const recorder = new MediaRecorder(stream, { mimeType: mime, videoBitsPerSecond: 6_000_000 });
+  const audioTracks = (audioHandle?.stream?.getAudioTracks() ?? []).filter(
+    (track) => track.readyState === "live",
+  );
+
+  // Only keep sound when the container we are about to record actually names an
+  // audio codec; otherwise the recorder would silently drop it.
+  const mime = pickRecordingMime(audioTracks.length > 0);
+  if (!mime) {
+    audioHandle?.stop();
+    throw new Error("This browser cannot record canvas video. Try Chrome, Edge or Safari 15+.");
+  }
+  const carriesAudio = /mp4a|opus/i.test(mime) || mime === "video/webm";
+  const hasAudio = carriesAudio && audioTracks.length > 0;
+
+  const canvasStream = canvas.captureStream(30);
+  const stream = new MediaStream();
+  canvasStream.getVideoTracks().forEach((track) => stream.addTrack(track));
+  if (hasAudio) audioTracks.forEach((track) => stream.addTrack(track));
+  else audioHandle?.stop();
+
+  const recorder = new MediaRecorder(stream, {
+    mimeType: mime,
+    videoBitsPerSecond: 6_000_000,
+    ...(hasAudio ? { audioBitsPerSecond: 128_000 } : {}),
+  });
   const chunks: BlobPart[] = [];
   recorder.ondataavailable = (event) => {
     if (event.data.size > 0) chunks.push(event.data);
@@ -668,31 +867,49 @@ export async function exportMotion(
     recorder.onerror = () => reject(new Error("Recording failed in this browser."));
   });
 
-  recorder.start(120);
-  const started = performance.now();
-  await new Promise<void>((resolve) => {
-    let frame = 0;
-    const draw = (now: number) => {
-      const elapsed = (now - started) / 1000;
-      const t = Math.min(elapsed, spec.duration);
-      paintFrame(ctx, spec, t, logo);
-      onProgress?.(Math.min(t / spec.duration, 1));
-      if (elapsed >= spec.duration) {
-        cancelAnimationFrame(frame);
-        resolve();
-        return;
-      }
+  try {
+    recorder.start(200);
+    const startedAt = performance.now();
+    await new Promise<void>((resolve) => {
+      let frame = 0;
+      const draw = (now: number) => {
+        const elapsed = (now - startedAt) / 1000;
+        const t = Math.min(elapsed, duration);
+        paintFrame(ctx, spec, t, logo, photo);
+        onProgress?.(Math.min(t / duration, 1));
+        if (elapsed >= duration) {
+          cancelAnimationFrame(frame);
+          resolve();
+          return;
+        }
+        frame = requestAnimationFrame(draw);
+      };
       frame = requestAnimationFrame(draw);
-    };
-    frame = requestAnimationFrame(draw);
-  });
+    });
 
-  // Let the encoder flush the last frames before closing the stream.
-  await new Promise((resolve) => setTimeout(resolve, 220));
-  recorder.stop();
-  stream.getTracks().forEach((track) => track.stop());
-  const blob = await finished;
-  return { blob, mime, extension: mime.includes("mp4") ? "mp4" : "webm" };
+    // Let the encoder flush the last frames before closing the stream.
+    await new Promise((resolve) => setTimeout(resolve, 240));
+    recorder.stop();
+
+    const blob = await finished;
+    return {
+      blob,
+      mime,
+      extension: isMp4Mime(mime) ? "mp4" : "webm",
+      formatLabel: videoFormatLabel(mime),
+      hasAudio,
+      trueMp4: isMp4Mime(mime),
+    };
+  } finally {
+    try {
+      if (recorder.state !== "inactive") recorder.stop();
+    } catch {
+      /* Already closed. */
+    }
+    audioHandle?.stop();
+    stream.getTracks().forEach((track) => track.stop());
+    canvasStream.getTracks().forEach((track) => track.stop());
+  }
 }
 
 export { W as MOTION_WIDTH, H as MOTION_HEIGHT };

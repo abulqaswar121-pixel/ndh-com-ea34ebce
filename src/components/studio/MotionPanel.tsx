@@ -17,9 +17,12 @@ import {
 import {
   MOTION_KIND_LABEL,
   canExportVideo,
+  canRecordMp4,
   exportMotion,
   playMotion,
+  preferredVideoExtension,
   renderMotionPoster,
+  type MotionExport,
   type MotionKind,
   type MotionSpec,
 } from "@/lib/studio/video";
@@ -30,7 +33,15 @@ import { archiveId, downloadBlob, filenameFor, saveArchiveItem } from "@/lib/stu
 import { useStudio } from "./studio-context";
 
 const KINDS: MotionKind[] = ["holiday", "countdown", "reveal", "launch"];
-const MUSIC: MotionMusicTrack[] = ["none", "uplift", "bright", "assured", "steady", "organic", "custom"];
+const MUSIC: MotionMusicTrack[] = [
+  "none",
+  "uplift",
+  "bright",
+  "assured",
+  "steady",
+  "organic",
+  "custom",
+];
 
 /** Editable photo, text and music promos exported as WhatsApp-ready MP4. */
 export function MotionPanel() {
@@ -40,7 +51,7 @@ export function MotionPanel() {
   const audioRef = useRef<{ stop: () => void } | null>(null);
   const photoRef = useRef<string>("");
   const customAudioRef = useRef<string | null>(null);
-  const videoRef = useRef<{ blob: Blob; extension: string; url: string } | null>(null);
+  const videoRef = useRef<(MotionExport & { url: string }) | null>(null);
 
   const defaults = motionDefaults(brand.id);
   const [kind, setKind] = useState<MotionKind>(goal === "holiday" ? "holiday" : "launch");
@@ -49,7 +60,7 @@ export function MotionPanel() {
   const [soundPreview, setSoundPreview] = useState(false);
   const [exporting, setExporting] = useState(false);
   const [exportProgress, setExportProgress] = useState(0);
-  const [video, setVideo] = useState<{ blob: Blob; extension: string; url: string } | null>(null);
+  const [video, setVideo] = useState<(MotionExport & { url: string }) | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [progress, setProgress] = useState(0);
 
@@ -58,7 +69,9 @@ export function MotionPanel() {
   const [badge, setBadge] = useState(campaign.badge);
   const [offer, setOffer] = useState(campaign.offerLine ?? campaign.bullets[0] ?? "");
   const [cta, setCta] = useState(campaign.cta);
-  const [bullets, setBullets] = useState<string[]>([0, 1, 2].map((index) => campaign.bullets[index] ?? ""));
+  const [bullets, setBullets] = useState<string[]>(
+    [0, 1, 2].map((index) => campaign.bullets[index] ?? ""),
+  );
   const [postCaption, setPostCaption] = useState(campaign.captions[0]?.body ?? "");
   const [photoUrl, setPhotoUrl] = useState<string | null>(defaults.photoUrl);
   const [photoName, setPhotoName] = useState(`${brand.shortName} photo`);
@@ -71,6 +84,16 @@ export function MotionPanel() {
   photoRef.current = photoUrl ?? "";
   customAudioRef.current = customAudioUrl;
   const exportSupported = useMemo(() => canExportVideo(), []);
+  const [recordingFormat, setRecordingFormat] = useState<{
+    extension: "mp4" | "webm";
+    mp4: boolean;
+  }>({
+    extension: "webm",
+    mp4: false,
+  });
+  useEffect(() => {
+    setRecordingFormat({ extension: preferredVideoExtension(), mp4: canRecordMp4() });
+  }, []);
 
   useEffect(() => {
     setHeadline(campaign.headline);
@@ -91,12 +114,15 @@ export function MotionPanel() {
     setSoundPreview(false);
   }, [brand.id, brand.shortName]);
 
-  useEffect(() => () => {
-    if (photoRef.current.startsWith("blob:")) URL.revokeObjectURL(photoRef.current);
-    if (customAudioRef.current) URL.revokeObjectURL(customAudioRef.current);
-    if (videoRef.current) URL.revokeObjectURL(videoRef.current.url);
-    audioRef.current?.stop();
-  }, []);
+  useEffect(
+    () => () => {
+      if (photoRef.current.startsWith("blob:")) URL.revokeObjectURL(photoRef.current);
+      if (customAudioRef.current) URL.revokeObjectURL(customAudioRef.current);
+      if (videoRef.current) URL.revokeObjectURL(videoRef.current.url);
+      audioRef.current?.stop();
+    },
+    [],
+  );
 
   const spec: MotionSpec = useMemo(
     () => ({
@@ -113,7 +139,22 @@ export function MotionPanel() {
       photoUrl,
       music: { track: music, volume, customUrl: customAudioUrl },
     }),
-    [brand, kind, duration, headline, subhead, bullets, cta, badge, offer, holiday, photoUrl, music, volume, customAudioUrl],
+    [
+      brand,
+      kind,
+      duration,
+      headline,
+      subhead,
+      bullets,
+      cta,
+      badge,
+      offer,
+      holiday,
+      photoUrl,
+      music,
+      volume,
+      customAudioUrl,
+    ],
   );
   const specKey = useMemo(() => JSON.stringify(spec), [spec]);
 
@@ -141,7 +182,8 @@ export function MotionPanel() {
         else handleRef.current = handle;
       })
       .catch((playError: unknown) => {
-        if (!cancelled) setError(playError instanceof Error ? playError.message : "Preview unavailable.");
+        if (!cancelled)
+          setError(playError instanceof Error ? playError.message : "Preview unavailable.");
       });
     return () => {
       cancelled = true;
@@ -228,9 +270,15 @@ export function MotionPanel() {
         if (previous) URL.revokeObjectURL(previous.url);
         return { ...output, url: URL.createObjectURL(output.blob) };
       });
-      notify(`${duration}-second MP4 ready for WhatsApp`);
+      // Say exactly what was produced — never claim MP4 when the browser wrote WebM.
+      notify(
+        output.trueMp4
+          ? `${duration}-second MP4 ready${output.hasAudio ? " with sound" : ""}`
+          : `${duration}-second WebM ready — this browser cannot record MP4`,
+        "success",
+      );
     } catch (exportError) {
-      setError(exportError instanceof Error ? exportError.message : "MP4 export failed.");
+      setError(exportError instanceof Error ? exportError.message : "Video export failed.");
     } finally {
       setExporting(false);
     }
@@ -247,25 +295,30 @@ export function MotionPanel() {
       brandId: brand.id,
       brandName: brand.name,
       createdAt: Date.now(),
-      mime: "video/mp4",
-      extension: "mp4",
+      mime: video.mime,
+      extension: video.extension,
       size: video.blob.size,
       thumb,
       caption: postCaption,
-      meta: `${duration}s · MP4 · ${MUSIC_LABEL[music]}`,
+      meta: `${duration}s · ${video.formatLabel}${video.hasAudio ? " + sound" : ""} · ${MUSIC_LABEL[music]}`,
       blob: video.blob,
     });
     bumpArchive();
-    notify("MP4 saved to the archive");
+    notify(`${video.extension.toUpperCase()} saved to the archive`);
   }
 
   return (
     <section className="studio-panel">
       <div className="studio-panel-head">
         <div>
-          <p className="studio-eyebrow"><Film size={13} aria-hidden="true" /> Short video &amp; motion promos</p>
-          <h2>Your words, photos and music — saved as MP4</h2>
-          <p className="studio-panel-lead">Edit every important line, replace the business photo, add sound, then download a 1080×1920 video for WhatsApp, Reels, Status or TikTok.</p>
+          <p className="studio-eyebrow">
+            <Film size={13} aria-hidden="true" /> Short video &amp; motion promos
+          </p>
+          <h2>Your words, photos and music — saved as video</h2>
+          <p className="studio-panel-lead">
+            Edit every important line, replace the business photo, add sound, then download a
+            1080×1920 video for WhatsApp, Reels, Status or TikTok.
+          </p>
         </div>
       </div>
 
@@ -273,16 +326,34 @@ export function MotionPanel() {
         <div className="studio-flyer-preview">
           <div className="studio-canvas-wrap is-story">
             <canvas ref={canvasRef} aria-label="Motion card preview" />
-            {exporting ? <span className="studio-canvas-busy"><Loader2 size={18} className="spin" /> Recording MP4 · {Math.round(exportProgress * 100)}%</span> : null}
+            {exporting ? (
+              <span className="studio-canvas-busy">
+                <Loader2 size={18} className="spin" /> Recording MP4 ·{" "}
+                {Math.round(exportProgress * 100)}%
+              </span>
+            ) : null}
           </div>
           <div className="studio-player">
-            <button type="button" className="studio-btn is-icon" onClick={() => setPlaying((value) => !value)} aria-label={playing ? "Pause preview" : "Play preview"}>
+            <button
+              type="button"
+              className="studio-btn is-icon"
+              onClick={() => setPlaying((value) => !value)}
+              aria-label={playing ? "Pause preview" : "Play preview"}
+            >
               {playing ? <Pause size={16} /> : <Play size={16} />}
             </button>
-            <button type="button" className={`studio-btn is-icon${soundPreview ? " is-primary" : ""}`} onClick={() => setSoundPreview((value) => !value)} disabled={music === "none"} aria-label={soundPreview ? "Mute preview" : "Preview music"}>
+            <button
+              type="button"
+              className={`studio-btn is-icon${soundPreview ? " is-primary" : ""}`}
+              onClick={() => setSoundPreview((value) => !value)}
+              disabled={music === "none"}
+              aria-label={soundPreview ? "Mute preview" : "Preview music"}
+            >
               {soundPreview ? <Volume2 size={16} /> : <VolumeX size={16} />}
             </button>
-            <span className="studio-progress"><i style={{ width: `${Math.round(progress * 100)}%` }} /></span>
+            <span className="studio-progress">
+              <i style={{ width: `${Math.round(progress * 100)}%` }} />
+            </span>
             <span className="studio-player-time">{duration}s loop</span>
           </div>
         </div>
@@ -291,21 +362,96 @@ export function MotionPanel() {
           <div className="studio-field">
             <span>Motion style</span>
             <div className="studio-chips is-wrap">
-              {KINDS.map((item) => <button key={item} type="button" className={kind === item ? "is-active" : undefined} aria-pressed={kind === item} onClick={() => setKind(item)}>{MOTION_KIND_LABEL[item]}</button>)}
+              {KINDS.map((item) => (
+                <button
+                  key={item}
+                  type="button"
+                  className={kind === item ? "is-active" : undefined}
+                  aria-pressed={kind === item}
+                  onClick={() => setKind(item)}
+                >
+                  {MOTION_KIND_LABEL[item]}
+                </button>
+              ))}
             </div>
           </div>
 
-          <label className="studio-field"><span>Duration · {duration} seconds</span><input type="range" min={5} max={15} step={1} value={duration} onChange={(event) => setDuration(Number(event.target.value))} /></label>
+          <label className="studio-field">
+            <span>Duration · {duration} seconds</span>
+            <input
+              type="range"
+              min={5}
+              max={15}
+              step={1}
+              value={duration}
+              onChange={(event) => setDuration(Number(event.target.value))}
+            />
+          </label>
 
           <details className="studio-editor" open>
             <summary>Edit on-screen words</summary>
             <div className="studio-editor-body">
-              <label className="studio-field"><span>Small top label</span><input value={badge} maxLength={36} onChange={(event) => setBadge(event.target.value)} /></label>
-              <label className="studio-field"><span>Main headline</span><textarea rows={2} value={headline} maxLength={100} onChange={(event) => setHeadline(event.target.value)} /></label>
-              <label className="studio-field"><span>Supporting line</span><textarea rows={3} value={subhead} maxLength={180} onChange={(event) => setSubhead(event.target.value)} /></label>
-              <label className="studio-field"><span>Offer or key number</span><input value={offer} maxLength={80} onChange={(event) => setOffer(event.target.value)} /></label>
-              <div className="studio-field"><span>Up to three reveal points</span>{bullets.map((bullet, index) => <input key={index} aria-label={`Reveal point ${index + 1}`} value={bullet} maxLength={90} placeholder={`Point ${index + 1}`} onChange={(event) => setBullets((current) => current.map((item, itemIndex) => itemIndex === index ? event.target.value : item))} />)}</div>
-              <label className="studio-field"><span>Closing call to action</span><input value={cta} maxLength={70} onChange={(event) => setCta(event.target.value)} /></label>
+              <label className="studio-field">
+                <span>Small top label</span>
+                <input
+                  value={badge}
+                  maxLength={36}
+                  onChange={(event) => setBadge(event.target.value)}
+                />
+              </label>
+              <label className="studio-field">
+                <span>Main headline</span>
+                <textarea
+                  rows={2}
+                  value={headline}
+                  maxLength={100}
+                  onChange={(event) => setHeadline(event.target.value)}
+                />
+              </label>
+              <label className="studio-field">
+                <span>Supporting line</span>
+                <textarea
+                  rows={3}
+                  value={subhead}
+                  maxLength={180}
+                  onChange={(event) => setSubhead(event.target.value)}
+                />
+              </label>
+              <label className="studio-field">
+                <span>Offer or key number</span>
+                <input
+                  value={offer}
+                  maxLength={80}
+                  onChange={(event) => setOffer(event.target.value)}
+                />
+              </label>
+              <div className="studio-field">
+                <span>Up to three reveal points</span>
+                {bullets.map((bullet, index) => (
+                  <input
+                    key={index}
+                    aria-label={`Reveal point ${index + 1}`}
+                    value={bullet}
+                    maxLength={90}
+                    placeholder={`Point ${index + 1}`}
+                    onChange={(event) =>
+                      setBullets((current) =>
+                        current.map((item, itemIndex) =>
+                          itemIndex === index ? event.target.value : item,
+                        ),
+                      )
+                    }
+                  />
+                ))}
+              </div>
+              <label className="studio-field">
+                <span>Closing call to action</span>
+                <input
+                  value={cta}
+                  maxLength={70}
+                  onChange={(event) => setCta(event.target.value)}
+                />
+              </label>
             </div>
           </details>
 
@@ -315,44 +461,202 @@ export function MotionPanel() {
               <div className="studio-field">
                 <span>Background photo</span>
                 <div className="studio-media-row">
-                  {photoUrl ? <img src={photoUrl} alt="Selected motion background" /> : <span className="studio-media-empty"><ImagePlus size={20} /></span>}
-                  <div><strong>{photoName}</strong><small>{photoUrl ? "Included in the video" : "No photo · brand background only"}</small></div>
+                  {photoUrl ? (
+                    <img src={photoUrl} alt="Selected motion background" />
+                  ) : (
+                    <span className="studio-media-empty">
+                      <ImagePlus size={20} />
+                    </span>
+                  )}
+                  <div>
+                    <strong>{photoName}</strong>
+                    <small>
+                      {photoUrl ? "Included in the video" : "No photo · brand background only"}
+                    </small>
+                  </div>
                 </div>
-                <input type="file" accept="image/jpeg,image/png,image/webp" aria-label="Upload background photo" onChange={(event) => choosePhoto(event.target.files?.[0])} />
+                <input
+                  type="file"
+                  accept="image/jpeg,image/png,image/webp"
+                  aria-label="Upload background photo"
+                  onChange={(event) => choosePhoto(event.target.files?.[0])}
+                />
                 <div className="studio-inline-actions">
-                  <button type="button" className="studio-btn is-small" onClick={resetPhoto}><RotateCcw size={13} /> Business photo</button>
-                  <button type="button" className="studio-btn is-small" onClick={() => { setPhotoUrl(null); setPhotoName("No photo"); }}>Remove photo</button>
+                  <button type="button" className="studio-btn is-small" onClick={resetPhoto}>
+                    <RotateCcw size={13} /> Business photo
+                  </button>
+                  <button
+                    type="button"
+                    className="studio-btn is-small"
+                    onClick={() => {
+                      setPhotoUrl(null);
+                      setPhotoName("No photo");
+                    }}
+                  >
+                    Remove photo
+                  </button>
                 </div>
               </div>
 
-              <label className="studio-field"><span>Music</span><select value={music} onChange={(event) => { setMusic(event.target.value as MotionMusicTrack); setSoundPreview(false); }}>{MUSIC.map((track) => <option key={track} value={track} disabled={track === "custom" && !customAudioUrl}>{MUSIC_LABEL[track]}</option>)}</select></label>
-              <label className="studio-field"><span>Upload your own music</span><input type="file" accept="audio/*,.mp3,.m4a,.aac,.wav,.ogg" onChange={(event) => chooseAudio(event.target.files?.[0])} /></label>
-              {audioName ? <p className="studio-file-name"><Music2 size={14} /> {audioName}</p> : null}
-              <label className="studio-field"><span>Music volume · {Math.round(volume * 100)}%</span><input type="range" min={0} max={1} step={0.05} value={volume} disabled={music === "none"} onChange={(event) => setVolume(Number(event.target.value))} /></label>
-              <p className="studio-hint">Built-in music is made in your browser and uses no AI credits. Use the speaker beside the preview to hear it.</p>
+              <label className="studio-field">
+                <span>Music</span>
+                <select
+                  value={music}
+                  onChange={(event) => {
+                    setMusic(event.target.value as MotionMusicTrack);
+                    setSoundPreview(false);
+                  }}
+                >
+                  {MUSIC.map((track) => (
+                    <option
+                      key={track}
+                      value={track}
+                      disabled={track === "custom" && !customAudioUrl}
+                    >
+                      {MUSIC_LABEL[track]}
+                    </option>
+                  ))}
+                </select>
+              </label>
+              <label className="studio-field">
+                <span>Upload your own music</span>
+                <input
+                  type="file"
+                  accept="audio/*,.mp3,.m4a,.aac,.wav,.ogg"
+                  onChange={(event) => chooseAudio(event.target.files?.[0])}
+                />
+              </label>
+              {audioName ? (
+                <p className="studio-file-name">
+                  <Music2 size={14} /> {audioName}
+                </p>
+              ) : null}
+              <label className="studio-field">
+                <span>Music volume · {Math.round(volume * 100)}%</span>
+                <input
+                  type="range"
+                  min={0}
+                  max={1}
+                  step={0.05}
+                  value={volume}
+                  disabled={music === "none"}
+                  onChange={(event) => setVolume(Number(event.target.value))}
+                />
+              </label>
+              <p className="studio-hint">
+                Built-in music is made in your browser and uses no AI credits. Use the speaker
+                beside the preview to hear it.
+              </p>
             </div>
           </details>
 
           <details className="studio-editor">
             <summary>Edit the caption for your post</summary>
             <div className="studio-editor-body">
-              <label className="studio-field"><span>Post caption</span><textarea rows={7} value={postCaption} maxLength={2200} onChange={(event) => setPostCaption(event.target.value)} /></label>
-              <button type="button" className="studio-btn is-small" onClick={async () => { const ok = await copyText(postCaption); notify(ok ? "Caption copied" : "Copy blocked by the browser", ok ? "success" : "error"); }}><Copy size={14} /> Copy caption</button>
+              <label className="studio-field">
+                <span>Post caption</span>
+                <textarea
+                  rows={7}
+                  value={postCaption}
+                  maxLength={2200}
+                  onChange={(event) => setPostCaption(event.target.value)}
+                />
+              </label>
+              <button
+                type="button"
+                className="studio-btn is-small"
+                onClick={async () => {
+                  const ok = await copyText(postCaption);
+                  notify(
+                    ok ? "Caption copied" : "Copy blocked by the browser",
+                    ok ? "success" : "error",
+                  );
+                }}
+              >
+                <Copy size={14} /> Copy caption
+              </button>
             </div>
           </details>
 
-          {!exportSupported ? <p className="studio-warning"><TriangleAlert size={15} aria-hidden="true" /> This browser cannot save MP4 directly. Open the studio in the latest Chrome, Edge or Safari. The editor and preview still work.</p> : null}
-          {error ? <p className="studio-error" role="alert">{error}</p> : null}
+          {!exportSupported ? (
+            <p className="studio-warning">
+              <TriangleAlert size={15} aria-hidden="true" /> This browser cannot record video at
+              all. Open the studio in the latest Chrome, Edge or Safari. The editor and preview
+              still work.
+            </p>
+          ) : null}
+          {exportSupported && !recordingFormat.mp4 ? (
+            <p className="studio-hint">
+              <TriangleAlert size={13} aria-hidden="true" /> This browser records WebM, not MP4. The
+              download is honestly named .webm and still plays on modern phones, but WhatsApp Status
+              and Reels prefer MP4 — open the studio on an iPhone or iPad to export a true .mp4.
+            </p>
+          ) : null}
+          {error ? (
+            <p className="studio-error" role="alert">
+              {error}
+            </p>
+          ) : null}
 
           <div className="studio-actions">
-            <button type="button" className="studio-btn is-primary" onClick={() => void handleExport()} disabled={exporting || !exportSupported}>
+            <button
+              type="button"
+              className="studio-btn is-primary"
+              onClick={() => void handleExport()}
+              disabled={exporting || !exportSupported}
+            >
               {exporting ? <Loader2 size={15} className="spin" /> : <Film size={15} />}
-              {exporting ? `Recording ${Math.round(exportProgress * 100)}%` : "Generate MP4"}
+              {exporting
+                ? `Recording ${Math.round(exportProgress * 100)}%`
+                : `Generate ${(video?.extension ?? recordingFormat.extension).toUpperCase()}`}
             </button>
-            <button type="button" className="studio-btn" onClick={() => { if (video) { downloadBlob(video.blob, filenameFor(brand.name, `motion-${kind}`, "mp4")); notify("MP4 downloaded"); } }} disabled={!video}><Download size={15} /> Download MP4</button>
-            <button type="button" className="studio-btn" onClick={() => void handleSave()} disabled={!video}><Save size={15} /> Save to archive</button>
+            <button
+              type="button"
+              className="studio-btn"
+              onClick={() => {
+                if (video) {
+                  downloadBlob(
+                    video.blob,
+                    filenameFor(brand.name, `motion-${kind}`, video.extension),
+                  );
+                  notify(
+                    `${video.extension.toUpperCase()} downloaded`,
+                    video.trueMp4 ? "success" : "error",
+                  );
+                }
+              }}
+              disabled={!video}
+            >
+              <Download size={15} /> Download{" "}
+              {video ? video.extension.toUpperCase() : recordingFormat.extension.toUpperCase()}
+            </button>
+            <button
+              type="button"
+              className="studio-btn"
+              onClick={() => void handleSave()}
+              disabled={!video}
+            >
+              <Save size={15} /> Save to archive
+            </button>
           </div>
-          {video ? <><video className="studio-video-result" src={video.url} controls playsInline /><p className="studio-file-name">MP4 · {(video.blob.size / 1024 / 1024).toFixed(1)} MB · Ready to upload</p></> : null}
+          {video ? (
+            <>
+              <video className="studio-video-result" src={video.url} controls playsInline />
+              <p className="studio-file-name">
+                {video.formatLabel} · {(video.blob.size / 1024 / 1024).toFixed(1)} MB ·{" "}
+                {video.hasAudio ? "with sound" : "silent"} ·{" "}
+                {video.trueMp4
+                  ? "Ready for WhatsApp, Reels and TikTok"
+                  : "Plays on modern phones · WhatsApp prefers MP4"}
+              </p>
+              {!video.trueMp4 ? (
+                <p className="studio-hint">
+                  Saved as .webm because this browser cannot record MP4. The download keeps that
+                  extension so nothing is mislabelled.
+                </p>
+              ) : null}
+            </>
+          ) : null}
         </div>
       </div>
     </section>
