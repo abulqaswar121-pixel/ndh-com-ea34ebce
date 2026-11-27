@@ -20,6 +20,10 @@ export const Route = createFileRoute("/_authenticated/admin/studio")({
           "Create NDH marketing posts, flyers, infographics, captions and short motion clips in seconds.",
       },
       { name: "robots", content: "noindex" },
+      { property: "og:title", content: "Daily Photo & Content Studio | NDH Admin" },
+      { property: "og:description", content: "Private NDH photo flyers, captions and daily delivery." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary" },
     ],
   }),
   component: () => (

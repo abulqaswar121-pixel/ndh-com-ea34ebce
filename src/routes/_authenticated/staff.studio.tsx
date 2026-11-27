@@ -13,6 +13,10 @@ export const Route = createFileRoute("/_authenticated/staff/studio")({
           "Create NDH marketing posts, flyers, infographics, captions and short motion clips in seconds.",
       },
       { name: "robots", content: "noindex" },
+      { property: "og:title", content: "Content Studio | NDH Staff" },
+      { property: "og:description", content: "The private NDH staff content workspace." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary" },
     ],
   }),
   component: () => (

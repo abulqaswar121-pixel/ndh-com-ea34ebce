@@ -19,3 +19,7 @@ The approved Open Gateway asset is the parent homepage identity, and subsidiarie
 
 Use the Precision Gateway shared shell and tokens for public pages and signed-in portals; one visual system prevents subsidiaries and workflows from looking like unrelated products.
 - Each NDH business has its own reading page at /businesses/$id driven by business-profiles.ts + business-details.ts; the homepage stays short and links out instead of holding every section.
+
+- Daily photo flyers share one canvas layout between browser preview and pure-JS server rendering; this avoids native rendering dependencies and paid AI calls for routine exports.
+- Daily flyer settings and archives are admin-only with private storage; signed links expire after seven days so private studio access is never exposed in the public navigation.
+- Automatic daily generation is idempotent by Lagos calendar date and runs through an authenticated managed callback; this prevents duplicate daily posts and works without an open browser.

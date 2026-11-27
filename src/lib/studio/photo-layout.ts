@@ -5,7 +5,7 @@ export type PhotoContext = Pick<CanvasRenderingContext2D, 'fillStyle' | 'strokeS
 function text(ctx: PhotoContext, value: string, x: number, y: number, width: number, size: number, maxLines: number, color: string, weight = 800) {
   let lines: string[] = [];
   for (; size >= 18; size -= 2) {
-    ctx.font = `${weight} ${size}px NDHPhoto`;
+    ctx.font = `${weight} ${size}px NDHPhoto${weight}`;
     lines = []; let line = '';
     for (const word of value.split(/\s+/)) {
       const next = line ? line + ' ' + word : word;

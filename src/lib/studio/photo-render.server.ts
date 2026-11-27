@@ -15,7 +15,7 @@ export async function renderServerPhoto(t: PhotoTemplate, headline: string, subh
   const fonts = await Promise.all(PHOTO_FONTS.map(url => bytes(url, origin)));
   fonts.forEach((data, i) => {
     const weight = [400, 700, 800][i] ?? 400;
-    const registered = PImage.registerFont('', 'NDHPhoto', weight);
+    const registered = PImage.registerFont('', `NDHPhoto${weight}`, weight);
     registered.font = opentype.parse(data.buffer.slice(data.byteOffset, data.byteOffset + data.byteLength) as ArrayBuffer); registered.loaded = true;
   });
   const [photo, logo] = await Promise.all([jpeg(t.photo, origin), bytes(PHOTO_GATEWAY, origin).then(data => PImage.decodePNGFromStream(Readable.from([data])))]);

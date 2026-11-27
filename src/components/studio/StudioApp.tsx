@@ -34,11 +34,14 @@ import { MotionPanel } from "./MotionPanel";
 import { CalendarPanel } from "./CalendarPanel";
 import { ArchivePanel } from "./ArchivePanel";
 import { NewsroomPanel } from "./NewsroomPanel";
+import { DailyPhotoPanel } from "./DailyPhotoPanel";
+import { Button } from "@/components/ui/button";
 
 const GOALS: StudioGoal[] = ["promo", "launch", "info", "holiday", "milestone"];
 const TONES: StudioTone[] = ["bold", "warm", "professional"];
 
 const TABS: { id: StudioTab; label: string; icon: typeof PenLine }[] = [
+  { id: "daily", label: "Daily photo studio", icon: BellRing },
   { id: "captions", label: "Captions", icon: PenLine },
   { id: "flyer", label: "Flyer & infographic", icon: ImageIcon },
   { id: "motion", label: "Motion clip", icon: Film },
@@ -76,7 +79,7 @@ export function StudioApp({ scope }: { scope: "admin" | "staff" }) {
   const [tone, setTone] = useState<StudioTone>("bold");
   const [offer, setOffer] = useState("");
   const [holiday, setHoliday] = useState<Holiday | null>(null);
-  const [tab, setTab] = useState<StudioTab>("captions");
+  const [tab, setTab] = useState<StudioTab>(scope === "admin" ? "daily" : "captions");
   const [archiveVersion, setArchiveVersion] = useState(0);
 
   const brand = useMemo(() => getKit(brandId), [brandId]);
@@ -233,7 +236,7 @@ export function StudioApp({ scope }: { scope: "admin" | "staff" }) {
 
         <div className="studio-body">
           {/* --------------------------------------------------- brand selector */}
-          <section className="studio-panel studio-brandbar" aria-label="Business selector">
+          {tab !== "daily" ? <><section className="studio-panel studio-brandbar" aria-label="Business selector">
             <div className="studio-brandbar-main">
               <label className="studio-label" htmlFor="studio-business">
                 Posting as
@@ -342,12 +345,13 @@ export function StudioApp({ scope }: { scope: "admin" | "staff" }) {
             </label>
           </section>
 
+          </> : null}
           {/* ------------------------------------------------------------ tabs */}
           <nav className="studio-tabs" aria-label="Studio tools">
-            {TABS.map((item) => {
+            {TABS.filter(item => item.id !== "daily" || isAdmin).map((item) => {
               const Icon = item.icon;
               return (
-                <button
+                <Button variant="ghost"
                   key={item.id}
                   type="button"
                   className={tab === item.id ? "is-active" : undefined}
@@ -356,12 +360,13 @@ export function StudioApp({ scope }: { scope: "admin" | "staff" }) {
                 >
                   <Icon size={15} aria-hidden="true" />
                   {item.label}
-                </button>
+                </Button>
               );
             })}
           </nav>
 
           <div className="studio-stage">
+            {tab === "daily" && isAdmin ? <DailyPhotoPanel /> : null}
             {tab === "captions" ? <CaptionPanel /> : null}
             {tab === "flyer" ? <FlyerPanel /> : null}
             {tab === "motion" ? <MotionPanel /> : null}

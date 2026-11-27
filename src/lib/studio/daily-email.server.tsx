@@ -16,7 +16,7 @@ export async function notifyFlyer(row: DailyRow, config: { recipient_email: stri
     const suppression = await db.from('suppressed_emails').select('id').eq('email', config.recipient_email).limit(1);
     if (suppression.error) throw new Error('Could not check email delivery preferences.');
     if (suppression.data.length) throw new Error('Email notifications are blocked for this address by its delivery preferences.');
-    const tokenResult = await db.from('email_unsubscribe_tokens').insert({ email: config.recipient_email }).select('token').single();
+    const tokenResult = await db.from('email_unsubscribe_tokens').insert({ email: config.recipient_email, token: crypto.randomUUID() }).select('token').single();
     if (tokenResult.error) throw new Error('Could not prepare email notification.');
     const element = React.createElement(template.component, { headline: row.headline, downloadUrl: await flyerLink(row.file_path), studioUrl: `${origin}/admin/studio` });
     const html = await render(element); const text = await render(element, { plainText: true });

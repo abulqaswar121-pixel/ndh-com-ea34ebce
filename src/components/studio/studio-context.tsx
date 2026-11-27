@@ -3,7 +3,7 @@ import type { BrandKit, StudioBrandId } from "@/lib/studio/kits";
 import type { CampaignCopy, StudioGoal, StudioTone } from "@/lib/studio/copywriter";
 import type { Holiday } from "@/lib/studio/holidays";
 
-export type StudioTab = "captions" | "flyer" | "motion" | "calendar" | "archive" | "newsroom";
+export type StudioTab = "daily" | "captions" | "flyer" | "motion" | "calendar" | "archive" | "newsroom";
 
 export type StudioValue = {
   scope: "admin" | "staff";
