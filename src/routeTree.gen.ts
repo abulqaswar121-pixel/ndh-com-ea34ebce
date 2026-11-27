@@ -25,7 +25,6 @@ import { Route as SignupRouteImport } from './routes/signup'
 import { Route as TalentApplicationRouteImport } from './routes/talent-application'
 import { Route as TermsRouteImport } from './routes/terms'
 import { Route as WorkRouteImport } from './routes/work'
-import { Route as ZztestRouteImport } from './routes/zztest'
 import { Route as AcademyIndexRouteImport } from './routes/academy.index'
 import { Route as AcademySlugRouteImport } from './routes/academy.$slug'
 import { Route as AdminLoginRouteImport } from './routes/admin.login'
@@ -175,11 +174,6 @@ const TermsRoute = TermsRouteImport.update({
 const WorkRoute = WorkRouteImport.update({
   id: '/work',
   path: '/work',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ZztestRoute = ZztestRouteImport.update({
-  id: '/zztest',
-  path: '/zztest',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AcademyIndexRoute = AcademyIndexRouteImport.update({
@@ -603,7 +597,6 @@ export interface FileRoutesByFullPath {
   '/talent-application': typeof TalentApplicationRoute
   '/terms': typeof TermsRoute
   '/work': typeof WorkRouteWithChildren
-  '/zztest': typeof ZztestRoute
   '/academy/$slug': typeof AcademySlugRoute
   '/admin/login': typeof AdminLoginRoute
   '/agency/$slug': typeof AgencySlugRoute
@@ -688,7 +681,6 @@ export interface FileRoutesByTo {
   '/signup': typeof SignupRoute
   '/talent-application': typeof TalentApplicationRoute
   '/terms': typeof TermsRoute
-  '/zztest': typeof ZztestRoute
   '/academy/$slug': typeof AcademySlugRoute
   '/admin/login': typeof AdminLoginRoute
   '/agency/$slug': typeof AgencySlugRoute
@@ -773,7 +765,6 @@ export interface FileRoutesById {
   '/talent-application': typeof TalentApplicationRoute
   '/terms': typeof TermsRoute
   '/work': typeof WorkRouteWithChildren
-  '/zztest': typeof ZztestRoute
   '/academy/$slug': typeof AcademySlugRoute
   '/admin/login': typeof AdminLoginRoute
   '/agency/$slug': typeof AgencySlugRoute
@@ -864,7 +855,6 @@ export interface FileRouteTypes {
     | '/talent-application'
     | '/terms'
     | '/work'
-    | '/zztest'
     | '/academy/$slug'
     | '/admin/login'
     | '/agency/$slug'
@@ -949,7 +939,6 @@ export interface FileRouteTypes {
     | '/signup'
     | '/talent-application'
     | '/terms'
-    | '/zztest'
     | '/academy/$slug'
     | '/admin/login'
     | '/agency/$slug'
@@ -1033,7 +1022,6 @@ export interface FileRouteTypes {
     | '/talent-application'
     | '/terms'
     | '/work'
-    | '/zztest'
     | '/academy/$slug'
     | '/admin/login'
     | '/agency/$slug'
@@ -1124,7 +1112,6 @@ export interface RootRouteChildren {
   TalentApplicationRoute: typeof TalentApplicationRoute
   TermsRoute: typeof TermsRoute
   WorkRoute: typeof WorkRouteWithChildren
-  ZztestRoute: typeof ZztestRoute
   AdminLoginRoute: typeof AdminLoginRoute
   BusinessesIdRoute: typeof BusinessesIdRoute
   InviteTokenRoute: typeof InviteTokenRoute
@@ -1253,13 +1240,6 @@ declare module '@tanstack/react-router' {
       path: '/work'
       fullPath: '/work'
       preLoaderRoute: typeof WorkRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/zztest': {
-      id: '/zztest'
-      path: '/zztest'
-      fullPath: '/zztest'
-      preLoaderRoute: typeof ZztestRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/academy/': {
@@ -2022,7 +2002,6 @@ const rootRouteChildren: RootRouteChildren = {
   TalentApplicationRoute: TalentApplicationRoute,
   TermsRoute: TermsRoute,
   WorkRoute: WorkRouteWithChildren,
-  ZztestRoute: ZztestRoute,
   AdminLoginRoute: AdminLoginRoute,
   BusinessesIdRoute: BusinessesIdRoute,
   InviteTokenRoute: InviteTokenRoute,
