@@ -10338,3 +10338,45 @@ font.goog-text-highlight,
 .daily-archive-item .studio-actions { gap: 6px; }
 @media (max-width: 900px) { .daily-template-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } .daily-archive { grid-template-columns: 1fr; } }
 @media (max-width: 620px) { .daily-template-grid { gap: 8px; } .daily-template { padding: 5px; } .daily-template span { font-size: 11px; } .daily-delivery { grid-template-columns: 1fr; gap: 18px; } .daily-archive-item { flex-direction: column; } .daily-archive-item img { width: 110px; } .studio-flyer-controls .studio-chips { flex-wrap: wrap; } .studio-flyer-controls .studio-chips > button { white-space: normal; } }
+
+/* Studio: hamburger menu + "you are here" bar */
+.studio-menu-btn { display: inline-flex; align-items: center; gap: 6px; padding: 7px 12px; border-radius: 999px; border: 1px solid rgb(255 255 255 / 0.25); background: rgb(255 255 255 / 0.08); color: #fff; font: inherit; font-size: 13px; font-weight: 700; cursor: pointer; }
+.studio-menu-btn:hover { background: rgb(255 255 255 / 0.16); }
+.studio-where { position: sticky; top: 0; z-index: 30; width: min(1180px, 100% - 32px); margin: 14px auto 0; }
+.studio-where-btn { width: 100%; display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: 12px; padding: 10px 14px; border-radius: 14px; border: 1px solid var(--ndh-line); background: rgb(255 255 255 / 0.94); backdrop-filter: blur(10px); box-shadow: 0 12px 28px -22px rgb(10 26 48 / 0.6); color: var(--ndh-ink); font: inherit; text-align: left; cursor: pointer; }
+.studio-where-icon, .studio-sheet-icon { display: grid; place-items: center; width: 36px; height: 36px; border-radius: 10px; background: var(--ndh-navy); color: #fff; flex-shrink: 0; }
+.studio-where-text { display: flex; flex-direction: column; min-width: 0; line-height: 1.2; }
+.studio-where-text small { font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #4f6b94; }
+.studio-where-text strong { font-size: 15px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.studio-where-menu { color: var(--ndh-navy); }
+.studio-sheet { width: min(360px, 88vw); }
+.studio-sheet-list { display: grid; gap: 6px; margin-top: 18px; }
+.studio-sheet-list button { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: 12px; padding: 10px 12px; border-radius: 12px; border: 1px solid transparent; background: none; font: inherit; text-align: left; cursor: pointer; color: var(--ndh-ink); }
+.studio-sheet-list button:hover { background: #f1f5fb; }
+.studio-sheet-list button .studio-sheet-icon { background: #eef2f8; color: var(--ndh-navy); }
+.studio-sheet-list button.is-active { background: #eef4ff; border-color: #bcd2f5; }
+.studio-sheet-list button.is-active .studio-sheet-icon { background: var(--ndh-navy); color: #fff; }
+.studio-sheet-text { display: flex; flex-direction: column; min-width: 0; }
+.studio-sheet-text strong { font-size: 14px; }
+.studio-sheet-text small { font-size: 12px; color: #5b6b85; }
+@media (max-width: 760px) {
+  .studio-tabs:not(.is-sub) { display: none; }
+  .studio-where { width: calc(100% - 24px); }
+  .studio-top { padding: 14px 0 22px; }
+  .studio-top-intro { margin-top: 18px; }
+  .studio-top-note { display: none; }
+  .studio-role { font-size: 10.5px; padding: 4px 9px; }
+  .studio-top-inner { display: grid; grid-template-columns: minmax(0, 1fr) auto; }
+  .studio-brand { min-width: 0; }
+  .studio-brand .ndh-family-symbol { flex-shrink: 0; }
+  .studio-brand span { min-width: 0; }
+  .studio-brand strong { white-space: nowrap; font-size: 11px; letter-spacing: 0.08em; }
+  .studio-top-actions { flex-shrink: 0; flex-wrap: nowrap; }
+  .studio-tabs.is-sub { flex-wrap: wrap; }
+  .studio-tabs.is-sub button { flex: 1 1 auto; justify-content: center; }
+  .studio-panel-head > * { min-width: 0; }
+  .studio input, .studio select, .studio textarea { max-width: 100%; min-width: 0; font-size: 16px; }
+  .studio-brandbar-kit { flex-wrap: wrap; min-width: 0; }
+  .studio-chips { flex-wrap: wrap; }
+}
+@media (max-width: 420px) { .studio-menu-btn span, .studio-role { display: none; } }

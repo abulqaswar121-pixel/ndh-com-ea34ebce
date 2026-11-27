@@ -7,6 +7,7 @@ import {
   Film,
   ImageIcon,
   LayoutGrid,
+  Menu,
   Megaphone,
   PenLine,
   ShieldCheck,
@@ -35,18 +36,19 @@ import { ArchivePanel } from "./ArchivePanel";
 import { NewsroomPanel } from "./NewsroomPanel";
 import { DailyPhotoPanel } from "./DailyPhotoPanel";
 import { Button } from "@/components/ui/button";
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription } from "@/components/ui/sheet";
 
 const GOALS: StudioGoal[] = ["promo", "launch", "info", "holiday", "milestone"];
 const TONES: StudioTone[] = ["bold", "warm", "professional"];
 
-const TABS: { id: StudioTab; label: string; icon: typeof PenLine }[] = [
-  { id: "daily", label: "Daily photo studio", icon: BellRing },
-  { id: "captions", label: "Captions", icon: PenLine },
-  { id: "flyer", label: "Flyer & infographic", icon: ImageIcon },
-  { id: "motion", label: "Motion clip", icon: Film },
-  { id: "calendar", label: "Holiday calendar", icon: CalendarHeart },
-  { id: "archive", label: "Media archive", icon: LayoutGrid },
-  { id: "newsroom", label: "Newsroom", icon: Megaphone },
+const TABS: { id: StudioTab; label: string; hint: string; icon: typeof PenLine }[] = [
+  { id: "daily", label: "Daily photo studio", hint: "Ready photo flyers and daily email", icon: BellRing },
+  { id: "captions", label: "Captions", hint: "Post text in three styles", icon: PenLine },
+  { id: "flyer", label: "Flyer & infographic", hint: "Square and story designs", icon: ImageIcon },
+  { id: "motion", label: "Motion clip", hint: "Short moving cards", icon: Film },
+  { id: "calendar", label: "Holiday calendar", hint: "Upcoming days to post for", icon: CalendarHeart },
+  { id: "archive", label: "Media archive", hint: "Everything you saved", icon: LayoutGrid },
+  { id: "newsroom", label: "Newsroom", hint: "Publish public news", icon: Megaphone },
 ];
 
 /**
@@ -58,6 +60,7 @@ const TABS: { id: StudioTab; label: string; icon: typeof PenLine }[] = [
  */
 export function StudioApp({ scope }: { scope: "admin" | "staff" }) {
   const { roles, loading, user } = useAuth();
+  const [menuOpen, setMenuOpen] = useState(false);
   const isStaff = roles.some((role) => role === "admin" || role === "pm" || role === "talent");
   const isAdmin = roles.includes("admin");
 
@@ -147,6 +150,16 @@ export function StudioApp({ scope }: { scope: "admin" | "staff" }) {
     notify,
   };
 
+  const visibleTabs = TABS.filter((item) => item.id !== "daily" || isAdmin);
+  const current = visibleTabs.find((item) => item.id === tab) ?? visibleTabs[0];
+  const CurrentIcon = current.icon;
+  const currentIndex = visibleTabs.indexOf(current) + 1;
+  const openTab = (id: StudioTab) => {
+    setTab(id);
+    setMenuOpen(false);
+    if (typeof window !== "undefined") window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
   return (
     <StudioContext.Provider value={value}>
       <div className="studio">
@@ -170,6 +183,16 @@ export function StudioApp({ scope }: { scope: "admin" | "staff" }) {
                       : "Staff access"
                     : "Preview mode"}
               </span>
+              <button
+                type="button"
+                className="studio-menu-btn"
+                aria-label="Open studio menu"
+                aria-expanded={menuOpen}
+                onClick={() => setMenuOpen(true)}
+              >
+                <Menu size={18} aria-hidden="true" />
+                <span>Menu</span>
+              </button>
             </div>
           </div>
 
@@ -221,6 +244,48 @@ export function StudioApp({ scope }: { scope: "admin" | "staff" }) {
             </button>
           </div>
         ) : null}
+
+        <div className="studio-where" role="navigation" aria-label="Where you are">
+          <button type="button" className="studio-where-btn" onClick={() => setMenuOpen(true)}>
+            <span className="studio-where-icon"><CurrentIcon size={17} aria-hidden="true" /></span>
+            <span className="studio-where-text">
+              <small>Studio · {currentIndex} of {visibleTabs.length}</small>
+              <strong>{current.label}</strong>
+            </span>
+            <Menu size={18} aria-hidden="true" className="studio-where-menu" />
+          </button>
+        </div>
+
+        <Sheet open={menuOpen} onOpenChange={setMenuOpen}>
+          <SheetContent side="right" className="studio-sheet">
+            <SheetHeader>
+              <SheetTitle>Studio menu</SheetTitle>
+              <SheetDescription>You are in: {current.label}</SheetDescription>
+            </SheetHeader>
+            <nav className="studio-sheet-list" aria-label="Studio sections">
+              {visibleTabs.map((item) => {
+                const Icon = item.icon;
+                const active = item.id === current.id;
+                return (
+                  <button
+                    key={item.id}
+                    type="button"
+                    className={active ? "is-active" : undefined}
+                    aria-current={active ? "page" : undefined}
+                    onClick={() => openTab(item.id)}
+                  >
+                    <span className="studio-sheet-icon"><Icon size={17} aria-hidden="true" /></span>
+                    <span className="studio-sheet-text">
+                      <strong>{item.label}</strong>
+                      <small>{item.hint}</small>
+                    </span>
+                    {active ? <Check size={16} aria-hidden="true" /> : null}
+                  </button>
+                );
+              })}
+            </nav>
+          </SheetContent>
+        </Sheet>
 
         <div className="studio-body">
           {/* --------------------------------------------------- brand selector */}
@@ -336,7 +401,7 @@ export function StudioApp({ scope }: { scope: "admin" | "staff" }) {
           </> : null}
           {/* ------------------------------------------------------------ tabs */}
           <nav className="studio-tabs" aria-label="Studio tools">
-            {TABS.filter(item => item.id !== "daily" || isAdmin).map((item) => {
+            {visibleTabs.map((item) => {
               const Icon = item.icon;
               return (
                 <Button variant="ghost"
