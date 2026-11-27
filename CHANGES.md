@@ -436,3 +436,45 @@ subsidiary, and the top bar follows the visitor down the page.
 - `/` renders 3 metric tiles and 24 ticker pills (12 businesses × 2 runs), all
   linking to `/businesses/$id`; no WhatsApp link in the document; every public
   route still 200; no `/admin` or `/staff` link anywhere in public markup.
+
+## Black Friday drop — five ready-to-post motion videos in the Studio archive
+
+The Media archive now opens with five finished Black Friday clips, one per active
+business, so the team can download a video and copy its caption without
+generating anything.
+
+### Added
+
+- `public/black-friday/` — five 1080×1920 MP4s (H.264 High + AAC stereo,
+  8 seconds, 30fps, ~1.0–1.25 MB each) rendered with this app's own
+  `paintFrame` and `startMotionAudio`, so each clip carries its brand cover
+  photo (subtle zoom + brand tint), animated headline, badge, three reveal
+  points, the Open Gateway logo and a call to action. A JPEG thumbnail sits
+  beside every video.
+- `src/lib/studio/archive.ts` — `blackFridayMotionItems()`, the five archive
+  records: brand, real file size, photo and music preset (`motionDefaults`),
+  and a three-platform caption set (WhatsApp Status, Instagram, LinkedIn).
+  `listArchiveItems()` merges the drop with the device archive, `deleteArchiveItem()`
+  hides a seeded clip instead of deleting it, and the new `downloadArchiveItem()`
+  downloads blob items and static files the same way.
+- `src/lib/studio/archive.test.ts` — 13 checks covering the id set, the
+  photo/music mapping, on-disk MP4s and thumbnails, file sizes, all three
+  captions, the four real offers and FarmFund's no-discount framing.
+
+### Changed
+
+- `src/components/studio/ArchivePanel.tsx` — a "Black Friday drop · ready to
+  post" heading above the grid, labelled **Download video** / **Copy caption**
+  buttons on seeded cards, and Status / Instagram / LinkedIn chips that copy the
+  platform-specific caption.
+- `src/styles.css` — an additive, studio-only block (`.studio-archive-actions.is-stacked`,
+  `.studio-caption-chips`). No existing selector is redefined; public pages are
+  untouched.
+
+### Verified
+
+- `bun test` → 19 pass, 0 fail (2 files); `npx tsc --noEmit` clean;
+  `npm run build` clean; ESLint clean on every touched file.
+- `/black-friday/<brand>.mp4` served as `video/mp4` at the exact byte size stored
+  in the archive record, thumbnails as `image/jpeg`; `/`, `/businesses`, `/news`,
+  `/admin/login` and `/admin/studio` all still 200.

@@ -14,8 +14,7 @@ import { copyText } from "@/lib/clipboard";
 import {
   clearArchive,
   deleteArchiveItem,
-  downloadBlob,
-  filenameFor,
+  downloadArchiveItem,
   listArchiveItems,
   readCaptionHistory,
   removeCaptionHistory,
@@ -68,9 +67,17 @@ export function ArchivePanel() {
   }
 
   async function handleDownload(item: ArchiveItem) {
-    if (!item.blob) return;
-    downloadBlob(item.blob, filenameFor(item.brandName, item.kind, item.extension));
-    notify("Download started");
+    try {
+      await downloadArchiveItem(item);
+      notify("Download started");
+    } catch (error) {
+      notify(error instanceof Error ? error.message : "Download failed", "error");
+    }
+  }
+
+  async function handleCopy(item: ArchiveItem, text: string, label: string) {
+    const ok = await copyText(text);
+    notify(ok ? `${label} copied` : "Copy blocked by the browser", ok ? "success" : "error");
   }
 
   return (
@@ -106,6 +113,18 @@ export function ArchivePanel() {
           </button>
         ))}
       </div>
+
+      {!loading && visible.some((item) => item.seed) ? (
+        <div className="studio-panel-head is-tight">
+          <div>
+            <h3>Black Friday drop · ready to post</h3>
+            <p className="studio-panel-lead">
+              1080×1920 MP4s with photo backdrop and music, rendered in this studio. Download the
+              video, then copy the caption for Status, Instagram or LinkedIn.
+            </p>
+          </div>
+        </div>
+      ) : null}
 
       {loading ? (
         <p className="studio-empty">
@@ -144,40 +163,79 @@ export function ArchivePanel() {
                     })}
                   </small>
                 </div>
-                <div className="studio-archive-actions">
-                  <button
-                    type="button"
-                    className="studio-btn is-icon"
-                    aria-label="Download"
-                    onClick={() => void handleDownload(item)}
-                  >
-                    <Download size={14} />
-                  </button>
-                  {item.caption ? (
+                {item.seed ? (
+                  <div className="studio-archive-actions is-stacked">
+                    <button
+                      type="button"
+                      className="studio-btn is-small is-primary"
+                      onClick={() => void handleDownload(item)}
+                    >
+                      <Download size={13} /> Download video
+                    </button>
+                    <button
+                      type="button"
+                      className="studio-btn is-small"
+                      onClick={() => void handleCopy(item, item.caption ?? "", "Caption")}
+                    >
+                      <Copy size={13} /> Copy caption
+                    </button>
+                    {item.captions ? (
+                      <div className="studio-caption-chips">
+                        {(
+                          [
+                            ["whatsapp", "Status"],
+                            ["instagram", "Instagram"],
+                            ["linkedin", "LinkedIn"],
+                          ] as const
+                        ).map(([key, label]) => (
+                          <button
+                            key={key}
+                            type="button"
+                            onClick={() => void handleCopy(item, item.captions?.[key] ?? "", label)}
+                          >
+                            {label}
+                          </button>
+                        ))}
+                      </div>
+                    ) : null}
+                    <button
+                      type="button"
+                      className="studio-btn is-small is-danger"
+                      onClick={() => void handleDelete(item)}
+                    >
+                      <Trash2 size={13} /> Hide
+                    </button>
+                  </div>
+                ) : (
+                  <div className="studio-archive-actions">
                     <button
                       type="button"
                       className="studio-btn is-icon"
-                      aria-label="Copy caption"
-                      onClick={async () => {
-                        const ok = await copyText(item.caption ?? "");
-                        notify(
-                          ok ? "Caption copied" : "Copy blocked by the browser",
-                          ok ? "success" : "error",
-                        );
-                      }}
+                      aria-label="Download"
+                      onClick={() => void handleDownload(item)}
                     >
-                      <Copy size={14} />
+                      <Download size={14} />
                     </button>
-                  ) : null}
-                  <button
-                    type="button"
-                    className="studio-btn is-icon is-danger"
-                    aria-label="Delete"
-                    onClick={() => void handleDelete(item)}
-                  >
-                    <Trash2 size={14} />
-                  </button>
-                </div>
+                    {item.caption ? (
+                      <button
+                        type="button"
+                        className="studio-btn is-icon"
+                        aria-label="Copy caption"
+                        onClick={() => void handleCopy(item, item.caption ?? "", "Caption")}
+                      >
+                        <Copy size={14} />
+                      </button>
+                    ) : null}
+                    <button
+                      type="button"
+                      className="studio-btn is-icon is-danger"
+                      aria-label="Delete"
+                      onClick={() => void handleDelete(item)}
+                    >
+                      <Trash2 size={14} />
+                    </button>
+                  </div>
+                )}
               </article>
             );
           })}

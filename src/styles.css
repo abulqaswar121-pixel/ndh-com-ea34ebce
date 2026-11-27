@@ -10457,3 +10457,47 @@ font.goog-text-highlight,
   .studio-chips { flex-wrap: wrap; }
 }
 @media (max-width: 420px) { .studio-menu-btn span, .studio-role { display: none; } }
+
+/* ============================================================
+   STUDIO ARCHIVE — BLACK FRIDAY DROP
+   Additive only: new studio-scoped selectors, no existing rule
+   is redefined, so public pages and the rest of the studio are
+   untouched.
+   ============================================================ */
+
+.studio-archive-actions.is-stacked {
+  flex-direction: column;
+  align-items: stretch;
+  gap: 6px;
+}
+
+.studio-archive-actions.is-stacked .studio-btn {
+  width: 100%;
+  justify-content: center;
+}
+
+.studio-caption-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.studio-caption-chips button {
+  flex: 1 1 auto;
+  padding: 5px 8px;
+  border-radius: 999px;
+  border: 1px solid var(--ndh-line);
+  background: #f8fafc;
+  font-family: inherit;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--ndh-ink-soft);
+  cursor: pointer;
+  transition: background 0.16s ease, border-color 0.16s ease, color 0.16s ease;
+}
+
+.studio-caption-chips button:hover {
+  background: #eef4ff;
+  border-color: #bfd4f5;
+  color: var(--ndh-ink);
+}
