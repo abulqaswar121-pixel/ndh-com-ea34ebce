@@ -1,5 +1,10 @@
 # Roadmap
 
+## Editable MP4 motion studio
+- [ ] Export WhatsApp-ready MP4 instead of WebM.
+- [ ] Add editable motion text, replaceable business photos, and built-in or uploaded music.
+- [ ] Test MP4 video, audio, uploads, and phone layout.
+
 ## Daily photo flyer studio
 - [x] Add the six approved Academy and Agency photo flyers and reusable photo layouts to the private studio.
 - [x] Add automatic daily selection, editable captions, and cloud archive/downloads.
