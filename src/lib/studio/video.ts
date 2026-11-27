@@ -9,6 +9,7 @@
 import type { BrandKit } from "./kits";
 import { BODY_FONT, HEADING_FONT, loadLogo, ensureFonts, hexToRgba } from "./render-shared";
 import type { Holiday } from "./holidays";
+import { startMotionAudio, type MotionAudioSpec } from "./motion-audio";
 
 export type MotionKind = "holiday" | "countdown" | "reveal" | "launch";
 
@@ -31,6 +32,8 @@ export type MotionSpec = {
   badge: string;
   offer?: string;
   holiday?: Holiday | null;
+  photoUrl: string | null;
+  music: MotionAudioSpec;
 };
 
 const W = 1080;
@@ -135,6 +138,7 @@ function paintBackdrop(
   spec: MotionSpec,
   t: number,
   duration: number,
+  photo: HTMLImageElement | null,
 ) {
   const { colors } = spec.brand;
   const progress = (t % duration) / duration;
@@ -144,6 +148,18 @@ function paintBackdrop(
   base.addColorStop(1, colors.bg);
   ctx.fillStyle = base;
   ctx.fillRect(0, 0, W, H);
+
+  if (photo) {
+    const scale = Math.max(W / photo.width, H / photo.height) * (1.02 + progress * 0.035);
+    const width = photo.width * scale;
+    const height = photo.height * scale;
+    ctx.save();
+    ctx.globalAlpha = 0.38;
+    ctx.drawImage(photo, (W - width) / 2, (H - height) / 2, width, height);
+    ctx.restore();
+    ctx.fillStyle = "rgba(3, 10, 24, 0.46)";
+    ctx.fillRect(0, 0, W, H);
+  }
 
   const sweep = Math.sin(progress * Math.PI * 2) * 0.5 + 0.5;
   const glow = ctx.createRadialGradient(
@@ -524,9 +540,10 @@ export function paintFrame(
   spec: MotionSpec,
   t: number,
   logo: HTMLImageElement | null,
+  photo: HTMLImageElement | null = null,
 ) {
   const duration = spec.duration;
-  paintBackdrop(ctx, spec, t, duration);
+  paintBackdrop(ctx, spec, t, duration, photo);
   paintLogo(ctx, spec, logo, t);
   paintBadge(ctx, spec, t);
 

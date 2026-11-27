@@ -8969,6 +8969,83 @@ body {
   max-height: 280px;
 }
 
+.studio-editor {
+  border: 1px solid var(--ndh-line);
+  border-radius: 12px;
+  background: #f8fafc;
+  overflow: hidden;
+}
+
+.studio-editor summary {
+  cursor: pointer;
+  padding: 12px 14px;
+  color: var(--ndh-ink);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.studio-editor-body {
+  display: grid;
+  gap: 12px;
+  padding: 0 14px 14px;
+}
+
+.studio-editor input[type="file"] {
+  padding: 7px;
+  font-size: 12px;
+}
+
+.studio-editor input[type="file"]::file-selector-button {
+  margin-right: 8px;
+  padding: 7px 10px;
+  border: 0;
+  border-radius: 7px;
+  background: #e8f1ff;
+  color: #1e3a8a;
+  font: inherit;
+  font-weight: 700;
+}
+
+.studio-media-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+
+.studio-media-row img,
+.studio-media-empty {
+  width: 54px;
+  height: 54px;
+  flex: none;
+  border-radius: 9px;
+  object-fit: cover;
+  background: #0a1a30;
+}
+
+.studio-media-empty {
+  display: grid;
+  place-items: center;
+  color: #7dd3fc;
+}
+
+.studio-media-row div {
+  display: grid;
+  min-width: 0;
+}
+
+.studio-media-row strong,
+.studio-media-row small {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.studio-media-row strong { font-size: 12.5px; }
+.studio-media-row small { color: var(--ndh-muted); font-size: 11px; }
+.studio-inline-actions { display: flex; flex-wrap: wrap; gap: 6px; }
+.studio-file-name { display: flex; align-items: center; gap: 6px; margin: 0; color: var(--ndh-muted); font-size: 12px; overflow-wrap: anywhere; }
+
 /* ------------------------------------------------------ calendar */
 
 .studio-reminder-count {
